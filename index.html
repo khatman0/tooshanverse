@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>توشان‌ورس | Tushanverse</title>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
   <style>
@@ -14,43 +14,33 @@
       padding: 0;
       direction: rtl;
     }
-    header {
+    header, footer {
       text-align: center;
-      padding: 60px 20px 20px;
       background-color: #1a1a1a;
-    }
-    header h1 {
-      font-size: 36px;
-      margin: 10px 0;
+      padding: 30px 20px;
     }
     section {
       padding: 40px 20px;
-      max-width: 800px;
+      max-width: 1000px;
       margin: auto;
     }
     h2 {
       color: #ff9900;
     }
     .heroes {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-wrap: wrap;
       gap: 20px;
-      margin-top: 20px;
     }
     .hero-card {
+      flex: 1 1 200px;
       background: #1f1f1f;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 0 10px #ff990055;
       cursor: pointer;
     }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #111;
-      font-size: 14px;
-    }
-    #popup {
+    .popup {
       display: none;
       position: fixed;
       top: 50%;
@@ -60,37 +50,29 @@
       color: #f0c040;
       padding: 20px;
       border-radius: 10px;
-      width: 80%;
+      width: 90%;
       max-width: 400px;
       box-shadow: 0 0 15px #ff9900;
-      z-index: 1000;
+      z-index: 9999;
     }
-    #popup button {
-      background-color: #ff9900;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      color: #111;
+    .popup button {
+      background-color:#ff9900;
+      border:none;
+      padding:10px 20px;
+      border-radius:8px;
+      cursor:pointer;
+      color:#111;
       margin-top: 10px;
     }
   </style>
 </head>
 <body>
-
   <header>
     <h1>توشان‌ورس | Tushanverse</h1>
     <p>خاستگاه قهرمانان شرقی</p>
   </header>
 
-  <section>
-    <h2>درباره توشان‌ورس</h2>
-    <p>
-      دنیایی سرشار از جادو، علم و اسطوره؛ جایی که قهرمانان ایرانی با تهدیدهای بی‌زمان مبارزه می‌کنند.
-    </p>
-  </section>
-
-  <section>
+  <section id="heroes">
     <h2>قهرمانان</h2>
     <div class="heroes">
       <div class="hero-card" onclick="openPopup()">
@@ -102,43 +84,36 @@
         <p>قهرمانی با کنترل کامل بر انرژی و جریان برق.</p>
       </div>
       <div class="hero-card">
-        <h3>🛡 مرداویچ</h3>
-        <p>باستانی‌ترین نگهبان عدالت از دل تاریخ ایران.</p>
-      </div>
-      <div class="hero-card">
         <h3>🔥 گردآفرید</h3>
         <p>دختر آتش؛ از نسل قهرمانان شاهنامه.</p>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2>درباره استودیو توشان</h2>
-    <p>
-      استودیو توشان با هدف ساخت دنیایی قهرمان‌محور بر پایه فرهنگ و اسطوره‌های ایرانی فعالیت می‌کند.
-    </p>
+  <section id="comics">
+    <h2>کمیک‌ها</h2>
+    <p>در این بخش به‌زودی کمیک‌ها و داستان‌های مصور توشان‌ورس قرار می‌گیرند.</p>
+  </section>
+
+  <section id="chat">
+    <h2>گفت‌وگوی آنلاین</h2>
+    <p>اگر سوالی داری یا می‌خوای با من حرف بزنی، به زودی اینجا می‌تونی چت کنی!</p>
   </section>
 
   <footer>
-    <p>تمام حقوق متعلق به توشان استودیو © 2025 | ساخته‌شده با عشق</p>
+    <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
   </footer>
 
-  <!-- پاپ‌آپ بیوگرافی تسکین -->
-  <div id="popup">
+  <div id="popup" class="popup">
     <h3>🌀 تسکین</h3>
     <p>
       نام: آرام نورگان (لقب: تسکین)<br>
       سن: 16 سال<br>
-      محل تولد: دهکده‌ای عشایری در دل کویر<br><br>
-      خانواده:<br>
-      - پدر: چوپان مهربان<br>
-      - مادر: زنی قوی با مادربزرگی قابله<br><br>
-      توانایی:<br>
-      خاموش‌کردن کامل درد در دیگران بدون درمان زخم<br><br>
-      شخصیت:<br>
-      مهربان، آرام و همدل؛ همیشه در پی تسکین رنج دیگران<br><br>
-      پیش‌زمینه:<br>
-      تولد همزمان با انفجاری آسمانی که قدرتش را شکل داد.
+      محل تولد: دهکده عشایری<br>
+      خانواده: پدر چوپان، مادر قابله<br><br>
+      توانایی: خاموش کردن درد دیگران<br>
+      شخصیت: مهربان، همدل، آرام<br><br>
+      پیش‌زمینه: تولد در شب طوفان و انفجار آسمانی؛ قدرتش از همان لحظه شکل گرفت.
     </p>
     <button onclick="closePopup()">بستن</button>
   </div>
@@ -151,6 +126,5 @@
       document.getElementById('popup').style.display = 'none';
     }
   </script>
-
 </body>
 </html>
