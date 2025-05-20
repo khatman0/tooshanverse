@@ -107,6 +107,31 @@
 .menu a:hover {
   color: #fff;
 }
+     /* ... بقیه استایل‌ها ... */
+
+  .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    background-color: #222;
+    color: #f0c040;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 15px #ff9900;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .popup.show {
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
   </style>
 </head>
 <body>
@@ -174,24 +199,31 @@
     </p>
     <button onclick="closePopup()">بستن</button>
   </div>
-
-  <script>
-    function openPopup() {
-      document.getElementById('popup').style.display = 'block';
-    }
-    function closePopup() {
-      document.getElementById('popup').style.display = 'none';
-    }
-    const menuBtn = document.getElementById('menu-btn');
-const menu = document.getElementById('menu');
-
-menuBtn.addEventListener('click', () => {
-  if (menu.style.display === 'block') {
-    menu.style.display = 'none';
-  } else {
-    menu.style.display = 'block';
+<script>
+  function openPopup() {
+    const popup = document.getElementById('popup');
+    popup.classList.add('show');
   }
-});
-  </script>
+
+  function closePopup() {
+    const popup = document.getElementById('popup');
+    popup.classList.remove('show');
+    setTimeout(() => {
+      popup.style.display = 'none';
+    }, 300); // طول مدت transition مطابق CSS
+  }
+
+  // کد منوی همبرگری و بقیه جاوااسکریپت‌ها هم همینجا باشه
+  const menuBtn = document.getElementById('menu-btn');
+  const menu = document.getElementById('menu');
+
+  menuBtn.addEventListener('click', () => {
+    if (menu.style.display === 'block') {
+      menu.style.display = 'none';
+    } else {
+      menu.style.display = 'block';
+    }
+  });
+</script>
 </body>
 </html>
