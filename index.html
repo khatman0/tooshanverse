@@ -149,6 +149,7 @@
   <!-- منوی کشویی -->
   <nav class="menu" id="menu">
     <a href="#">خانه</a>
+    <input type="text" id="searchInput" placeholder="جستجو..." onkeyup="searchMenu()" style="width: 100%; padding: 5px; margin-bottom: 10px; border-radius: 5px; border: none;">
     <a href="#">عکس‌ها</a>
     <a href="#">ساخته‌های هوش مصنوعی</a>
     <a href="#">گفتگو با من</a>
@@ -225,6 +226,23 @@
       menu.style.display = 'block';
     }
   });
+</script>
+  <script>
+function searchMenu() {
+  const input = document.getElementById('searchInput');
+  const filter = input.value.toLowerCase();
+  const menu = document.getElementById('menu');
+  const links = menu.getElementsByTagName('a');
+
+  for (let i = 0; i < links.length; i++) {
+    let text = links[i].textContent || links[i].innerText;
+    if (text.toLowerCase().indexOf(filter) > -1) {
+      links[i].style.display = "";
+    } else {
+      links[i].style.display = "none";
+    }
+  }
+}
 </script>
 </body>
 </html>
