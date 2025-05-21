@@ -1,147 +1,150 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>توشان چت آنلاین با Firebase</title>
-<style>
-  body {
-    font-family: 'Vazirmatn', sans-serif;
-    background: #1a1a1a;
-    color: #f0c040;
-    margin: 0;
-    padding: 20px;
-    direction: rtl;
-  }
-  #chatContainer {
-    max-width: 600px;
-    margin: auto;
-    background: #222;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 0 15px #ff9900;
-  }
-  #messages {
-    height: 350px;
-    overflow-y: auto;
-    background: #111;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 16px;
-  }
-  #inputArea {
-    display: flex;
-    gap: 10px;
-  }
-  #messageInput {
-    flex-grow: 1;
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-    outline: none;
-  }
-  #sendBtn {
-    background: #ff9900;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    color: #111;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  #sendBtn:disabled {
-    background: #555;
-    cursor: not-allowed;
-  }
-  #usernameInput {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-    outline: none;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tooshan Chat</title>
+  <style>
+    body {
+      font-family: Vazirmatn, sans-serif;
+      background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
+      color: #f0c040;
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #usernameForm, #chatContainer {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff9900;
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #chatContainer {
+      display: none;
+      height: 400px;
+      flex-direction: column;
+    }
+    #messages {
+      flex: 1;
+      background: #2b0a0a;
+      padding: 10px;
+      border-radius: 8px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      color: #f0c040;
+      font-size: 14px;
+    }
+    input, button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+    input {
+      flex: 1;
+    }
+    button {
+      background: #ff9900;
+      color: #111;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #ffcc33;
+    }
+    #inputContainer {
+      display: flex;
+      gap: 10px;
+    }
+  </style>
 </head>
 <body>
+  <form id="usernameForm">
+    <input type="text" id="usernameInput" placeholder="نام کاربری را وارد کنید" autocomplete="off" />
+    <button type="submit">ورود</button>
+  </form>
+
   <div id="chatContainer">
-    <h2>توشان چت آنلاین</h2>
-    <input type="text" id="usernameInput" placeholder="نام کاربری خود را وارد کنید..." autocomplete="off" />
     <div id="messages"></div>
-    <div id="inputArea">
-      <input type="text" id="messageInput" placeholder="پیام خود را وارد کنید..." autocomplete="off" disabled />
+    <div id="inputContainer">
+      <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..." autocomplete="off" disabled />
       <button id="sendBtn" disabled>ارسال</button>
     </div>
   </div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+    const usernameForm = document.getElementById('usernameForm');
+    const usernameInput = document.getElementById('usernameInput');
+    const chatContainer = document.getElementById('chatContainer');
+    const messagesDiv = document.getElementById('messages');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
 
-<script>
-  // تنظیمات Firebase خودت رو اینجا قرار بده
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    databaseURL: "YOUR_DATABASE_URL",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
+    let username = '';
 
-  // مقداردهی اولیه Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-
-  const messagesDiv = document.getElementById('messages');
-  const input = document.getElementById('messageInput');
-  const sendBtn = document.getElementById('sendBtn');
-  const usernameInput = document.getElementById('usernameInput');
-
-  let username = null;
-
-  // فعال‌سازی ورودی پیام فقط پس از وارد کردن نام کاربری
-  usernameInput.addEventListener('input', () => {
-    username = usernameInput.value.trim();
-    input.disabled = !username;
-    sendBtn.disabled = !username || input.value.trim() === '';
-  });
-
-  input.addEventListener('input', () => {
-    sendBtn.disabled = input.value.trim() === '' || !username;
-  });
-
-  sendBtn.addEventListener('click', () => {
-    const msg = input.value.trim();
-    if (!msg || !username) return;
-
-    // ذخیره پیام در Firebase
-    db.ref('messages').push({
-      username: username,
-      message: msg,
-      timestamp: Date.now()
+    usernameForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const enteredUsername = usernameInput.value.trim();
+      if (!enteredUsername) {
+        alert('لطفا نام کاربری را وارد کنید.');
+        return;
+      }
+      username = enteredUsername;
+      usernameForm.style.display = 'none';
+      chatContainer.style.display = 'flex';
+      messageInput.disabled = false;
+      sendBtn.disabled = false;
+      messageInput.focus(); // اینجا فوکوس میدیم روی input پیام
     });
 
-    input.value = '';
-    sendBtn.disabled = true;
-  });
+    function addMessage(text, fromSelf = false) {
+      const msg = document.createElement('div');
+      msg.textContent = text;
+      msg.style.marginBottom = '8px';
+      msg.style.padding = '6px 10px';
+      msg.style.borderRadius = '8px';
+      msg.style.maxWidth = '80%';
+      msg.style.wordWrap = 'break-word';
+      if (fromSelf) {
+        msg.style.backgroundColor = '#ff9900';
+        msg.style.color = '#111';
+        msg.style.marginLeft = 'auto';
+        msg.style.textAlign = 'right';
+      } else {
+        msg.style.backgroundColor = '#333';
+        msg.style.color = '#f0c040';
+        msg.style.marginRight = 'auto';
+        msg.style.textAlign = 'left';
+      }
+      messagesDiv.appendChild(msg);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
 
-  // دریافت پیام‌ها از Firebase و نمایش
-  db.ref('messages').limitToLast(50).on('child_added', snapshot => {
-    const data = snapshot.val();
-    if (!data) return;
+    sendBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
 
-    const div = document.createElement('div');
-    const time = new Date(data.timestamp).toLocaleTimeString('fa-IR');
-    div.textContent = `[${time}] ${data.username}: ${data.message}`;
-    div.style.padding = '5px 0';
-    messagesDiv.appendChild(div);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  });
-</script>
+    function sendMessage() {
+      const text = messageInput.value.trim();
+      if (!text) return;
+      addMessage(`${username}: ${text}`, true);
+      messageInput.value = '';
+      messageInput.focus();
+
+      // اینجا میتونی کد ارسال پیام به سرور یا Firebase بذاری
+    }
+  </script>
 </body>
 </html>
