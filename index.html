@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>توشان‌ورس | Tooshanverse</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Vazirmatn', sans-serif;
@@ -15,24 +15,20 @@
       padding: 0;
       direction: rtl;
     }
-
     header, footer {
       text-align: center;
       background-color: #1a1a1a;
       padding: 30px 20px;
       position: relative;
     }
-
     h2 {
       color: #ff9900;
     }
-
     section {
       padding: 40px 20px;
       max-width: 1000px;
       margin: auto;
     }
-
     .menu-btn {
       position: absolute;
       top: 20px;
@@ -45,13 +41,11 @@
       cursor: pointer;
       z-index: 1000;
     }
-
     .menu-btn div {
       height: 4px;
       background-color: #f0c040;
       border-radius: 2px;
     }
-
     .menu {
       display: none;
       position: absolute;
@@ -63,18 +57,15 @@
       box-shadow: 0 0 10px #ff9900;
       z-index: 999;
     }
-
     .menu a {
       display: block;
       padding: 8px 0;
       color: #f0c040;
       text-decoration: none;
     }
-
     .menu a:hover {
       color: #fff;
     }
-
     .popup {
       display: none;
       position: fixed;
@@ -93,13 +84,11 @@
       opacity: 0;
       transition: all 0.3s ease;
     }
-
     .popup.show {
       display: block;
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
     }
-
     .popup button {
       background-color: #ff9900;
       border: none;
@@ -109,7 +98,6 @@
       color: #111;
       margin-top: 10px;
     }
-
     .category-cards {
       display: flex;
       gap: 20px;
@@ -117,7 +105,6 @@
       flex-wrap: wrap;
       margin-top: 30px;
     }
-
     .category-card {
       background-color: #1f1f1f;
       padding: 20px 30px;
@@ -127,48 +114,47 @@
       color: #f0c040;
       font-size: 18px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
     }
-
     .category-card:hover {
       transform: scale(1.05);
       box-shadow: 0 0 15px #ff9900aa;
     }
-
-    /* استایل کارت‌های داخل پاپ‌آپ قهرمان‌ها */
-    .hero-grid {
+    /* لیست داخل پاپ‌آپ قهرمان‌ها */
+    #popup-heroes ul.character-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0 0;
       display: flex;
-      gap: 15px;
       flex-wrap: wrap;
+      gap: 10px;
       justify-content: center;
-      margin: 20px 0;
     }
-
-    .hero-item {
-      background-color: #2a2a2a;
-      padding: 15px 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #ff990055;
-      color: #f0c040;
+    #popup-heroes ul.character-list li {
+      background-color: #2b2b2b;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #ff990033;
       cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      font-size: 18px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      min-width: 100px;
+      text-align: center;
       user-select: none;
     }
-
-    .hero-item:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #ff9900aa;
+    #popup-heroes ul.character-list li:hover {
+      background-color: #ff9900;
+      color: #111;
+      box-shadow: 0 0 12px #ff9900cc;
     }
-
     @media (max-width: 600px) {
       .category-card {
         flex: 1 1 100%;
         font-size: 16px;
         text-align: center;
       }
-      .hero-item {
-        flex: 1 1 100%;
-        text-align: center;
+      #popup-heroes ul.character-list li {
+        min-width: 80px;
+        font-size: 14px;
       }
     }
   </style>
@@ -181,7 +167,7 @@
       <div></div><div></div><div></div>
     </div>
     <nav class="menu" id="menu">
-      <input type="text" id="searchInput" placeholder="جستجو..." onkeyup="searchMenu()" style="width: 100%; padding: 5px; margin-bottom: 10px; border-radius: 5px; border: none;">
+      <input type="text" id="searchInput" placeholder="جستجو..." onkeyup="searchMenu()" style="width: 100%; padding: 5px; margin-bottom: 10px; border-radius: 5px; border: none;" />
       <a href="#">خانه</a>
       <a href="#">عکس‌ها</a>
       <a href="#">ساخته‌های هوش مصنوعی</a>
@@ -191,6 +177,7 @@
 
   <section id="characters">
     <h2>شخصیت‌ها</h2>
+    <input type="text" id="searchCharacters" placeholder="جستجوی قهرمان‌ها..." onkeyup="searchCharacters()" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: none; font-size: 18px;" />
     <div class="category-cards">
       <div class="category-card" onclick="openPopup('heroes')">🛡️ قهرمان‌ها</div>
       <div class="category-card" onclick="openPopup('villains')">😈 ویلن‌ها</div>
@@ -198,14 +185,14 @@
     </div>
   </section>
 
-  <!-- پاپ‌آپ قهرمان‌ها با کارت‌ها -->
+  <!-- پاپ‌آپ قهرمان‌ها -->
   <div id="popup-heroes" class="popup">
     <h3>🛡️ قهرمان‌ها</h3>
-    <div class="hero-grid">
-      <div class="hero-item" onclick="openCharacter('taskin')">🌀 تسکین</div>
-      <div class="hero-item" onclick="openCharacter('electropulse')">⚡ الکتروپالس</div>
-      <div class="hero-item" onclick="openCharacter('gordafarid')">🔥 گردآفرید</div>
-    </div>
+    <ul class="character-list">
+      <li onclick="openCharacter('taskin')">🌀 تسکین</li>
+      <li onclick="openCharacter('electropulse')">⚡ الکتروپالس</li>
+      <li onclick="openCharacter('gardaafrid')">🔥 گردآفرید</li>
+    </ul>
     <button onclick="closePopup()">بستن</button>
   </div>
 
@@ -216,38 +203,42 @@
     <button onclick="closePopup()">بستن</button>
   </div>
 
-  <!-- پاپ‌آپ شخصیت‌های خنثی -->
+  <!-- پاپ‌آپ خنثی‌ها -->
   <div id="popup-neutrals" class="popup">
     <h3>⚖️ شخصیت‌های خنثی</h3>
     <p>در آینده اضافه می‌شود...</p>
     <button onclick="closePopup()">بستن</button>
   </div>
 
-    <!-- پاپ‌آپ‌های اختصاصی قهرمان‌ها -->
-  <div id="character-taskin" class="popup">
+  <!-- پاپ‌آپ بیوگرافی قهرمان‌ها -->
+  <div id="popup-taskin" class="popup">
     <h3>🌀 تسکین</h3>
     <p>
-      نام: آرام نورگان (لقب: تسکین)<br>
-      سن: 16 سال<br>
-      محل تولد: دهکده عشایری<br>
-      خانواده: پدر چوپان، مادر خانه دار<br><br>
-      توانایی:داشتن ابر نورون هایی برای خاموش کردن گیرنده های درد دیگران<br>
-      شخصیت: مهربان، همدل، آرام<br><br>
+      نام: آرام نورگان (لقب: تسکین)<br />
+      سن: 16 سال<br />
+      محل تولد: دهکده عشایری<br />
+      خانواده: پدر چوپان، مادر قابله<br /><br />
+      توانایی: خاموش کردن درد دیگران<br />
+      شخصیت: مهربان، همدل، آرام<br /><br />
       پیش‌زمینه: تولد در شب طوفان و انفجار آسمانی؛ قدرتش از همان لحظه شکل گرفت.
     </p>
-    <button onclick="closePopup()">بستن</button>
+    <button onclick="backToHeroes()">بازگشت به قهرمان‌ها</button>
   </div>
 
-  <div id="character-electropulse" class="popup">
+  <div id="popup-electropulse" class="popup">
     <h3>⚡ الکتروپالس</h3>
-    <p>در آینده اضافه می‌شود...</p>
-    <button onclick="closePopup()">بستن</button>
+    <p>
+      اطلاعات درباره الکتروپالس هنوز آماده نشده است.
+    </p>
+    <button onclick="backToHeroes()">بازگشت به قهرمان‌ها</button>
   </div>
 
-  <div id="character-gordafarid" class="popup">
+  <div id="popup-gardaafrid" class="popup">
     <h3>🔥 گردآفرید</h3>
-    <p>در آینده اضافه می‌شود...</p>
-    <button onclick="closePopup()">بستن</button>
+    <p>
+      اطلاعات درباره گردآفرید هنوز آماده نشده است.
+    </p>
+    <button onclick="backToHeroes()">بازگشت به قهرمان‌ها</button>
   </div>
 
   <section id="comics">
@@ -272,6 +263,7 @@
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     });
 
+    // جستجوی منو
     function searchMenu() {
       const input = document.getElementById('searchInput').value.toLowerCase();
       const links = document.querySelectorAll('#menu a');
@@ -280,21 +272,43 @@
       });
     }
 
+    // جستجوی قهرمان‌ها در پاپ‌آپ قهرمان‌ها
+    function searchCharacters() {
+      const input = document.getElementById('searchCharacters').value.toLowerCase();
+      const heroListItems = document.querySelectorAll('#popup-heroes ul.character-list li');
+      heroListItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(input)) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // باز کردن پاپ‌آپ دسته‌ها
     function openPopup(type) {
       closePopup();
       const popup = document.getElementById('popup-' + type);
       if (popup) popup.classList.add('show');
     }
 
+    // بستن همه پاپ‌آپ‌ها
     function closePopup() {
       document.querySelectorAll('.popup').forEach(p => p.classList.remove('show'));
     }
 
-    // باز کردن پاپ‌آپ اختصاصی قهرمان‌ها
-    function openCharacter(id) {
+    // باز کردن بیوگرافی قهرمان‌ها
+    function openCharacter(name) {
       closePopup();
-      const characterPopup = document.getElementById('character-' + id);
-      if (characterPopup) characterPopup.classList.add('show');
+      const popup = document.getElementById('popup-' + name);
+      if (popup) popup.classList.add('show');
+    }
+
+    // بازگشت به لیست قهرمان‌ها
+    function backToHeroes() {
+      closePopup();
+      openPopup('heroes');
     }
   </script>
 </body>
