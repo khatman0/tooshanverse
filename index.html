@@ -133,21 +133,38 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
-    .character-category {
-  background-color: #1f1f1f;
+#characters {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.character-section {
+  margin: 40px 0;
+  background-color: #1a1a1a;
   padding: 20px;
-  border-radius: 12px;
-  margin-top: 20px;
-  box-shadow: 0 0 10px #ff990033;
+  border-radius: 15px;
+  box-shadow: 0 0 10px #ff990055;
 }
-.character-category h3 {
+
+.character-section h3 {
   color: #f0c040;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
-.villains {
+
+.character-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  justify-content: center;
+  gap: 15px;
+}
+
+.character-card {
+  background-color: #2a2a2a;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px #ff990044;
+  font-size: 16px;
+  color: #fff;
 }
   </style>
 </head>
@@ -172,23 +189,35 @@
   </nav>
   </header>
 
- <section id="characters">
+<section id="characters">
   <h2>شخصیت‌ها</h2>
-  <div class="character-category">
-    <h3>قهرمان‌ها</h3>
-    <div class="heroes">
-      <!-- کارت‌های قهرمان‌ها اینجا می‌مونن -->
+
+  <div class="character-section">
+    <h3>🛡️ قهرمان‌ها</h3>
+    <div class="character-list">
+      <div class="character-card">تسکین</div>
+      <div class="character-card">الکتروپالس</div>
+      <div class="character-card">گردآفرید</div>
     </div>
   </div>
 
-  <div class="character-category">
-    <h3>ویلن‌ها</h3>
-    <div class="villains">
-      <!-- کارت‌های ویلن‌ها رو اینجا بعداً می‌ذاری -->
+  <div class="character-section">
+    <h3>🧨 ویلن‌ها</h3>
+    <div class="character-list">
+      <div class="character-card">بلاتار</div>
+      <div class="character-card">سایه‌زار</div>
+      <div class="character-card">هیدرا</div>
+    </div>
+  </div>
+
+  <div class="character-section">
+    <h3>🌀 شخصیت‌های خنثی</h3>
+    <div class="character-list">
+      <div class="character-card">زالین</div>
+      <div class="character-card">مه‌پری</div>
     </div>
   </div>
 </section>
-
 
   <section id="comics">
     <h2>کمیک‌ها</h2>
