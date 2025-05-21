@@ -103,6 +103,14 @@
       color: #111;
       align-self: flex-end;
     }
+    /* استایل پیام مدیر */
+    #messages p.admin {
+      background-color: #ff4444 !important;
+      color: #fff !important;
+      font-weight: bold;
+      border-radius: 12px;
+      max-width: 80%;
+    }
     #usernameForm, #chatForm {
       display: flex;
       gap: 10px;
@@ -206,6 +214,9 @@
 
     let currentUsername = null;
 
+    // ایمیل مدیر خود را اینجا وارد کنید:
+    const adminEmail = "your-admin-wolfwith01@gmail.com";  // جایگزین با ایمیل واقعی شما
+
     usernameForm.addEventListener('submit', e => {
       e.preventDefault();
       const username = usernameInput.value.trim();
@@ -231,6 +242,9 @@
       p.textContent = username + ": " + text;
       if (username === currentUsername) {
         p.classList.add('you');
+      }
+      if (username === adminEmail) {
+        p.classList.add('admin');  // اضافه کردن کلاس پیام مدیر
       }
       messagesDiv.appendChild(p);
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
