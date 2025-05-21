@@ -3,148 +3,266 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tooshan Chat</title>
+  <title>توشان‌چت | Tooshan Chat</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: Vazirmatn, sans-serif;
+      font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
       color: #f0c040;
       margin: 0;
       padding: 0;
       direction: rtl;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
     }
-    #usernameForm, #chatContainer {
+    header, footer {
+      text-align: center;
+      background-color: #1a1a1a;
+      padding: 20px 20px;
+      position: relative;
+      box-shadow: 0 2px 5px #ff990044;
+    }
+    h1 {
+      color: #ff9900;
+      margin: 0;
+      padding: 10px 0;
+    }
+    /* منوی همبرگری */
+    .menu-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .menu-btn div {
+      height: 4px;
+      background-color: #f0c040;
+      border-radius: 2px;
+    }
+    .menu {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 20px;
       background: #1a1a1a;
-      padding: 20px;
+      padding: 10px 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px #ff9900;
-      width: 300px;
+      z-index: 999;
+      min-width: 150px;
+      text-align: right;
+    }
+    .menu a {
+      display: block;
+      padding: 8px 0;
+      color: #f0c040;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .menu a:hover {
+      color: #fff;
+    }
+    main {
+      max-width: 700px;
+      margin: 20px auto 40px auto;
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 20px #ff9900aa;
+      height: 70vh;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-    }
-    #chatContainer {
-      display: none;
-      height: 400px;
-      flex-direction: column;
+      justify-content: space-between;
     }
     #messages {
-      flex: 1;
-      background: #2b0a0a;
-      padding: 10px;
-      border-radius: 8px;
+      flex-grow: 1;
       overflow-y: auto;
-      margin-bottom: 10px;
-      color: #f0c040;
-      font-size: 14px;
-    }
-    input, button {
+      border: 1px solid #ff990033;
       padding: 10px;
       border-radius: 8px;
-      border: none;
-      font-size: 14px;
+      margin-bottom: 10px;
+      background: #2b0a0a;
+      color: #f0c040;
+      font-size: 16px;
     }
-    input {
-      flex: 1;
+    #messages p {
+      margin: 5px 0;
+      padding: 6px 10px;
+      background: #3e0f0f;
+      border-radius: 10px;
+      max-width: 80%;
+      word-wrap: break-word;
     }
-    button {
+    #messages p.you {
       background: #ff9900;
       color: #111;
-      cursor: pointer;
-      transition: background 0.3s;
+      align-self: flex-end;
     }
-    button:hover {
-      background: #ffcc33;
-    }
-    #inputContainer {
+    #usernameForm, #chatForm {
       display: flex;
       gap: 10px;
+      margin-bottom: 10px;
+      justify-content: center;
+      direction: rtl;
+    }
+    #usernameInput, #messageInput {
+      flex-grow: 1;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+    }
+    #usernameSubmit, #sendBtn {
+      background-color: #ff9900;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 25px;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #usernameSubmit:hover, #sendBtn:hover {
+      background-color: #e68a00;
+    }
+    footer {
+      color: #f0c040;
+      font-size: 14px;
+      padding: 10px;
+      background-color: #1a1a1a;
+      text-align: center;
+      box-shadow: 0 -2px 5px #ff990044;
     }
   </style>
 </head>
 <body>
-  <form id="usernameForm">
-    <input type="text" id="usernameInput" placeholder="نام کاربری را وارد کنید" autocomplete="off" />
-    <button type="submit">ورود</button>
-  </form>
-
-  <div id="chatContainer">
-    <div id="messages"></div>
-    <div id="inputContainer">
-      <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..." autocomplete="off" disabled />
-      <button id="sendBtn" disabled>ارسال</button>
+  <header>
+    <h1>توشان‌چت</h1>
+    <div class="menu-btn" id="menu-btn">
+      <div></div><div></div><div></div>
     </div>
-  </div>
+    <nav class="menu" id="menu">
+      <a id="homeBtn" href="../index.html">خانه</a>
+      <!-- می‌تونید لینک‌های بیشتری اضافه کنید -->
+    </nav>
+  </header>
 
+  <main>
+    <div id="usernameArea">
+      <form id="usernameForm">
+        <input type="text" id="usernameInput" placeholder="نام کاربری خود را وارد کنید" autocomplete="off" required />
+        <button type="submit" id="usernameSubmit">شروع چت</button>
+      </form>
+    </div>
+
+    <div id="chatArea" style="display:none; flex-direction: column; height: 100%;">
+      <div id="messages"></div>
+      <form id="chatForm">
+        <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..." autocomplete="off" required />
+        <button type="submit" id="sendBtn">ارسال</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <script>
-    const usernameForm = document.getElementById('usernameForm');
-    const usernameInput = document.getElementById('usernameInput');
-    const chatContainer = document.getElementById('chatContainer');
-    const messagesDiv = document.getElementById('messages');
-    const messageInput = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
-
-    let username = '';
-
-    usernameForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const enteredUsername = usernameInput.value.trim();
-      if (!enteredUsername) {
-        alert('لطفا نام کاربری را وارد کنید.');
-        return;
-      }
-      username = enteredUsername;
-      usernameForm.style.display = 'none';
-      chatContainer.style.display = 'flex';
-      messageInput.disabled = false;
-      sendBtn.disabled = false;
-      messageInput.focus(); // اینجا فوکوس میدیم روی input پیام
+    // منوی همبرگری
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+    menuBtn.addEventListener('click', () => {
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    });
+    // دکمه خانه میره صفحه اصلی
+    const homeBtn = document.getElementById('homeBtn');
+    homeBtn.addEventListener('click', () => {
+      // اگر میخوای از جاوااسکریپت بخوای به صفحه اصلی بری، فقط href رو دادی کافیه
+      // اینجا کد اضافی لازم نیست چون href داره
     });
 
-    function addMessage(text, fromSelf = false) {
-      const msg = document.createElement('div');
-      msg.textContent = text;
-      msg.style.marginBottom = '8px';
-      msg.style.padding = '6px 10px';
-      msg.style.borderRadius = '8px';
-      msg.style.maxWidth = '80%';
-      msg.style.wordWrap = 'break-word';
-      if (fromSelf) {
-        msg.style.backgroundColor = '#ff9900';
-        msg.style.color = '#111';
-        msg.style.marginLeft = 'auto';
-        msg.style.textAlign = 'right';
-      } else {
-        msg.style.backgroundColor = '#333';
-        msg.style.color = '#f0c040';
-        msg.style.marginRight = 'auto';
-        msg.style.textAlign = 'left';
+    // تنظیمات Firebase (کد خودتو اینجا جایگزین کن)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      databaseURL: "YOUR_DATABASE_URL",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // انتخاب عناصر
+    const usernameForm = document.getElementById('usernameForm');
+    const usernameInput = document.getElementById('usernameInput');
+    const chatArea = document.getElementById('chatArea');
+    const messagesDiv = document.getElementById('messages');
+    const chatForm = document.getElementById('chatForm');
+    const messageInput = document.getElementById('messageInput');
+
+    let currentUsername = null;
+
+    // شروع چت با یوزرنیم
+    usernameForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const username = usernameInput.value.trim();
+      if (username.length < 1) return alert("لطفا نام کاربری معتبر وارد کنید.");
+      currentUsername = username;
+      usernameForm.style.display = 'none';
+      chatArea.style.display = 'flex';
+      messageInput.focus();
+      loadMessages();
+    });
+
+    // نمایش پیام‌ها
+    function loadMessages() {
+      db.ref('tooshanchat/messages').off();
+      messagesDiv.innerHTML = '';
+      db.ref('tooshanchat/messages').on('child_added', snapshot => {
+        const msg = snapshot.val();
+        displayMessage(msg.username, msg.text);
+      });
+    }
+
+    // نمایش یک پیام در صفحه
+    function displayMessage(username, text) {
+      const p = document.createElement('p');
+      p.textContent = username + ": " + text;
+      if (username === currentUsername) {
+        p.classList.add('you');
       }
-      messagesDiv.appendChild(msg);
+      messagesDiv.appendChild(p);
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    sendBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-
-    function sendMessage() {
+    // ارسال پیام جدید
+    chatForm.addEventListener('submit', e => {
+      e.preventDefault();
       const text = messageInput.value.trim();
       if (!text) return;
-      addMessage(`${username}: ${text}`, true);
+      if (!currentUsername) {
+        alert("لطفا ابتدا نام کاربری خود را وارد کنید.");
+        return;
+      }
+      // ذخیره پیام در دیتابیس
+      db.ref('tooshanchat/messages').push({
+        username: currentUsername,
+        text: text
+      });
       messageInput.value = '';
-      messageInput.focus();
-
-      // اینجا میتونی کد ارسال پیام به سرور یا Firebase بذاری
-    }
+    });
   </script>
 </body>
 </html>
