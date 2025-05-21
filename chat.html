@@ -74,10 +74,10 @@
       border-radius: 12px;
       padding: 20px;
       box-shadow: 0 0 20px #ff9900aa;
-      min-height: 70vh;
+      height: 70vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: space-between;
     }
     #messages {
       flex-grow: 1;
@@ -103,24 +103,22 @@
       color: #111;
       align-self: flex-end;
     }
-    form {
+    #usernameForm, #chatForm {
       display: flex;
       gap: 10px;
       margin-bottom: 10px;
       justify-content: center;
       direction: rtl;
-      flex-wrap: wrap;
     }
-    input[type="email"], input[type="password"], input[type="text"] {
+    #usernameInput, #messageInput {
       flex-grow: 1;
       padding: 10px 15px;
       font-size: 16px;
       border-radius: 12px;
       border: none;
       outline: none;
-      min-width: 200px;
     }
-    button {
+    #usernameSubmit, #sendBtn {
       background-color: #ff9900;
       border: none;
       border-radius: 12px;
@@ -130,22 +128,8 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    button:hover {
+    #usernameSubmit:hover, #sendBtn:hover {
       background-color: #e68a00;
-    }
-    #authArea > div {
-      margin-bottom: 20px;
-    }
-    #userInfo {
-      margin-bottom: 10px;
-      font-weight: bold;
-      color: #ffcc33;
-      text-align: center;
-    }
-    #verifyMsg {
-      color: #ffcc33;
-      text-align: center;
-      margin-bottom: 15px;
     }
     footer {
       color: #f0c040;
@@ -169,36 +153,18 @@
   </header>
 
   <main>
-    <div id="authArea">
-      <div id="userInfo" style="display:none;"></div>
-      <div id="verifyMsg" style="display:none;">ایمیل شما هنوز تایید نشده. لطفا ایمیل خود را بررسی و تایید کنید.</div>
-
-      <div id="registerFormDiv">
-        <h3>ثبت نام</h3>
-        <form id="registerForm">
-          <input type="email" id="registerEmail" placeholder="ایمیل" autocomplete="off" required />
-          <input type="password" id="registerPass" placeholder="رمز عبور" autocomplete="off" required minlength="6" />
-          <button type="submit">ثبت نام</button>
-        </form>
-      </div>
-
-      <div id="loginFormDiv" style="margin-top:20px;">
-        <h3>ورود</h3>
-        <form id="loginForm">
-          <input type="email" id="loginEmail" placeholder="ایمیل" autocomplete="off" required />
-          <input type="password" id="loginPass" placeholder="رمز عبور" autocomplete="off" required />
-          <button type="submit">ورود</button>
-        </form>
-      </div>
-
-      <button id="logoutBtn" style="display:none; margin-top:10px;">خروج</button>
+    <div id="usernameArea">
+      <form id="usernameForm">
+        <input type="text" id="usernameInput" placeholder="نام کاربری خود را وارد کنید" autocomplete="off" required />
+        <button type="submit" id="usernameSubmit">شروع چت</button>
+      </form>
     </div>
 
     <div id="chatArea" style="display:none; flex-direction: column; height: 100%;">
       <div id="messages"></div>
       <form id="chatForm">
         <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..." autocomplete="off" required />
-        <button type="submit">ارسال</button>
+        <button type="submit" id="sendBtn">ارسال</button>
       </form>
     </div>
   </main>
@@ -207,11 +173,8 @@
     <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
   </footer>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
   <script>
     // منوی همبرگری
     const menuBtn = document.getElementById('menu-btn');
@@ -220,7 +183,7 @@
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     });
 
-    // تنظیمات Firebase شما
+    // تنظیمات واقعی Firebase شما
     const firebaseConfig = {
       apiKey: "AIzaSyBI9L7fSuounX5Dy4fJNbjNJQg3grRAafk",
       authDomain: "tooshanchat.firebaseapp.com",
@@ -232,122 +195,56 @@
       measurementId: "G-KWZMRPN48E"
     };
     firebase.initializeApp(firebaseConfig);
-
-    const auth = firebase.auth();
     const db = firebase.database();
 
-    const registerForm = document.getElementById('registerForm');
-    const loginForm = document.getElementById('loginForm');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const userInfo = document.getElementById('userInfo');
-    const verifyMsg = document.getElementById('verifyMsg');
-    const authArea = document.getElementById('authArea');
+    const usernameForm = document.getElementById('usernameForm');
+    const usernameInput = document.getElementById('usernameInput');
     const chatArea = document.getElementById('chatArea');
     const messagesDiv = document.getElementById('messages');
     const chatForm = document.getElementById('chatForm');
     const messageInput = document.getElementById('messageInput');
 
-    // ثبت نام
-    registerForm.addEventListener('submit', e => {
+    let currentUsername = null;
+
+    usernameForm.addEventListener('submit', e => {
       e.preventDefault();
-      const email = document.getElementById('registerEmail').value.trim();
-      const pass = document.getElementById('registerPass').value.trim();
-      auth.createUserWithEmailAndPassword(email, pass)
-        .then(userCredential => {
-          const user = userCredential.user;
-          user.sendEmailVerification();
-          alert('ثبت نام موفق بود. لطفا ایمیل خود را تایید کنید.');
-          registerForm.reset();
-        })
-        .catch(error => {
-          alert('خطا: ' + error.message);
-        });
-    });
-
-    // ورود
-    loginForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
-      auth.signInWithEmailAndPassword(email, pass)
-        .then(userCredential => {
-          const user = userCredential.user;
-          if (!user.emailVerified) {
-            auth.signOut();
-            verifyMsg.style.display = 'block';
-            alert('ایمیل شما تایید نشده است. لطفا ابتدا ایمیل خود را تایید کنید.');
-          } else {
-            verifyMsg.style.display = 'none';
-            showChat(user.email);
-          }
-        })
-        .catch(error => {
-          alert('خطا: ' + error.message);
-        });
-    });
-
-    // خروج
-    logoutBtn.addEventListener('click', () => {
-      auth.signOut();
-    });
-
-    // نمایش چت و اطلاعات کاربر
-    function showChat(email) {
-      authArea.style.display = 'none';
+      const username = usernameInput.value.trim();
+      if (!username) return alert("لطفا نام کاربری وارد کنید.");
+      currentUsername = username;
+      document.getElementById('usernameArea').style.display = 'none';
       chatArea.style.display = 'flex';
-      userInfo.style.display = 'block';
-      userInfo.textContent = `شما وارد شدید با ایمیل: ${email}`;
-      logoutBtn.style.display = 'inline-block';
-      loadMessages(email);
-    }
+      messageInput.focus();
+      loadMessages();
+    });
 
-    // بارگذاری پیام‌ها
-    function loadMessages(currentUserEmail) {
-      messagesDiv.innerHTML = '';
+    function loadMessages() {
       db.ref('tooshanchat/messages').off();
+      messagesDiv.innerHTML = '';
       db.ref('tooshanchat/messages').on('child_added', snapshot => {
         const msg = snapshot.val();
-        displayMessage(msg.username, msg.text, currentUserEmail);
+        displayMessage(msg.username, msg.text);
       });
     }
 
-    // نمایش پیام‌ها با قالب‌بندی برای خود کاربر
-    function displayMessage(username, text, currentUserEmail) {
+    function displayMessage(username, text) {
       const p = document.createElement('p');
       p.textContent = username + ": " + text;
-      // اگر پیام مربوط به کاربر فعلی است
-      if (username === currentUserEmail) {
+      if (username === currentUsername) {
         p.classList.add('you');
       }
       messagesDiv.appendChild(p);
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // ارسال پیام
     chatForm.addEventListener('submit', e => {
       e.preventDefault();
       const text = messageInput.value.trim();
-      const user = auth.currentUser;
-      if (!text || !user) return;
+      if (!text || !currentUsername) return;
       db.ref('tooshanchat/messages').push({
-        username: user.email,
+        username: currentUsername,
         text: text
       });
       messageInput.value = '';
-    });
-
-    // بررسی وضعیت ورود کاربر هنگام بارگذاری صفحه
-    auth.onAuthStateChanged(user => {
-      if (user && user.emailVerified) {
-        verifyMsg.style.display = 'none';
-        showChat(user.email);
-      } else {
-        chatArea.style.display = 'none';
-        authArea.style.display = 'block';
-        userInfo.style.display = 'none';
-        logoutBtn.style.display = 'none';
-        verifyMsg.style.display = user && !user.emailVerified ? 'block' : 'none';
-      }
     });
   </script>
 </body>
