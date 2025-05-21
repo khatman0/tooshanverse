@@ -166,6 +166,46 @@
   font-size: 16px;
   color: #fff;
 }
+    .category-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.category-card {
+  background-color: #1f1f1f;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #ff990055;
+  cursor: pointer;
+  color: #f0c040;
+  font-size: 18px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #ff9900aa;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #222;
+  color: #f0c040;
+  padding: 25px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 20px #ff9900;
+  z-index: 9999;
+  text-align: center;
+}
   </style>
 </head>
 <body>
@@ -188,36 +228,37 @@
     <a href="#">گفتگو با من</a>
   </nav>
   </header>
-
 <section id="characters">
   <h2>شخصیت‌ها</h2>
-
-  <div class="character-section">
-    <h3>🛡️ قهرمان‌ها</h3>
-    <div class="character-list">
-      <div class="character-card">تسکین</div>
-      <div class="character-card">الکتروپالس</div>
-      <div class="character-card">گردآفرید</div>
-    </div>
-  </div>
-
-  <div class="character-section">
-    <h3>🧨 ویلن‌ها</h3>
-    <div class="character-list">
-      <div class="character-card">بلاتار</div>
-      <div class="character-card">سایه‌زار</div>
-      <div class="character-card">هیدرا</div>
-    </div>
-  </div>
-
-  <div class="character-section">
-    <h3>🌀 شخصیت‌های خنثی</h3>
-    <div class="character-list">
-      <div class="character-card">زالین</div>
-      <div class="character-card">مه‌پری</div>
-    </div>
+  <div class="category-cards">
+    <div class="category-card" onclick="openPopup('heroes')">🛡️ قهرمان‌ها</div>
+    <div class="category-card" onclick="openPopup('villains')">😈 ویلن‌ها</div>
+    <div class="category-card" onclick="openPopup('neutrals')">⚖️ خنثی‌ها</div>
   </div>
 </section>
+
+<!-- پاپ‌آپ‌ها -->
+<div id="popup-heroes" class="popup">
+  <h3>🛡️ قهرمان‌ها</h3>
+  <ul>
+    <li>🌀 تسکین</li>
+    <li>⚡ الکتروپالس</li>
+    <li>🔥 گردآفرید</li>
+  </ul>
+  <button onclick="closePopup()">بستن</button>
+</div>
+
+<div id="popup-villains" class="popup">
+  <h3>😈 ویلن‌ها</h3>
+  <p>در آینده اضافه می‌شود...</p>
+  <button onclick="closePopup()">بستن</button>
+</div>
+
+<div id="popup-neutrals" class="popup">
+  <h3>⚖️ شخصیت‌های خنثی</h3>
+  <p>در آینده اضافه می‌شود...</p>
+  <button onclick="closePopup()">بستن</button>
+</div>
 
   <section id="comics">
     <h2>کمیک‌ها</h2>
@@ -288,6 +329,17 @@ function searchMenu() {
     }
   }
 }
+</script>
+  <script>
+  function openPopup(type) {
+    closePopup(); // بستن قبلی‌ها
+    document.getElementById('popup-' + type).style.display = 'block';
+  }
+
+  function closePopup() {
+    const popups = document.querySelectorAll('.popup');
+    popups.forEach(p => p.style.display = 'none');
+  }
 </script>
 </body>
 </html>
