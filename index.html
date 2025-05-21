@@ -288,19 +288,6 @@
     <button onclick="closePopup()">بستن</button>
   </div>
 <script>
-  function openPopup() {
-    const popup = document.getElementById('popup');
-    popup.classList.add('show');
-  }
-
-  function closePopup() {
-    const popup = document.getElementById('popup');
-    popup.classList.remove('show');
-    setTimeout(() => {
-      popup.style.display = 'none';
-    }, 300); // طول مدت transition مطابق CSS
-  }
-
   // کد منوی همبرگری و بقیه جاوااسکریپت‌ها هم همینجا باشه
   const menuBtn = document.getElementById('menu-btn');
   const menu = document.getElementById('menu');
