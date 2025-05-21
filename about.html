@@ -62,12 +62,61 @@
       color: #f0c040;
       box-shadow: 0 -2px 5px #ff990044;
     }
+    .menu-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 30px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1000;
+}
+.menu-btn div {
+  height: 4px;
+  background-color: #f0c040;
+  border-radius: 2px;
+}
+.menu {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: #1a1a1a;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ff9900;
+  z-index: 999;
+  min-width: 150px;
+  text-align: right;
+}
+.menu a {
+  display: block;
+  padding: 8px 0;
+  color: #f0c040;
+  text-decoration: none;
+  cursor: pointer;
+}
+.menu a:hover {
+  color: #fff;
+}
   </style>
 </head>
 <body>
 
 <header>
   <h1>درباره توشان</h1>
+  <div class="menu-btn" id="menu-btn">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+<nav class="menu" id="menu">
+  <a href="https://khatman0.github.io/tooshanverse/">خانه</a>
+  <a href="about.html">درباره ما</a>
+</nav>
 </header>
 
 <main>
@@ -102,6 +151,13 @@
 <footer>
   تمامی حقوق متعلق به توشان استودیو © 2025
 </footer>
+<script>
+  const menuBtn = document.getElementById('menu-btn');
+  const menu = document.getElementById('menu');
+  menuBtn.addEventListener('click', () => {
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  });
+</script>
 
 </body>
 </html>
