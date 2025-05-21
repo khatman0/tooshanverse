@@ -27,7 +27,6 @@
       margin: 0;
       padding: 10px 0;
     }
-    /* منوی همبرگری */
     .menu-btn {
       position: absolute;
       top: 20px;
@@ -149,8 +148,7 @@
       <div></div><div></div><div></div>
     </div>
     <nav class="menu" id="menu">
-      <a id="homeBtn" href="../index.html">خانه</a>
-      <!-- می‌تونید لینک‌های بیشتری اضافه کنید -->
+      <a id="homeBtn" href="https://khatman0.github.io/tooshanverse/">خانه</a>
     </nav>
   </header>
 
@@ -184,27 +182,21 @@
     menuBtn.addEventListener('click', () => {
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     });
-    // دکمه خانه میره صفحه اصلی
-    const homeBtn = document.getElementById('homeBtn');
-    homeBtn.addEventListener('click', () => {
-      // اگر میخوای از جاوااسکریپت بخوای به صفحه اصلی بری، فقط href رو دادی کافیه
-      // اینجا کد اضافی لازم نیست چون href داره
-    });
 
-    // تنظیمات Firebase (کد خودتو اینجا جایگزین کن)
+    // تنظیمات واقعی Firebase شما
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      databaseURL: "YOUR_DATABASE_URL",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyBI9L7fSuounX5Dy4fJNbjNJQg3grRAafk",
+      authDomain: "tooshanchat.firebaseapp.com",
+      databaseURL: "https://tooshanchat-default-rtdb.firebaseio.com",
+      projectId: "tooshanchat",
+      storageBucket: "tooshanchat.firebasestorage.app",
+      messagingSenderId: "444788859489",
+      appId: "1:444788859489:web:ecc4619d8ce56136b00020",
+      measurementId: "G-KWZMRPN48E"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // انتخاب عناصر
     const usernameForm = document.getElementById('usernameForm');
     const usernameInput = document.getElementById('usernameInput');
     const chatArea = document.getElementById('chatArea');
@@ -214,19 +206,17 @@
 
     let currentUsername = null;
 
-    // شروع چت با یوزرنیم
     usernameForm.addEventListener('submit', e => {
       e.preventDefault();
       const username = usernameInput.value.trim();
-      if (username.length < 1) return alert("لطفا نام کاربری معتبر وارد کنید.");
+      if (!username) return alert("لطفا نام کاربری وارد کنید.");
       currentUsername = username;
-      usernameForm.style.display = 'none';
+      document.getElementById('usernameArea').style.display = 'none';
       chatArea.style.display = 'flex';
       messageInput.focus();
       loadMessages();
     });
 
-    // نمایش پیام‌ها
     function loadMessages() {
       db.ref('tooshanchat/messages').off();
       messagesDiv.innerHTML = '';
@@ -236,7 +226,6 @@
       });
     }
 
-    // نمایش یک پیام در صفحه
     function displayMessage(username, text) {
       const p = document.createElement('p');
       p.textContent = username + ": " + text;
@@ -247,16 +236,10 @@
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // ارسال پیام جدید
     chatForm.addEventListener('submit', e => {
       e.preventDefault();
       const text = messageInput.value.trim();
-      if (!text) return;
-      if (!currentUsername) {
-        alert("لطفا ابتدا نام کاربری خود را وارد کنید.");
-        return;
-      }
-      // ذخیره پیام در دیتابیس
+      if (!text || !currentUsername) return;
       db.ref('tooshanchat/messages').push({
         username: currentUsername,
         text: text
