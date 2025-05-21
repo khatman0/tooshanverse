@@ -74,6 +74,16 @@
   box-shadow: 0 0 10px #ff9900;
   z-index: 999;
 }
+    .menu {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.menu.show {
+  display: block;
+  opacity: 1;
+}
 
 .menu a {
   display: block;
@@ -191,17 +201,12 @@
     <button onclick="closePopup()">بستن</button>
   </div>
 <script>
-  // کد منوی همبرگری و بقیه جاوااسکریپت‌ها هم همینجا باشه
-  const menuBtn = document.getElementById('menu-btn');
-  const menu = document.getElementById('menu');
+ const menuBtn = document.getElementById('menu-btn');
+const menu = document.getElementById('menu');
 
-  menuBtn.addEventListener('click', () => {
-    if (menu.style.display === 'block') {
-      menu.style.display = 'none';
-    } else {
-      menu.style.display = 'block';
-    }
-  });
+menuBtn.addEventListener('click', () => {
+  menu.classList.toggle('show'); // تغییر وضعیت نمایش منو
+});
 </script>
   <script>
 function searchMenu() {
