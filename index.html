@@ -134,10 +134,40 @@
       box-shadow: 0 0 15px #ff9900aa;
     }
 
+    /* استایل کارت‌های داخل پاپ‌آپ قهرمان‌ها */
+    .hero-grid {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .hero-item {
+      background-color: #2a2a2a;
+      padding: 15px 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #ff990055;
+      color: #f0c040;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      font-size: 18px;
+      user-select: none;
+    }
+
+    .hero-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ff9900aa;
+    }
+
     @media (max-width: 600px) {
       .category-card {
         flex: 1 1 100%;
         font-size: 16px;
+        text-align: center;
+      }
+      .hero-item {
+        flex: 1 1 100%;
         text-align: center;
       }
     }
@@ -168,39 +198,55 @@
     </div>
   </section>
 
+  <!-- پاپ‌آپ قهرمان‌ها با کارت‌ها -->
   <div id="popup-heroes" class="popup">
     <h3>🛡️ قهرمان‌ها</h3>
-    <ul>
-      <li onclick="openPopup('taskin')">🌀 تسکین</li>
-      <li>⚡ الکتروپالس</li>
-      <li>🔥 گردآفرید</li>
-    </ul>
+    <div class="hero-grid">
+      <div class="hero-item" onclick="openCharacter('taskin')">🌀 تسکین</div>
+      <div class="hero-item" onclick="openCharacter('electropulse')">⚡ الکتروپالس</div>
+      <div class="hero-item" onclick="openCharacter('gordafarid')">🔥 گردآفرید</div>
+    </div>
     <button onclick="closePopup()">بستن</button>
   </div>
 
+  <!-- پاپ‌آپ ویلن‌ها -->
   <div id="popup-villains" class="popup">
     <h3>😈 ویلن‌ها</h3>
     <p>در آینده اضافه می‌شود...</p>
     <button onclick="closePopup()">بستن</button>
   </div>
 
+  <!-- پاپ‌آپ شخصیت‌های خنثی -->
   <div id="popup-neutrals" class="popup">
     <h3>⚖️ شخصیت‌های خنثی</h3>
     <p>در آینده اضافه می‌شود...</p>
     <button onclick="closePopup()">بستن</button>
   </div>
 
-  <div id="popup-taskin" class="popup">
+    <!-- پاپ‌آپ‌های اختصاصی قهرمان‌ها -->
+  <div id="character-taskin" class="popup">
     <h3>🌀 تسکین</h3>
     <p>
       نام: آرام نورگان (لقب: تسکین)<br>
       سن: 16 سال<br>
       محل تولد: دهکده عشایری<br>
-      خانواده: پدر چوپان، مادر قابله<br><br>
-      توانایی: خاموش کردن درد دیگران<br>
+      خانواده: پدر چوپان، مادر خانه دار<br><br>
+      توانایی:داشتن ابر نورون هایی برای خاموش کردن گیرنده های درد دیگران<br>
       شخصیت: مهربان، همدل، آرام<br><br>
       پیش‌زمینه: تولد در شب طوفان و انفجار آسمانی؛ قدرتش از همان لحظه شکل گرفت.
     </p>
+    <button onclick="closePopup()">بستن</button>
+  </div>
+
+  <div id="character-electropulse" class="popup">
+    <h3>⚡ الکتروپالس</h3>
+    <p>در آینده اضافه می‌شود...</p>
+    <button onclick="closePopup()">بستن</button>
+  </div>
+
+  <div id="character-gordafarid" class="popup">
+    <h3>🔥 گردآفرید</h3>
+    <p>در آینده اضافه می‌شود...</p>
     <button onclick="closePopup()">بستن</button>
   </div>
 
@@ -242,6 +288,13 @@
 
     function closePopup() {
       document.querySelectorAll('.popup').forEach(p => p.classList.remove('show'));
+    }
+
+    // باز کردن پاپ‌آپ اختصاصی قهرمان‌ها
+    function openCharacter(id) {
+      closePopup();
+      const characterPopup = document.getElementById('character-' + id);
+      if (characterPopup) characterPopup.classList.add('show');
     }
   </script>
 </body>
