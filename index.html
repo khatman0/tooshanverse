@@ -133,6 +133,22 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
+    .character-category {
+  background-color: #1f1f1f;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  box-shadow: 0 0 10px #ff990033;
+}
+.character-category h3 {
+  color: #f0c040;
+  margin-bottom: 10px;
+}
+.villains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
   </style>
 </head>
 <body>
@@ -156,23 +172,23 @@
   </nav>
   </header>
 
-  <section id="heroes">
-    <h2>قهرمانان</h2>
+ <section id="characters">
+  <h2>شخصیت‌ها</h2>
+  <div class="character-category">
+    <h3>قهرمان‌ها</h3>
     <div class="heroes">
-      <div class="hero-card" onclick="openPopup()">
-        <h3>🌀 تسکین</h3>
-        <p>جنگجویی که درد را نمی‌فهمد، اما آن را می‌آفریند.</p>
-      </div>
-      <div class="hero-card">
-        <h3>⚡ الکتروپالس</h3>
-        <p>قهرمانی با کنترل کامل بر انرژی و جریان برق.</p>
-      </div>
-      <div class="hero-card">
-        <h3>🔥 گردآفرید</h3>
-        <p>دختر آتش؛ از نسل قهرمانان شاهنامه.</p>
-      </div>
+      <!-- کارت‌های قهرمان‌ها اینجا می‌مونن -->
     </div>
-  </section>
+  </div>
+
+  <div class="character-category">
+    <h3>ویلن‌ها</h3>
+    <div class="villains">
+      <!-- کارت‌های ویلن‌ها رو اینجا بعداً می‌ذاری -->
+    </div>
+  </div>
+</section>
+
 
   <section id="comics">
     <h2>کمیک‌ها</h2>
