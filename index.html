@@ -41,30 +41,7 @@
       box-shadow: 0 0 10px #ff990055;
       cursor: pointer;
     }
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #222;
-      color: #f0c040;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 0 15px #ff9900;
-      z-index: 9999;
-    }
-    .popup button {
-      background-color:#ff9900;
-      border:none;
-      padding:10px 20px;
-      border-radius:8px;
-      cursor:pointer;
-      color:#111;
-      margin-top: 10px;
-    }
+  
     /* استایل دکمه منو */
 .menu-btn {
   position: absolute;
@@ -108,94 +85,12 @@
 .menu a:hover {
   color: #fff;
 }
-     /* ... بقیه استایل‌ها ... */
-
-  .popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.7);
-    background-color: #222;
-    color: #f0c040;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 0 15px #ff9900;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  .popup.show {
-    display: block;
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-#characters {
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.character-section {
-  margin: 40px 0;
-  background-color: #1a1a1a;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 10px #ff990055;
-}
-
-.character-section h3 {
-  color: #f0c040;
-  margin-bottom: 20px;
-}
-
-.character-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-}
-
-.character-card {
-  background-color: #2a2a2a;
-  padding: 15px 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px #ff990044;
-  font-size: 16px;
-  color: #fff;
-}
-    .category-cards {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 30px;
-}
-
-.category-card {
-  background-color: #1f1f1f;
-  padding: 20px 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px #ff990055;
-  cursor: pointer;
-  color: #f0c040;
-  font-size: 18px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.category-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px #ff9900aa;
-}
-
 .popup {
   display: none;
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.7);
   background-color: #222;
   color: #f0c040;
   padding: 25px;
@@ -205,6 +100,14 @@
   box-shadow: 0 0 20px #ff9900;
   z-index: 9999;
   text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.popup.show {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
   </style>
 </head>
