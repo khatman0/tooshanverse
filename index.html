@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>توشان‌ورس | Tooshanverse</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
   <style>
     body {
@@ -15,34 +15,24 @@
       padding: 0;
       direction: rtl;
     }
+
     header, footer {
       text-align: center;
       background-color: #1a1a1a;
       padding: 30px 20px;
+      position: relative;
     }
+
+    h2 {
+      color: #ff9900;
+    }
+
     section {
       padding: 40px 20px;
       max-width: 1000px;
       margin: auto;
     }
-    h2 {
-      color: #ff9900;
-    }
-    .heroes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .hero-card {
-      flex: 1 1 200px;
-      background: #1f1f1f;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #ff990055;
-      cursor: pointer;
-    }
 
-    /* استایل منو */
     .menu-btn {
       position: absolute;
       top: 20px;
@@ -64,7 +54,6 @@
 
     .menu {
       display: none;
-      opacity: 0;
       position: absolute;
       top: 60px;
       right: 20px;
@@ -73,12 +62,6 @@
       border-radius: 10px;
       box-shadow: 0 0 10px #ff9900;
       z-index: 999;
-      transition: opacity 0.3s ease;
-    }
-
-    .menu.show {
-      display: block;
-      opacity: 1;
     }
 
     .menu a {
@@ -92,23 +75,23 @@
       color: #fff;
     }
 
-    /* افکت‌های پاپ‌آپ */
     .popup {
       display: none;
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.7);
+      transform: translate(-50%, -50%) scale(0.8);
       background-color: #222;
       color: #f0c040;
       padding: 25px;
       border-radius: 10px;
+      width: 90%;
       max-width: 400px;
       box-shadow: 0 0 20px #ff9900;
       z-index: 9999;
       text-align: center;
       opacity: 0;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .popup.show {
@@ -116,29 +99,63 @@
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
     }
+
+    .popup button {
+      background-color: #ff9900;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #111;
+      margin-top: 10px;
+    }
+
+    .category-cards {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .category-card {
+      background-color: #1f1f1f;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #ff990055;
+      cursor: pointer;
+      color: #f0c040;
+      font-size: 18px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .category-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ff9900aa;
+    }
+
+    @media (max-width: 600px) {
+      .category-card {
+        flex: 1 1 100%;
+        font-size: 16px;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
-
   <header>
     <h1>توشان‌ورس | Tooshanverse</h1>
     <p>آغاز سرنوشت</p>
-
-    <!-- دکمه منو -->
     <div class="menu-btn" id="menu-btn">
-      <div></div>
-      <div></div>
-      <div></div>
+      <div></div><div></div><div></div>
     </div>
-
-    <!-- منوی کشویی -->
     <nav class="menu" id="menu">
+      <input type="text" id="searchInput" placeholder="جستجو..." onkeyup="searchMenu()" style="width: 100%; padding: 5px; margin-bottom: 10px; border-radius: 5px; border: none;">
       <a href="#">خانه</a>
-      <input type="text" id="searchInput" placeholder="جستجو..." onkeyup="searchMenu()">
       <a href="#">عکس‌ها</a>
       <a href="#">ساخته‌های هوش مصنوعی</a>
       <a href="#">گفتگو با من</a>
-      <p id="searchMsg" style="color: #f0c040; text-align: center; display: none;">نتیجه‌ای یافت نشد</p>
     </nav>
   </header>
 
@@ -151,38 +168,81 @@
     </div>
   </section>
 
-  <!-- کد جاوااسکریپت -->
+  <div id="popup-heroes" class="popup">
+    <h3>🛡️ قهرمان‌ها</h3>
+    <ul>
+      <li onclick="openPopup('taskin')">🌀 تسکین</li>
+      <li>⚡ الکتروپالس</li>
+      <li>🔥 گردآفرید</li>
+    </ul>
+    <button onclick="closePopup()">بستن</button>
+  </div>
+
+  <div id="popup-villains" class="popup">
+    <h3>😈 ویلن‌ها</h3>
+    <p>در آینده اضافه می‌شود...</p>
+    <button onclick="closePopup()">بستن</button>
+  </div>
+
+  <div id="popup-neutrals" class="popup">
+    <h3>⚖️ شخصیت‌های خنثی</h3>
+    <p>در آینده اضافه می‌شود...</p>
+    <button onclick="closePopup()">بستن</button>
+  </div>
+
+  <div id="popup-taskin" class="popup">
+    <h3>🌀 تسکین</h3>
+    <p>
+      نام: آرام نورگان (لقب: تسکین)<br>
+      سن: 16 سال<br>
+      محل تولد: دهکده عشایری<br>
+      خانواده: پدر چوپان، مادر قابله<br><br>
+      توانایی: خاموش کردن درد دیگران<br>
+      شخصیت: مهربان، همدل، آرام<br><br>
+      پیش‌زمینه: تولد در شب طوفان و انفجار آسمانی؛ قدرتش از همان لحظه شکل گرفت.
+    </p>
+    <button onclick="closePopup()">بستن</button>
+  </div>
+
+  <section id="comics">
+    <h2>کمیک‌ها</h2>
+    <p>در این بخش به‌زودی کمیک‌ها و داستان‌های مصور توشان‌ورس قرار می‌گیرند.</p>
+  </section>
+
+  <section id="chat">
+    <h2>گفت‌وگوی آنلاین</h2>
+    <p>اگر سوالی داری یا می‌خوای با من حرف بزنی، به زودی اینجا می‌تونی چت کنی!</p>
+  </section>
+
+  <footer>
+    <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
+  </footer>
+
   <script>
-    document.getElementById('menu-btn').addEventListener('click', () => {
-      document.getElementById('menu').classList.toggle('show');
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+
+    menuBtn.addEventListener('click', () => {
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     });
 
     function searchMenu() {
       const input = document.getElementById('searchInput').value.toLowerCase();
-      const links = document.querySelectorAll('.menu a');
-      let found = false;
-
+      const links = document.querySelectorAll('#menu a');
       links.forEach(link => {
-        if (link.innerText.toLowerCase().includes(input)) {
-          link.style.display = "";
-          found = true;
-        } else {
-          link.style.display = "none";
-        }
+        link.style.display = link.textContent.toLowerCase().includes(input) ? '' : 'none';
       });
-
-      document.getElementById('searchMsg').style.display = found ? "none" : "block";
     }
 
     function openPopup(type) {
       closePopup();
-      document.getElementById('popup-' + type).classList.add('show');
+      const popup = document.getElementById('popup-' + type);
+      if (popup) popup.classList.add('show');
     }
 
     function closePopup() {
       document.querySelectorAll('.popup').forEach(p => p.classList.remove('show'));
     }
   </script>
-
 </body>
 </html>
