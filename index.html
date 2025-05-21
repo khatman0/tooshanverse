@@ -2,7 +2,7 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>توشان‌ورس | Tooshanverse</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
@@ -21,7 +21,7 @@
       padding: 30px 20px;
       position: relative;
     }
-    h2 {
+    h1, h2, h3 {
       color: #ff9900;
     }
     section {
@@ -62,6 +62,7 @@
       padding: 8px 0;
       color: #f0c040;
       text-decoration: none;
+      cursor: pointer;
     }
     .menu a:hover {
       color: #fff;
@@ -120,31 +121,62 @@
       transform: scale(1.05);
       box-shadow: 0 0 15px #ff9900aa;
     }
-    /* لیست داخل پاپ‌آپ قهرمان‌ها */
-    #popup-heroes ul.character-list {
+    ul.character-list {
       list-style: none;
       padding: 0;
       margin: 20px 0 0 0;
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 15px;
       justify-content: center;
     }
-    #popup-heroes ul.character-list li {
-      background-color: #2b2b2b;
-      padding: 10px 15px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px #ff990033;
+    ul.character-list li {
+      background: #1f1f1f;
+      padding: 10px 20px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      min-width: 100px;
+      box-shadow: 0 0 5px #ff990055;
+      transition: box-shadow 0.3s ease;
+      user-select: none;
+      font-size: 16px;
+    }
+    ul.character-list li:hover {
+      box-shadow: 0 0 10px #ff9900cc;
+    }
+    #siteSearchContainer {
+      max-width: 600px;
+      margin: 20px auto 0 auto;
       text-align: center;
+    }
+    #siteSearchInput {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      box-shadow: 0 0 10px #ff990044;
+      color: #222;
+    }
+    #searchResults {
+      max-width: 600px;
+      margin: 15px auto;
+      background: #1a1a1a;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #ff990055;
+      color: #f0c040;
+      min-height: 40px;
+      text-align: right;
+    }
+    #searchResults p {
+      margin: 8px 0;
+      cursor: pointer;
       user-select: none;
     }
-    #popup-heroes ul.character-list li:hover {
-      background-color: #ff9900;
-      color: #111;
-      box-shadow: 0 0 12px #ff9900cc;
+    #searchResults p:hover {
+      color: #ffcc33;
+      text-decoration: underline;
     }
     @media (max-width: 600px) {
       .category-card {
@@ -152,9 +184,12 @@
         font-size: 16px;
         text-align: center;
       }
-      #popup-heroes ul.character-list li {
-        min-width: 80px;
-        font-size: 14px;
+      ul.character-list {
+        flex-direction: column;
+      }
+      ul.character-list li {
+        width: 100%;
+        text-align: center;
       }
     }
   </style>
@@ -167,17 +202,26 @@
       <div></div><div></div><div></div>
     </div>
     <nav class="menu" id="menu">
-      <input type="text" id="searchInput" placeholder="جستجو..." onkeyup="searchMenu()" style="width: 100%; padding: 5px; margin-bottom: 10px; border-radius: 5px; border: none;" />
-      <a href="#">خانه</a>
+      <a id="homeBtn">خانه</a>
       <a href="#">عکس‌ها</a>
       <a href="#">ساخته‌های هوش مصنوعی</a>
       <a href="#">گفتگو با من</a>
     </nav>
   </header>
 
+  <div id="siteSearchContainer">
+    <input
+      type="text"
+      id="siteSearchInput"
+      placeholder="جستجو در کل سایت..."
+      onkeyup="siteSearch()"
+      autocomplete="off"
+    />
+    <div id="searchResults"></div>
+  </div>
+
   <section id="characters">
     <h2>شخصیت‌ها</h2>
-    <input type="text" id="searchCharacters" placeholder="جستجوی قهرمان‌ها..." onkeyup="searchCharacters()" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: none; font-size: 18px;" />
     <div class="category-cards">
       <div class="category-card" onclick="openPopup('heroes')">🛡️ قهرمان‌ها</div>
       <div class="category-card" onclick="openPopup('villains')">😈 ویلن‌ها</div>
@@ -185,32 +229,30 @@
     </div>
   </section>
 
-  <!-- پاپ‌آپ قهرمان‌ها -->
+  <!-- پاپ‌آپ‌ها -->
+
   <div id="popup-heroes" class="popup">
     <h3>🛡️ قهرمان‌ها</h3>
     <ul class="character-list">
-      <li onclick="openCharacter('taskin')">🌀 تسکین</li>
-      <li onclick="openCharacter('electropulse')">⚡ الکتروپالس</li>
-      <li onclick="openCharacter('gardaafrid')">🔥 گردآفرید</li>
+      <li onclick="openPopup('taskin')">🌀 تسکین</li>
+      <li onclick="openPopup('electropulse')">⚡ الکتروپالس</li>
+      <li onclick="openPopup('gardafrid')">🔥 گردآفرید</li>
     </ul>
-    <button onclick="closePopup()">بستن</button>
+    <button onclick="closePopup()">بازگشت</button>
   </div>
 
-  <!-- پاپ‌آپ ویلن‌ها -->
   <div id="popup-villains" class="popup">
     <h3>😈 ویلن‌ها</h3>
     <p>در آینده اضافه می‌شود...</p>
-    <button onclick="closePopup()">بستن</button>
+    <button onclick="closePopup()">بازگشت</button>
   </div>
 
-  <!-- پاپ‌آپ خنثی‌ها -->
   <div id="popup-neutrals" class="popup">
     <h3>⚖️ شخصیت‌های خنثی</h3>
     <p>در آینده اضافه می‌شود...</p>
-    <button onclick="closePopup()">بستن</button>
+    <button onclick="closePopup()">بازگشت</button>
   </div>
 
-  <!-- پاپ‌آپ بیوگرافی قهرمان‌ها -->
   <div id="popup-taskin" class="popup">
     <h3>🌀 تسکین</h3>
     <p>
@@ -222,23 +264,23 @@
       شخصیت: مهربان، همدل، آرام<br /><br />
       پیش‌زمینه: تولد در شب طوفان و انفجار آسمانی؛ قدرتش از همان لحظه شکل گرفت.
     </p>
-    <button onclick="backToHeroes()">بازگشت به قهرمان‌ها</button>
+    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
   </div>
 
   <div id="popup-electropulse" class="popup">
     <h3>⚡ الکتروپالس</h3>
     <p>
-      اطلاعات درباره الکتروپالس هنوز آماده نشده است.
+      اطلاعات درباره الکتروپالس به زودی اضافه خواهد شد.
     </p>
-    <button onclick="backToHeroes()">بازگشت به قهرمان‌ها</button>
+    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
   </div>
 
-  <div id="popup-gardaafrid" class="popup">
+  <div id="popup-gardafrid" class="popup">
     <h3>🔥 گردآفرید</h3>
     <p>
-      اطلاعات درباره گردآفرید هنوز آماده نشده است.
+      اطلاعات درباره گردآفرید به زودی اضافه خواهد شد.
     </p>
-    <button onclick="backToHeroes()">بازگشت به قهرمان‌ها</button>
+    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
   </div>
 
   <section id="comics">
@@ -256,59 +298,85 @@
   </footer>
 
   <script>
+    // منوی موبایل
     const menuBtn = document.getElementById('menu-btn');
     const menu = document.getElementById('menu');
-
     menuBtn.addEventListener('click', () => {
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     });
 
-    // جستجوی منو
-    function searchMenu() {
-      const input = document.getElementById('searchInput').value.toLowerCase();
-      const links = document.querySelectorAll('#menu a');
-      links.forEach(link => {
-        link.style.display = link.textContent.toLowerCase().includes(input) ? '' : 'none';
-      });
-    }
+    // دکمه خانه در منو
+    const homeBtn = document.getElementById('homeBtn');
+    homeBtn.addEventListener('click', () => {
+      closePopup();
+      clearSearch();
+      // اسکرول به بالا و مخفی کردن نتایج جستجو
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
-    // جستجوی قهرمان‌ها در پاپ‌آپ قهرمان‌ها
-    function searchCharacters() {
-      const input = document.getElementById('searchCharacters').value.toLowerCase();
-      const heroListItems = document.querySelectorAll('#popup-heroes ul.character-list li');
-      heroListItems.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        if (text.includes(input)) {
-          item.style.display = '';
-        } else {
-          item.style.display = 'none';
-        }
-      });
-    }
-
-    // باز کردن پاپ‌آپ دسته‌ها
+    // باز کردن پاپ‌آپ‌ها
     function openPopup(type) {
       closePopup();
       const popup = document.getElementById('popup-' + type);
       if (popup) popup.classList.add('show');
+      menu.style.display = 'none'; // منو رو ببند
+      clearSearch();
+      // اسکرول به بالا برای دیده شدن پاپ‌آپ
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // بستن همه پاپ‌آپ‌ها
+    // بستن پاپ‌آپ‌ها
     function closePopup() {
       document.querySelectorAll('.popup').forEach(p => p.classList.remove('show'));
     }
 
-    // باز کردن بیوگرافی قهرمان‌ها
-    function openCharacter(name) {
-      closePopup();
-      const popup = document.getElementById('popup-' + name);
-      if (popup) popup.classList.add('show');
+    // پاک کردن جستجو و نتایج
+    function clearSearch() {
+      const input = document.getElementById('siteSearchInput');
+      const results = document.getElementById('searchResults');
+      input.value = '';
+      results.innerHTML = '';
     }
 
-    // بازگشت به لیست قهرمان‌ها
-    function backToHeroes() {
-      closePopup();
-      openPopup('heroes');
+    // داده‌های جستجو: اینجا هر چیزی که میخوای جستجو کنی رو بذار
+    const searchData = [
+      { type: 'hero', id: 'taskin', name: '🌀 تسکین' },
+      { type: 'hero', id: 'electropulse', name: '⚡ الکتروپالس' },
+      { type: 'hero', id: 'gardafrid', name: '🔥 گردآفرید' },
+      { type: 'section', id: 'comics', name: 'کمیک‌ها' },
+      { type: 'section', id: 'chat', name: 'گفت‌وگوی آنلاین' },
+      { type: 'section', id: 'characters', name: 'شخصیت‌ها' },
+      { type: 'home', id: 'home', name: 'خانه' },
+    ];
+
+    // جستجوی سایت در کل داده‌ها
+    function siteSearch() {
+      const input = document.getElementById('siteSearchInput').value.trim().toLowerCase();
+      const results = document.getElementById('searchResults');
+      results.innerHTML = '';
+
+      if (!input) return;
+
+      const filtered = searchData.filter(item => item.name.replace(/[\u{1F300}-\u{1F6FF}]/gu, '').toLowerCase().includes(input));
+      if (filtered.length === 0) {
+        results.innerHTML = '<p>نتیجه‌ای یافت نشد.</p>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const p = document.createElement('p');
+        p.textContent = item.name;
+        p.onclick = () => {
+          if (item.type === 'hero' || item.type === 'section') {
+            openPopup(item.id);
+          } else if (item.type === 'home') {
+            closePopup();
+            clearSearch();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        };
+        results.appendChild(p);
+      });
     }
   </script>
 </body>
