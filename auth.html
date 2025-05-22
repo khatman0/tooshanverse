@@ -1,71 +1,99 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <title>ورود و ثبت‌نام توشان‌ورس</title>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      sendEmailVerification
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ورود / ثبت‌نام</title>
+  <style>
+    body {
+      font-family: 'Vazir', sans-serif;
+      background-color: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .form-container {
+      background-color: #1a1a1a;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: white;
+    }
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: #0088ff;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .toggle-link {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .toggle-link a {
+      color: #00d9ff;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    h2 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <form id="signup-form">
+      <h2>ثبت‌نام</h2>
+      <input type="email" id="signup-email" placeholder="ایمیل" required />
+      <input type="password" id="signup-password" placeholder="رمز عبور" required />
+      <button type="submit">ثبت‌نام</button>
+      <div class="toggle-link">
+        قبلاً ثبت‌نام کرده‌اید؟ <a id="show-login">اینجا وارد شوید</a>
+      </div>
+    </form>
 
-    // کانفیگ پروژه‌ات
-    const firebaseConfig = {
-      apiKey: "AIzaSyBI9L7fSuounX5Dy4fJNbjNJQg3grRAafk",
-      authDomain: "tooshanchat.firebaseapp.com",
-      databaseURL: "https://tooshanchat-default-rtdb.firebaseio.com",
-      projectId: "tooshanchat",
-      storageBucket: "tooshanchat.firebasestorage.app",
-      messagingSenderId: "444788859489",
-      appId: "1:444788859489:web:ecc4619d8ce56136b00020",
-      measurementId: "G-KWZMRPN48E"
+    <form id="login-form" style="display: none;">
+      <h2>ورود</h2>
+      <input type="email" id="login-email" placeholder="ایمیل" required />
+      <input type="password" id="login-password" placeholder="رمز عبور" required />
+      <button type="submit">ورود</button>
+      <div class="toggle-link">
+        هنوز ثبت‌نام نکرده‌اید؟ <a id="show-signup">اینجا ثبت‌نام کنید</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById("signup-form");
+    const loginForm = document.getElementById("login-form");
+    const showLogin = document.getElementById("show-login");
+    const showSignup = document.getElementById("show-signup");
+
+    showLogin.onclick = () => {
+      signupForm.style.display = "none";
+      loginForm.style.display = "block";
     };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // فرم ثبت‌نام
-    window.signUp = async function() {
-      const email = document.getElementById("signup-email").value;
-      const password = document.getElementById("signup-password").value;
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await sendEmailVerification(userCredential.user);
-        alert("ثبت‌نام با موفقیت انجام شد! یک ایمیل تأیید برای شما ارسال شد.");
-      } catch (error) {
-        alert("خطا: " + error.message);
-      }
-    };
-
-    // فرم ورود
-    window.login = async function() {
-      const email = document.getElementById("login-email").value;
-      const password = document.getElementById("login-password").value;
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        alert("ورود موفقیت‌آمیز بود!");
-        // بعد از ورود می‌تونی ریدایرکت کنی به سایت اصلی:
-        // window.location.href = "/index.html";
-      } catch (error) {
-        alert("خطا: " + error.message);
-      }
+    showSignup.onclick = () => {
+      loginForm.style.display = "none";
+      signupForm.style.display = "block";
     };
   </script>
-</head>
-<body dir="rtl" style="font-family: sans-serif; text-align: center; margin-top: 50px;">
-  <h2>ثبت‌نام</h2>
-  <input type="email" id="signup-email" placeholder="ایمیل"><br><br>
-  <input type="password" id="signup-password" placeholder="رمز عبور"><br><br>
-  <button onclick="signUp()">ثبت‌نام</button>
-
-  <hr style="margin: 30px 0;">
-
-  <h2>ورود</h2>
-  <input type="email" id="login-email" placeholder="ایمیل"><br><br>
-  <input type="password" id="login-password" placeholder="رمز عبور"><br><br>
-  <button onclick="login()">ورود</button>
 </body>
 </html>
