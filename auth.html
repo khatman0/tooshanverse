@@ -1,99 +1,61 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ورود / ثبت‌نام</title>
-  <style>
-    body {
-      font-family: 'Vazir', sans-serif;
-      background-color: #111;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-    .form-container {
-      background-color: #1a1a1a;
-      padding: 2rem;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-    input {
-      width: 100%;
-      padding: 0.8rem;
-      margin: 0.5rem 0;
-      border: none;
-      border-radius: 8px;
-      background: #333;
-      color: white;
-    }
-    button {
-      width: 100%;
-      padding: 0.8rem;
-      background-color: #0088ff;
-      border: none;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-    .toggle-link {
-      margin-top: 1rem;
-      text-align: center;
-      font-size: 0.9rem;
-    }
-    .toggle-link a {
-      color: #00d9ff;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-    h2 {
-      text-align: center;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ثبت‌نام با ارسال ایمیل تأیید</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
-  <div class="form-container">
-    <form id="signup-form">
-      <h2>ثبت‌نام</h2>
-      <input type="email" id="signup-email" placeholder="ایمیل" required />
-      <input type="password" id="signup-password" placeholder="رمز عبور" required />
-      <button type="submit">ثبت‌نام</button>
-      <div class="toggle-link">
-        قبلاً ثبت‌نام کرده‌اید؟ <a id="show-login">اینجا وارد شوید</a>
-      </div>
-    </form>
+<h2>ثبت‌نام</h2>
+<form id="signup-form">
+  <input type="email" id="email" placeholder="ایمیل" required />
+  <br /><br />
+  <input type="password" id="password" placeholder="رمز عبور" required />
+  <br /><br />
+  <button type="submit">ثبت‌نام</button>
+</form>
 
-    <form id="login-form" style="display: none;">
-      <h2>ورود</h2>
-      <input type="email" id="login-email" placeholder="ایمیل" required />
-      <input type="password" id="login-password" placeholder="رمز عبور" required />
-      <button type="submit">ورود</button>
-      <div class="toggle-link">
-        هنوز ثبت‌نام نکرده‌اید؟ <a id="show-signup">اینجا ثبت‌نام کنید</a>
-      </div>
-    </form>
-  </div>
+<script>
+// کانفیگ دقیق شما:
+const firebaseConfig = {
+  apiKey: "AIzaSyBI9L7fSuounX5Dy4fJNbjNJQg3grRAafk",
+  authDomain: "tooshanchat.firebaseapp.com",
+  databaseURL: "https://tooshanchat-default-rtdb.firebaseio.com",
+  projectId: "tooshanchat",
+  storageBucket: "tooshanchat.firebasestorage.app",
+  messagingSenderId: "444788859489",
+  appId: "1:444788859489:web:ecc4619d8ce56136b00020",
+  measurementId: "G-KWZMRPN48E"
+};
 
-  <script>
-    const signupForm = document.getElementById("signup-form");
-    const loginForm = document.getElementById("login-form");
-    const showLogin = document.getElementById("show-login");
-    const showSignup = document.getElementById("show-signup");
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-    showLogin.onclick = () => {
-      signupForm.style.display = "none";
-      loginForm.style.display = "block";
-    };
-    showSignup.onclick = () => {
-      loginForm.style.display = "none";
-      signupForm.style.display = "block";
-    };
-  </script>
+const auth = firebase.auth();
+
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+
+  try {
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    const user = userCredential.user;
+
+    await user.sendEmailVerification();
+
+    alert('ثبت‌نام موفقیت‌آمیز بود. ایمیل تأیید برای شما ارسال شد. لطفا صندوق ایمیل خود را بررسی کنید.');
+
+    e.target.reset();
+
+  } catch (error) {
+    alert('خطا در ثبت‌نام: ' + error.message);
+    console.error(error);
+  }
+});
+</script>
 </body>
 </html>
