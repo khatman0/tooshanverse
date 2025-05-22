@@ -96,6 +96,30 @@
   <footer>
     <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
   </footer>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyBI9L7fSuounX5Dy4fJNbjNJQg3grRAafk",
+    authDomain: "tooshanchat.firebaseapp.com",
+    databaseURL: "https://tooshanchat-default-rtdb.firebaseio.com",
+    projectId: "tooshanchat",
+    storageBucket: "tooshanchat.firebasestorage.app",
+    messagingSenderId: "444788859489",
+    appId: "1:444788859489:web:ecc4619d8ce56136b00020",
+    measurementId: "G-KWZMRPN48E"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      // اگر کاربر وارد نشده بود، بره به صفحه لاگین
+      window.location.href = "auth.html";
+    }
+  });
+</script>
 </body>
 </html>
