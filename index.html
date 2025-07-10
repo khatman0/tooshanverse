@@ -264,10 +264,12 @@
   </div>
 
   <div id="popup-villains" class="popup">
-    <h3>😈 ویلن‌ها</h3>
-    <p>در آینده اضافه می‌شود...</p>
-    <button onclick="closePopup()">بازگشت</button>
-  </div>
+  <h3>😈 ویلن‌ها</h3>
+  <ul class="character-list">
+    <li onclick="openPopup('agnatus')">آگناتوس</li>
+  </ul>
+  <button onclick="closePopup()">بازگشت</button>
+</div>
 
   <div id="popup-neutrals" class="popup">
   <h3>⚖️ شخصیت‌های خنثی</h3>
@@ -347,6 +349,12 @@
   <h3>نیما و رها</h3>
   <p>اطلاعات درباره نیما و رها به زودی اضافه خواهد شد.</p>
   <button onclick="openPopup('neutrals')">بازگشت به قهرمان‌ها</button>
+</div>
+
+  <div id="popup-agnatus" class="popup">
+  <h3>آگناتوس</h3>
+  <p>اطلاعات درباره آگناتوس به زودی اضافه خواهد شد.</p>
+  <button onclick="openPopup('villains')">بازگشت به ویلن‌ها</button>
 </div>
   
   <section id="comics">
