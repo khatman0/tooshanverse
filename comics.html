@@ -4,15 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>کمیک‌ها | توشان‌ورس</title>
+  <link rel="icon" href="factive.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
     }
     body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+      margin: 0; padding: 0; height: 100%;
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
       color: #f0c040;
@@ -21,16 +20,34 @@
       flex-direction: column;
       min-height: 100vh;
     }
-
-    header {
+    header, footer {
       background-color: #1a1a1a;
       color: #ff9900;
       text-align: center;
       padding: 20px 15px;
       flex-shrink: 0;
       box-shadow: 0 0 10px #ff990055;
+      position: relative;
     }
-
+    /* دکمه بازگشت به خانه */
+    .home-button {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #ff9900;
+      color: #111;
+      padding: 8px 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 0 10px #ff9900bb;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .home-button:hover {
+      background-color: #e68a00;
+    }
     main {
       flex-grow: 1;
       max-width: 1200px;
@@ -38,17 +55,8 @@
       width: 95%;
       display: flex;
       gap: 20px;
+      min-height: 400px;
     }
-
-    footer {
-      background-color: #1a1a1a;
-      color: #ff9900;
-      text-align: center;
-      padding: 20px 15px;
-      box-shadow: 0 0 10px #ff990055;
-      margin-top: auto;
-    }
-
     /* لیست فازها */
     #phaseList {
       flex: 0 0 180px;
@@ -74,7 +82,6 @@
       box-shadow: 0 0 12px #ff9900dd;
       font-weight: bold;
     }
-
     /* لیست داستان‌ها */
     #storyList {
       flex: 0 0 220px;
@@ -101,7 +108,6 @@
       box-shadow: 0 0 12px #ff9900dd;
       font-weight: bold;
     }
-
     /* محتوای داستان */
     #storyContent {
       flex-grow: 1;
@@ -128,7 +134,7 @@
       border-radius: 12px;
       margin-bottom: 15px;
       box-shadow: 0 0 15px #ff9900bb;
-      display: none;
+      display: none; /* اگر عکسی بود نمایش داده شود */
       object-fit: contain;
     }
     #storyText {
@@ -138,7 +144,6 @@
       color: #f0c040;
       white-space: pre-wrap;
     }
-
     /* ریسپانسیو برای موبایل */
     @media (max-width: 900px) {
       main {
@@ -153,19 +158,32 @@
       #storyContent {
         order: 3;
       }
+      .home-button {
+        position: static;
+        transform: none;
+        display: inline-block;
+        margin-bottom: 15px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>📚 کمیک‌ها | توشان‌ورس</h1>
+    <a href="index.html" class="home-button" aria-label="بازگشت به صفحه اصلی">خانه</a>
     <p>فاز مورد نظر را انتخاب کنید و داستان‌های آن را مشاهده کنید.</p>
   </header>
 
   <main>
-    <ul id="phaseList"></ul>
-    <ul id="storyList"></ul>
-    <section id="storyContent">
+    <ul id="phaseList" aria-label="لیست فازها">
+      <!-- فازها اینجا توسط JS ساخته می‌شوند -->
+    </ul>
+
+    <ul id="storyList" aria-label="لیست داستان‌ها">
+      <!-- داستان‌ها اینجا توسط JS ساخته می‌شوند -->
+    </ul>
+
+    <section id="storyContent" aria-live="polite">
       <h2 id="storyTitle"></h2>
       <img id="storyCover" src="" alt="کاور داستان" />
       <p id="storyText"></p>
@@ -179,21 +197,21 @@
 <script>
   const phases = {
     phase1: [
-      { id: 'p1s1', title: 'لردفیزیکا:انفجار آبی', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p1s2', title: 'الکتروپالس:ولتاژ ناشناخته', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p1s3', title: 'المنت ها:عناصر پنهان', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p1s4', title: 'استریکس:بند ذهن', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p1s5', title: 'تسکین:خاموشی سنسور', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+      { id: 'p1s1', title: 'لردفیزیکا:انفجار آبی', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
+      { id: 'p1s2', title: 'الکتروپالس:ولتاژ ناشناخته', cover: '', text: 'متن داستان به زودی اضاف خواهد شد ' },
+      { id: 'p1s3', title: 'المنت ها:عناصر پنهان', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
+      { id: 'p1s4', title: 'استریکس:بند ذهن', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
+      { id: 'p1s5', title: 'تسکین:خاموشی سنسور', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
     ],
     phase2: [
-      { id: 'p2s1', title: 'المنت ها 2:پیوند عنصری', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p2s2', title: 'استریکس 2:توهم مشترک', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p2s3', title: 'مرداویچ:بازگشت دوم', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p2s4', title: 'تسکین 2:نبض خاموشی', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p2s5', title: 'گردآفرید:پیکار ناتمام', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+      { id: 'p2s1', title: 'المنت ها 2:پیوند عنصری', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
+      { id: 'p2s2', title: 'استریکس 2:توهم مشترک', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
+      { id: 'p2s3', title: 'مرداویچ:بازگشت دوم', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
+      { id: 'p2s4', title: 'تسکین 2:نبض خاموشی', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
+      { id: 'p2s5', title: 'گردآفرید:پیکار ناتمام', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
     ],
     phase3: [
-      { id: 'p3s1', title: 'نیما و رها:طلوع سایه ها', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+       { id: 'p3s1', title: 'نیما و رها:طلوع سایه ها', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
       { id: 'p3s2', title: 'استریکس 3:شکنجه ذهن', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
       { id: 'p3s3', title: 'روشن تاب و آتران:دروازه های نور', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
       { id: 'p3s4', title: 'الکتروپالس 2:ولتاژ انتقام', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
@@ -204,6 +222,7 @@
     phase4: [],
     phase5: [],
     phase6: [],
+    phase7: [],
   };
 
   const phaseList = document.getElementById('phaseList');
@@ -220,9 +239,11 @@
       li.textContent = `فاز ${i}`;
       li.dataset.phase = key;
       li.tabIndex = 0;
-      li.addEventListener('click', () => setActivePhase(key));
+      li.addEventListener('click', () => {
+        setActivePhase(key);
+      });
       li.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if(e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           setActivePhase(key);
         }
@@ -253,7 +274,7 @@
         showStory(story);
       });
       li.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if(e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           storyList.querySelectorAll('li').forEach(i => i.classList.remove('active'));
           li.classList.add('active');
@@ -294,5 +315,6 @@
   buildPhaseList();
   setActivePhase('phase1');
 </script>
+
 </body>
 </html>
