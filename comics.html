@@ -1,80 +1,116 @@
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Vazirmatn', sans-serif;
-    background: linear-gradient(135deg, #2b0a0a, #4a1414);
-    color: #f0c040;
-    direction: rtl;
-  }
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>کمیک‌ها | توشان‌ورس</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(135deg, #2b0a0a, #4a1414);
+      color: #f0c040;
+      direction: rtl;
+    }
 
-  header, footer {
-    background-color: #1a1a1a;
-    color: #ff9900;
-    text-align: center;
-    padding: 30px 20px;
-  }
+    header, footer {
+      background-color: #1a1a1a;
+      color: #ff9900;
+      text-align: center;
+      padding: 30px 20px;
+    }
 
-  h1, h2 {
-    color: #ff9900;
-  }
+    h1, h2 {
+      color: #ff9900;
+    }
 
-  section {
-    max-width: 1000px;
-    margin: auto;
-    padding: 40px 20px;
-    flex: 1;
-  }
+    main {
+      flex: 1;
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px;
+    }
 
-  .comic-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 30px;
-  }
+    .comic-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
 
-  .comic-item {
-    background: #1f1f1f;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #ff990055;
-    width: 250px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+    .comic-item {
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff990055;
+      width: 250px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-  .comic-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px #ff9900aa;
-  }
+    .comic-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ff9900aa;
+    }
 
-  .comic-item img {
-    width: 100%;
-    border-radius: 8px;
-  }
+    .comic-item img {
+      width: 100%;
+      border-radius: 8px;
+    }
 
-  .comic-title {
-    margin-top: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-  }
+    .comic-title {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
 
-  a.back-button {
-    display: inline-block;
-    margin-top: 30px;
-    background: #ff9900;
-    color: #111;
-    padding: 12px 24px;
-    text-decoration: none;
-    border-radius: 10px;
-    font-weight: bold;
-  }
+    a.back-button {
+      display: inline-block;
+      margin-top: 30px;
+      background: #ff9900;
+      color: #111;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: bold;
+    }
 
-  a.back-button:hover {
-    background: #e68a00;
-  }
-</style>
+    a.back-button:hover {
+      background: #e68a00;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📚 کمیک‌های توشان‌ورس</h1>
+    <p>در این بخش می‌تونی کمیک‌ها و داستان‌های مصور دنیای توشان‌ورس رو ببینی.</p>
+  </header>
+
+  <main>
+    <h2>فهرست کمیک‌ها</h2>
+    <div class="comic-list">
+      <!-- نمونه یک کمیک -->
+      <div class="comic-item">
+        <img src="images/sample-comic.jpg" alt="نمونه کمیک">
+        <div class="comic-title">کمیک شماره ۱: آغاز</div>
+      </div>
+      <!-- کمیک‌های بعدی رو هم به همین سبک اضافه کن -->
+    </div>
+
+    <a href="index.html" class="back-button">بازگشت به صفحه اصلی</a>
+  </main>
+
+  <footer>
+    <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
+  </footer>
+
+</body>
+</html>
