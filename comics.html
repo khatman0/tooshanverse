@@ -3,85 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>کمیک‌ها | توشان‌ورس</title>
+  <title>توشان‌ورس | Tooshanverse - کمیک‌ها</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
   <style>
-    /* استایل کلی */
     body {
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
       color: #f0c040;
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       direction: rtl;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
     header, footer {
-      background-color: #1a1a1a;
-      color: #ff9900;
       text-align: center;
+      background-color: #1a1a1a;
       padding: 30px 20px;
       flex-shrink: 0;
+      color: #ff9900;
+    }
+    h1, h2, h3 {
+      color: #ff9900;
+      margin-top: 0;
     }
     main {
       flex-grow: 1;
       max-width: 1000px;
-      margin: 30px auto 50px auto;
-      padding: 0 20px;
-    }
-    h1, h2 {
-      color: #ff9900;
-      margin-bottom: 10px;
-    }
-
-    /* لیست کمیک‌ها */
-    .comic-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .comic-item {
-      background: #1f1f1f;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #ff990055;
-      width: 230px;
-      cursor: pointer;
-      color: #f0c040;
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-    }
-    .comic-item:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #ff9900cc;
-    }
-    .comic-item img {
+      margin: auto;
+      padding: 20px;
       width: 100%;
-      border-radius: 10px;
-      margin-bottom: 12px;
-      box-shadow: 0 0 10px #ff990066;
-      user-select: none;
+      box-sizing: border-box;
     }
-    .comic-title {
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      user-select: none;
-    }
-
     /* منوی موبایل */
     .menu-btn {
       position: absolute;
-      top: 25px;
-      right: 25px;
+      top: 20px;
+      right: 20px;
       width: 30px;
       height: 25px;
       display: flex;
@@ -98,113 +58,342 @@
     nav.menu {
       display: none;
       position: absolute;
-      top: 65px;
-      right: 25px;
+      top: 60px;
+      right: 20px;
       background: #1a1a1a;
-      padding: 12px 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #ff9900cc;
-      z-index: 1000;
-      min-width: 160px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff9900;
+      z-index: 999;
     }
     nav.menu a {
       display: block;
-      padding: 10px 0;
+      padding: 8px 0;
       color: #f0c040;
       text-decoration: none;
-      font-weight: 600;
       cursor: pointer;
-      user-select: none;
-      transition: color 0.3s ease;
     }
     nav.menu a:hover {
       color: #fff;
     }
-    /* نمایش منو در حالت فعال */
-    nav.menu.show {
-      display: block;
+    /* جستجوی سایت */
+    #siteSearchContainer {
+      max-width: 600px;
+      margin: 20px auto;
+      text-align: center;
+    }
+    #siteSearchInput {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      box-shadow: 0 0 10px #ff990044;
+      color: #222;
+    }
+    #searchResults {
+      max-width: 600px;
+      margin: 15px auto;
+      background: #1a1a1a;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #ff990055;
+      color: #f0c040;
+      min-height: 40px;
+      text-align: right;
+    }
+    #searchResults p {
+      margin: 8px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+    #searchResults p:hover {
+      color: #ffcc33;
+      text-decoration: underline;
     }
 
-    /* واکنش‌گرا */
-    @media (max-width: 600px) {
-      .comic-item {
-        width: 100%;
-      }
-      nav.menu {
-        right: 15px;
-        top: 55px;
-        min-width: 140px;
-      }
-      .menu-btn {
-        top: 20px;
-        right: 15px;
-      }
+    /* تب‌های فازها */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 25px;
     }
+    .tabs button {
+      background: #1f1f1f;
+      color: #f0c040;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 8px #ff990044;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .tabs button.active,
+    .tabs button:hover {
+      background-color: #ff9900;
+      color: #111;
+      box-shadow: 0 0 15px #ff9900aa;
+    }
+
+    /* محتویات هر فاز */
+    .phase-content {
+      display: none;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      display: flex;
+    }
+    .phase-content.active {
+      display: flex;
+    }
+
+    /* کارت‌های کمیک */
+    .comic-card {
+      background-color: #1f1f1f;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #ff990055;
+      width: 230px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+    }
+    .comic-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ff9900aa;
+    }
+    .comic-card img {
+      width: 100%;
+      border-radius: 10px;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      margin-bottom: 12px;
+    }
+    .comic-card .title {
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    /* پاپ‌آپ جزئیات کمیک */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background-color: #222;
+      color: #f0c040;
+      padding: 25px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 0 20px #ff9900;
+      z-index: 9999;
+      text-align: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+    .popup.show {
+      display: block;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .popup button.close-btn {
+      background-color: #ff9900;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #111;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
   </style>
 </head>
 <body>
 
 <header>
-  <h1>📚 کمیک‌های توشان‌ورس</h1>
-  <p>در این بخش می‌تونی کمیک‌ها و داستان‌های مصور دنیای توشان‌ورس رو ببینی.</p>
-
-  <div class="menu-btn" id="menuBtn" aria-label="باز کردن منو" role="button" tabindex="0">
+  <h1>توشان‌ورس | Tooshanverse</h1>
+  <p>آغاز دوباره قهرمانان ایران</p>
+  <div class="menu-btn" id="menu-btn">
     <div></div><div></div><div></div>
   </div>
-
   <nav class="menu" id="menu">
     <a id="homeBtn">خانه</a>
-      <a href="photos.html">عکس‌ها</a>
-      <a href="#">ساخته‌های هوش مصنوعی</a>
-      <a href="about.html">درباره ما</a>
-      <a href="#">گفتگو با من</a>
+    <a href="#characters">شخصیت‌ها</a>
+    <a href="#comics">کمیک‌ها</a>
+    <a href="#chat">گفت‌وگوی آنلاین</a>
+    <a href="#about">درباره ما</a>
   </nav>
 </header>
 
+<div id="siteSearchContainer">
+  <input
+    type="text"
+    id="siteSearchInput"
+    placeholder="جستجو در کل سایت..."
+    onkeyup="siteSearch()"
+    autocomplete="off"
+  />
+  <div id="searchResults"></div>
+</div>
+
 <main>
-  <h2>فهرست کمیک‌ها</h2>
 
-  <div class="comic-list">
-    <a href="comic1.html" class="comic-item" tabindex="0" aria-label="کمیک شماره ۱: آغاز">
-      <div class="comic-title">کمیک شماره ۱: آغاز</div>
-    </a>
+  <section id="comics">
+    <h2>کمیک‌ها - انتخاب فاز</h2>
 
-    <a href="comic2.html" class="comic-item" tabindex="0" aria-label="کمیک شماره ۲: نبرد">
-      <div class="comic-title">کمیک شماره ۲: نبرد</div>
-    </a>
+    <div class="tabs" role="tablist" aria-label="فازهای کمیک">
+      <button class="active" role="tab" aria-selected="true" aria-controls="phase1" id="tab1" onclick="showPhase(1)">فاز ۱</button>
+      <button role="tab" aria-selected="false" aria-controls="phase2" id="tab2" onclick="showPhase(2)">فاز ۲</button>
+      <button role="tab" aria-selected="false" aria-controls="phase3" id="tab3" onclick="showPhase(3)">فاز ۳</button>
+      <button role="tab" aria-selected="false" aria-controls="phase4" id="tab4" onclick="showPhase(4)">فاز ۴</button>
+      <button role="tab" aria-selected="false" aria-controls="phase5" id="tab5" onclick="showPhase(5)">فاز ۵</button>
+      <button role="tab" aria-selected="false" aria-controls="phase6" id="tab6" onclick="showPhase(6)">فاز ۶</button>
+    </div>
 
-    <!-- کمیک‌های بیشتر را اینجا اضافه کن -->
-  </div>
+    <!-- فاز 1 -->
+    <div id="phase1" class="phase-content active" role="tabpanel" aria-labelledby="tab1">
+      <div class="comic-card" tabindex="0" onclick="openComicPopup(1)">
+        <img src="images/sample-comic.jpg" alt="کاور کمیک شماره ۱" loading="lazy" />
+        <div class="title">کمیک شماره ۱: آغاز</div>
+      </div>
+      <div class="comic-card" tabindex="0" onclick="openComicPopup(2)">
+        <img src="images/sample-comic2.jpg" alt="کاور کمیک شماره ۲" loading="lazy" />
+        <div class="title">کمیک شماره ۲: نبرد</div>
+      </div>
+    </div>
+
+    <!-- فاز 2 -->
+    <div id="phase2" class="phase-content" role="tabpanel" aria-labelledby="tab2">
+      <div class="comic-card" tabindex="0" onclick="openComicPopup(3)">
+        <img src="images/sample-comic3.jpg" alt="کاور کمیک شماره ۳" loading="lazy" />
+        <div class="title">کمیک شماره ۳: انتقام</div>
+      </div>
+    </div>
+
+    <!-- فاز 3 -->
+    <div id="phase3" class="phase-content" role="tabpanel" aria-labelledby="tab3">
+      <div class="comic-card" tabindex="0" onclick="openComicPopup(4)">
+        <img src="images/sample-comic4.jpg" alt="کاور کمیک شماره ۴" loading="lazy" />
+        <div class="title">کمیک شماره ۴: رازها</div>
+      </div>
+    </div>
+
+    <!-- فاز 4 -->
+    <div id="phase4" class="phase-content" role="tabpanel" aria-labelledby="tab4">
+      <div class="comic-card" tabindex="0" onclick="openComicPopup(5)">
+        <img src="images/sample-comic5.jpg" alt="کاور کمیک شماره ۵" loading="lazy" />
+        <div class="title">کمیک شماره ۵: نبرد نهایی</div>
+      </div>
+    </div>
+
+    <!-- فاز 5 -->
+    <div id="phase5" class="phase-content" role="tabpanel" aria-labelledby="tab5">
+      <div class="comic-card" tabindex="0" onclick="openComicPopup(6)">
+        <img src="images/sample-comic6.jpg" alt="کاور کمیک شماره ۶" loading="lazy" />
+        <div class="title">کمیک شماره ۶: پایان</div>
+      </div>
+    </div>
+
+    <!-- فاز 6 -->
+    <div id="phase6" class="phase-content" role="tabpanel" aria-labelledby="tab6">
+      <div class="comic-card" tabindex="0" onclick="openComicPopup(7)">
+        <img src="images/sample-comic7.jpg" alt="کاور کمیک شماره ۷" loading="lazy" />
+        <div class="title">کمیک شماره ۷: شروع دوباره</div>
+      </div>
+    </div>
+
+  </section>
+
 </main>
+
+<!-- پاپ‌آپ جزئیات کمیک -->
+<div id="comicPopup" class="popup" role="dialog" aria-modal="true" aria-labelledby="comicPopupTitle" tabindex="-1">
+  <h3 id="comicPopupTitle">عنوان کمیک</h3>
+  <img id="comicPopupImage" src="" alt="" style="width: 100%; border-radius: 10px; margin: 15px 0;" />
+  <p id="comicPopupDescription" style="text-align: justify; line-height: 1.5;"></p>
+  <button class="close-btn" onclick="closeComicPopup()">بستن</button>
+</div>
 
 <footer>
   <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
 </footer>
 
 <script>
-  // کنترل نمایش منوی موبایل
-  const menuBtn = document.getElementById('menuBtn');
+  // منوی موبایل
+  const menuBtn = document.getElementById('menu-btn');
   const menu = document.getElementById('menu');
-
   menuBtn.addEventListener('click', () => {
-    menu.classList.toggle('show');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
   });
 
-  // بستن منو با کلیک بیرون از منو
-  document.addEventListener('click', e => {
-    if (!menu.contains(e.target) && e.target !== menuBtn) {
-      menu.classList.remove('show');
+  const homeBtn = document.getElementById('homeBtn');
+  homeBtn.addEventListener('click', () => {
+    closeComicPopup();
+    clearSearch();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // نمایش فاز انتخاب شده
+  function showPhase(num) {
+    for (let i = 1; i <= 6; i++) {
+      const phase = document.getElementById('phase' + i);
+      const tab = document.getElementById('tab' + i);
+      if (i === num) {
+        phase.classList.add('active');
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+      } else {
+        phase.classList.remove('active');
+        tab.classList.remove('active');
+        tab.setAttribute('aria-selected', 'false');
+      }
     }
-  });
+  }
 
-  // فعال کردن منو با کیبورد (برای دسترسی)
-  menuBtn.addEventListener('keydown', e => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      menu.classList.toggle('show');
-    }
-  });
-</script>
-
-</body>
-</html>
+  // داده‌های کمیک‌ها (می‌تونی اضافه و ویرایش کنی)
+  const comicsData = {
+    1: {
+      title: "کمیک شماره ۱: آغاز",
+      img: "images/sample-comic.jpg",
+      desc: "شرح کوتاه کمیک شماره ۱. اینجا می‌تونی خلاصه داستان رو بنویسی."
+    },
+    2: {
+      title: "کمیک شماره ۲: نبرد",
+      img: "images/sample-comic2.jpg",
+      desc: "شرح کوتاه کمیک شماره ۲..."
+    },
+    3: {
+      title: "کمیک شماره ۳: انتقام",
+      img: "images/sample-comic3.jpg",
+      desc: "شرح کوتاه کمیک شماره ۳..."
+    },
+    4: {
+      title: "کمیک شماره ۴: رازها",
+      img: "images/sample-comic4.jpg",
+      desc: "شرح کوتاه کمیک شماره ۴..."
+    },
+    5: {
+      title: "کمیک شماره ۵: نبرد نهایی",
+      img: "images/sample-comic5.jpg",
+      desc: "شرح کوتاه کمیک شماره ۵..."
+    },
+    6: {
+      title: "کمیک شماره ۶: پایان",
+      img: "images/sample-comic6.jpg",
+      desc: "شرح کوتاه کمیک شماره ۶..."
+    },
+    7: {
+      title: "کمیک شماره ۷: شروع
