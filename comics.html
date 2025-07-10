@@ -10,7 +10,9 @@
       box-sizing: border-box;
     }
     body, html {
-      margin: 0; padding: 0; height: 100%;
+      margin: 0;
+      padding: 0;
+      height: 100%;
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
       color: #f0c040;
@@ -19,7 +21,8 @@
       flex-direction: column;
       min-height: 100vh;
     }
-    header, footer {
+
+    header {
       background-color: #1a1a1a;
       color: #ff9900;
       text-align: center;
@@ -27,6 +30,7 @@
       flex-shrink: 0;
       box-shadow: 0 0 10px #ff990055;
     }
+
     main {
       flex-grow: 1;
       max-width: 1200px;
@@ -34,8 +38,17 @@
       width: 95%;
       display: flex;
       gap: 20px;
-      min-height: 400px;
     }
+
+    footer {
+      background-color: #1a1a1a;
+      color: #ff9900;
+      text-align: center;
+      padding: 20px 15px;
+      box-shadow: 0 0 10px #ff990055;
+      margin-top: auto;
+    }
+
     /* لیست فازها */
     #phaseList {
       flex: 0 0 180px;
@@ -44,6 +57,8 @@
       box-shadow: 0 0 15px #ff990044;
       padding: 15px;
       user-select: none;
+      overflow-y: auto;
+      max-height: 500px;
     }
     #phaseList li {
       padding: 10px 15px;
@@ -59,6 +74,7 @@
       box-shadow: 0 0 12px #ff9900dd;
       font-weight: bold;
     }
+
     /* لیست داستان‌ها */
     #storyList {
       flex: 0 0 220px;
@@ -85,6 +101,7 @@
       box-shadow: 0 0 12px #ff9900dd;
       font-weight: bold;
     }
+
     /* محتوای داستان */
     #storyContent {
       flex-grow: 1;
@@ -111,7 +128,7 @@
       border-radius: 12px;
       margin-bottom: 15px;
       box-shadow: 0 0 15px #ff9900bb;
-      display: none; /* اگر عکسی بود نمایش داده شود */
+      display: none;
       object-fit: contain;
     }
     #storyText {
@@ -121,6 +138,7 @@
       color: #f0c040;
       white-space: pre-wrap;
     }
+
     /* ریسپانسیو برای موبایل */
     @media (max-width: 900px) {
       main {
@@ -145,15 +163,9 @@
   </header>
 
   <main>
-    <ul id="phaseList" aria-label="لیست فازها">
-      <!-- فازها اینجا توسط JS ساخته می‌شوند -->
-    </ul>
-
-    <ul id="storyList" aria-label="لیست داستان‌ها">
-      <!-- داستان‌ها اینجا توسط JS ساخته می‌شوند -->
-    </ul>
-
-    <section id="storyContent" aria-live="polite">
+    <ul id="phaseList"></ul>
+    <ul id="storyList"></ul>
+    <section id="storyContent">
       <h2 id="storyTitle"></h2>
       <img id="storyCover" src="" alt="کاور داستان" />
       <p id="storyText"></p>
@@ -165,11 +177,10 @@
   </footer>
 
 <script>
-  // داده‌ها: 6 فاز نمونه با چند داستان
   const phases = {
     phase1: [
       { id: 'p1s1', title: 'لردفیزیکا:انفجار آبی', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
-      { id: 'p1s2', title: 'الکتروپالس:ولتاژ ناشناخته', cover: '', text: 'متن داستان به زودی اضاف خواهد شد ' },
+      { id: 'p1s2', title: 'الکتروپالس:ولتاژ ناشناخته', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
       { id: 'p1s3', title: 'المنت ها:عناصر پنهان', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
       { id: 'p1s4', title: 'استریکس:بند ذهن', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
       { id: 'p1s5', title: 'تسکین:خاموشی سنسور', cover: '', text: 'متن داستان به زودی اضاف خواهد شد' },
@@ -190,14 +201,12 @@
     phase7: [],
   };
 
-  // گرفتن المان‌ها
   const phaseList = document.getElementById('phaseList');
   const storyList = document.getElementById('storyList');
   const storyTitle = document.getElementById('storyTitle');
   const storyCover = document.getElementById('storyCover');
   const storyText = document.getElementById('storyText');
 
-  // ساخت لیست فازها
   function buildPhaseList() {
     phaseList.innerHTML = '';
     let i = 1;
@@ -206,11 +215,9 @@
       li.textContent = `فاز ${i}`;
       li.dataset.phase = key;
       li.tabIndex = 0;
-      li.addEventListener('click', () => {
-        setActivePhase(key);
-      });
+      li.addEventListener('click', () => setActivePhase(key));
       li.addEventListener('keydown', e => {
-        if(e.key === 'Enter' || e.key === ' ') {
+        if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           setActivePhase(key);
         }
@@ -220,7 +227,6 @@
     }
   }
 
-  // نمایش داستان‌ها وقتی فاز انتخاب شد
   function showStories(phaseKey) {
     storyList.innerHTML = '';
     const stories = phases[phaseKey] || [];
@@ -242,7 +248,7 @@
         showStory(story);
       });
       li.addEventListener('keydown', e => {
-        if(e.key === 'Enter' || e.key === ' ') {
+        if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           storyList.querySelectorAll('li').forEach(i => i.classList.remove('active'));
           li.classList.add('active');
@@ -253,7 +259,6 @@
     });
   }
 
-  // نمایش محتوای داستان
   function showStory(story) {
     storyTitle.textContent = story.title;
     if (story.cover) {
@@ -268,28 +273,21 @@
     storyText.textContent = story.text;
   }
 
-  // پاک کردن محتوای داستان
   function clearContent() {
     storyTitle.textContent = '';
     storyCover.style.display = 'none';
     storyText.textContent = '';
   }
 
-  // تنظیم فعال بودن فاز و نمایش داستان‌های آن
   function setActivePhase(phaseKey) {
-    // حذف کلاس فعال از همه فازها
     phaseList.querySelectorAll('li').forEach(li => li.classList.remove('active'));
-    // افزودن کلاس فعال به فاز انتخابی
     const selected = Array.from(phaseList.children).find(li => li.dataset.phase === phaseKey);
     if (selected) selected.classList.add('active');
-    // نمایش داستان‌های فاز انتخاب شده
     showStories(phaseKey);
   }
 
-  // شروع کار
   buildPhaseList();
   setActivePhase('phase1');
 </script>
-
 </body>
 </html>
