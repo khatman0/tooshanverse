@@ -416,14 +416,28 @@
 
     // داده‌های جستجو: اینجا هر چیزی که میخوای جستجو کنی رو بذار
     const searchData = [
-      { type: 'hero', id: 'taskin', name: '🌀 تسکین' },
-      { type: 'hero', id: 'electropulse', name: '⚡ الکتروپالس' },
-      { type: 'hero', id: 'gardafrid', name: '🔥 گردآفرید' },
-      { type: 'section', id: 'comics', name: 'کمیک‌ها' },
-      { type: 'section', id: 'chat', name: 'گفت‌وگوی آنلاین' },
-      { type: 'section', id: 'characters', name: 'شخصیت‌ها' },
-      { type: 'home', id: 'home', name: 'خانه' },
-    ];
+  { type: 'hero', id: 'taskin', name: '🌀 تسکین' },
+  { type: 'hero', id: 'electropulse', name: '⚡ الکتروپالس' },
+  { type: 'hero', id: 'gardafrid', name: '🔥 گردآفرید' },
+  { type: 'hero', id: 'physica', name: 'لرد فیزیکا' },
+  { type: 'hero', id: 'anasser', name: 'عناصر' },
+  { type: 'hero', id: 'mordavij', name: 'مرداویچ' },
+  { type: 'hero', id: 'strix', name: 'استریکس' },
+  { type: 'hero', id: 'hashashin', name: 'حشاشین' },
+  { type: 'hero', id: 'eternals', name: 'ارتش جاویدان' },
+
+  { type: 'villain', id: 'agnatus', name: '😈 آگناتوس' },
+
+  { type: 'neutral', id: 'nima-raha', name: '⚖️ نیما و رها' },
+
+  { type: 'section', id: 'comics', name: '📚 کمیک‌ها' },
+  { type: 'section', id: 'chat', name: '💬 گفت‌وگوی آنلاین' },
+  { type: 'section', id: 'characters', name: 'شخصیت‌ها' },
+
+  { type: 'page', id: 'photos', name: '🖼️ عکس‌ها' },
+  { type: 'page', id: 'about', name: 'ℹ️ درباره ما' },
+  { type: 'home', id: 'home', name: 'خانه' }
+];
 
     // جستجوی سایت در کل داده‌ها
     function siteSearch() {
@@ -443,9 +457,18 @@
         const p = document.createElement('p');
         p.textContent = item.name;
         p.onclick = () => {
-          if (item.type === 'hero' || item.type === 'section') {
-            openPopup(item.id);
-          } else if (item.type === 'home') {
+          if (['hero', 'villain', 'neutral'].includes(item.type)) {
+  openPopup(item.id);
+} else if (item.type === 'section') {
+  document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+} else if (item.type === 'page') {
+  window.location.href = item.id + '.html';
+} else if (item.type === 'home') {
+  closePopup();
+  clearSearch();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+          else if (item.type === 'home') {
             closePopup();
             clearSearch();
             window.scrollTo({ top: 0, behavior: 'smooth' });
