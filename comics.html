@@ -7,110 +7,206 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
+    /* استایل کلی */
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
+      color: #f0c040;
+      margin: 0; padding: 0;
+      direction: rtl;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      font-family: 'Vazirmatn', sans-serif;
-      background: linear-gradient(135deg, #2b0a0a, #4a1414);
-      color: #f0c040;
-      direction: rtl;
     }
-
     header, footer {
       background-color: #1a1a1a;
       color: #ff9900;
       text-align: center;
       padding: 30px 20px;
+      flex-shrink: 0;
     }
-
+    main {
+      flex-grow: 1;
+      max-width: 1000px;
+      margin: 30px auto 50px auto;
+      padding: 0 20px;
+    }
     h1, h2 {
       color: #ff9900;
+      margin-bottom: 10px;
     }
 
-    main {
-      flex: 1;
-      max-width: 1000px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-
+    /* لیست کمیک‌ها */
     .comic-list {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
       justify-content: center;
-      margin-top: 30px;
+      margin-top: 20px;
     }
-
     .comic-item {
       background: #1f1f1f;
-      padding: 20px;
-      border-radius: 10px;
+      padding: 15px;
+      border-radius: 12px;
       box-shadow: 0 0 10px #ff990055;
-      width: 250px;
+      width: 230px;
+      cursor: pointer;
+      color: #f0c040;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
     }
-
     .comic-item:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 15px #ff9900aa;
+      box-shadow: 0 0 15px #ff9900cc;
     }
-
     .comic-item img {
       width: 100%;
-      border-radius: 8px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      box-shadow: 0 0 10px #ff990066;
+      user-select: none;
     }
-
     .comic-title {
-      margin-top: 10px;
       font-size: 18px;
       font-weight: bold;
       text-align: center;
+      user-select: none;
     }
 
-    a.back-button {
-      display: inline-block;
-      margin-top: 30px;
-      background: #ff9900;
-      color: #111;
-      padding: 12px 24px;
+    /* منوی موبایل */
+    .menu-btn {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      width: 30px;
+      height: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .menu-btn div {
+      height: 4px;
+      background-color: #f0c040;
+      border-radius: 2px;
+    }
+    nav.menu {
+      display: none;
+      position: absolute;
+      top: 65px;
+      right: 25px;
+      background: #1a1a1a;
+      padding: 12px 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #ff9900cc;
+      z-index: 1000;
+      min-width: 160px;
+    }
+    nav.menu a {
+      display: block;
+      padding: 10px 0;
+      color: #f0c040;
       text-decoration: none;
-      border-radius: 10px;
-      font-weight: bold;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    nav.menu a:hover {
+      color: #fff;
+    }
+    /* نمایش منو در حالت فعال */
+    nav.menu.show {
+      display: block;
     }
 
-    a.back-button:hover {
-      background: #e68a00;
+    /* واکنش‌گرا */
+    @media (max-width: 600px) {
+      .comic-item {
+        width: 100%;
+      }
+      nav.menu {
+        right: 15px;
+        top: 55px;
+        min-width: 140px;
+      }
+      .menu-btn {
+        top: 20px;
+        right: 15px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>📚 کمیک‌های توشان‌ورس</h1>
-    <p>در این بخش می‌تونی کمیک‌ها و داستان‌های مصور دنیای توشان‌ورس رو ببینی.</p>
-  </header>
+<header>
+  <h1>📚 کمیک‌های توشان‌ورس</h1>
+  <p>در این بخش می‌تونی کمیک‌ها و داستان‌های مصور دنیای توشان‌ورس رو ببینی.</p>
 
-  <main>
-    <h2>فهرست کمیک‌ها</h2>
-    <div class="comic-list">
-      <!-- نمونه یک کمیک -->
-      <div class="comic-item">
-        <img src="images/sample-comic.jpg" alt="نمونه کمیک">
-        <div class="comic-title">کمیک شماره ۱: آغاز</div>
-      </div>
-      <!-- کمیک‌های بعدی رو هم به همین سبک اضافه کن -->
-    </div>
+  <div class="menu-btn" id="menuBtn" aria-label="باز کردن منو" role="button" tabindex="0">
+    <div></div><div></div><div></div>
+  </div>
 
-    <a href="index.html" class="back-button">بازگشت به صفحه اصلی</a>
-  </main>
+  <nav class="menu" id="menu">
+    <a href="index.html">خانه</a>
+    <a href="heroes.html">قهرمان‌ها</a>
+    <a href="villains.html">ویلن‌ها</a>
+    <a href="about.html">درباره ما</a>
+    <a href="chat.html">گفت‌وگوی آنلاین</a>
+  </nav>
+</header>
 
-  <footer>
-    <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
-  </footer>
+<main>
+  <h2>فهرست کمیک‌ها</h2>
+
+  <div class="comic-list">
+    <a href="comic1.html" class="comic-item" tabindex="0" aria-label="کمیک شماره ۱: آغاز">
+      <img src="images/sample-comic.jpg" alt="کاور کمیک شماره ۱" loading="lazy" />
+      <div class="comic-title">کمیک شماره ۱: آغاز</div>
+    </a>
+
+    <a href="comic2.html" class="comic-item" tabindex="0" aria-label="کمیک شماره ۲: نبرد">
+      <img src="images/sample-comic2.jpg" alt="کاور کمیک شماره ۲" loading="lazy" />
+      <div class="comic-title">کمیک شماره ۲: نبرد</div>
+    </a>
+
+    <!-- کمیک‌های بیشتر را اینجا اضافه کن -->
+  </div>
+</main>
+
+<footer>
+  <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
+</footer>
+
+<script>
+  // کنترل نمایش منوی موبایل
+  const menuBtn = document.getElementById('menuBtn');
+  const menu = document.getElementById('menu');
+
+  menuBtn.addEventListener('click', () => {
+    menu.classList.toggle('show');
+  });
+
+  // بستن منو با کلیک بیرون از منو
+  document.addEventListener('click', e => {
+    if (!menu.contains(e.target) && e.target !== menuBtn) {
+      menu.classList.remove('show');
+    }
+  });
+
+  // فعال کردن منو با کیبورد (برای دسترسی)
+  menuBtn.addEventListener('keydown', e => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      menu.classList.toggle('show');
+    }
+  });
+</script>
 
 </body>
 </html>
