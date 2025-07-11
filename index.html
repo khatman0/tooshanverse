@@ -255,6 +255,15 @@
       justify-content: center;
       cursor: default;
     }
+    .fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
     #notice-board-section h2 {
       margin: 0 0 10px 0;
       font-size: 20px;
@@ -595,15 +604,24 @@
         return;
       }
 
-      let currentNoticeIndex = 0;
-      noticeViewer.textContent = notices[currentNoticeIndex];
+     let currentNoticeIndex = 0;
+noticeViewer.textContent = notices[currentNoticeIndex];
+noticeViewer.classList.add('fade-in');
 
-      setInterval(() => {
-        currentNoticeIndex++;
-        if (currentNoticeIndex >= notices.length) currentNoticeIndex = 0;
-        noticeViewer.textContent = notices[currentNoticeIndex];
-      }, 5000);
-    }
+setInterval(() => {
+  // مرحله 1: محو شدن
+  noticeViewer.classList.remove('fade-in');
+  noticeViewer.classList.add('fade-out');
+
+  // بعد از نیم ثانیه (محوشدن)، متن جدید رو نشون بده و ظاهر کن
+  setTimeout(() => {
+    currentNoticeIndex = (currentNoticeIndex + 1) % notices.length;
+    noticeViewer.textContent = notices[currentNoticeIndex];
+
+    noticeViewer.classList.remove('fade-out');
+    noticeViewer.classList.add('fade-in');
+  }, 500);
+}, 5000);
 
     // فراخوانی توابع شمارنده و اعلان‌ها
     updateCountdown();
