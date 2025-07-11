@@ -516,11 +516,7 @@
   document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
 } else if (item.type === 'page') {
   window.location.href = item.id + '.html';
-} else if (item.type === 'home') {
-  closePopup();
-  clearSearch();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+} 
           else if (item.type === 'home') {
             closePopup();
             clearSearch();
