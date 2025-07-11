@@ -266,7 +266,12 @@
       overflow-y: hidden;
       user-select: text;
       text-align: right;
+      transition: opacity 0.6s ease;
+      opacity: 1;
     }
+    .fade-out {
+  opacity: 0;
+}
 
     /* واکنش‌گرایی موبایل - زیر هم */
     @media (max-width: 700px) {
@@ -559,12 +564,34 @@
     }
 
     async function showNotices() {
-      const noticeViewer = document.getElementById('notice-viewer');
-      const data = await fetchSheetData();
-      if (!data || data.length === 0) {
-        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
-        return;
-      }
+  const noticeViewer = document.getElementById('notice-viewer');
+  const data = await fetchSheetData();
+  if (!data || data.length === 0) {
+    noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
+    return;
+  }
+
+  const notices = data.map(row => row[1] ? row[1].trim() : '').filter(text => text.length > 0);
+
+  if (notices.length === 0) {
+    noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
+    return;
+  }
+
+  let currentNoticeIndex = 0;
+  noticeViewer.textContent = notices[currentNoticeIndex];
+
+  setInterval(() => {
+    noticeViewer.classList.add('fade-out');
+
+    setTimeout(() => {
+      currentNoticeIndex++;
+      if (currentNoticeIndex >= notices.length) currentNoticeIndex = 0;
+      noticeViewer.textContent = notices[currentNoticeIndex];
+      noticeViewer.classList.remove('fade-out');
+    }, 600); // مدت محو شدن قبل از نمایش بعدی
+  }, 7000);
+}
 
       // فرض می‌کنیم ستون دوم هر ردیف اعلان است
       const notices = data.map(row => row[1] ? row[1].trim() : '').filter(text => text.length > 0);
