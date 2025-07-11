@@ -154,15 +154,15 @@
       box-shadow: 0 0 10px #ff990044;
     }
     #siteSearchInput {
-  width: 80%;
-  padding: 8px 12px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  box-shadow: 0 0 8px #ff990044;
-  color: #222;
-}
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      box-shadow: 0 0 10px #ff990044;
+      color: #222;
+    }
     #searchResults {
       max-width: 600px;
       margin: 15px auto 0 auto;
@@ -218,17 +218,20 @@
     /* ========== اضافه شده برای شمارنده و تابلو اعلانات ========== */
     /* شمارنده گوشه سمت راست */
     #countdown-container {
-  position: static; /* یا relative */
-  width: 250px;
-  background: #1a1a1a;
-  color: #f0c040;
-  padding: 15px;
-  font-size: 18px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px #ff990055;
-  user-select: none;
-  text-align: center;
-}
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 250px;
+      background: #1a1a1a;
+      color: #f0c040;
+      padding: 15px;
+      font-size: 18px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #ff990055;
+      user-select: none;
+      z-index: 10000;
+      text-align: center;
+    }
 
     /* تابلو اعلانات گوشه سمت چپ */
     #notice-board-section {
@@ -263,12 +266,7 @@
       overflow-y: hidden;
       user-select: text;
       text-align: right;
-      transition: opacity 0.6s ease;
-      opacity: 1;
     }
-    .fade-out {
-  opacity: 0;
-}
 
     /* واکنش‌گرایی موبایل - زیر هم */
     @media (max-width: 700px) {
@@ -320,11 +318,10 @@
     <div id="notice-viewer">در حال بارگذاری اعلان‌ها...</div>
   </section>
 
- <section id="countdown-section" style="max-width: 1000px; margin: 20px auto; display: flex; justify-content: flex-end;">
-  <div id="countdown-container" style="width: 250px; background: #1a1a1a; color: #f0c040; padding: 15px; font-size: 18px; border-radius: 10px; box-shadow: 0 0 15px #ff990055; user-select: none; text-align: center;">
+  <!-- شمارنده گوشه سمت راست -->
+  <div id="countdown-container">
     در حال بارگذاری شمارنده...
   </div>
-</section>
 
   <section id="characters">
     <h2>شخصیت‌ها</h2>
@@ -484,7 +481,7 @@
         { title: 'لرد فیزیکا', description: '' },
         { title: 'الکتروپالس', description: '' },
         { title: 'کمیک‌های توشان‌ورس', description: '' },
-        { title: 'گفت‌وگو با من', description: 'چت آنلاین' },
+        { title: 'گفت‌وگو با من', description: '' },
       ];
 
       const filtered = searchItems.filter(item =>
@@ -562,39 +559,31 @@
     }
 
     async function showNotices() {
-  const noticeViewer = document.getElementById('notice-viewer');
-  const data = await fetchSheetData();
-  if (!data || data.length === 0) {
-    noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
-    return;
-  }
+      const noticeViewer = document.getElementById('notice-viewer');
+      const data = await fetchSheetData();
+      if (!data || data.length === 0) {
+        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
+        return;
+      }
 
-  const notices = data.map(row => row[1] ? row[1].trim() : '').filter(text => text.length > 0);
+      // فرض می‌کنیم ستون دوم هر ردیف اعلان است
+      const notices = data.map(row => row[1] ? row[1].trim() : '').filter(text => text.length > 0);
 
-  if (notices.length === 0) {
-    noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
-    return;
-  }
+      if (notices.length === 0) {
+        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
+        return;
+      }
 
-  let currentNoticeIndex = 0;
-  noticeViewer.textContent = notices[currentNoticeIndex];
+      let currentNoticeIndex = 0;
+      noticeViewer.textContent = notices[currentNoticeIndex];
 
- setInterval(() => {
-  const noticeViewer = document.getElementById('notice-viewer');
-  noticeViewer.classList.add('fade-out');  // شروع محو شدن متن
+      setInterval(() => {
+        currentNoticeIndex++;
+        if (currentNoticeIndex >= notices.length) currentNoticeIndex = 0;
+        noticeViewer.textContent = notices[currentNoticeIndex];
+      }, 7000);
+    }
 
-  setTimeout(() => {
-    currentNoticeIndex++;
-    if (currentNoticeIndex >= notices.length) currentNoticeIndex = 0;
-    noticeViewer.textContent = notices[currentNoticeIndex];  // تغییر متن اعلان
-
-    // تضمین اینکه مرورگر انیمیشن نمایش رو تشخیص بده
-    requestAnimationFrame(() => {
-      noticeViewer.classList.remove('fade-out');  // نمایش مجدد متن با انیمیشن
-    });
-  }, 600); // مدت زمان محو شدن
-}, 7000);
-}
     // فراخوانی توابع شمارنده و اعلان‌ها
     updateCountdown();
     showNotices();
