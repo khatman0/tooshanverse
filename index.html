@@ -218,20 +218,17 @@
     /* ========== اضافه شده برای شمارنده و تابلو اعلانات ========== */
     /* شمارنده گوشه سمت راست */
     #countdown-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 250px;
-      background: #1a1a1a;
-      color: #f0c040;
-      padding: 15px;
-      font-size: 18px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px #ff990055;
-      user-select: none;
-      z-index: 10000;
-      text-align: center;
-    }
+  position: static; /* یا relative */
+  width: 250px;
+  background: #1a1a1a;
+  color: #f0c040;
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #ff990055;
+  user-select: none;
+  text-align: center;
+}
 
     /* تابلو اعلانات گوشه سمت چپ */
     #notice-board-section {
@@ -323,10 +320,11 @@
     <div id="notice-viewer">در حال بارگذاری اعلان‌ها...</div>
   </section>
 
-  <!-- شمارنده گوشه سمت راست -->
-  <div id="countdown-container">
+ <section id="countdown-section" style="max-width: 1000px; margin: 20px auto; display: flex; justify-content: flex-end;">
+  <div id="countdown-container" style="width: 250px; background: #1a1a1a; color: #f0c040; padding: 15px; font-size: 18px; border-radius: 10px; box-shadow: 0 0 15px #ff990055; user-select: none; text-align: center;">
     در حال بارگذاری شمارنده...
   </div>
+</section>
 
   <section id="characters">
     <h2>شخصیت‌ها</h2>
