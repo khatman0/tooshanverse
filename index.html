@@ -206,6 +206,53 @@
     .chat-button:hover {
       background-color: #e68a00;
     }
+
+    #roadmap {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: auto;
+  text-align: right;
+}
+
+.roadmap-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  color: #f0c040;
+  font-size: 18px;
+}
+
+.roadmap-list li {
+  background-color: #1f1f1f;
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ff990033;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: box-shadow 0.3s ease;
+}
+
+.roadmap-list li:hover {
+  box-shadow: 0 0 15px #ff990099;
+}
+
+.roadmap-list span.done {
+  color: #00ff99;
+  font-size: 20px;
+}
+
+.roadmap-list span.doing {
+  color: #ffcc00;
+  font-size: 20px;
+}
+
+.roadmap-list span.locked {
+  color: #ff4444;
+  font-size: 20px;
+}
+
   </style>
 </head>
 <body>
@@ -362,6 +409,18 @@
     <h2>گفت‌وگوی آنلاین</h2>
     <a href="chat.html" class="chat-button">💬 ورود به توشان چت</a>
   </section>
+
+  <section id="roadmap">
+  <h2>📊 نقشه راه توشان‌ورس</h2>
+  <ul class="roadmap-list">
+    <li><span class="done">✅</span> فاز اول: معرفی قهرمان‌ها و ویلن‌ها</li>
+    <li><span class="doing">⏳</span> فاز دوم: انتشار اولین داستان‌های کوتاه</li>
+    <li><span class="locked">🔒</span> فاز سوم: کراس‌اور کوچک شبیه Avengers 1</li>
+    <li><span class="locked">🔒</span> فاز چهارم: نمایش بخش‌هایی از گذشته بعضی شخصیت‌ها</li>
+    <li><span class="locked">🔒</span> فاز پنجم: رویدادهای جهانی با تهدید فراگیر</li>
+    <li><span class="locked">🔒</span> فاز ششم: جنگ بزرگ جهان‌ها (کراس‌اور نهایی)</li>
+  </ul>
+</section>
 
   <footer>
     <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
