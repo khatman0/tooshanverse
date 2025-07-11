@@ -191,6 +191,11 @@
         width: 100%;
         text-align: center;
       }
+      /* اصلاح اندازه ورودی جستجو در موبایل */
+      #siteSearchInput {
+        font-size: 16px;
+        padding: 8px 12px;
+      }
     }
     .chat-button {
       display: inline-block;
@@ -208,51 +213,104 @@
     }
 
     #roadmap {
-  padding: 40px 20px;
-  max-width: 800px;
-  margin: auto;
-  text-align: right;
-}
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: auto;
+      text-align: right;
+    }
 
-.roadmap-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-  color: #f0c040;
-  font-size: 18px;
-}
+    .roadmap-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+      color: #f0c040;
+      font-size: 18px;
+    }
 
-.roadmap-list li {
-  background-color: #1f1f1f;
-  margin-bottom: 10px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #ff990033;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: box-shadow 0.3s ease;
-}
+    .roadmap-list li {
+      background-color: #1f1f1f;
+      margin-bottom: 10px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff990033;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: box-shadow 0.3s ease;
+    }
 
-.roadmap-list li:hover {
-  box-shadow: 0 0 15px #ff990099;
-}
+    .roadmap-list li:hover {
+      box-shadow: 0 0 15px #ff990099;
+    }
 
-.roadmap-list span.done {
-  color: #00ff99;
-  font-size: 20px;
-}
+    .roadmap-list span.done {
+      color: #00ff99;
+      font-size: 20px;
+    }
 
-.roadmap-list span.doing {
-  color: #ffcc00;
-  font-size: 20px;
-}
+    .roadmap-list span.doing {
+      color: #ffcc00;
+      font-size: 20px;
+    }
 
-.roadmap-list span.locked {
-  color: #ff4444;
-  font-size: 20px;
-}
+    .roadmap-list span.locked {
+      color: #ff4444;
+      font-size: 20px;
+    }
 
+    /* استایل بخش تایمر و فرم */
+    #next-part-timer {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #1a1a1a;
+      color: #f0c040;
+      max-width: 600px;
+      margin: 30px auto 30px auto;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #ff990066;
+    }
+
+    #countdown {
+      margin-top: 10px;
+      font-size: 28px;
+      color: #ff9900;
+      font-weight: bold;
+    }
+
+    #next-part-form {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      direction: ltr; /* چون تاریخ و ساعت انگلیسی است بهتر خوانده شود */
+    }
+
+    #next-part-form input[type="datetime-local"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+      box-shadow: 0 0 10px #ff990033;
+      cursor: pointer;
+    }
+
+    #next-part-form button {
+      background-color: #ff9900;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #111;
+      font-weight: bold;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    #next-part-form button:hover {
+      background-color: #e68a00;
+    }
   </style>
 </head>
 <body>
@@ -281,6 +339,17 @@
     />
     <div id="searchResults"></div>
   </div>
+
+  <!-- فرم تنظیم تاریخ پارت بعدی و شمارنده -->
+  <section id="next-part-timer">
+    <form id="next-part-form">
+      <label for="nextReleaseInput" style="display:none;">تاریخ و ساعت پارت بعدی</label>
+      <input type="datetime-local" id="nextReleaseInput" />
+      <button type="submit">تنظیم زمان</button>
+    </form>
+    <h2>⏳ زمان باقی‌مانده تا پارت بعدی:</h2>
+    <div id="countdown">بارگذاری...</div>
+  </section>
 
   <section id="characters">
     <h2>شخصیت‌ها</h2>
@@ -410,122 +479,140 @@
     <a href="chat.html" class="chat-button">💬 ورود به توشان چت</a>
   </section>
 
-  <section id="roadmap">
-  <h2>📊 نقشه راه توشان‌ورس</h2>
-  <ul class="roadmap-list">
-    <li><span class="done">✅</span> فاز اول: معرفی قهرمان‌ها و ویلن‌ها</li>
-    <li><span class="doing">⏳</span> فاز دوم: انتشار اولین داستان‌های کوتاه</li>
-    <li><span class="locked">🔒</span> فاز سوم: کراس‌اور کوچک شبیه Avengers 1</li>
-    <li><span class="locked">🔒</span> فاز چهارم: نمایش بخش‌هایی از گذشته بعضی شخصیت‌ها</li>
-    <li><span class="locked">🔒</span> فاز پنجم: رویدادهای جهانی با تهدید فراگیر</li>
-    <li><span class="locked">🔒</span> فاز ششم: جنگ بزرگ جهان‌ها (کراس‌اور نهایی)</li>
-  </ul>
-</section>
-
   <footer>
-    <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
+    <p>© 2025 توشان ورس | Tooshanverse</p>
   </footer>
 
   <script>
-    // منوی موبایل
-    const menuBtn = document.getElementById('menu-btn');
-    const menu = document.getElementById('menu');
-    menuBtn.addEventListener('click', () => {
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    // منو موبایل
+    const menuBtn = document.getElementById("menu-btn");
+    const menu = document.getElementById("menu");
+    menuBtn.addEventListener("click", () => {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
     });
 
-    // دکمه خانه در منو
-    const homeBtn = document.getElementById('homeBtn');
-    homeBtn.addEventListener('click', () => {
-      closePopup();
-      clearSearch();
-      // اسکرول به بالا و مخفی کردن نتایج جستجو
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // باز کردن پاپ‌آپ‌ها
-    function openPopup(type) {
-      closePopup();
-      const popup = document.getElementById('popup-' + type);
-      if (popup) popup.classList.add('show');
-      menu.style.display = 'none'; // منو رو ببند
-      clearSearch();
-      // اسکرول به بالا برای دیده شدن پاپ‌آپ
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // پاپ‌آپ‌ها
+    function openPopup(name) {
+      // همه پاپ‌آپ‌ها رو می‌بندیم اول
+      document.querySelectorAll(".popup").forEach(popup => {
+        popup.classList.remove("show");
+      });
+      // پاپ‌آپ انتخاب شده رو باز می‌کنیم
+      document.getElementById("popup-" + name).classList.add("show");
     }
-
-    // بستن پاپ‌آپ‌ها
     function closePopup() {
-      document.querySelectorAll('.popup').forEach(p => p.classList.remove('show'));
+      document.querySelectorAll(".popup").forEach(popup => {
+        popup.classList.remove("show");
+      });
     }
 
-    // پاک کردن جستجو و نتایج
-    function clearSearch() {
-      const input = document.getElementById('siteSearchInput');
-      const results = document.getElementById('searchResults');
-      input.value = '';
-      results.innerHTML = '';
-    }
-
-    // داده‌های جستجو: اینجا هر چیزی که میخوای جستجو کنی رو بذار
-    const searchData = [
-  { type: 'hero', id: 'taskin', name: '🌀 تسکین' },
-  { type: 'hero', id: 'electropulse', name: '⚡ الکتروپالس' },
-  { type: 'hero', id: 'gardafrid', name: '🔥 گردآفرید' },
-  { type: 'hero', id: 'physica', name: 'لرد فیزیکا' },
-  { type: 'hero', id: 'anasser', name: 'عناصر' },
-  { type: 'hero', id: 'mordavij', name: 'مرداویچ' },
-  { type: 'hero', id: 'strix', name: 'استریکس' },
-  { type: 'hero', id: 'hashashin', name: 'حشاشین' },
-  { type: 'hero', id: 'eternals', name: 'ارتش جاویدان' },
-
-  { type: 'villain', id: 'agnatus', name: '😈 آگناتوس' },
-
-  { type: 'neutral', id: 'nima-raha', name: '⚖️ نیما و رها' },
-
-  { type: 'section', id: 'comics', name: '📚 کمیک‌ها' },
-  { type: 'section', id: 'chat', name: '💬 گفت‌وگوی آنلاین' },
-  { type: 'section', id: 'characters', name: 'شخصیت‌ها' },
-
-  { type: 'page', id: 'photos', name: '🖼️ عکس‌ها' },
-  { type: 'page', id: 'about', name: 'ℹ️ درباره ما' },
-  { type: 'home', id: 'home', name: 'خانه' }
-];
-
-    // جستجوی سایت در کل داده‌ها
+    // جستجو در سایت
     function siteSearch() {
-      const input = document.getElementById('siteSearchInput').value.trim().toLowerCase();
-      const results = document.getElementById('searchResults');
-      results.innerHTML = '';
+      const input = document.getElementById("siteSearchInput");
+      const filter = input.value.trim().toLowerCase();
+      const results = document.getElementById("searchResults");
+      results.innerHTML = "";
+      if (filter.length === 0) return;
 
-      if (!input) return;
+      // عناوین و اسامی شخصیت‌ها، بخش‌ها و...
+      const items = [
+        { name: "تسکین", popup: "taskin" },
+        { name: "الکتروپالس", popup: "electropulse" },
+        { name: "گردآفرید", popup: "gardafrid" },
+        { name: "لرد فیزیکا", popup: "physica" },
+        { name: "عناصر", popup: "anasser" },
+        { name: "مرداویچ", popup: "mordavij" },
+        { name: "استریکس", popup: "strix" },
+        { name: "حشاشین", popup: "hashashin" },
+        { name: "ارتش جاویدان", popup: "eternals" },
+        { name: "آگناتوس", popup: "agnatus" },
+        { name: "نیما و رها", popup: "nima-raha" },
+        { name: "قهرمان‌ها", section: "characters" },
+        { name: "ویلن‌ها", section: "villains" },
+        { name: "خنثی‌ها", section: "neutrals" },
+        { name: "کمیک‌ها", section: "comics" },
+        { name: "گفتگو با من", section: "chat" }
+      ];
 
-      const filtered = searchData.filter(item => item.name.replace(/[\u{1F300}-\u{1F6FF}]/gu, '').toLowerCase().includes(input));
-      if (filtered.length === 0) {
-        results.innerHTML = '<p>نتیجه‌ای یافت نشد.</p>';
-        return;
-      }
-
+      const filtered = items.filter(item => item.name.includes(filter));
       filtered.forEach(item => {
-        const p = document.createElement('p');
+        const p = document.createElement("p");
         p.textContent = item.name;
         p.onclick = () => {
-          if (['hero', 'villain', 'neutral'].includes(item.type)) {
-  openPopup(item.id);
-} else if (item.type === 'section') {
-  document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
-} else if (item.type === 'page') {
-  window.location.href = item.id + '.html';
-} 
-          else if (item.type === 'home') {
-            closePopup();
-            clearSearch();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (item.popup) openPopup(item.popup);
+          else if (item.section) {
+            document.getElementById(item.section).scrollIntoView({ behavior: "smooth" });
           }
+          results.innerHTML = "";
+          input.value = "";
         };
         results.appendChild(p);
       });
     }
+
+    // شمارنده و فرم تنظیم تاریخ
+    const countdownEl = document.getElementById("countdown");
+    const form = document.getElementById("next-part-form");
+    const inputDate = document.getElementById("nextReleaseInput");
+
+    // بارگذاری زمان بعدی از لوکال استوریج یا مقدار پیشفرض (اگر نداریم، فردا ساعت 23)
+    let nextReleaseTime = localStorage.getItem("nextReleaseTime");
+    if (nextReleaseTime) {
+      nextReleaseTime = parseInt(nextReleaseTime, 10);
+    } else {
+      // پیشفرض: فردا ساعت 23:00
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(23, 0, 0, 0);
+      nextReleaseTime = tomorrow.getTime();
+    }
+
+    // تنظیم مقدار ورودی فرم بر اساس مقدار ذخیره شده (برای UX)
+    function updateInputValue() {
+      const dt = new Date(nextReleaseTime);
+      // فرمت ورودی datetime-local: YYYY-MM-DDTHH:mm
+      const isoString = dt.toISOString();
+      const val = isoString.substring(0,16);
+      inputDate.value = val;
+    }
+    updateInputValue();
+
+    // به‌روزرسانی شمارنده
+    let countdownTimer = null;
+    function startCountdown() {
+      if (countdownTimer) clearInterval(countdownTimer);
+      countdownTimer = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = nextReleaseTime - now;
+
+        if (distance <= 0) {
+          clearInterval(countdownTimer);
+          countdownEl.innerHTML = "📖 پارت جدید آماده‌ست!";
+          return;
+        }
+
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownEl.innerHTML = `${hours} ساعت، ${minutes} دقیقه، ${seconds} ثانیه`;
+      }, 1000);
+    }
+    startCountdown();
+
+    // هندل ارسال فرم
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const newTime = new Date(inputDate.value).getTime();
+      if (isNaN(newTime) || newTime <= Date.now()) {
+        alert("لطفاً یک تاریخ و ساعت معتبر در آینده وارد کنید.");
+        return;
+      }
+      nextReleaseTime = newTime;
+      localStorage.setItem("nextReleaseTime", nextReleaseTime);
+      startCountdown();
+      alert("زمان پارت بعدی با موفقیت تنظیم شد!");
+    });
   </script>
 </body>
 </html>
