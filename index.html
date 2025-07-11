@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="فا">
+<html lang="fa">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,6 +7,31 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
   <style>
+    @keyframes glow {
+      0%, 100% {
+        text-shadow:
+          0 0 5px #ff9900,
+          0 0 10px #ff9900,
+          0 0 20px #ff9900,
+          0 0 30px #ff9900,
+          0 0 40px #ff9900,
+          0 0 50px #ff9900,
+          0 0 60px #ff9900;
+        color: #ff9900;
+      }
+      50% {
+        text-shadow:
+          0 0 10px #ffd966,
+          0 0 20px #ffd966,
+          0 0 30px #ffd966,
+          0 0 40px #ffd966,
+          0 0 50px #ffd966,
+          0 0 60px #ffd966,
+          0 0 70px #ffd966;
+        color: #ffd966;
+      }
+    }
+
     body {
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
@@ -21,7 +46,21 @@
       padding: 30px 20px;
       position: relative;
     }
-    h1, h2, h3 {
+    /* افکت نور برای عنوان اصلی */
+    header h1 {
+      color: #ff9900;
+      font-size: 2.8rem;
+      animation: glow 2.5s ease-in-out infinite;
+      user-select: none;
+      margin: 0;
+    }
+    header p {
+      color: #f0c040;
+      margin-top: 6px;
+      font-size: 1.3rem;
+      font-weight: 500;
+    }
+    h2, h3 {
       color: #ff9900;
     }
     section {
@@ -441,146 +480,129 @@
     const menuBtn = document.getElementById('menu-btn');
     const menu = document.getElementById('menu');
     menuBtn.addEventListener('click', () => {
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+      if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+      } else {
+        menu.style.display = 'block';
+      }
     });
 
     // باز و بسته کردن پاپ‌آپ‌ها
     function openPopup(name) {
-      document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('show'));
-      const popup = document.getElementById('popup-' + name);
-      if (popup) {
-        popup.classList.add('show');
+      // همه پاپ‌آپ‌ها را مخفی کن
+      const popups = document.querySelectorAll('.popup');
+      popups.forEach(p => {
+        p.classList.remove('show');
+      });
+      // اگر نامی بود، نمایش بده
+      if (name) {
+        const popup = document.getElementById('popup-' + name);
+        if (popup) popup.classList.add('show');
       }
     }
+
     function closePopup() {
-      document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('show'));
+      const popups = document.querySelectorAll('.popup');
+      popups.forEach(p => {
+        p.classList.remove('show');
+      });
     }
 
-    // جستجو ساده سایت
-    const siteContent = [
-      {title: 'تسکین', type: 'character'},
-      {title: 'الکتروپالس', type: 'character'},
-      {title: 'گردآفرید', type: 'character'},
-      {title: 'لرد فیزیکا', type: 'character'},
-      {title: 'عناصر', type: 'character'},
-      {title: 'مرداویچ', type: 'character'},
-      {title: 'استریکس', type: 'character'},
-      {title: 'حشاشین', type: 'character'},
-      {title: 'ارتش جاویدان', type: 'character'},
-      {title: 'آگناتوس', type: 'character'},
-      {title: 'نیما و رها', type: 'character'},
-      {title: 'کمیک‌ها', type: 'comic'},
-      {title: 'گفت‌وگو با من', type: 'chat'},
+    // جستجو در سایت (شخصیت‌ها، بخش‌ها)
+    const searchData = [
+      {name: 'تسکین', popup: 'taskin'},
+      {name: 'الکتروپالس', popup: 'electropulse'},
+      {name: 'گردآفرید', popup: 'gardafrid'},
+      {name: 'لرد فیزیکا', popup: 'physica'},
+      {name: 'عناصر', popup: 'anasser'},
+      {name: 'مرداویچ', popup: 'mordavij'},
+      {name: 'استریکس', popup: 'strix'},
+      {name: 'حشاشین', popup: 'hashashin'},
+      {name: 'ارتش جاویدان', popup: 'eternals'},
+      {name: 'آگناتوس', popup: 'agnatus'},
+      {name: 'نیما و رها', popup: 'nima-raha'},
+      {name: 'قهرمان‌ها', popup: 'heroes'},
+      {name: 'ویلن‌ها', popup: 'villains'},
+      {name: 'خنثی‌ها', popup: 'neutrals'},
+      {name: 'کمیک‌ها', url: 'comics.html'},
+      {name: 'گفتگو با من', url: '#'},
+      {name: 'عکس‌ها', url: 'photos.html'},
+      {name: 'درباره ما', url: 'about.html'}
     ];
 
     function siteSearch() {
-      const input = document.getElementById('siteSearchInput').value.trim();
+      const input = document.getElementById('siteSearchInput');
+      const filter = input.value.trim();
       const resultsDiv = document.getElementById('searchResults');
-      if (input.length < 2) {
-        resultsDiv.innerHTML = '';
+      resultsDiv.innerHTML = '';
+      if (filter.length === 0) return;
+      const filtered = searchData.filter(item => item.name.includes(filter));
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = '<p>موردی پیدا نشد.</p>';
         return;
       }
-      const results = siteContent.filter(item => item.title.includes(input));
-      if (results.length === 0) {
-        resultsDiv.innerHTML = '<p>موردی یافت نشد</p>';
-      } else {
-        resultsDiv.innerHTML = results.map(item => `<p onclick="handleSearchClick('${item.type}', '${item.title}')">${item.title}</p>`).join('');
-      }
+      filtered.forEach(item => {
+        const p = document.createElement('p');
+        p.textContent = item.name;
+        p.onclick = () => {
+          if (item.popup) {
+            openPopup(item.popup);
+          } else if (item.url) {
+            window.location.href = item.url;
+          }
+          resultsDiv.innerHTML = '';
+          input.value = '';
+        };
+        resultsDiv.appendChild(p);
+      });
     }
 
-    function handleSearchClick(type, title) {
-      if (type === 'character') {
-        const id = 'popup-' + title.toLowerCase().replace(/ /g, '-');
-        openPopup(title.toLowerCase().replace(/ /g, '-'));
-      } else if (type === 'comic') {
-        window.location.href = 'comics.html';
-      } else if (type === 'chat') {
-        window.location.href = 'chat.html';
-      }
-    }
-
-    // ---------- شمارنده و تابلو اعلانات ----------
-
-    async function fetchTargetTimeFromSheet() {
-      const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
-      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
-
-      try {
-        const response = await fetch(url);
-        const csvText = await response.text();
-        const rows = csvText.split('\n').filter(row => row.trim() !== '');
-        const firstCell = rows[0].split(',')[0].trim();
-        return new Date(firstCell);
-      } catch (error) {
-        console.error('خطا در خواندن گوگل شیت:', error);
-        return null;
-      }
-    }
-
-    async function updateCountdown() {
-      const countdownContainer = document.getElementById('countdown-container');
-      const targetTime = await fetchTargetTimeFromSheet();
-
-      if (!targetTime || isNaN(targetTime.getTime())) {
-        countdownContainer.textContent = 'خطا در بارگذاری شمارنده';
-        return;
-      }
-
-      function updateTimer() {
+    // شمارنده ساده (برای نمونه شمارش معکوس تا تاریخ معین)
+    function startCountdown() {
+      const countdownDiv = document.getElementById('countdown-container');
+      // تاریخ هدف: 1 مهر 1404 00:00:00
+      const targetDate = new Date(2025, 8, 23, 0, 0, 0);
+      function updateCountdown() {
         const now = new Date();
-        const diff = targetTime - now;
-
+        const diff = targetDate - now;
         if (diff <= 0) {
-          countdownContainer.textContent = 'زمان انتشار داستان فرا رسیده!';
-          clearInterval(timerInterval);
+          countdownDiv.textContent = 'زمان به پایان رسید!';
+          clearInterval(interval);
           return;
         }
-
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        countdownContainer.textContent = `زمان تا انتشار داستان: ${hours} ساعت و ${minutes} دقیقه و ${seconds} ثانیه`;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+        countdownDiv.textContent = `زمان باقی‌مانده: ${days} روز، ${hours} ساعت، ${minutes} دقیقه، ${seconds} ثانیه`;
       }
-
-      updateTimer();
-      const timerInterval = setInterval(updateTimer, 1000);
+      updateCountdown();
+      const interval = setInterval(updateCountdown, 1000);
     }
+    startCountdown();
 
-    async function fetchNoticesFromSheet() {
-      const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
-      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
-
-      try {
-        const response = await fetch(url);
-        const csvText = await response.text();
-        const rows = csvText.split('\n').filter(row => row.trim() !== '');
-
-        const notices = rows.map(row => {
-          const columns = row.split(',');
-          return columns[1] ? columns[1].trim() : '';
-        }).filter(text => text.length > 0);
-
-        return notices;
-      } catch (error) {
-        console.error('خطا در خواندن گوگل شیت:', error);
-        return [];
-      }
+    // تابلو اعلانات (نمونه ساده)
+    const notices = [
+      'خوش آمدید به دنیای توشان‌ورس!',
+      'نسخه جدید سایت به زودی منتشر می‌شود.',
+      'کمیک‌های تازه را از بخش کمیک‌ها دنبال کنید.',
+      'گفتگو با من، از بخش گفت‌وگوی آنلاین در دسترس است.'
+    ];
+    const noticeViewer = document.getElementById('notice-viewer');
+    let currentNotice = 0;
+    function showNextNotice() {
+      noticeViewer.textContent = notices[currentNotice];
+      currentNotice = (currentNotice + 1) % notices.length;
     }
+    showNextNotice();
+    setInterval(showNextNotice, 6000);
 
-    async function showNotices() {
-      const notices = await fetchNoticesFromSheet();
-      const noticeViewer = document.getElementById('notice-viewer');
-      if (notices.length === 0) {
-        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
-      } else {
-        noticeViewer.innerHTML = notices.map(text => `<p>• ${text}</p>`).join('');
-      }
-    }
-
-    updateCountdown();
-    showNotices();
-
+    // بازگشت به بالا با کلیک روی عنوان
+    const mainTitle = document.querySelector('header h1');
+    mainTitle.style.cursor = 'pointer';
+    mainTitle.addEventListener('click', () => {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
   </script>
 </body>
 </html>
