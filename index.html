@@ -484,7 +484,7 @@
       if (results.length === 0) {
         resultsDiv.innerHTML = '<p>موردی یافت نشد</p>';
       } else {
-        resultsDiv.innerHTML = results.map(item => <p onclick="handleSearchClick('${item.type}', '${item.title}')">${item.title}</p>).join('');
+        resultsDiv.innerHTML = results.map(item => `<p onclick="handleSearchClick('${item.type}', '${item.title}')">${item.title}</p>`).join('');
       }
     }
 
@@ -503,7 +503,7 @@
 
     async function fetchTargetTimeFromSheet() {
       const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
-      const url = https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0;
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
 
       try {
         const response = await fetch(url);
@@ -540,7 +540,7 @@
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        countdownContainer.textContent = زمان تا انتشار داستان: ${hours} ساعت و ${minutes} دقیقه و ${seconds} ثانیه;
+        countdownContainer.textContent = `زمان تا انتشار داستان: ${hours} ساعت و ${minutes} دقیقه و ${seconds} ثانیه`;
       }
 
       updateTimer();
@@ -549,7 +549,7 @@
 
     async function fetchNoticesFromSheet() {
       const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
-      const url = https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0;
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
 
       try {
         const response = await fetch(url);
@@ -574,7 +574,7 @@
       if (notices.length === 0) {
         noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
       } else {
-        noticeViewer.innerHTML = notices.map(text => <p>• ${text}</p>).join('');
+        noticeViewer.innerHTML = notices.map(text => `<p>• ${text}</p>`).join('');
       }
     }
 
