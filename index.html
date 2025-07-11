@@ -272,19 +272,18 @@
 
     /* واکنش‌گرایی موبایل - زیر هم */
     @media (max-width: 700px) {
-      #countdown-container, #notice-board-section {
-        position: static;
-        width: 90%;
-        max-width: none;
-        margin: 10px auto;
-        max-height: none;
-        overflow: visible;
-        box-shadow: 0 0 10px #ff990055;
-      }
-      #notice-board-section {
-        height: auto;
-      }
-    }
+  #countdown-container, #notice-board-section {
+    position: static;
+    width: 250px;        /* اندازه تابلو اعلانات مثل شمارنده */
+    margin: 10px auto;
+    max-height: 100px;   /* ارتفاع کمی کمتر */
+    overflow: visible;
+    box-shadow: 0 0 10px #ff990055;
+  }
+  #notice-board-section {
+    height: 100px;       /* ارتفاع تابلو اعلانات */
+  }
+}
    @media (max-width: 600px) {
   .popup {
     width: 320px;
