@@ -592,25 +592,6 @@
     }, 600); // مدت محو شدن قبل از نمایش بعدی
   }, 7000);
 }
-
-      // فرض می‌کنیم ستون دوم هر ردیف اعلان است
-      const notices = data.map(row => row[1] ? row[1].trim() : '').filter(text => text.length > 0);
-
-      if (notices.length === 0) {
-        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
-        return;
-      }
-
-      let currentNoticeIndex = 0;
-      noticeViewer.textContent = notices[currentNoticeIndex];
-
-      setInterval(() => {
-        currentNoticeIndex++;
-        if (currentNoticeIndex >= notices.length) currentNoticeIndex = 0;
-        noticeViewer.textContent = notices[currentNoticeIndex];
-      }, 7000);
-    }
-
     // فراخوانی توابع شمارنده و اعلان‌ها
     updateCountdown();
     showNotices();
