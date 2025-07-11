@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="فا">
+<html lang="fa">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -239,8 +239,7 @@
       top: 20px;
       left: 20px;
       width: 280px;
-      max-height: 200px;
-      overflow-y: auto;
+      height: 120px;
       background: #1a1a1a;
       color: #f0c040;
       padding: 15px 20px;
@@ -248,16 +247,25 @@
       box-shadow: 0 0 15px #ff990055;
       user-select: none;
       z-index: 10000;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: default;
     }
-
     #notice-board-section h2 {
-      margin-top: 0;
-      margin-bottom: 10px;
+      margin: 0 0 10px 0;
       font-size: 20px;
+      flex-shrink: 0;
+      text-align: center;
     }
-
-    #notice-viewer p {
-      margin: 5px 0;
+    #notice-viewer {
+      flex-grow: 1;
+      font-size: 16px;
+      line-height: 1.3;
+      overflow-y: hidden;
+      user-select: text;
+      text-align: right;
     }
 
     /* واکنش‌گرایی موبایل - زیر هم */
@@ -270,6 +278,9 @@
         max-height: none;
         overflow: visible;
         box-shadow: 0 0 10px #ff990055;
+      }
+      #notice-board-section {
+        height: auto;
       }
     }
   </style>
@@ -301,7 +312,7 @@
     <div id="searchResults"></div>
   </div>
 
-  <!-- اضافه شده: تابلو اعلانات گوشه سمت چپ -->
+  <!-- تابلو اعلانات گوشه سمت چپ -->
   <section id="notice-board-section">
     <h2>تابلو اعلانات</h2>
     <div id="notice-viewer">در حال بارگذاری اعلان‌ها...</div>
@@ -456,61 +467,54 @@
       document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('show'));
     }
 
-    // جستجو ساده سایت
-    const siteContent = [
-      {title: 'تسکین', type: 'character'},
-      {title: 'الکتروپالس', type: 'character'},
-      {title: 'گردآفرید', type: 'character'},
-      {title: 'لرد فیزیکا', type: 'character'},
-      {title: 'عناصر', type: 'character'},
-      {title: 'مرداویچ', type: 'character'},
-      {title: 'استریکس', type: 'character'},
-      {title: 'حشاشین', type: 'character'},
-      {title: 'ارتش جاویدان', type: 'character'},
-      {title: 'آگناتوس', type: 'character'},
-      {title: 'نیما و رها', type: 'character'},
-      {title: 'کمیک‌ها', type: 'comic'},
-      {title: 'گفت‌وگو با من', type: 'chat'},
-    ];
-
+    // جستجوی سایت
     function siteSearch() {
-      const input = document.getElementById('siteSearchInput').value.trim();
-      const resultsDiv = document.getElementById('searchResults');
-      if (input.length < 2) {
-        resultsDiv.innerHTML = '';
+      const input = document.getElementById('siteSearchInput');
+      const filter = input.value.trim().toLowerCase();
+      const results = document.getElementById('searchResults');
+      results.innerHTML = '';
+      if (filter.length < 2) return;
+
+      // نمونه داده برای جستجو، می‌توان از API یا داده واقعی استفاده کرد
+      const searchItems = [
+        { title: 'تسکین', description: 'ابرنورون توشان‌ورس' },
+        { title: 'لرد فیزیکا', description: 'شخصیت منفی اصلی' },
+        { title: 'الکتروپالس', description: 'قدرت کنترل پالس الکتریکی' },
+        { title: 'کمیک‌های توشان‌ورس', description: 'مجموعه کمیک‌ها' },
+        { title: 'گفت‌وگو با من', description: 'چت آنلاین' },
+      ];
+
+      const filtered = searchItems.filter(item =>
+        item.title.toLowerCase().includes(filter) ||
+        item.description.toLowerCase().includes(filter)
+      );
+
+      if (filtered.length === 0) {
+        results.textContent = 'موردی یافت نشد.';
         return;
       }
-      const results = siteContent.filter(item => item.title.includes(input));
-      if (results.length === 0) {
-        resultsDiv.innerHTML = '<p>موردی یافت نشد</p>';
-      } else {
-        resultsDiv.innerHTML = results.map(item => `<p onclick="handleSearchClick('${item.type}', '${item.title}')">${item.title}</p>`).join('');
-      }
-    }
 
-    function handleSearchClick(type, title) {
-      if (type === 'character') {
-        const id = 'popup-' + title.toLowerCase().replace(/ /g, '-');
-        openPopup(title.toLowerCase().replace(/ /g, '-'));
-      } else if (type === 'comic') {
-        window.location.href = 'comics.html';
-      } else if (type === 'chat') {
-        window.location.href = 'chat.html';
-      }
+      filtered.forEach(item => {
+        const p = document.createElement('p');
+        p.textContent = item.title + ' - ' + item.description;
+        p.onclick = () => {
+          alert('گزینه انتخاب شده: ' + item.title);
+          // اینجا می‌توان لینک یا اکشن اختصاصی اضافه کرد
+        };
+        results.appendChild(p);
+      });
     }
 
     // ---------- شمارنده و تابلو اعلانات ----------
 
-    async function fetchTargetTimeFromSheet() {
+    async function fetchSheetData() {
       const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
       const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
-
       try {
         const response = await fetch(url);
         const csvText = await response.text();
         const rows = csvText.split('\n').filter(row => row.trim() !== '');
-        const firstCell = rows[0].split(',')[0].trim();
-        return new Date(firstCell);
+        return rows.map(row => row.split(','));
       } catch (error) {
         console.error('خطا در خواندن گوگل شیت:', error);
         return null;
@@ -519,10 +523,17 @@
 
     async function updateCountdown() {
       const countdownContainer = document.getElementById('countdown-container');
-      const targetTime = await fetchTargetTimeFromSheet();
-
-      if (!targetTime || isNaN(targetTime.getTime())) {
+      const data = await fetchSheetData();
+      if (!data || data.length === 0) {
         countdownContainer.textContent = 'خطا در بارگذاری شمارنده';
+        return;
+      }
+
+      // فرض می‌کنیم اولین سلول اولین ردیف، تاریخ هدف است (فرمت ISO یا قابل تبدیل)
+      const targetTimeString = data[0][0].trim();
+      const targetTime = new Date(targetTimeString);
+      if (isNaN(targetTime.getTime())) {
+        countdownContainer.textContent = 'تاریخ شمارنده معتبر نیست';
         return;
       }
 
@@ -547,40 +558,35 @@
       const timerInterval = setInterval(updateTimer, 1000);
     }
 
-    async function fetchNoticesFromSheet() {
-      const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
-      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
-
-      try {
-        const response = await fetch(url);
-        const csvText = await response.text();
-        const rows = csvText.split('\n').filter(row => row.trim() !== '');
-
-        const notices = rows.map(row => {
-          const columns = row.split(',');
-          return columns[1] ? columns[1].trim() : '';
-        }).filter(text => text.length > 0);
-
-        return notices;
-      } catch (error) {
-        console.error('خطا در خواندن گوگل شیت:', error);
-        return [];
-      }
-    }
-
     async function showNotices() {
-      const notices = await fetchNoticesFromSheet();
       const noticeViewer = document.getElementById('notice-viewer');
+      const data = await fetchSheetData();
+      if (!data || data.length === 0) {
+        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
+        return;
+      }
+
+      // فرض می‌کنیم ستون دوم هر ردیف اعلان است
+      const notices = data.map(row => row[1] ? row[1].trim() : '').filter(text => text.length > 0);
+
       if (notices.length === 0) {
         noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
-      } else {
-        noticeViewer.innerHTML = notices.map(text => `<p>• ${text}</p>`).join('');
+        return;
       }
+
+      let currentNoticeIndex = 0;
+      noticeViewer.textContent = notices[currentNoticeIndex];
+
+      setInterval(() => {
+        currentNoticeIndex++;
+        if (currentNoticeIndex >= notices.length) currentNoticeIndex = 0;
+        noticeViewer.textContent = notices[currentNoticeIndex];
+      }, 7000);
     }
 
+    // فراخوانی توابع شمارنده و اعلان‌ها
     updateCountdown();
     showNotices();
-
   </script>
 </body>
 </html>
