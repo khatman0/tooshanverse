@@ -579,16 +579,21 @@
   let currentNoticeIndex = 0;
   noticeViewer.textContent = notices[currentNoticeIndex];
 
-  setInterval(() => {
-    noticeViewer.classList.add('fade-out');
+ setInterval(() => {
+  const noticeViewer = document.getElementById('notice-viewer');
+  noticeViewer.classList.add('fade-out');  // شروع محو شدن متن
 
-    setTimeout(() => {
-      currentNoticeIndex++;
-      if (currentNoticeIndex >= notices.length) currentNoticeIndex = 0;
-      noticeViewer.textContent = notices[currentNoticeIndex];
-      noticeViewer.classList.remove('fade-out');
-    }, 600); // مدت محو شدن قبل از نمایش بعدی
-  }, 7000);
+  setTimeout(() => {
+    currentNoticeIndex++;
+    if (currentNoticeIndex >= notices.length) currentNoticeIndex = 0;
+    noticeViewer.textContent = notices[currentNoticeIndex];  // تغییر متن اعلان
+
+    // تضمین اینکه مرورگر انیمیشن نمایش رو تشخیص بده
+    requestAnimationFrame(() => {
+      noticeViewer.classList.remove('fade-out');  // نمایش مجدد متن با انیمیشن
+    });
+  }, 600); // مدت زمان محو شدن
+}, 7000);
 }
     // فراخوانی توابع شمارنده و اعلان‌ها
     updateCountdown();
