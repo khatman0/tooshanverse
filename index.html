@@ -23,7 +23,6 @@
     }
     h1, h2, h3 {
       color: #ff9900;
-      margin: 0 0 10px 0;
     }
     section {
       padding: 40px 20px;
@@ -117,7 +116,6 @@
       font-size: 18px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       user-select: none;
-      text-align: center;
     }
     .category-card:hover {
       transform: scale(1.05);
@@ -241,8 +239,8 @@
       top: 20px;
       left: 20px;
       width: 280px;
-      height: 80px; /* ارتفاع ثابت برای نمایش فقط یک اعلان */
-      overflow: hidden;
+      max-height: 200px;
+      overflow-y: auto;
       background: #1a1a1a;
       color: #f0c040;
       padding: 15px 20px;
@@ -250,26 +248,16 @@
       box-shadow: 0 0 15px #ff990055;
       user-select: none;
       z-index: 10000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      direction: rtl;
     }
 
     #notice-board-section h2 {
-      margin: 0 0 5px 0;
+      margin-top: 0;
+      margin-bottom: 10px;
       font-size: 20px;
-      user-select: none;
     }
 
-    #notice-text {
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 18px;
-      transition: opacity 0.5s ease;
-      user-select: none;
+    #notice-viewer p {
+      margin: 5px 0;
     }
 
     /* واکنش‌گرایی موبایل - زیر هم */
@@ -313,10 +301,10 @@
     <div id="searchResults"></div>
   </div>
 
-  <!-- تابلو اعلانات گوشه سمت چپ -->
+  <!-- اضافه شده: تابلو اعلانات گوشه سمت چپ -->
   <section id="notice-board-section">
     <h2>تابلو اعلانات</h2>
-    <div id="notice-text">در حال بارگذاری اعلان‌ها...</div>
+    <div id="notice-viewer">در حال بارگذاری اعلان‌ها...</div>
   </section>
 
   <!-- شمارنده گوشه سمت راست -->
@@ -468,67 +456,106 @@
       document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('show'));
     }
 
-    // جستجو در سایت
+    // جستجو ساده سایت
+    const siteContent = [
+      {title: 'تسکین', type: 'character'},
+      {title: 'الکتروپالس', type: 'character'},
+      {title: 'گردآفرید', type: 'character'},
+      {title: 'لرد فیزیکا', type: 'character'},
+      {title: 'عناصر', type: 'character'},
+      {title: 'مرداویچ', type: 'character'},
+      {title: 'استریکس', type: 'character'},
+      {title: 'حشاشین', type: 'character'},
+      {title: 'ارتش جاویدان', type: 'character'},
+      {title: 'آگناتوس', type: 'character'},
+      {title: 'نیما و رها', type: 'character'},
+      {title: 'کمیک‌ها', type: 'comic'},
+      {title: 'گفت‌وگو با من', type: 'chat'},
+    ];
+
     function siteSearch() {
-      const input = document.getElementById('siteSearchInput').value.trim().toLowerCase();
-      const results = document.getElementById('searchResults');
-      results.innerHTML = '';
-      if (!input) return;
-      
-      const characters = [
-        { name: 'تسکین', popup: 'taskin' },
-        { name: 'الکتروپالس', popup: 'electropulse' },
-        { name: 'گردآفرید', popup: 'gardafrid' },
-        { name: 'لرد فیزیکا', popup: 'physica' },
-        { name: 'عناصر', popup: 'anasser' },
-        { name: 'مرداویچ', popup: 'mordavij' },
-        { name: 'استریکس', popup: 'strix' },
-        { name: 'حشاشین', popup: 'hashashin' },
-        { name: 'ارتش جاویدان', popup: 'eternals' },
-        { name: 'نیما و رها', popup: 'nima-raha' },
-        { name: 'آگناتوس', popup: 'agnatus' }
-      ];
-      
-      const filtered = characters.filter(c => c.name.includes(input));
-      if (filtered.length === 0) {
-        results.textContent = 'موردی یافت نشد';
+      const input = document.getElementById('siteSearchInput').value.trim();
+      const resultsDiv = document.getElementById('searchResults');
+      if (input.length < 2) {
+        resultsDiv.innerHTML = '';
         return;
       }
-      
-      filtered.forEach(c => {
-        const p = document.createElement('p');
-        p.textContent = c.name;
-        p.onclick = () => openPopup(c.popup);
-        results.appendChild(p);
-      });
+      const results = siteContent.filter(item => item.title.includes(input));
+      if (results.length === 0) {
+        resultsDiv.innerHTML = '<p>موردی یافت نشد</p>';
+      } else {
+        resultsDiv.innerHTML = results.map(item => <p onclick="handleSearchClick('${item.type}', '${item.title}')">${item.title}</p>).join('');
+      }
     }
 
-    // شمارنده شمارش معکوس از Google Sheet (توضیح شده در قبلی)
-    async function fetchCountdown() {
+    function handleSearchClick(type, title) {
+      if (type === 'character') {
+        const id = 'popup-' + title.toLowerCase().replace(/ /g, '-');
+        openPopup(title.toLowerCase().replace(/ /g, '-'));
+      } else if (type === 'comic') {
+        window.location.href = 'comics.html';
+      } else if (type === 'chat') {
+        window.location.href = 'chat.html';
+      }
+    }
+
+    // ---------- شمارنده و تابلو اعلانات ----------
+
+    async function fetchTargetTimeFromSheet() {
       const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
-      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=1234567890`;
-      // برای مثال گید شمارنده رو قرار بدهید
-      // الان فقط یک متن ساده نمایش میده چون گید واقعی نداریم
-      return 'زمان تا شروع: 15 روز و 10 ساعت';
-    }
-    async function updateCountdown() {
-      const countdown = document.getElementById('countdown-container');
-      countdown.textContent = await fetchCountdown();
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 60000); // هر دقیقه بروزرسانی
+      const url = https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0;
 
-    // ------------- تابلو اعلانات کشویی -------------
+      try {
+        const response = await fetch(url);
+        const csvText = await response.text();
+        const rows = csvText.split('\n').filter(row => row.trim() !== '');
+        const firstCell = rows[0].split(',')[0].trim();
+        return new Date(firstCell);
+      } catch (error) {
+        console.error('خطا در خواندن گوگل شیت:', error);
+        return null;
+      }
+    }
+
+    async function updateCountdown() {
+      const countdownContainer = document.getElementById('countdown-container');
+      const targetTime = await fetchTargetTimeFromSheet();
+
+      if (!targetTime || isNaN(targetTime.getTime())) {
+        countdownContainer.textContent = 'خطا در بارگذاری شمارنده';
+        return;
+      }
+
+      function updateTimer() {
+        const now = new Date();
+        const diff = targetTime - now;
+
+        if (diff <= 0) {
+          countdownContainer.textContent = 'زمان انتشار داستان فرا رسیده!';
+          clearInterval(timerInterval);
+          return;
+        }
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        countdownContainer.textContent = زمان تا انتشار داستان: ${hours} ساعت و ${minutes} دقیقه و ${seconds} ثانیه;
+      }
+
+      updateTimer();
+      const timerInterval = setInterval(updateTimer, 1000);
+    }
+
     async function fetchNoticesFromSheet() {
       const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
-      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
+      const url = https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0;
 
       try {
         const response = await fetch(url);
         const csvText = await response.text();
         const rows = csvText.split('\n').filter(row => row.trim() !== '');
 
-        // ستون دوم هر ردیف (ایندکس 1)
         const notices = rows.map(row => {
           const columns = row.split(',');
           return columns[1] ? columns[1].trim() : '';
@@ -541,37 +568,19 @@
       }
     }
 
-    async function startNoticeRotation() {
+    async function showNotices() {
       const notices = await fetchNoticesFromSheet();
-      const noticeText = document.getElementById('notice-text');
-
+      const noticeViewer = document.getElementById('notice-viewer');
       if (notices.length === 0) {
-        noticeText.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
-        return;
+        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
+      } else {
+        noticeViewer.innerHTML = notices.map(text => <p>• ${text}</p>).join('');
       }
-
-      let currentIndex = 0;
-
-      // ابتدا اولین اعلان را نمایش بده
-      noticeText.style.opacity = 0;
-      setTimeout(() => {
-        noticeText.textContent = notices[currentIndex];
-        noticeText.style.opacity = 1;
-      }, 300);
-
-      setInterval(() => {
-        // ناپدید کردن متن قبلی
-        noticeText.style.opacity = 0;
-
-        setTimeout(() => {
-          currentIndex = (currentIndex + 1) % notices.length;
-          noticeText.textContent = notices[currentIndex];
-          noticeText.style.opacity = 1;
-        }, 500); // مدت زمان افکت ناپدید شدن
-      }, 7000);
     }
 
-    startNoticeRotation();
+    updateCountdown();
+    showNotices();
+
   </script>
 </body>
 </html>
