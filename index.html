@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="فا">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -214,57 +214,69 @@
     .chat-button:hover {
       background-color: #e68a00;
     }
+    
+    /* ========== اضافه شده برای شمارنده و تابلو اعلانات ========== */
+    /* شمارنده گوشه سمت راست */
     #countdown-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 250px;
+      background: #1a1a1a;
       color: #f0c040;
-      text-align: center;
       padding: 15px;
       font-size: 18px;
-      background: #1a1a1a;
       border-radius: 10px;
-      margin: 10px auto 20px auto;
-      max-width: 600px;
       box-shadow: 0 0 15px #ff990055;
       user-select: none;
-    }
-    
-    /* اینجا کد افکت نور متحرک روی عنوان */
-    .shiny-text {
-      position: relative;
-      display: inline-block;
-      color: #ff9900;
-      font-weight: bold;
-      overflow: hidden;
+      z-index: 10000;
+      text-align: center;
     }
 
-    .shiny-text::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -75%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(
-        120deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.6) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      transform: skewX(-20deg);
-      animation: shine 2.5s infinite;
+    /* تابلو اعلانات گوشه سمت چپ */
+    #notice-board-section {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 280px;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #1a1a1a;
+      color: #f0c040;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #ff990055;
+      user-select: none;
+      z-index: 10000;
     }
 
-    @keyframes shine {
-      0% {
-        left: -75%;
-      }
-      100% {
-        left: 125%;
+    #notice-board-section h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    #notice-viewer p {
+      margin: 5px 0;
+    }
+
+    /* واکنش‌گرایی موبایل - زیر هم */
+    @media (max-width: 700px) {
+      #countdown-container, #notice-board-section {
+        position: static;
+        width: 90%;
+        max-width: none;
+        margin: 10px auto;
+        max-height: none;
+        overflow: visible;
+        box-shadow: 0 0 10px #ff990055;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1 class="shiny-text">توشان‌ورس | Tooshanverse</h1>
+    <h1>توشان‌ورس | Tooshanverse</h1>
     <p>آغاز دوباره قهرمانان ایران</p>
     <div class="menu-btn" id="menu-btn">
       <div></div><div></div><div></div>
@@ -289,7 +301,13 @@
     <div id="searchResults"></div>
   </div>
 
-  <!-- شمارنده جدید زیر نوار جستجو -->
+  <!-- اضافه شده: تابلو اعلانات گوشه سمت چپ -->
+  <section id="notice-board-section">
+    <h2>تابلو اعلانات</h2>
+    <div id="notice-viewer">در حال بارگذاری اعلان‌ها...</div>
+  </section>
+
+  <!-- شمارنده گوشه سمت راست -->
   <div id="countdown-container">
     در حال بارگذاری شمارنده...
   </div>
@@ -451,30 +469,38 @@
       {title: 'ارتش جاویدان', type: 'character'},
       {title: 'آگناتوس', type: 'character'},
       {title: 'نیما و رها', type: 'character'},
-      // سایر موارد ...
+      {title: 'کمیک‌ها', type: 'comic'},
+      {title: 'گفت‌وگو با من', type: 'chat'},
     ];
 
     function siteSearch() {
       const input = document.getElementById('siteSearchInput').value.trim();
       const resultsDiv = document.getElementById('searchResults');
-      resultsDiv.innerHTML = '';
-
-      if (input.length < 2) return;
-
+      if (input.length < 2) {
+        resultsDiv.innerHTML = '';
+        return;
+      }
       const results = siteContent.filter(item => item.title.includes(input));
       if (results.length === 0) {
         resultsDiv.innerHTML = '<p>موردی یافت نشد</p>';
-        return;
+      } else {
+        resultsDiv.innerHTML = results.map(item => `<p onclick="handleSearchClick('${item.type}', '${item.title}')">${item.title}</p>`).join('');
       }
+    }
 
-      results.forEach(item => {
-        const p = document.createElement('p');
-        p.textContent = item.title;
-        p.onclick = () => openPopup(item.title.toLowerCase().replace(/ /g, '-'));
-        resultsDiv.appendChild(p);
-      });
-    } 
-    
+    function handleSearchClick(type, title) {
+      if (type === 'character') {
+        const id = 'popup-' + title.toLowerCase().replace(/ /g, '-');
+        openPopup(title.toLowerCase().replace(/ /g, '-'));
+      } else if (type === 'comic') {
+        window.location.href = 'comics.html';
+      } else if (type === 'chat') {
+        window.location.href = 'chat.html';
+      }
+    }
+
+    // ---------- شمارنده و تابلو اعلانات ----------
+
     async function fetchTargetTimeFromSheet() {
       const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
       const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
@@ -482,7 +508,7 @@
       try {
         const response = await fetch(url);
         const csvText = await response.text();
-        const rows = csvText.split('\n');
+        const rows = csvText.split('\n').filter(row => row.trim() !== '');
         const firstCell = rows[0].split(',')[0].trim();
         return new Date(firstCell);
       } catch (error) {
@@ -521,7 +547,40 @@
       const timerInterval = setInterval(updateTimer, 1000);
     }
 
-    updateCountdown(); 
+    async function fetchNoticesFromSheet() {
+      const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
+
+      try {
+        const response = await fetch(url);
+        const csvText = await response.text();
+        const rows = csvText.split('\n').filter(row => row.trim() !== '');
+
+        const notices = rows.map(row => {
+          const columns = row.split(',');
+          return columns[1] ? columns[1].trim() : '';
+        }).filter(text => text.length > 0);
+
+        return notices;
+      } catch (error) {
+        console.error('خطا در خواندن گوگل شیت:', error);
+        return [];
+      }
+    }
+
+    async function showNotices() {
+      const notices = await fetchNoticesFromSheet();
+      const noticeViewer = document.getElementById('notice-viewer');
+      if (notices.length === 0) {
+        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
+      } else {
+        noticeViewer.innerHTML = notices.map(text => `<p>• ${text}</p>`).join('');
+      }
+    }
+
+    updateCountdown();
+    showNotices();
+
   </script>
 </body>
 </html>
