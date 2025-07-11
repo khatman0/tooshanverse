@@ -147,6 +147,11 @@
       max-width: 600px;
       margin: 20px auto 0 auto;
       text-align: center;
+      position: relative;
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 15px 20px;
+      box-shadow: 0 0 10px #ff990044;
     }
     #siteSearchInput {
       width: 100%;
@@ -160,7 +165,7 @@
     }
     #searchResults {
       max-width: 600px;
-      margin: 15px auto;
+      margin: 15px auto 0 auto;
       background: #1a1a1a;
       padding: 15px 20px;
       border-radius: 12px;
@@ -191,10 +196,8 @@
         width: 100%;
         text-align: center;
       }
-      /* اصلاح اندازه ورودی جستجو در موبایل */
       #siteSearchInput {
         font-size: 16px;
-        padding: 8px 12px;
       }
     }
     .chat-button {
@@ -211,14 +214,24 @@
     .chat-button:hover {
       background-color: #e68a00;
     }
-
+    #countdown-container {
+      color: #f0c040;
+      text-align: center;
+      padding: 15px;
+      font-size: 18px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      margin: 10px auto 20px auto;
+      max-width: 600px;
+      box-shadow: 0 0 15px #ff990055;
+      user-select: none;
+    }
     #roadmap {
       padding: 40px 20px;
       max-width: 800px;
       margin: auto;
       text-align: right;
     }
-
     .roadmap-list {
       list-style: none;
       padding: 0;
@@ -226,7 +239,6 @@
       color: #f0c040;
       font-size: 18px;
     }
-
     .roadmap-list li {
       background-color: #1f1f1f;
       margin-bottom: 10px;
@@ -238,78 +250,20 @@
       gap: 10px;
       transition: box-shadow 0.3s ease;
     }
-
     .roadmap-list li:hover {
       box-shadow: 0 0 15px #ff990099;
     }
-
     .roadmap-list span.done {
       color: #00ff99;
       font-size: 20px;
     }
-
     .roadmap-list span.doing {
       color: #ffcc00;
       font-size: 20px;
     }
-
     .roadmap-list span.locked {
       color: #ff4444;
       font-size: 20px;
-    }
-
-    /* استایل بخش تایمر و فرم */
-    #next-part-timer {
-      text-align: center;
-      padding: 40px 20px;
-      background-color: #1a1a1a;
-      color: #f0c040;
-      max-width: 600px;
-      margin: 30px auto 30px auto;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #ff990066;
-    }
-
-    #countdown {
-      margin-top: 10px;
-      font-size: 28px;
-      color: #ff9900;
-      font-weight: bold;
-    }
-
-    #next-part-form {
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      direction: ltr; /* چون تاریخ و ساعت انگلیسی است بهتر خوانده شود */
-    }
-
-    #next-part-form input[type="datetime-local"] {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-      outline: none;
-      box-shadow: 0 0 10px #ff990033;
-      cursor: pointer;
-    }
-
-    #next-part-form button {
-      background-color: #ff9900;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      color: #111;
-      font-weight: bold;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-    }
-
-    #next-part-form button:hover {
-      background-color: #e68a00;
     }
   </style>
 </head>
@@ -340,16 +294,10 @@
     <div id="searchResults"></div>
   </div>
 
-  <!-- فرم تنظیم تاریخ پارت بعدی و شمارنده -->
-  <section id="next-part-timer">
-    <form id="next-part-form">
-      <label for="nextReleaseInput" style="display:none;">تاریخ و ساعت پارت بعدی</label>
-      <input type="datetime-local" id="nextReleaseInput" />
-      <button type="submit">تنظیم زمان</button>
-    </form>
-    <h2>⏳ زمان باقی‌مانده تا پارت بعدی:</h2>
-    <div id="countdown">بارگذاری...</div>
-  </section>
+  <!-- شمارنده جدید زیر نوار جستجو -->
+  <div id="countdown-container">
+    در حال بارگذاری شمارنده...
+  </div>
 
   <section id="characters">
     <h2>شخصیت‌ها</h2>
@@ -361,7 +309,6 @@
   </section>
 
   <!-- پاپ‌آپ‌ها -->
-
   <div id="popup-heroes" class="popup">
     <h3>🛡️ قهرمان‌ها</h3>
     <ul class="character-list">
@@ -374,104 +321,97 @@
       <li onclick="openPopup('strix')">استریکس</li>
       <li onclick="openPopup('hashashin')">حشاشین</li>
       <li onclick="openPopup('eternals')">ارتش جاویدان</li>
-      
     </ul>
     <button onclick="closePopup()">بازگشت</button>
   </div>
 
   <div id="popup-villains" class="popup">
-  <h3>😈 ویلن‌ها</h3>
-  <ul class="character-list">
-    <li onclick="openPopup('agnatus')">آگناتوس</li>
-  </ul>
-  <button onclick="closePopup()">بازگشت</button>
-</div>
+    <h3>😈 ویلن‌ها</h3>
+    <ul class="character-list">
+      <li onclick="openPopup('agnatus')">آگناتوس</li>
+    </ul>
+    <button onclick="closePopup()">بازگشت</button>
+  </div>
 
   <div id="popup-neutrals" class="popup">
-  <h3>⚖️ شخصیت‌های خنثی</h3>
-  <ul class="character-list">
-    <li onclick="openPopup('nima-raha')">نیما و رها</li>
-  </ul>
-  <button onclick="closePopup()">بازگشت</button>
-</div>
+    <h3>⚖️ شخصیت‌های خنثی</h3>
+    <ul class="character-list">
+      <li onclick="openPopup('nima-raha')">نیما و رها</li>
+    </ul>
+    <button onclick="closePopup()">بازگشت</button>
+  </div>
 
   <div id="popup-taskin" class="popup">
     <h3>🌀 تسکین</h3>
-    <p>
-      اطلاعات درباره تسکین به زودی اضافه خواهد شد
-    </p>
+    <p>اطلاعات درباره تسکین به زودی اضافه خواهد شد</p>
     <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
   </div>
 
   <div id="popup-electropulse" class="popup">
     <h3>⚡ الکتروپالس</h3>
-    <p>
-      اطلاعات درباره الکتروپالس به زودی اضافه خواهد شد.
-    </p>
+    <p>اطلاعات درباره الکتروپالس به زودی اضافه خواهد شد.</p>
     <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
   </div>
 
   <div id="popup-gardafrid" class="popup">
     <h3>🔥 گردآفرید</h3>
-    <p>
-      اطلاعات درباره گردآفرید به زودی اضافه خواهد شد.
-    </p>
+    <p>اطلاعات درباره گردآفرید به زودی اضافه خواهد شد.</p>
     <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
   </div>
-  
-<div id="popup-physica" class="popup">
-  <h3>لرد فیزیکا</h3>
-  <p>اطلاعات درباره لرد فیزیکا به زودی اضافه خواهد شد.</p>
-  <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-</div>
 
-<div id="popup-anasser" class="popup">
-  <h3>عناصر</h3>
-  <p>اطلاعات درباره عناصر به زودی اضافه خواهد شد.</p>
-  <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-</div>
+  <div id="popup-physica" class="popup">
+    <h3>لرد فیزیکا</h3>
+    <p>اطلاعات درباره لرد فیزیکا به زودی اضافه خواهد شد.</p>
+    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
+  </div>
 
-<div id="popup-mordavij" class="popup">
-  <h3>مرداویچ</h3>
-  <p>اطلاعات درباره مرداویچ به زودی اضافه خواهد شد.</p>
-  <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-</div>
+  <div id="popup-anasser" class="popup">
+    <h3>عناصر</h3>
+    <p>اطلاعات درباره عناصر به زودی اضافه خواهد شد.</p>
+    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
+  </div>
 
-<div id="popup-strix" class="popup">
-  <h3>استریکس</h3>
-  <p>اطلاعات درباره استریکس به زودی اضافه خواهد شد.</p>
-  <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-</div>
+  <div id="popup-mordavij" class="popup">
+    <h3>مرداویچ</h3>
+    <p>اطلاعات درباره مرداویچ به زودی اضافه خواهد شد.</p>
+    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
+  </div>
 
-<div id="popup-hashashin" class="popup">
-  <h3>حشاشین</h3>
-  <p>اطلاعات درباره حشاشین به زودی اضافه خواهد شد.</p>
-  <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-</div>
+  <div id="popup-strix" class="popup">
+    <h3>استریکس</h3>
+    <p>اطلاعات درباره استریکس به زودی اضافه خواهد شد.</p>
+    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
+  </div>
 
-<div id="popup-eternals" class="popup">
-  <h3>ارتش جاویدان</h3>
-  <p>اطلاعات درباره ارتش جاویدان به زودی اضافه خواهد شد.</p>
-  <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-</div>
+  <div id="popup-hashashin" class="popup">
+    <h3>حشاشین</h3>
+    <p>اطلاعات درباره حشاشین به زودی اضافه خواهد شد.</p>
+    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
+  </div>
 
-<div id="popup-nima-raha" class="popup">
-  <h3>نیما و رها</h3>
-  <p>اطلاعات درباره نیما و رها به زودی اضافه خواهد شد.</p>
-  <button onclick="openPopup('neutrals')">بازگشت به خنثی ها</button>
-</div>
+  <div id="popup-eternals" class="popup">
+    <h3>ارتش جاویدان</h3>
+    <p>اطلاعات درباره ارتش جاویدان به زودی اضافه خواهد شد.</p>
+    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
+  </div>
+
+  <div id="popup-nima-raha" class="popup">
+    <h3>نیما و رها</h3>
+    <p>اطلاعات درباره نیما و رها به زودی اضافه خواهد شد.</p>
+    <button onclick="openPopup('neutrals')">بازگشت به خنثی ها</button>
+  </div>
 
   <div id="popup-agnatus" class="popup">
-  <h3>آگناتوس</h3>
-  <p>اطلاعات درباره آگناتوس به زودی اضافه خواهد شد.</p>
-  <button onclick="openPopup('villains')">بازگشت به ویلن‌ها</button>
-</div>
-  
+    <h3>آگناتوس</h3>
+    <p>اطلاعات درباره آگناتوس به زودی اضافه خواهد شد.</p>
+    <button onclick="openPopup('villains')">بازگشت به ویلن‌ها</button>
+  </div>
+
   <section id="comics">
     <h2>کمیک‌ها</h2>
     <div class="button-container">
-  <a href="comics.html" class="chat-button">📚 کمیک‌ها</a>
-</div>
+      <a href="comics.html" class="chat-button">📚 کمیک‌ها</a>
+    </div>
   </section>
 
   <section id="chat">
@@ -479,140 +419,131 @@
     <a href="chat.html" class="chat-button">💬 ورود به توشان چت</a>
   </section>
 
+  <section id="roadmap">
+    <h2>📊 نقشه راه توشان‌ورس</h2>
+    <ul class="roadmap-list">
+      <li><span class="done">✅</span> فاز اول: معرفی قهرمان‌ها و ویلن‌ها</li>
+      <li><span class="doing">⏳</span> فاز دوم: انتشار اولین داستان‌های کوتاه</li>
+      <li><span class="locked">🔒</span> فاز سوم: کراس‌اور کوچک شبیه Avengers 1</li>
+      <li><span class="locked">🔒</span> فاز چهارم: نمایش بخش‌هایی از گذشته بعضی شخصیت‌ها</li>
+      <li><span class="locked">🔒</span> فاز پنجم: رویدادهای جهانی با تهدید فراگیر</li>
+      <li><span class="locked">🔒</span> فاز ششم: جنگ بزرگ جهان‌ها (کراس‌اور نهایی)</li>
+    </ul>
+  </section>
+
   <footer>
-    <p>© 2025 توشان ورس | Tooshanverse</p>
+    <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
   </footer>
 
   <script>
-    // منو موبایل
-    const menuBtn = document.getElementById("menu-btn");
-    const menu = document.getElementById("menu");
-    menuBtn.addEventListener("click", () => {
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    // منوی موبایل
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+    menuBtn.addEventListener('click', () => {
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     });
 
-    // پاپ‌آپ‌ها
+    // باز و بسته کردن پاپ‌آپ‌ها
     function openPopup(name) {
-      // همه پاپ‌آپ‌ها رو می‌بندیم اول
-      document.querySelectorAll(".popup").forEach(popup => {
-        popup.classList.remove("show");
-      });
-      // پاپ‌آپ انتخاب شده رو باز می‌کنیم
-      document.getElementById("popup-" + name).classList.add("show");
+      document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('show'));
+      const popup = document.getElementById('popup-' + name);
+      if (popup) {
+        popup.classList.add('show');
+      }
     }
     function closePopup() {
-      document.querySelectorAll(".popup").forEach(popup => {
-        popup.classList.remove("show");
-      });
+      document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('show'));
     }
 
-    // جستجو در سایت
+    // جستجو ساده سایت
+    const siteContent = [
+      {title: 'تسکین', type: 'character'},
+      {title: 'الکتروپالس', type: 'character'},
+      {title: 'گردآفرید', type: 'character'},
+      {title: 'لرد فیزیکا', type: 'character'},
+      {title: 'عناصر', type: 'character'},
+      {title: 'مرداویچ', type: 'character'},
+      {title: 'استریکس', type: 'character'},
+      {title: 'حشاشین', type: 'character'},
+      {title: 'ارتش جاویدان', type: 'character'},
+      {title: 'آگناتوس', type: 'character'},
+      {title: 'نیما و رها', type: 'character'},
+      // سایر موارد ...
+    ];
+
     function siteSearch() {
-      const input = document.getElementById("siteSearchInput");
-      const filter = input.value.trim().toLowerCase();
-      const results = document.getElementById("searchResults");
-      results.innerHTML = "";
-      if (filter.length === 0) return;
+      const input = document.getElementById('siteSearchInput').value.trim();
+      const resultsDiv = document.getElementById('searchResults');
+      resultsDiv.innerHTML = '';
 
-      // عناوین و اسامی شخصیت‌ها، بخش‌ها و...
-      const items = [
-        { name: "تسکین", popup: "taskin" },
-        { name: "الکتروپالس", popup: "electropulse" },
-        { name: "گردآفرید", popup: "gardafrid" },
-        { name: "لرد فیزیکا", popup: "physica" },
-        { name: "عناصر", popup: "anasser" },
-        { name: "مرداویچ", popup: "mordavij" },
-        { name: "استریکس", popup: "strix" },
-        { name: "حشاشین", popup: "hashashin" },
-        { name: "ارتش جاویدان", popup: "eternals" },
-        { name: "آگناتوس", popup: "agnatus" },
-        { name: "نیما و رها", popup: "nima-raha" },
-        { name: "قهرمان‌ها", section: "characters" },
-        { name: "ویلن‌ها", section: "villains" },
-        { name: "خنثی‌ها", section: "neutrals" },
-        { name: "کمیک‌ها", section: "comics" },
-        { name: "گفتگو با من", section: "chat" }
-      ];
+      if (input.length < 2) return;
 
-      const filtered = items.filter(item => item.name.includes(filter));
-      filtered.forEach(item => {
-        const p = document.createElement("p");
-        p.textContent = item.name;
-        p.onclick = () => {
-          if (item.popup) openPopup(item.popup);
-          else if (item.section) {
-            document.getElementById(item.section).scrollIntoView({ behavior: "smooth" });
-          }
-          results.innerHTML = "";
-          input.value = "";
-        };
-        results.appendChild(p);
+      const results = siteContent.filter(item => item.title.includes(input));
+      if (results.length === 0) {
+        resultsDiv.innerHTML = '<p>موردی یافت نشد</p>';
+        return;
+      }
+
+      results.forEach(item => {
+        const p = document.createElement('p');
+        p.textContent = item.title;
+        p.onclick = () => openPopup(item.title.toLowerCase().replace(/ /g, '-'));
+        resultsDiv.appendChild(p);
       });
     }
 
-    // شمارنده و فرم تنظیم تاریخ
-    const countdownEl = document.getElementById("countdown");
-    const form = document.getElementById("next-part-form");
-    const inputDate = document.getElementById("nextReleaseInput");
+    // شمارنده جدید - خواندن مقدار از گوگل شیت و نمایش شمارش معکوس
 
-    // بارگذاری زمان بعدی از لوکال استوریج یا مقدار پیشفرض (اگر نداریم، فردا ساعت 23)
-    let nextReleaseTime = localStorage.getItem("nextReleaseTime");
-    if (nextReleaseTime) {
-      nextReleaseTime = parseInt(nextReleaseTime, 10);
-    } else {
-      // پیشفرض: فردا ساعت 23:00
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(23, 0, 0, 0);
-      nextReleaseTime = tomorrow.getTime();
+    async function fetchCounterFromSheet() {
+      const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
+
+      try {
+        const response = await fetch(url);
+        const csvText = await response.text();
+        const rows = csvText.split('\n');
+        const firstCell = rows[0].split(',')[0].trim();
+        return parseInt(firstCell, 10);
+      } catch (error) {
+        console.error('خطا در خواندن گوگل شیت:', error);
+        return null;
+      }
     }
 
-    // تنظیم مقدار ورودی فرم بر اساس مقدار ذخیره شده (برای UX)
-    function updateInputValue() {
-      const dt = new Date(nextReleaseTime);
-      // فرمت ورودی datetime-local: YYYY-MM-DDTHH:mm
-      const isoString = dt.toISOString();
-      const val = isoString.substring(0,16);
-      inputDate.value = val;
-    }
-    updateInputValue();
+    async function updateCountdown() {
+      const countdownContainer = document.getElementById('countdown-container');
+      const counterValue = await fetchCounterFromSheet();
 
-    // به‌روزرسانی شمارنده
-    let countdownTimer = null;
-    function startCountdown() {
-      if (countdownTimer) clearInterval(countdownTimer);
-      countdownTimer = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = nextReleaseTime - now;
+      if (counterValue === null || isNaN(counterValue)) {
+        countdownContainer.textContent = 'خطا در بارگذاری شمارنده';
+        return;
+      }
 
-        if (distance <= 0) {
-          clearInterval(countdownTimer);
-          countdownEl.innerHTML = "📖 پارت جدید آماده‌ست!";
+      // فرض: counterValue عدد ساعت باقی‌مانده تا انتشار است
+      const endTime = new Date(Date.now() + counterValue * 3600 * 1000);
+
+      function updateTimer() {
+        const now = new Date();
+        const diff = endTime - now;
+
+        if (diff <= 0) {
+          countdownContainer.textContent = 'زمان انتشار داستان فرا رسیده!';
+          clearInterval(timerInterval);
           return;
         }
 
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        countdownEl.innerHTML = `${hours} ساعت، ${minutes} دقیقه، ${seconds} ثانیه`;
-      }, 1000);
-    }
-    startCountdown();
-
-    // هندل ارسال فرم
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const newTime = new Date(inputDate.value).getTime();
-      if (isNaN(newTime) || newTime <= Date.now()) {
-        alert("لطفاً یک تاریخ و ساعت معتبر در آینده وارد کنید.");
-        return;
+        countdownContainer.textContent = `زمان تا انتشار داستان: ${hours} ساعت و ${minutes} دقیقه و ${seconds} ثانیه`;
       }
-      nextReleaseTime = newTime;
-      localStorage.setItem("nextReleaseTime", nextReleaseTime);
-      startCountdown();
-      alert("زمان پارت بعدی با موفقیت تنظیم شد!");
-    });
+
+      updateTimer();
+      const timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    updateCountdown();
   </script>
 </body>
 </html>
