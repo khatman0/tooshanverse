@@ -7,10 +7,8 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-    body, html {
+    * { box-sizing: border-box; }
+    html, body {
       margin: 0; padding: 0; height: 100%;
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
@@ -20,17 +18,22 @@
       flex-direction: column;
       min-height: 100vh;
     }
-    header, footer {
+    header {
       background-color: #1a1a1a;
       color: #ff9900;
       text-align: center;
       padding: 20px 15px;
-      flex-shrink: 0;
       box-shadow: 0 0 10px #ff990055;
       position: relative;
-      margin-top: auto;  /* اضافه شده */
+      z-index: 1;
     }
-    /* دکمه بازگشت به خانه */
+    footer {
+      background-color: #1a1a1a;
+      color: #ff9900;
+      text-align: center;
+      padding: 20px 15px;
+      box-shadow: 0 0 10px #ff990055;
+    }
     .home-button {
       position: absolute;
       left: 20px;
@@ -46,9 +49,8 @@
       transition: background-color 0.3s ease;
       user-select: none;
     }
-    .home-button:hover {
-      background-color: #e68a00;
-    }
+    .home-button:hover { background-color: #e68a00; }
+
     main {
       flex-grow: 1;
       max-width: 1200px;
@@ -58,9 +60,8 @@
       gap: 20px;
       min-height: 400px;
     }
-    /* لیست فازها */
-    #phaseList {
-      flex: 0 0 180px;
+
+    #phaseList, #storyList {
       background: #1f1f1f;
       border-radius: 12px;
       box-shadow: 0 0 15px #ff990044;
@@ -69,7 +70,10 @@
       overflow-y: auto;
       max-height: 500px;
     }
-    #phaseList li {
+    #phaseList { flex: 0 0 180px; }
+    #storyList { flex: 0 0 220px; }
+
+    #phaseList li, #storyList li {
       padding: 10px 15px;
       margin-bottom: 10px;
       cursor: pointer;
@@ -77,39 +81,16 @@
       transition: background-color 0.3s ease;
       box-shadow: 0 0 5px #ff990033;
     }
-    #phaseList li.active, #phaseList li:hover {
-      background-color: #ff9900;
-      color: #111;
-      box-shadow: 0 0 12px #ff9900dd;
-      font-weight: bold;
-    }
-    /* لیست داستان‌ها */
-    #storyList {
-      flex: 0 0 220px;
-      background: #1f1f1f;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #ff990044;
-      padding: 15px;
-      user-select: none;
-      overflow-y: auto;
-      max-height: 500px;
-    }
-    #storyList li {
-      padding: 8px 12px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 0 5px #ff990033;
-      font-size: 14.5px;
-    }
+    #storyList li { font-size: 14.5px; padding: 8px 12px; margin-bottom: 8px; }
+
+    #phaseList li.active, #phaseList li:hover,
     #storyList li.active, #storyList li:hover {
       background-color: #ff9900;
       color: #111;
       box-shadow: 0 0 12px #ff9900dd;
       font-weight: bold;
     }
-    /* محتوای داستان */
+
     #storyContent {
       flex-grow: 1;
       background: #1a1a1a;
@@ -135,7 +116,7 @@
       border-radius: 12px;
       margin-bottom: 15px;
       box-shadow: 0 0 15px #ff9900bb;
-      display: none; /* اگر عکسی بود نمایش داده شود */
+      display: none;
       object-fit: contain;
     }
     #storyText {
@@ -145,29 +126,27 @@
       color: #f0c040;
       white-space: pre-wrap;
     }
-    /* ریسپانسیو برای موبایل */
-   @media (max-width: 900px) {
-  main {
-    flex-direction: column;
-    flex-grow: 1; /* اضافه شده */
-    min-height: 0; /* اضافه شده */
-  }
-  #phaseList, #storyList, #storyContent {
-    max-height: none;
-    flex: none;
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  #storyContent {
-    order: 3;
-  }
-  .home-button {
-    position: static;
-    transform: none;
-    display: inline-block;
-    margin-bottom: 15px;
-  }
-}
+
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+        flex-grow: 1;
+        min-height: 0;
+      }
+      #phaseList, #storyList, #storyContent {
+        max-height: none;
+        flex: none;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+      #storyContent { order: 3; }
+      .home-button {
+        position: static;
+        transform: none;
+        display: inline-block;
+        margin-bottom: 15px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -178,14 +157,8 @@
   </header>
 
   <main>
-    <ul id="phaseList" aria-label="لیست فازها">
-      <!-- فازها اینجا توسط JS ساخته می‌شوند -->
-    </ul>
-
-    <ul id="storyList" aria-label="لیست داستان‌ها">
-      <!-- داستان‌ها اینجا توسط JS ساخته می‌شوند -->
-    </ul>
-
+    <ul id="phaseList" aria-label="لیست فازها"></ul>
+    <ul id="storyList" aria-label="لیست داستان‌ها"></ul>
     <section id="storyContent" aria-live="polite">
       <h2 id="storyTitle"></h2>
       <img id="storyCover" src="" alt="کاور داستان" />
@@ -197,10 +170,10 @@
     <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
   </footer>
 
-<script>
-  const phases = {
-    phase1: [
-      { id: 'p1s1', title: 'لردفیزیکا:انفجار آبی', cover: '', text: `در تهران، پایتخت یکی از قدیمی‌ترین تمدن‌های دنیا، اتفاقاتی در حال رخ‌دادنه که کم‌کم همه رو متعجب کرده.
+  <script>
+    const phases = {
+      phase1: [
+        { id: 'p1s1', title: 'لردفیزیکا:انفجار آبی', cover: '',  text: `در تهران، پایتخت یکی از قدیمی‌ترین تمدن‌های دنیا، اتفاقاتی در حال رخ‌دادنه که کم‌کم همه رو متعجب کرده.
 اتفاقاتی که هر روز گسترده‌تر می‌شن و نشونه‌هاشون داره توی جای‌جای ایران دیده می‌شه.
 یکی از اون اتفاق‌ها، مربوطه به مردی به اسم نوید سهیلی.
 
@@ -368,123 +341,120 @@
 اولین نبرد نوید، بدون این‌که خودش بدونه، همین‌جا شروع شده بود.
 ادامه داستان امشب اضافه خواهد شد.
 ` },
-      { id: 'p1s2', title: 'الکتروپالس:ولتاژ ناشناخته', cover: '', text: 'متن داستان به زودی اضافه خواهد شد ' },
-      { id: 'p1s3', title: 'المنت ها:عناصر پنهان', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p1s4', title: 'استریکس:بند ذهن', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p1s5', title: 'تسکین:خاموشی سنسور', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-    ],
-    phase2: [
-      { id: 'p2s1', title: 'المنت ها 2:پیوند عنصری', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p2s2', title: 'استریکس 2:توهم مشترک', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p2s3', title: 'مرداویچ:بازگشت دوم', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p2s4', title: 'تسکین 2:نبض خاموشی', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p2s5', title: 'گردآفرید:پیکار ناتمام', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-    ],
-    phase3: [
-      { id: 'p3s1', title: 'نیما و رها:طلوع سایه ها', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p3s2', title: 'استریکس 3:شکنجه ذهن', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p3s3', title: 'الکتروپالس 2:ولتاژ انتقام', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p3s4', title: 'روشن تاب و آتران:دروازه های نور', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p3s5', title: 'لبه‌ی آشوب', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p3s6', title: 'میان مرگ و سکوت', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-      { id: 'p3s7', title: 'گردآفرید 2:خون جاودان', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
-    ],
-    phase4: [],
-    phase5: [],
-    phase6: [],
-    phase7: [],
-  };
+        { id: 'p1s2', title: 'الکتروپالس:ولتاژ ناشناخته', cover: '', text: 'متن داستان به زودی اضافه خواهد شد ' },
+        { id: 'p1s3', title: 'المنت ها:عناصر پنهان', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p1s4', title: 'استریکس:بند ذهن', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p1s5', title: 'تسکین:خاموشی سنسور', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+      ],
+      phase2: [
+        { id: 'p2s1', title: 'المنت ها 2:پیوند عنصری', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p2s2', title: 'استریکس 2:توهم مشترک', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p2s3', title: 'مرداویچ:بازگشت دوم', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p2s4', title: 'تسکین 2:نبض خاموشی', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p2s5', title: 'گردآفرید:پیکار ناتمام', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+      ],
+      phase3: [
+        { id: 'p3s1', title: 'نیما و رها:طلوع سایه ها', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p3s2', title: 'استریکس 3:شکنجه ذهن', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p3s3', title: 'الکتروپالس 2:ولتاژ انتقام', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p3s4', title: 'روشن تاب و آتران:دروازه های نور', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p3s5', title: 'لبه‌ی آشوب', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p3s6', title: 'میان مرگ و سکوت', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+        { id: 'p3s7', title: 'گردآفرید 2:خون جاودان', cover: '', text: 'متن داستان به زودی اضافه خواهد شد' },
+      ],
+      phase4: [], 
+      phase5: [], 
+      phase6: [],
+      phase7: [],
+    };
 
-  const phaseList = document.getElementById('phaseList');
-  const storyList = document.getElementById('storyList');
-  const storyTitle = document.getElementById('storyTitle');
-  const storyCover = document.getElementById('storyCover');
-  const storyText = document.getElementById('storyText');
+    const phaseList = document.getElementById('phaseList');
+    const storyList = document.getElementById('storyList');
+    const storyTitle = document.getElementById('storyTitle');
+    const storyCover = document.getElementById('storyCover');
+    const storyText = document.getElementById('storyText');
 
-  function buildPhaseList() {
-    phaseList.innerHTML = '';
-    let i = 1;
-    for (const key in phases) {
-      const li = document.createElement('li');
-      li.textContent = `فاز ${i}`;
-      li.dataset.phase = key;
-      li.tabIndex = 0;
-      li.addEventListener('click', () => {
-        setActivePhase(key);
-      });
-      li.addEventListener('keydown', e => {
-        if(e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          setActivePhase(key);
-        }
-      });
-      phaseList.appendChild(li);
-      i++;
+    function buildPhaseList() {
+      phaseList.innerHTML = '';
+      let i = 1;
+      for (const key in phases) {
+        const li = document.createElement('li');
+        li.textContent = `فاز ${i}`;
+        li.dataset.phase = key;
+        li.tabIndex = 0;
+        li.addEventListener('click', () => setActivePhase(key));
+        li.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setActivePhase(key);
+          }
+        });
+        phaseList.appendChild(li);
+        i++;
+      }
     }
-  }
 
-  function showStories(phaseKey) {
-    storyList.innerHTML = '';
-    const stories = phases[phaseKey] || [];
-    if (stories.length === 0) {
-      storyList.innerHTML = '<li>داستانی برای این فاز موجود نیست.</li>';
-      clearContent();
-      return;
-    }
-    showStory(stories[0]);
-    stories.forEach((story, index) => {
-      const li = document.createElement('li');
-      li.textContent = story.title;
-      li.dataset.storyId = story.id;
-      if (index === 0) li.classList.add('active');
-      li.tabIndex = 0;
-      li.addEventListener('click', () => {
-        storyList.querySelectorAll('li').forEach(i => i.classList.remove('active'));
-        li.classList.add('active');
-        showStory(story);
-      });
-      li.addEventListener('keydown', e => {
-        if(e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
+    function showStories(phaseKey) {
+      storyList.innerHTML = '';
+      const stories = phases[phaseKey] || [];
+      if (stories.length === 0) {
+        storyList.innerHTML = '<li>داستانی برای این فاز موجود نیست.</li>';
+        clearContent();
+        return;
+      }
+      showStory(stories[0]);
+      stories.forEach((story, index) => {
+        const li = document.createElement('li');
+        li.textContent = story.title;
+        li.dataset.storyId = story.id;
+        if (index === 0) li.classList.add('active');
+        li.tabIndex = 0;
+        li.addEventListener('click', () => {
           storyList.querySelectorAll('li').forEach(i => i.classList.remove('active'));
           li.classList.add('active');
           showStory(story);
-        }
+        });
+        li.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            storyList.querySelectorAll('li').forEach(i => i.classList.remove('active'));
+            li.classList.add('active');
+            showStory(story);
+          }
+        });
+        storyList.appendChild(li);
       });
-      storyList.appendChild(li);
-    });
-  }
-
-  function showStory(story) {
-    storyTitle.textContent = story.title;
-    if (story.cover) {
-      storyCover.src = story.cover;
-      storyCover.style.display = 'block';
-      storyCover.alt = `کاور داستان ${story.title}`;
-    } else {
-      storyCover.style.display = 'none';
-      storyCover.src = '';
-      storyCover.alt = '';
     }
-    storyText.textContent = story.text;
-  }
 
-  function clearContent() {
-    storyTitle.textContent = '';
-    storyCover.style.display = 'none';
-    storyText.textContent = '';
-  }
+    function showStory(story) {
+      storyTitle.textContent = story.title;
+      if (story.cover) {
+        storyCover.src = story.cover;
+        storyCover.style.display = 'block';
+        storyCover.alt = `کاور داستان ${story.title}`;
+      } else {
+        storyCover.style.display = 'none';
+        storyCover.src = '';
+        storyCover.alt = '';
+      }
+      storyText.textContent = story.text;
+    }
 
-  function setActivePhase(phaseKey) {
-    phaseList.querySelectorAll('li').forEach(li => li.classList.remove('active'));
-    const selected = Array.from(phaseList.children).find(li => li.dataset.phase === phaseKey);
-    if (selected) selected.classList.add('active');
-    showStories(phaseKey);
-  }
+    function clearContent() {
+      storyTitle.textContent = '';
+      storyCover.style.display = 'none';
+      storyText.textContent = '';
+    }
 
-  buildPhaseList();
-  setActivePhase('phase1');
-</script>
+    function setActivePhase(phaseKey) {
+      phaseList.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+      const selected = Array.from(phaseList.children).find(li => li.dataset.phase === phaseKey);
+      if (selected) selected.classList.add('active');
+      showStories(phaseKey);
+    }
 
+    buildPhaseList();
+    setActivePhase('phase1');
+  </script>
 </body>
 </html>
