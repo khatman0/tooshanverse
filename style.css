@@ -1,306 +1,375 @@
- body {
-      font-family: 'Vazirmatn', sans-serif;
-      background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
-      color: #f0c040;
-      margin: 0;
-      padding: 0;
-      direction: rtl;
-    }
-    header, footer {
-      text-align: center;
-      background-color: #1a1a1a;
-      padding: 30px 20px;
-      position: relative;
-    }
-    h1, h2, h3 {
-      color: #ff9900;
-    }
-    section {
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    .menu-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 30px;
-      height: 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      cursor: pointer;
-      z-index: 1000;
-    }
-    .menu-btn div {
-      height: 4px;
-      background-color: #f0c040;
-      border-radius: 2px;
-    }
-    .menu {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background: #1a1a1a;
-      padding: 10px 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ff9900;
-      z-index: 999;
-    }
-    .menu a {
-      display: block;
-      padding: 8px 0;
-      color: #f0c040;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .menu a:hover {
-      color: #fff;
-    }
-   .popup {
+/* ===== Reset و فونت ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Vazirmatn', sans-serif;
+  background: linear-gradient(135deg, #2a0a0a, #4b1010, #1f0505);
+  color: #f0c040;
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+/* ===== Header با بک‌گراند خفن ===== */
+header {
+  position: relative;
+  text-align: center;
+  padding: 100px 20px;
+  color: #ffcc33;
+  overflow: hidden;
+  z-index: 1;
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: 
+    url('img1.png') center/cover no-repeat,
+    url('img2.png') center/cover no-repeat,
+    url('img3.png') center/cover no-repeat;
+  background-blend-mode: overlay;
+  opacity: 0.5;
+  z-index: 0;
+  animation: floatBackground 20s linear infinite alternate;
+}
+
+@keyframes floatBackground {
+  0% { transform: scale(1) translateY(0px); }
+  50% { transform: scale(1.02) translateY(-15px); }
+  100% { transform: scale(1) translateY(0px); }
+}
+
+header h1 {
+  position: relative;
+  z-index: 1;
+  font-size: 3em;
+  text-shadow: 2px 2px 12px #000;
+  letter-spacing: 2px;
+}
+
+header p {
+  position: relative;
+  z-index: 1;
+  font-size: 1.5em;
+  text-shadow: 1px 1px 6px #000;
+  margin-top: 10px;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  background-color: #111;
+  padding: 30px 20px;
+  box-shadow: 0 0 20px #ff990088;
+}
+
+/* ===== منو موبایل ===== */
+.menu-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 30px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.menu-btn div {
+  height: 4px;
+  background-color: #f0c040;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.menu {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: #1b1b1b;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #ff9900aa;
+  z-index: 999;
+  transition: all 0.3s ease;
+}
+
+.menu a {
+  display: block;
+  padding: 10px 0;
+  color: #f0c040;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.menu a:hover {
+  color: #fff;
+  transform: translateX(-5px);
+}
+
+/* ===== Popup ===== */
+.popup {
   display: none;
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
+  transform: translate(-50%, -50%) scale(0.7);
   background-color: #222;
   color: #f0c040;
   padding: 25px;
-  border-radius: 10px;
+  border-radius: 15px;
   width: 90%;
-  max-width: 400px;
-  max-height: 80vh; /* محدود کردن ارتفاع */
-  overflow-y: auto;  /* اسکرول عمودی در صورت نیاز */
-  box-shadow: 0 0 20px #ff9900;
+  max-width: 420px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 25px #ff9900aa, 0 0 50px #00000088 inset;
   z-index: 9999;
   text-align: center;
   opacity: 0;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.popup.show {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.popup button {
+  background-color: #ff9900;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #111;
+  margin-top: 15px;
+  font-weight: bold;
   transition: all 0.3s ease;
 }
-    .popup.show {
-      display: block;
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    .popup button {
-      background-color: #ff9900;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      color: #111;
-      margin-top: 10px;
-    }
-    .category-cards {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    .category-card {
-      background-color: #1f1f1f;
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #ff990055;
-      cursor: pointer;
-      color: #f0c040;
-      font-size: 18px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-    }
-    .category-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #ff9900aa;
-    }
-    ul.character-list {
-      list-style: none;
-      padding: 0;
-      margin: 20px 0 0 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-    }
-    ul.character-list li {
-      background: #1f1f1f;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 0 5px #ff990055;
-      transition: box-shadow 0.3s ease;
-      user-select: none;
-      font-size: 16px;
-    }
-    ul.character-list li:hover {
-      box-shadow: 0 0 10px #ff9900cc;
-    }
-    #siteSearchContainer {
-      max-width: 400px;
-      margin: 20px auto 0 auto;
-      text-align: center;
-      position: relative;
-      background: #1a1a1a;
-      border-radius: 12px;
-      padding: 15px 20px;
-      box-shadow: 0 0 10px #ff990044;
-    }
-    #siteSearchInput {
-      width: 100%;
-      padding: 10px 15px;
-      font-size: 18px;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      box-shadow: 0 0 10px #ff990044;
-      color: #222;
-    }
-    #searchResults {
-      max-width: 600px;
-      margin: 15px auto 0 auto;
-      background: #1a1a1a;
-      padding: 15px 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #ff990055;
-      color: #f0c040;
-      min-height: 40px;
-      text-align: right;
-    }
-    #searchResults p {
-      margin: 8px 0;
-      cursor: pointer;
-      user-select: none;
-    }
-    #searchResults p:hover {
-      color: #ffcc33;
-      text-decoration: underline;
-    }
-    @media (max-width: 600px) {
-      .category-card {
-        flex: 1 1 100%;
-        font-size: 16px;
-        text-align: center;
-      }
-      ul.character-list {
-        flex-direction: column;
-      }
-      ul.character-list li {
-        width: 100%;
-        text-align: center;
-      }
-      #siteSearchInput {
-        font-size: 16px;
-      }
-    }
-    .chat-button {
-      display: inline-block;
-      background-color: #ff9900;
-      color: #111;
-      padding: 12px 24px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 18px;
-      transition: background-color 0.3s ease;
-    }
-    .chat-button:hover {
-      background-color: #e68a00;
-    }
-    
-    /* ========== اضافه شده برای شمارنده و تابلو اعلانات ========== */
-    /* شمارنده گوشه سمت راست */
-    #countdown-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 250px;
-      background: #1a1a1a;
-      color: #f0c040;
-      padding: 15px;
-      font-size: 18px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px #ff990055;
-      user-select: none;
-      z-index: 10000;
-      text-align: center;
-    }
 
-    /* تابلو اعلانات گوشه سمت چپ */
-    #notice-board-section {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 280px;
-      height: 120px;
-      background: #1a1a1a;
-      color: #f0c040;
-      padding: 15px 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px #ff990055;
-      user-select: none;
-      z-index: 10000;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      cursor: default;
-    }
-    .fade-out {
-  opacity: 0;
-  transition: opacity 0.5s ease;
+.popup button:hover {
+  background-color: #e68a00;
+  transform: scale(1.05);
 }
 
-.fade-in {
-  opacity: 1;
-  transition: opacity 0.5s ease;
+/* ===== کارت دسته بندی ===== */
+.category-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
 }
-    #notice-board-section h2 {
-      margin: 0 0 10px 0;
-      font-size: 20px;
-      flex-shrink: 0;
-      text-align: center;
-    }
-    #notice-viewer {
-      flex-grow: 1;
-      font-size: 16px;
-      line-height: 1.3;
-      overflow-y: hidden;
-      user-select: text;
-      text-align: right;
-    }
 
-    /* واکنش‌گرایی موبایل - زیر هم */
-    @media (max-width: 700px) {
-  #countdown-container, #notice-board-section {
-    position: static;
-    width: 250px;        /* اندازه تابلو اعلانات مثل شمارنده */
-    margin: 10px auto;
-    max-height: 100px;   /* ارتفاع کمی کمتر */
-    overflow: visible;
-    box-shadow: 0 0 10px #ff990055;
-  }
+.category-card {
+  background: linear-gradient(145deg, #1f1f1f, #2b2b2b);
+  padding: 25px 35px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px #ff990044, 0 5px 15px #00000077;
+  cursor: pointer;
+  color: #f0c040;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.category-card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px #ff9900bb, 0 8px 20px #00000099;
+}
+
+/* ===== لیست شخصیت ها ===== */
+ul.character-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+ul.character-list li {
+  background: linear-gradient(135deg, #1f1f1f, #2b2b2b);
+  padding: 12px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 0 5px #ff990044, 0 3px 8px #00000055 inset;
+  transition: all 0.3s ease;
+  user-select: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+ul.character-list li:hover {
+  box-shadow: 0 0 15px #ff9900cc, 0 0 10px #00000099 inset;
+  transform: scale(1.05);
+}
+
+/* ===== جستجو ===== */
+#siteSearchContainer {
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
+  background: #1a1a1a;
+  border-radius: 15px;
+  padding: 15px 20px;
+  box-shadow: 0 0 15px #ff990044, 0 5px 10px #00000055 inset;
+}
+
+#siteSearchInput {
+  width: 100%;
+  padding: 12px 18px;
+  font-size: 18px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  box-shadow: 0 0 10px #ff990044 inset;
+  color: #222;
+}
+
+#searchResults {
+  max-width: 600px;
+  margin: 15px auto 0 auto;
+  background: #1a1a1a;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #ff990055, 0 5px 10px #00000055 inset;
+  color: #f0c040;
+  min-height: 40px;
+  text-align: right;
+}
+
+#searchResults p {
+  margin: 8px 0;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+#searchResults p:hover {
+  color: #ffcc33;
+  transform: translateX(-5px);
+}
+
+/* ===== دکمه چت ===== */
+.chat-button {
+  display: inline-block;
+  background-color: #ff9900;
+  color: #111;
+  padding: 14px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.chat-button:hover {
+  background-color: #e68a00;
+  transform: scale(1.05);
+}
+
+/* ===== شمارنده و تابلو اعلانات ===== */
+#countdown-container,
+#notice-board-section {
+  position: fixed;
+  padding: 15px 20px;
+  background: #1a1a1a;
+  color: #f0c040;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #ff990055, 0 5px 10px #00000055 inset;
+  user-select: none;
+  z-index: 10000;
+}
+
+#countdown-container {
+  top: 20px;
+  right: 20px;
+  width: 260px;
+  font-size: 18px;
+  text-align: center;
+}
+
+#notice-board-section {
+  top: 20px;
+  left: 20px;
+  width: 280px;
+  height: 120px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: default;
+}
+
+.fade-out { opacity: 0; transition: opacity 0.5s ease; }
+.fade-in { opacity: 1; transition: opacity 0.5s ease; }
+
+#notice-board-section h2 {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  flex-shrink: 0;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000;
+}
+
+#notice-viewer {
+  flex-grow: 1;
+  font-size: 16px;
+  line-height: 1.3;
+  overflow-y: hidden;
+  user-select: text;
+  text-align: right;
+}
+
+/* ===== ریسپانسیو ===== */
+@media (max-width: 700px) {
+  #countdown-container,
   #notice-board-section {
-    height: 100px;       /* ارتفاع تابلو اعلانات */
+    position: static;
+    width: 250px;
+    margin: 10px auto;
+    max-height: 100px;
+    overflow: visible;
+    box-shadow: 0 0 15px #ff990055;
   }
+
+  #notice-board-section { height: 100px; }
 }
-   @media (max-width: 600px) {
+
+@media (max-width: 600px) {
   .popup {
     width: 320px;
     max-width: 90%;
-    margin: 0 auto;
     max-height: 70vh;
     overflow-y: auto;
     padding: 20px;
+    margin: 0 auto;
   }
+
+  #siteSearchContainer { max-width: 300px; margin: 10px auto; }
+  #siteSearchInput { font-size: 16px; width: 100%; box-sizing: border-box; }
+  .category-card { flex: 1 1 100%; font-size: 16px; text-align: center; }
+  ul.character-list { flex-direction: column; gap: 10px; }
+  ul.character-list li { width: 100%; text-align: center; }
+
+  header h1 { font-size: 2em; }
+  header p { font-size: 1.2em; }
 }
-    @media (max-width: 600px) {
-  #siteSearchContainer {
-    max-width: 300px;
-    margin: 10px auto;
-  }
-  #siteSearchInput {
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
+
+/* ===== Scrollbar اختصاصی ===== */
+*::-webkit-scrollbar { width: 8px; }
+*::-webkit-scrollbar-thumb { background-color: #ff990088; border-radius: 4px; }
+*::-webkit-scrollbar-track { background: #1a1a1a; }
