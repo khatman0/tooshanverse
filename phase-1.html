@@ -80,6 +80,14 @@
 </head>
 <body>
 
+  <div class="hamburger" id="hamburger">&#9776;</div>
+<div class="side-menu" id="sideMenu">
+  <a href="index.html">خانه</a>
+  <a href="phase1.html">فاز ۱</a>
+  <a href="phase2.html">فاز ۲</a>
+  <a href="contact.html">تماس با ما</a>
+</div>
+  
 <div class="background" id="background"></div>
 
 <div class="content">
@@ -132,9 +140,28 @@
     }
 
     changeBackground();
-    setInterval(changeBackground, 5000); // هر ۵ ثانیه
+    setInterval(changeBackground, 6500); // هر ۵ ثانیه
   }
+ const hamburger = document.getElementById('hamburger');
+  const sideMenu = document.getElementById('sideMenu');
 
+  hamburger.addEventListener('click', () => {
+    sideMenu.classList.toggle('show');
+  });
+
+  // بستن منو وقتی روی لینک کلیک شد
+  sideMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      sideMenu.classList.remove('show');
+    });
+  });
+
+  // بستن منو وقتی روی بیرون کلیک شد
+  document.addEventListener('click', (e) => {
+    if(!sideMenu.contains(e.target) && e.target !== hamburger){
+      sideMenu.classList.remove('show');
+    }
+  });
 </script>
 
 </body>
