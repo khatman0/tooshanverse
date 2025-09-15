@@ -10,10 +10,17 @@
 body {
   margin: 0;
   height: 100vh;
-  background-color: #2b2b2b; /* یا #222222 */
-  color: #ffffff; /* متن سفید برای خوانایی */
+  background: linear-gradient(270deg, #0d0d0d, #1a1a1a, #2b2b2b);
+  background-size: 600% 600%;
+  animation: gradientBG 15s ease infinite;
+  color: #ffffff;
 }
 
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
    
 header, footer {
   text-align: center;
