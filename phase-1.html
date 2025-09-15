@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>فاز ۱: برخورد نخست</title>
-<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <style>
   body, html {
     margin: 0;
@@ -69,26 +68,68 @@
     transform: scale(1.05);
   }
 
-  /* ریسپانسیو برای موبایل */
   @media(max-width: 768px) {
     .story-item:hover {
-      transform: none; /* hover روی موبایل ندارد */
+      transform: none;
     }
+  }
+
+  /* منوی همبرگری */
+  .hamburger {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 200;
+    font-size: 2em;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .side-menu {
+    position: fixed;
+    top: 0;
+    right: -250px; /* مخفی کردن اولیه */
+    width: 250px;
+    height: 100%;
+    background-color: rgba(0,0,0,0.95);
+    box-shadow: -2px 0 10px rgba(0,0,0,0.7);
+    transition: right 0.3s ease;
+    z-index: 150;
+    display: flex;
+    flex-direction: column;
+    padding-top: 60px;
+  }
+
+  .side-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    padding: 15px 20px;
+    transition: background 0.3s;
+  }
+
+  .side-menu a:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .side-menu.show {
+    right: 0;
   }
 
 </style>
 </head>
 <body>
 
-  <div class="hamburger" id="hamburger">&#9776;</div>
+<div class="background" id="background"></div>
+
+<!-- منوی همبرگری -->
+<div class="hamburger" id="hamburger">&#9776;</div>
 <div class="side-menu" id="sideMenu">
   <a href="index.html">خانه</a>
   <a href="phase1.html">فاز ۱</a>
   <a href="phase2.html">فاز ۲</a>
   <a href="contact.html">تماس با ما</a>
 </div>
-  
-<div class="background" id="background"></div>
 
 <div class="content">
   <h1>فاز ۱: برخورد نخست</h1>
@@ -109,7 +150,6 @@
   const isMobile = window.innerWidth <= 768;
   let current = 0;
 
-  // برای دسکتاپ: hover تغییر بک‌گراند
   if(!isMobile){
     stories.forEach(story => {
       const div = document.createElement('div');
@@ -119,13 +159,12 @@
         bgDiv.style.backgroundImage = `url('${story.image}')`;
       });
       div.addEventListener('mouseout', () => {
-        bgDiv.style.backgroundImage = ''; // برگرداندن به پیش‌فرض یا می‌توانید بک‌گراند اولیه را نگه دارید
+        bgDiv.style.backgroundImage = ''; // می‌تونید بک‌گراند اولیه نگه دارید
       });
       div.addEventListener('click', () => { window.location.href = story.url; });
       storyList.appendChild(div);
     });
   } else {
-    // موبایل: اسلایدشو
     stories.forEach(story => {
       const div = document.createElement('div');
       div.classList.add('story-item');
@@ -140,9 +179,11 @@
     }
 
     changeBackground();
-    setInterval(changeBackground, 6500); // هر ۵ ثانیه
+    setInterval(changeBackground, 5000);
   }
- const hamburger = document.getElementById('hamburger');
+
+  // همبرگری
+  const hamburger = document.getElementById('hamburger');
   const sideMenu = document.getElementById('sideMenu');
 
   hamburger.addEventListener('click', () => {
@@ -162,6 +203,7 @@
       sideMenu.classList.remove('show');
     }
   });
+
 </script>
 
 </body>
