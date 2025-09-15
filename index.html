@@ -217,33 +217,44 @@
       background-color: #e68a00;
     }
     
-    /* کانتینر سایدبار چپ */
-.left-sidebar {
-  width: 280px; /* عرض مناسب */
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* فاصله بین تابلو اعلانات و شمارنده */
-  margin-left: 20px; /* فاصله از لبه صفحه */
-}
+    /* ========== اضافه شده برای شمارنده و تابلو اعلانات ========== */
+    /* شمارنده گوشه سمت راست */
+    #countdown-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 250px;
+      background: #1a1a1a;
+      color: #f0c040;
+      padding: 15px;
+      font-size: 18px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #ff990055;
+      user-select: none;
+      z-index: 10000;
+      text-align: center;
+    }
 
-/* تابلو اعلانات و شمارنده بدون fixed */
-#notice-board-section,
-#countdown-container {
-  position: relative; /* یا حذف position */
-  width: 100%;
-  margin: 0;
-  box-shadow: 0 0 15px #ff990055;
-  text-align: center;
-  padding: 15px 20px;
-  border-radius: 10px;
-  background: #1a1a1a;
-  color: #f0c040;
-}
-
-/* محتوای اصلی کنار سایدبار */
-.main-content {
-  margin-left: 320px; /* جای کافی برای سایدبار */
-}
+    /* تابلو اعلانات گوشه سمت چپ */
+    #notice-board-section {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 280px;
+      height: 120px;
+      background: #1a1a1a;
+      color: #f0c040;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #ff990055;
+      user-select: none;
+      z-index: 10000;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: default;
+    }
     .fade-out {
   opacity: 0;
   transition: opacity 0.5s ease;
@@ -268,20 +279,18 @@
       text-align: right;
     }
 
-  /* واکنش‌گرایی موبایل */
-@media (max-width: 700px) {
-  .left-sidebar {
-    width: 100%;
-    margin-left: 0;
-    flex-direction: row;
-    justify-content: space-between;
+    /* واکنش‌گرایی موبایل - زیر هم */
+    @media (max-width: 700px) {
+  #countdown-container, #notice-board-section {
+    position: static;
+    width: 250px;        /* اندازه تابلو اعلانات مثل شمارنده */
+    margin: 10px auto;
+    max-height: 100px;   /* ارتفاع کمی کمتر */
+    overflow: visible;
+    box-shadow: 0 0 10px #ff990055;
   }
-  .main-content {
-    margin-left: 0;
-  }
-  #notice-board-section,
-  #countdown-container {
-    width: 48%;
+  #notice-board-section {
+    height: 100px;       /* ارتفاع تابلو اعلانات */
   }
 }
    @media (max-width: 600px) {
