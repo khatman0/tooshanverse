@@ -21,16 +21,10 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #1a1a1a, #4a0000, #b30000); /* گرادیانت پیش‌فرض */
     background-size: cover;
     background-position: center;
-    transition: opacity 0.8s ease-in-out;
+    transition: background-image 0.5s ease-in-out;
     z-index: -1;
-  }
-
-  /* لایه دومی برای افکت نرم */
-  .background.fade {
-    opacity: 0;
   }
 
   /* محتوا */
@@ -126,9 +120,7 @@
 </head>
 <body>
 
-<!-- دو لایه بکگراند -->
-<div class="background" id="bg1"></div>
-<div class="background fade" id="bg2"></div>
+<div class="background" id="background"></div>
 
 <!-- منوی همبرگری -->
 <div class="hamburger" id="hamburger">&#9776;</div>
@@ -147,25 +139,16 @@
 <script>
   const stories = [
     { name: "لردفیزیکا: انفجار آبی", url: "lord-physica.html", image: "hero1.jpg" },
-    { name: "الکتروپالس: ولتاژ ناشناخته", url: "electropulse.html", image: "hero2.png" },
+    { name: "الکتروپالس: ولتاژ ناشناخته", url: "electropulse.html", image: "hero2.jpg" },
     { name: "استریکس: بند ذهن", url: "strix.html", image: "hero3.jpg" },
-    { name: "تسکین: خاموشی سنسور", url: "taskin.html", image: "hero3.png" }
+    { name: "تسکین: خاموشی سنسور", url: "taskin.html", image: "hero4.jpg" }
   ];
 
   const storyList = document.getElementById('storyList');
-  const bg1 = document.getElementById('bg1');
-  const bg2 = document.getElementById('bg2');
+  const bgDiv = document.getElementById('background');
+
   const isMobile = window.innerWidth <= 768;
   let current = 0;
-
-  function changeBackground(imageUrl) {
-    bg2.style.backgroundImage = imageUrl ? `url('${imageUrl}')` : bg1.style.backgroundImage;
-    bg2.classList.remove('fade');
-    setTimeout(() => {
-      bg1.style.backgroundImage = bg2.style.backgroundImage;
-      bg2.classList.add('fade');
-    }, 800); // مدت زمان ترنزیشن
-  }
 
   if(!isMobile){
     stories.forEach(story => {
@@ -173,10 +156,10 @@
       div.classList.add('story-item');
       div.innerText = story.name;
       div.addEventListener('mouseover', () => {
-        changeBackground(`url('${story.image}')`);
+        bgDiv.style.backgroundImage = `url('${story.image}')`;
       });
       div.addEventListener('mouseout', () => {
-        changeBackground(""); // برگردوندن به گرادیانت
+        bgDiv.style.backgroundImage = ''; // می‌تونید بک‌گراند اولیه نگه دارید
       });
       div.addEventListener('click', () => { window.location.href = story.url; });
       storyList.appendChild(div);
@@ -190,13 +173,13 @@
       storyList.appendChild(div);
     });
 
-    function changeMobileBackground() {
-      bg1.style.backgroundImage = `url('${stories[current].image}')`;
+    function changeBackground() {
+      bgDiv.style.backgroundImage = `url('${stories[current].image}')`;
       current = (current + 1) % stories.length;
     }
 
-    changeMobileBackground();
-    setInterval(changeMobileBackground, 5000);
+    changeBackground();
+    setInterval(changeBackground, 5000);
   }
 
   // همبرگری
@@ -207,12 +190,14 @@
     sideMenu.classList.toggle('show');
   });
 
+  // بستن منو وقتی روی لینک کلیک شد
   sideMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       sideMenu.classList.remove('show');
     });
   });
 
+  // بستن منو وقتی روی بیرون کلیک شد
   document.addEventListener('click', (e) => {
     if(!sideMenu.contains(e.target) && e.target !== hamburger){
       sideMenu.classList.remove('show');
