@@ -128,10 +128,11 @@ main {
   padding: 20px;
   box-shadow: 0 0 30px var(--header-shadow);
   overflow-y: auto;
-  max-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 400px; /* ارتفاع پایه */
+  max-height: calc(100vh - 160px); /* ارتفاع پویا با توجه به header و footer */
   transition: all 0.3s ease;
 }
 
@@ -185,13 +186,22 @@ main {
   background: rgba(0,0,0,0.2);
 }
 
+/* Footer */
+footer {
+  background-color: var(--bg-dark);
+  color: var(--primary-color);
+  text-align: center;
+  padding: 20px 15px;
+  box-shadow: 0 0 15px var(--header-shadow);
+  flex-shrink: 0;
+}
+
 /* ریسپانسیو */
 @media (max-width: 900px) {
   main { flex-direction: column; gap: 15px; min-height: auto; }
   #phaseList, #storyList, #storyContent { width: 100%; max-height: none; }
-  #storyContent { order: 3; }
+  #storyContent { order: 3; max-height: 400px; }
   .home-button { position: static; transform: none; display: inline-block; margin-bottom: 15px; }
-  footer { display: none; }
   #storyList { max-height: 300px; overflow-y: auto; }
 }
   </style>
