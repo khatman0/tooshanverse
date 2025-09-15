@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Tahoma", sans-serif;
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+  color: #fff;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin: 30px 0;
+  color: #ffae42; /* طلایی/نارنجی */
+  text-shadow: 0 0 10px rgba(255, 174, 66, 0.6);
+}
+
+.stories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.story-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 174, 66, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.story-card:hover {
+  background: rgba(255, 174, 66, 0.1);
+  color: #ffae42;
+  box-shadow: 0 0 15px rgba(255, 174, 66, 0.5);
+  transform: translateY(-5px);
+}
