@@ -7,155 +7,159 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; }
-    html, body {
-      margin: 0; padding: 0; height: 100%;
-      font-family: 'Vazirmatn', sans-serif;
-      background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
-      color: #f0c040;
-      direction: rtl;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header {
-      background-color: #1a1a1a;
-      color: #ff9900;
-      text-align: center;
-      padding: 20px 15px;
-      box-shadow: 0 0 10px #ff990055;
-      position: relative;
-      z-index: 1;
-    }
-    footer {
-      background-color: #1a1a1a;
-      color: #ff9900;
-      text-align: center;
-      padding: 20px 15px;
-      box-shadow: 0 0 10px #ff990055;
-    }
-    .home-button {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #ff9900;
-      color: #111;
-      padding: 8px 15px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 0 10px #ff9900bb;
-      transition: background-color 0.3s ease;
-      user-select: none;
-    }
-    .home-button:hover { background-color: #e68a00; }
-
-    main {
-      flex-grow: 1;
-      max-width: 1200px;
-      margin: 20px auto;
-      width: 95%;
-      display: flex;
-      gap: 20px;
-      min-height: 400px;
-    }
-
-    #phaseList, #storyList {
-      background: #1f1f1f;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #ff990044;
-      padding: 15px;
-      user-select: none;
-      overflow-y: auto;
-      max-height: 500px;
-    }
-    #phaseList { flex: 0 0 180px; }
-    #storyList { flex: 0 0 220px; }
-
-    #phaseList li, #storyList li {
-      padding: 10px 15px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 0 5px #ff990033;
-    }
-    #storyList li { font-size: 14.5px; padding: 8px 12px; margin-bottom: 8px; }
-
-    #phaseList li.active, #phaseList li:hover,
-    #storyList li.active, #storyList li:hover {
-      background-color: #ff9900;
-      color: #111;
-      box-shadow: 0 0 12px #ff9900dd;
-      font-weight: bold;
-    }
-
-    #storyContent {
-      flex-grow: 1;
-      background: #1a1a1a;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 0 20px #ff990055;
-      overflow-y: auto;
-      max-height: 500px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #storyTitle {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #ffcc33;
-      text-align: center;
-    }
-    #storyCover {
-      max-width: 100%;
-      max-height: 300px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      box-shadow: 0 0 15px #ff9900bb;
-      display: none;
-      object-fit: contain;
-    }
-    #storyText {
-      font-size: 16px;
-      line-height: 1.6;
-      text-align: justify;
-      color: #f0c040;
-      white-space: pre-wrap;
-    }
-
-    max-width: 900px {
-      main {
-        flex-direction: column;
-        flex-grow: 1;
-        min-height: 0;
-      }
-      #phaseList, #storyList, #storyContent {
-        max-height: none;
-        flex: none;
-        width: 100%;
-        margin-bottom: 15px;
-      }
-      #storyContent { order: 3; }
-      .home-button {
-        position: static;
-        transform: none;
-        display: inline-block;
-        margin-bottom: 15px;
-      }
-    }
-    max-width: 900px {
-  footer {
-    display: none;
-  }
+  * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-    max-width: 900px {
+
+html, body {
+  height: 100%;
+  font-family: 'Vazirmatn', sans-serif;
+  background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
+  color: #f0c040;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header, footer {
+  background-color: #1a1a1a;
+  color: #ff9900;
+  text-align: center;
+  padding: 20px 15px;
+  box-shadow: 0 0 10px #ff990055;
+  position: relative;
+  z-index: 1;
+}
+
+.home-button {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ff9900;
+  color: #111;
+  padding: 8px 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 0 10px #ff9900bb;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+.home-button:hover {
+  background-color: #e68a00;
+  transform: translateY(-50%) scale(1.05);
+}
+
+main {
+  flex-grow: 1;
+  max-width: 1200px;
+  margin: 20px auto;
+  width: 95%;
+  display: flex;
+  gap: 20px;
+  min-height: 400px;
+  transition: all 0.3s ease;
+}
+
+#phaseList, #storyList {
+  background: #1f1f1f;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #ff990044;
+  padding: 15px;
+  user-select: none;
+  overflow-y: auto;
+}
+
+#phaseList { flex: 0 0 180px; max-height: 500px; }
+#storyList { flex: 0 0 220px; max-height: 500px; font-size: 14.5px; }
+
+#phaseList li, #storyList li {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 5px #ff990033;
+}
+
+#storyList li { padding: 8px 12px; margin-bottom: 8px; }
+
+#phaseList li.active, #phaseList li:hover,
+#storyList li.active, #storyList li:hover {
+  background-color: #ff9900;
+  color: #111;
+  box-shadow: 0 0 12px #ff9900dd;
+  font-weight: bold;
+}
+
+#storyContent {
+  flex-grow: 1;
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 20px #ff990055;
+  overflow-y: auto;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+#storyTitle {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #ffcc33;
+  text-align: center;
+}
+
+#storyCover {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 0 15px #ff9900bb;
+  display: none;
+  object-fit: contain;
+}
+
+#storyText {
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: justify;
+  color: #f0c040;
+  white-space: pre-wrap;
+}
+
+/* ریسپانسیو */
+@media (max-width: 900px) {
+  main {
+    flex-direction: column;
+    min-height: 0;
+  }
+  #phaseList, #storyList, #storyContent {
+    width: 100%;
+    max-height: none;
+    margin-bottom: 15px;
+  }
+  #storyContent { order: 3; }
+  .home-button {
+    position: static;
+    transform: none;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
   #storyList {
     max-height: 300px;
     overflow-y: auto;
+  }
+  footer {
+    display: none;
   }
 }
   </style>
