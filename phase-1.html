@@ -10,11 +10,11 @@
     padding: 0;
     height: 100%;
     font-family: "Tahoma", sans-serif;
-    overflow: hidden;
     color: white;
+    overflow: hidden;
   }
 
-  /* بک‌گراند اسلایدشو */
+  /* بک‌گراند */
   .background {
     position: fixed;
     top: 0;
@@ -23,11 +23,11 @@
     height: 100%;
     background-size: cover;
     background-position: center;
-    transition: background-image 1s ease-in-out;
+    transition: background-image 0.5s ease-in-out;
     z-index: -1;
   }
 
-  /* محتوای صفحه */
+  /* محتوا */
   .content {
     position: relative;
     width: 100%;
@@ -38,7 +38,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: rgba(0,0,0,0.4); /* کمی پوشش برای خوانایی متن */
+    background: rgba(0,0,0,0.4); /* پوشش برای خوانایی متن */
   }
 
   h1 {
@@ -68,6 +68,13 @@
     transform: scale(1.05);
   }
 
+  /* ریسپانسیو برای موبایل */
+  @media(max-width: 768px) {
+    .story-item:hover {
+      transform: none; /* hover روی موبایل ندارد */
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -81,43 +88,51 @@
 
 <script>
   const stories = [
-    { name: "لردفیزیکا: انفجار آبی", url: "lord-physica.html" },
-    { name: "الکتروپالس: ولتاژ ناشناخته", url: "electropulse.html" },
-    { name: "استریکس: بند ذهن", url: "strix.html" },
-    { name: "تسکین: خاموشی سنسور", url: "taskin.html" }
+    { name: "لردفیزیکا: انفجار آبی", url: "lord-physica.html", image: "hero1.jpg" },
+    { name: "الکتروپالس: ولتاژ ناشناخته", url: "electropulse.html", image: "hero2.jpg" },
+    { name: "استریکس: بند ذهن", url: "strix.html", image: "hero3.jpg" },
+    { name: "تسکین: خاموشی سنسور", url: "taskin.html", image: "hero4.jpg" }
   ];
 
-  // نمایش داستان‌ها
   const storyList = document.getElementById('storyList');
-  stories.forEach(story => {
-    const div = document.createElement('div');
-    div.classList.add('story-item');
-    div.innerText = story.name;
-    div.addEventListener('click', () => {
-      window.location.href = story.url;
-    });
-    storyList.appendChild(div);
-  });
-
-  // اسلایدشو بک‌گراند
-  const backgrounds = [
-    "hero1.jpg",
-    "hero2.png",
-    "hero3.png",
-    "hero4.jpg"
-  ];
-
-  let current = 0;
   const bgDiv = document.getElementById('background');
 
-  function changeBackground() {
-    bgDiv.style.backgroundImage = `url('${backgrounds[current]}')`;
-    current = (current + 1) % backgrounds.length;
-  }
+  const isMobile = window.innerWidth <= 768;
+  let current = 0;
 
-  // شروع اسلایدشو
-  changeBackground();
-  setInterval(changeBackground, 6500); // هر ۵ ثانیه تغییر بک‌گراند
+  // برای دسکتاپ: hover تغییر بک‌گراند
+  if(!isMobile){
+    stories.forEach(story => {
+      const div = document.createElement('div');
+      div.classList.add('story-item');
+      div.innerText = story.name;
+      div.addEventListener('mouseover', () => {
+        bgDiv.style.backgroundImage = `url('${story.image}')`;
+      });
+      div.addEventListener('mouseout', () => {
+        bgDiv.style.backgroundImage = ''; // برگرداندن به پیش‌فرض یا می‌توانید بک‌گراند اولیه را نگه دارید
+      });
+      div.addEventListener('click', () => { window.location.href = story.url; });
+      storyList.appendChild(div);
+    });
+  } else {
+    // موبایل: اسلایدشو
+    stories.forEach(story => {
+      const div = document.createElement('div');
+      div.classList.add('story-item');
+      div.innerText = story.name;
+      div.addEventListener('click', () => { window.location.href = story.url; });
+      storyList.appendChild(div);
+    });
+
+    function changeBackground() {
+      bgDiv.style.backgroundImage = `url('${stories[current].image}')`;
+      current = (current + 1) % stories.length;
+    }
+
+    changeBackground();
+    setInterval(changeBackground, 5000); // هر ۵ ثانیه
+  }
 
 </script>
 
