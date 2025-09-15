@@ -7,7 +7,7 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
   <style>
-  :root {
+ :root {
   --primary-color: #ff9900;
   --primary-color-dark: #e68a00;
   --bg-dark: #1a1a1a;
@@ -44,7 +44,6 @@ header {
   z-index: 1;
   overflow: hidden;
 }
-
 header::after {
   content: '';
   position: absolute;
@@ -91,6 +90,7 @@ main {
   gap: 20px;
   min-height: 400px;
   flex-wrap: wrap;
+  align-items: flex-start; /* جلوگیری از بهم ریختن ستون‌ها */
 }
 
 /* لیست‌ها با hover 3D */
@@ -120,7 +120,7 @@ main {
   font-weight: bold;
 }
 
-/* Story Content */
+/* Story Content اصلاح‌شده */
 #storyContent {
   flex-grow: 1;
   background: var(--bg-dark);
@@ -198,7 +198,11 @@ footer {
 
 /* ریسپانسیو */
 @media (max-width: 900px) {
-  main { flex-direction: column; gap: 15px; min-height: auto; }
+  main {
+    flex-direction: column;
+    gap: 15px;
+    min-height: auto;
+  }
   #phaseList, #storyList, #storyContent { width: 100%; max-height: none; }
   #storyContent { order: 3; max-height: 400px; }
   .home-button { position: static; transform: none; display: inline-block; margin-bottom: 15px; }
