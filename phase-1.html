@@ -146,6 +146,78 @@
       <li><a href="taskin.html">تسکین: خاموشی سنسور</a></li>
     </ul>
   </div>
+<script>
+  // ---------- Small utilities: reveal on scroll ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.12});
+  revealEls.forEach(el => io.observe(el));
 
+  // ---------- subtle particle energy on hero (canvas) ----------
+  (() => {
+    const canvas = document.getElementById('energyCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+
+    const particles = [];
+    const count = Math.floor(Math.min(80, w/12));
+
+    function rand(min,max){return Math.random()*(max-min)+min}
+
+    for(let i=0;i<count;i++){
+      particles.push({x:rand(0,w),y:rand(0,h),vx:rand(-0.2,0.2),vy:rand(-0.15,0.15),r:rand(0.6,2.2),alpha:rand(0.03,0.12)});
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      for(let p of particles){
+        p.x += p.vx; p.y += p.vy;
+        if(p.x<0) p.x=w; if(p.x>w) p.x=0; if(p.y<0) p.y=h; if(p.y>h) p.y=0;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = 'rgba(25,167,255,'+p.alpha+')'; ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    window.addEventListener('resize', ()=>{
+      w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight;
+    });
+  })();
+
+  // ---------- interactive hero background swap on hover ----------
+  (function(){
+    const heroBg = document.getElementById('heroBg');
+    const heroInner = document.getElementById('heroInner');
+    const portraitImg = document.querySelector('.portrait img');
+    // Preload images (listed in HTML as filenames). If missing, nothing breaks.
+    const imgs = ['lord-physica-hero.jpg','lp-event1.jpg','lp-event2.jpg','lp-event3.jpg'];
+    imgs.forEach(src=>{const i=new Image(); i.src=src;});
+
+    // make the portrait pulse effect on hover
+    heroInner.addEventListener('mouseenter', ()=>{
+      portraitImg.style.transform = 'scale(1.02)';
+      portraitImg.style.transition = 'transform .45s ease';
+    });
+    heroInner.addEventListener('mouseleave', ()=>{portraitImg.style.transform='scale(1)'});
+  })();
+
+  // ---------- smooth scroll for anchor links ----------
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      const href = a.getAttribute('href');
+      if(href.length>1){
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if(target) target.scrollIntoView({behavior:'smooth'});
+      }
+    });
+  });
+
+</script>
+  
 </body>
 </html>
