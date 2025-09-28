@@ -1,369 +1,314 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>توشان‌ورس | Tooshanverse</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
-  <style>
-    /* ======== استایل کلی شبیه لرد فیزیکا ======== */
-    body {
-      margin: 0;
-      font-family: 'Vazirmatn', sans-serif;
-      background: #0f0f0f;
-      color: #f0c040;
-      direction: rtl;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>توشان‌ورس | Tooshanverse</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
+<style>
+/* ====================== بدنه ====================== */
+body {
+  margin: 0;
+  font-family: 'Vazirmatn', sans-serif;
+  background: #0d0d0d;
+  color: #fff;
+  direction: rtl;
+  overflow-x: hidden;
+}
 
-    header, footer {
-      text-align: center;
-      background-color: #1a1a1a;
-      padding: 30px 20px;
-      position: relative;
-      overflow: hidden;
-    }
+/* ====================== هدر ====================== */
+header {
+  position: relative;
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #1a1a1a;
+  overflow: hidden;
+}
 
-    /* پس‌زمینه هدر با افکت نیمه شفاف مشابه لرد فیزیکا */
-    header::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background:
-        url('bac grand aslii.jpg') center/cover no-repeat,
-        url('آگناتوس.png') center/cover no-repeat,
-        url('https://raw.githubusercontent.com/username/repo/main/images/hero3.png') center/cover no-repeat;
-      opacity: 0.12;
-      z-index: 0;
-      pointer-events: none;
-    }
+header::before {
+  content: "";
+  position: absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:
+    url('bac grand aslii.jpg') center/cover no-repeat,
+    url('آگناتوس.png') center/cover no-repeat,
+    url('hero3.png') center/cover no-repeat;
+  opacity: 0.15;
+  z-index:0;
+  pointer-events:none;
+}
 
-    /* عنوان با افکت نور و Glow */
-    header h1 {
-      font-size: 36px;
-      font-weight: bold;
-      position: relative;
-      z-index: 1;
-      color: transparent;
-      background: linear-gradient(90deg, #ff9900 30%, #ffffff 50%, #ff9900 70%);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      animation: shine-text 2s infinite;
-      display: inline-block;
-    }
+header h1 {
+  font-size: 36px;
+  font-weight: bold;
+  position: relative;
+  z-index:1;
+  color: transparent;
+  background: linear-gradient(90deg,#ff9900 30%,#fff 50%,#ff9900 70%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shine-text 2s infinite;
+  display: inline-block;
+}
 
-    @keyframes shine-text {
-      0% { background-position: -100% 0; }
-      100% { background-position: 100% 0; }
-    }
+@keyframes shine-text {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
+}
 
-    /* Glow پشت متن */
-    header h1::before {
-      content: attr(data-text);
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      color: #ff9900;
-      z-index: -1;
-      text-shadow:
-        0 0 5px #ff9900,
-        0 0 10px #ff9900,
-        0 0 20px #ffcc33,
-        0 0 30px #ffcc33;
-    }
+header h1::before {
+  content: attr(data-text);
+  position: absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  color:#ff9900;
+  z-index:-1;
+  text-shadow: 0 0 5px #ff9900,0 0 10px #ff9900,0 0 20px #ffcc33,0 0 30px #ffcc33;
+}
 
-    header p {
-      color: #f0c040;
-      font-size: 18px;
-      margin-top: 10px;
-      position: relative;
-      z-index: 1;
-    }
+header p {
+  margin-top: 10px;
+  color: #ffcc33;
+}
 
-    /* منوی موبایل */
-    .menu-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 30px;
-      height: 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      cursor: pointer;
-      z-index: 1000;
-    }
-    .menu-btn div {
-      height: 4px;
-      background-color: #f0c040;
-      border-radius: 2px;
-    }
-    .menu {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background: #1a1a1a;
-      padding: 10px 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ff9900;
-      z-index: 999;
-    }
-    .menu a {
-      display: block;
-      padding: 8px 0;
-      color: #f0c040;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .menu a:hover { color: #fff; }
+/* ====================== منوی همبرگر ====================== */
+.menu-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 30px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index:1000;
+}
 
-    /* کارت‌ها و لیست شخصیت‌ها */
-    .category-cards {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    .category-card {
-      background-color: #1f1f1f;
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #ff990055;
-      cursor: pointer;
-      color: #f0c040;
-      font-size: 18px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-    }
-    .category-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #ff9900aa;
-    }
+.menu-btn div {
+  height: 4px;
+  background-color: #f0c040;
+  border-radius: 2px;
+}
 
-    ul.character-list {
-      list-style: none;
-      padding: 0;
-      margin: 20px 0 0 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-    }
-    ul.character-list li {
-      background: #1f1f1f;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 0 5px #ff990055;
-      transition: box-shadow 0.3s ease;
-      user-select: none;
-      font-size: 16px;
-    }
-    ul.character-list li:hover {
-      box-shadow: 0 0 10px #ff9900cc;
-    }
+.menu {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: #1a1a1a;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ff9900;
+  z-index:999;
+}
 
-    /* پاپ‌آپ‌ها */
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
-      background-color: #222;
-      color: #f0c040;
-      padding: 25px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 0 20px #ff9900;
-      z-index: 9999;
-      text-align: center;
-      opacity: 0;
-      transition: all 0.3s ease;
-    }
-    .popup.show {
-      display: block;
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    .popup button {
-      background-color: #ff9900;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      color: #111;
-      margin-top: 10px;
-    }
+.menu a {
+  display:block;
+  padding:8px 0;
+  color:#f0c040;
+  text-decoration:none;
+}
 
-    /* دکمه‌های گفتگو */
-    .chat-button {
-      display: inline-block;
-      background-color: #ff9900;
-      color: #111;
-      padding: 12px 24px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 18px;
-      transition: background-color 0.3s ease;
-    }
-    .chat-button:hover {
-      background-color: #e68a00;
-    }
+.menu a:hover { color:#fff; }
 
-    /* شمارنده و تابلو اعلانات */
-    #countdown-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 250px;
-      background: #1a1a1a;
-      color: #f0c040;
-      padding: 15px;
-      font-size: 18px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px #ff990055;
-      user-select: none;
-      z-index: 10000;
-      text-align: center;
-    }
-    #notice-board-section {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 280px;
-      height: 120px;
-      background: #1a1a1a;
-      color: #f0c040;
-      padding: 15px 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px #ff990055;
-      user-select: none;
-      z-index: 10000;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      cursor: default;
-    }
+/* ====================== پاپ‌آپ ====================== */
+.popup {
+  display: none;
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%) scale(0.8);
+  background-color: #222;
+  color: #f0c040;
+  padding: 25px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 20px #ff9900;
+  z-index:9999;
+  text-align:center;
+  opacity:0;
+  transition: all 0.3s ease;
+}
 
-    /* افکت fade */
-    .fade-out { opacity: 0; transition: opacity 0.5s ease; }
-    .fade-in { opacity: 1; transition: opacity 0.5s ease; }
+.popup.show {
+  display:block;
+  opacity:1;
+  transform: translate(-50%,-50%) scale(1);
+}
 
-    @media (max-width: 600px) {
-      .category-card { flex: 1 1 100%; font-size: 16px; text-align: center; }
-      ul.character-list { flex-direction: column; }
-      ul.character-list li { width: 100%; text-align: center; }
-    }
-  </style>
+.popup button {
+  background-color:#ff9900;
+  border:none;
+  padding:10px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  color:#111;
+  margin-top:10px;
+}
+
+/* ====================== کارت‌ها ====================== */
+.category-cards {
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:30px;
+}
+
+.category-card {
+  background-color:#1f1f1f;
+  padding:20px 30px;
+  border-radius:12px;
+  box-shadow:0 0 10px #ff990055;
+  cursor:pointer;
+  color:#f0c040;
+  font-size:18px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+  transform:scale(1.05);
+  box-shadow:0 0 15px #ff9900aa;
+}
+
+/* ====================== لیست شخصیت‌ها ====================== */
+ul.character-list {
+  list-style:none;
+  padding:0;
+  margin:20px 0 0 0;
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+  justify-content:center;
+}
+
+ul.character-list li {
+  background:#1f1f1f;
+  padding:10px 20px;
+  border-radius:10px;
+  cursor:pointer;
+  box-shadow:0 0 5px #ff990055;
+  transition: box-shadow 0.3s ease;
+  user-select:none;
+  font-size:16px;
+}
+
+ul.character-list li:hover {
+  box-shadow:0 0 10px #ff9900cc;
+}
+
+/* ====================== تابلو اعلانات و شمارنده ====================== */
+#countdown-container {
+  position: fixed;
+  top:20px;
+  right:20px;
+  width:250px;
+  background:#1a1a1a;
+  color:#f0c040;
+  padding:15px;
+  font-size:18px;
+  border-radius:10px;
+  box-shadow:0 0 15px #ff990055;
+  user-select:none;
+  text-align:center;
+  z-index:10000;
+}
+
+#notice-board-section {
+  position: fixed;
+  top:20px;
+  left:20px;
+  width:280px;
+  height:120px;
+  background:#1a1a1a;
+  color:#f0c040;
+  padding:15px 20px;
+  border-radius:10px;
+  box-shadow:0 0 15px #ff990055;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  cursor:default;
+  z-index:10000;
+}
+
+.fade-out {opacity:0; transition:opacity 0.5s ease;}
+.fade-in {opacity:1; transition:opacity 0.5s ease;}
+
+#notice-board-section h2 {margin:0 0 10px 0; font-size:20px; text-align:center;}
+#notice-viewer {flex-grow:1; font-size:16px; line-height:1.3; overflow-y:hidden; user-select:text; text-align:right;}
+
+/* ====================== رسانه کوچک ====================== */
+@media (max-width:600px){
+  .category-card {flex:1 1 100%; font-size:16px; text-align:center;}
+  ul.character-list {flex-direction:column;}
+  ul.character-list li {width:100%; text-align:center;}
+}
+</style>
 </head>
 <body>
-  <!-- محتوای کامل دست‌نخورده -->
-  <header>
-    <h1>توشان‌ورس | Tooshanverse</h1>
-    <p>آغاز دوباره قهرمانان ایران</p>
-    <div class="menu-btn" id="menu-btn">
-      <div></div><div></div><div></div>
-    </div>
-    <nav class="menu" id="menu">
-      <a id="homeBtn">خانه</a>
-      <a href="photos.html">عکس‌ها</a>
-      <a href="#">ساخته‌های هوش مصنوعی</a>
-      <a href="about.html">درباره ما</a>
-      <a href="#">گفتگو با من</a>
-    </nav>
-  </header>
+<header>
+<h1 data-text="توشان‌ورس | Tooshanverse">توشان‌ورس | Tooshanverse</h1>
+<p>آغاز دوباره قهرمانان ایران</p>
+<div class="menu-btn" id="menu-btn"><div></div><div></div><div></div></div>
+<nav class="menu" id="menu">
+  <a href="#">خانه</a>
+  <a href="photos.html">عکس‌ها</a>
+  <a href="#">ساخته‌های هوش مصنوعی</a>
+  <a href="about.html">درباره ما</a>
+  <a href="#">گفتگو با من</a>
+</nav>
+</header>
 
-  <div id="siteSearchContainer">
-    <input type="text" id="siteSearchInput" placeholder="جستجو در کل سایت..." onkeyup="siteSearch()" autocomplete="off" />
-    <div id="searchResults"></div>
-  </div>
+<section id="characters">
+<h2>شخصیت‌ها</h2>
+<div class="category-cards">
+<div class="category-card" onclick="openPopup('heroes')">🛡️ قهرمان‌ها</div>
+<div class="category-card" onclick="openPopup('villains')">😈 ویلن‌ها</div>
+<div class="category-card" onclick="openPopup('neutrals')">⚖️ خنثی‌ها</div>
+</div>
+</section>
 
-  <section id="notice-board-section">
-    <h2>تابلو اعلانات</h2>
-    <div id="notice-viewer">در حال بارگذاری اعلان‌ها...</div>
-  </section>
+<!-- پاپ‌آپ نمونه -->
+<div id="popup-heroes" class="popup">
+<h3>🛡️ قهرمان‌ها</h3>
+<ul class="character-list">
+<li>🌀 تسکین</li>
+<li>⚡ الکتروپالس</li>
+<li>🔥 گردآفرید</li>
+<li>لرد فیزیکا</li>
+</ul>
+<button onclick="closePopup()">بازگشت</button>
+</div>
 
-  <section id="countdown-container">
-    <h3>شمارش معکوس</h3>
-    <div id="countdown">در حال بارگذاری...</div>
-  </section>
+<div id="countdown-container">در حال بارگذاری شمارنده...</div>
+<section id="notice-board-section">
+<h2>تابلو اعلانات</h2>
+<div id="notice-viewer">در حال بارگذاری اعلان‌ها...</div>
+</section>
 
-  <section class="category-cards">
-    <div class="category-card" onclick="showCategory('heroes')">قهرمانان</div>
-    <div class="category-card" onclick="showCategory('comics')">کمیک‌ها</div>
-    <div class="category-card" onclick="showCategory('chat')">چت با من</div>
-  </section>
+<script>
+// منوی همبرگر
+const menuBtn=document.getElementById('menu-btn');
+const menu=document.getElementById('menu');
+menuBtn.addEventListener('click',()=>{menu.style.display=menu.style.display==='block'?'none':'block';});
 
-  <ul class="character-list" id="heroes-list">
-    <li onclick="showHero('lordphysica')">لرد فیزیکا</li>
-    <li onclick="showHero('electropulse')">الکتروپالس</li>
-    <li onclick="showHero('elementaero')">المنت آئرو</li>
-    <li onclick="showHero('elementinferno')">المنت اینفرنو</li>
-    <li onclick="showHero('elementmaya')">المنت مایا</li>
-    <li onclick="showHero('elementtraga')">المنت تراگا</li>
-    <li onclick="showHero('strix')">استریکس</li>
-    <li onclick="showHero('nima')">نیما</li>
-    <li onclick="showHero('raha')">رها</li>
-    <li onclick="showHero('taskin')">تسکین</li>
-    <li onclick="showHero('mardavich')">مرداویچ</li>
-    <li onclick="showHero('gordafrid')">گردآفرید</li>
-    <li onclick="showHero('roshtantab')">روشن‌تاب</li>
-    <li onclick="showHero('atran')">آتران</li>
-    <li onclick="showHero('hashashin')">حشاشین</li>
-    <li onclick="showHero('javidan')">سپاه جاویدان</li>
-  </ul>
-
-  <div class="popup" id="hero-popup">
-    <h2 id="hero-name">نام قهرمان</h2>
-    <p id="hero-bio">بیوگرافی قهرمان...</p>
-    <button onclick="closeHeroPopup()">بستن</button>
-  </div>
-
-  <script>
-    const menuBtn = document.getElementById('menu-btn');
-    const menu = document.getElementById('menu');
-    menuBtn.addEventListener('click', () => {
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    });
-
-    function showHero(heroId) {
-      const popup = document.getElementById('hero-popup');
-      const name = document.getElementById('hero-name');
-      const bio = document.getElementById('hero-bio');
-      const heroes = {
-        lordphysica: ['لرد فیزیکا', 'کنترل قوانین فیزیک...'],
-        electropulse: ['الکتروپالس', 'توانایی کنترل پالس الکتریکی...'],
-        strix: ['استریکس', 'کنترل اجسام با ذهن...'],
-        taskin: ['تسکین', 'بیوگرافی کامل...'],
-      };
-      if (heroes[heroId]) {
-        name.textContent = heroes[heroId][0];
-        bio.textContent = heroes[heroId][1];
-      }
-      popup.classList.add('show');
-    }
-    function closeHeroPopup() {
-      document.getElementById('hero-popup').classList.remove('show');
-    }
-
-    function showCategory(category) {
-      alert('نمایش دسته: ' + category);
-    }
-
-    function siteSearch() {
-      // کد جستجو در سایت
-    }
-  </script>
+// پاپ‌آپ
+function openPopup(name){
+  document.querySelectorAll('.popup').forEach(p=>p.classList.remove('show'));
+  const popup=document.getElementById('popup-'+name);
+  if(popup){popup.classList.add('show');}
+}
+function closePopup(){
+  document.querySelectorAll('.popup').forEach(p=>p.classList.remove('show'));
+}
+</script>
 </body>
 </html>
