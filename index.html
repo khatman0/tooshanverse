@@ -418,16 +418,7 @@ container.addEventListener('touchmove', e=>{
   container.scrollLeft = scrollLeft + walk;
   updateFade();
 });
-function animate(){
-  if(!isUserScrolling){
-    position += speed;
-    if(position >= container.scrollWidth/2) position=0;
-    container.scrollLeft = position;
-    updateFade();
-  }
-  requestAnimationFrame(animate);
-}
-animate();
+updateFade();
 
 // Hamburger menu
 const hamburger = document.getElementById('hamburgerBtn');
