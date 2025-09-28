@@ -367,29 +367,54 @@ const io=new IntersectionObserver(entries=>{
 },{threshold:0.12});
 revealEls.forEach(el=>io.observe(el));
 
-// Cards slider with mouse/touch scroll
+// Cards slider with infinite scroll & center highlight
 const container = document.querySelector('#heroes .cards-container');
-const cards = Array.from(container.querySelectorAll('.card'));
+const originalCards = Array.from(container.querySelectorAll('.card'));
 const gap = 18;
-let position = 0;
-let speed = 0.5;
+
+// duplicate cards for infinite scroll
 container.innerHTML += container.innerHTML;
 const allCards = Array.from(container.querySelectorAll('.card'));
+
 function updateFade(){
+  const containerRect = container.getBoundingClientRect();
+  const containerCenter = containerRect.left + containerRect.width/2;
+
+  let closestCard = null;
+  let closestDistance = Infinity;
+
   allCards.forEach(card=>{
     const cardRect = card.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
     const cardCenter = cardRect.left + cardRect.width/2;
-    const containerCenter = containerRect.left + containerRect.width/2;
-    const distance = Math.abs(containerCenter-cardCenter);
-    const maxDistance = containerRect.width/2;
-    const opacity = Math.max(0.3,1-distance/maxDistance);
-    card.style.opacity = opacity;
+    const distance = Math.abs(containerCenter - cardCenter);
+
+    if(distance < closestDistance){
+      closestDistance = distance;
+      closestCard = card;
+    }
   });
+
+  allCards.forEach(card=>{
+    card.style.opacity = "0.3";
+    card.classList.remove('active');
+  });
+
+  if(closestCard){
+    closestCard.style.opacity = "1";
+    closestCard.classList.add('active');
+  }
 }
 
-let isUserScrolling = false;
-let startX, scrollLeft;
+// infinite scroll logic
+container.addEventListener('scroll', ()=>{
+  const scrollWidth = container.scrollWidth / 2; // because we duplicated cards
+  if(container.scrollLeft >= scrollWidth) container.scrollLeft -= scrollWidth;
+  else if(container.scrollLeft <= 0) container.scrollLeft += scrollWidth;
+  updateFade();
+});
+
+// mouse/touch drag support
+let isUserScrolling = false, startX=0, scrollLeft=0;
 container.addEventListener('mousedown', e=>{
   isUserScrolling = true;
   startX = e.pageX - container.offsetLeft;
@@ -401,10 +426,10 @@ container.addEventListener('mouseup', ()=>{ isUserScrolling=false; });
 container.addEventListener('mousemove', e=>{
   if(!isUserScrolling) return;
   const x = e.pageX - container.offsetLeft;
-  const walk = (startX - x);
-  container.scrollLeft = scrollLeft + walk;
+  container.scrollLeft = scrollLeft + (startX - x);
   updateFade();
 });
+
 container.addEventListener('touchstart', e=>{
   isUserScrolling = true;
   startX = e.touches[0].pageX - container.offsetLeft;
@@ -414,10 +439,12 @@ container.addEventListener('touchend', ()=>{ isUserScrolling=false; });
 container.addEventListener('touchmove', e=>{
   if(!isUserScrolling) return;
   const x = e.touches[0].pageX - container.offsetLeft;
-  const walk = (startX - x);
-  container.scrollLeft = scrollLeft + walk;
+  container.scrollLeft = scrollLeft + (startX - x);
   updateFade();
 });
+
+// init
+container.scrollLeft = container.scrollWidth / 4; // start from middle (first copy)
 updateFade();
 
 // Hamburger menu
@@ -440,7 +467,7 @@ sideNavLinks.forEach(link=>link.addEventListener('click',closeMenu));
 hamburger.addEventListener('click', ()=>{ sideNav.classList.contains('active')?closeMenu():openMenu(); });
 overlay.addEventListener('click', closeMenu);
 
-// swipe support
+// swipe support for side nav
 let startTouchX=0, currentX=0, touching=false;
 sideNav.addEventListener('touchstart', e=>{ touching=true; startTouchX=e.touches[0].clientX; });
 sideNav.addEventListener('touchmove', e=>{
@@ -454,7 +481,6 @@ sideNav.addEventListener('touchend', e=>{
   if(currentX-startTouchX<-80) closeMenu();
   else sideNav.style.left='0px';
 });
-
 </script>
 </body>
 </html>
