@@ -5,186 +5,234 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تایم‌لاین توشان‌ورس</title>
   <style>
+    :root {
+      --accent: #00d9ff;
+      --card-bg: rgba(18, 27, 37, 0.8);
+      --text-color: #e5f6ff;
+      --bg-color: #0f172a;
+    }
+
     body {
       margin: 0;
       font-family: 'Tahoma', sans-serif;
+      background: linear-gradient(to right, #0f172a, #1e293b, #0f172a);
+      color: var(--text-color);
       direction: rtl;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    h1 {
+    .timeline-phases {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 20px;
+    }
+
+    .phase {
+      margin-bottom: 120px;
+      position: relative;
+    }
+
+    .phase h2 {
       text-align: center;
-      padding: 30px 0;
+      font-family: 'Orbitron', sans-serif;
       font-size: 2rem;
-      color: gold;
+      color: var(--accent);
+      margin-bottom: 40px;
     }
 
-    .timeline-container {
+    .timeline-line {
       position: relative;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: flex-start;
-      gap: 120px;
-      padding: 60px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
+      border-top: 3px solid var(--accent);
+      padding: 40px 0;
     }
 
-    /* خط وسط تایم‌لاین */
-    .timeline-line {
+    .event {
+      position: relative;
+      width: 180px;
+      flex-shrink: 0;
+    }
+
+    .event.top .event-content {
       position: absolute;
-      top: 50%;
-      left: 0;
-      height: 4px;
-      width: 100%;
-      background: gold;
-      z-index: 0;
-    }
-
-    /* هر نقطه */
-    .timeline-item {
-      position: relative;
-      flex: 0 0 auto;
-      width: 250px;
-      text-align: center;
-      z-index: 1;
-    }
-
-    .timeline-dot {
-      width: 20px;
-      height: 20px;
-      background: gold;
-      border-radius: 50%;
-      margin: auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* کارت بالا و پایین */
-    .timeline-card {
-      background: rgba(255, 215, 0, 0.08);
-      border: 1px solid gold;
-      border-radius: 12px;
-      padding: 15px;
+      bottom: 100%;
       margin-bottom: 20px;
-      margin-top: 20px;
-      transition: transform 0.3s ease;
     }
 
-    .timeline-card img {
+    .event.bottom .event-content {
+      position: absolute;
+      top: 100%;
+      margin-top: 20px;
+    }
+
+    .event-content {
+      background: var(--card-bg);
+      border: 1px solid rgba(155,227,255,0.1);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .event-content:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,217,255,0.4);
+    }
+
+    .event-content img {
       width: 100%;
       border-radius: 8px;
       margin-bottom: 10px;
     }
-
-    .timeline-card:hover {
-      transform: scale(1.05);
-    }
-
-    /* جایگذاری کارت‌ها */
-    .timeline-item:nth-child(odd) .timeline-card {
-      margin-bottom: 60px; /* بالا */
-    }
-
-    .timeline-item:nth-child(even) .timeline-card {
-      margin-top: 60px; /* پایین */
-    }
-
-    /* ریسپانسیو */
-    @media screen and (max-width: 768px) {
-      .timeline-container {
-        flex-direction: column;
-        gap: 60px;
-        overflow-x: hidden;
-      }
-
-      .timeline-line {
-        top: auto;
-        left: 50%;
-        width: 4px;
-        height: 100%;
-      }
-
-      .timeline-item {
-        width: 80%;
-      }
-
-      .timeline-item .timeline-card {
-        margin: 20px auto;
-      }
-    }
   </style>
 </head>
 <body>
-  <h1>تایم‌لاین توشان‌ورس</h1>
 
-  <div class="timeline-container">
-    <div class="timeline-line"></div>
+  <section class="timeline-phases">
 
-    <div class="timeline-item">
-      <div class="timeline-card">
-        <img src="phase1.jpg" alt="فاز ۱">
-        <h3>فاز ۱</h3>
-        <p>برخورد نخست - معرفی لرد فیزیکا</p>
-      </div>
-      <div class="timeline-dot"></div>
-    </div>
-
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-card">
-        <img src="phase2.jpg" alt="فاز ۲">
-        <h3>فاز ۲</h3>
-        <p>ظهور الکتروپالس و اتفاقات تازه</p>
-      </div>
-    </div>
-
-    <div class="timeline-item">
-      <div class="timeline-card">
-        <img src="phase3.jpg" alt="فاز ۳">
-        <h3>فاز ۳</h3>
-        <p>اتحاد قهرمانان برای اولین بار</p>
-      </div>
-      <div class="timeline-dot"></div>
-    </div>
-
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-card">
-        <img src="phase4.jpg" alt="فاز ۴">
-        <h3>فاز ۴</h3>
-        <p>بازگشت دشمنان قدیمی</p>
+    <!-- فاز ۱ -->
+    <div class="phase">
+      <h2>فاز ۱</h2>
+      <div class="timeline-line">
+        <div class="event top">
+          <div class="event-content">
+            <img src="phase1-1.jpg" alt="">
+            <p>ظهور لرد فیزیکا</p>
+          </div>
+        </div>
+        <div class="event bottom">
+          <div class="event-content">
+            <img src="phase1-2.jpg" alt="">
+            <p>ورود الکتروپالس</p>
+          </div>
+        </div>
+        <div class="event top">
+          <div class="event-content">
+            <img src="phase1-3.jpg" alt="">
+            <p>نبرد استریکس</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <div class="timeline-card">
-        <img src="phase5.jpg" alt="فاز ۵">
-        <h3>فاز ۵</h3>
-        <p>ماجراهای تیره‌تر و خطرناک‌تر</p>
+    <!-- فاز ۲ -->
+    <div class="phase">
+      <h2>فاز ۲</h2>
+      <div class="timeline-line">
+        <div class="event top">
+          <div class="event-content">
+            <img src="phase2-1.jpg" alt="">
+            <p>بازگشت سپاه جاویدان</p>
+          </div>
+        </div>
+        <div class="event bottom">
+          <div class="event-content">
+            <img src="phase2-2.jpg" alt="">
+            <p>ورود گردآفرید</p>
+          </div>
+        </div>
       </div>
-      <div class="timeline-dot"></div>
     </div>
 
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-card">
-        <img src="phase6.jpg" alt="فاز ۶">
-        <h3>فاز ۶</h3>
-        <p>کراس‌اور بزرگ قهرمانان</p>
+    <!-- فاز ۳ -->
+    <div class="phase">
+      <h2>فاز ۳</h2>
+      <div class="timeline-line">
+        <div class="event top">
+          <div class="event-content">
+            <img src="phase3-1.jpg" alt="">
+            <p>کراس‌اور کوچک قهرمانان</p>
+          </div>
+        </div>
+        <div class="event bottom">
+          <div class="event-content">
+            <img src="phase3-2.jpg" alt="">
+            <p>اولین ظهور آگناتوس</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <div class="timeline-card">
-        <img src="phase7.jpg" alt="فاز ۷">
-        <h3>فاز ۷</h3>
-        <p>نتیجه نهایی و سرنوشت توشان‌ورس</p>
+    <!-- فاز ۴ -->
+    <div class="phase">
+      <h2>فاز ۴</h2>
+      <div class="timeline-line">
+        <div class="event top">
+          <div class="event-content">
+            <img src="phase4-1.jpg" alt="">
+            <p>قدرت‌های روشن‌تاب و آتران</p>
+          </div>
+        </div>
+        <div class="event bottom">
+          <div class="event-content">
+            <img src="phase4-2.jpg" alt="">
+            <p>افشای راز مرداویچ</p>
+          </div>
+        </div>
       </div>
-      <div class="timeline-dot"></div>
     </div>
-  </div>
+
+    <!-- فاز ۵ -->
+    <div class="phase">
+      <h2>فاز ۵</h2>
+      <div class="timeline-line">
+        <div class="event top">
+          <div class="event-content">
+            <img src="phase5-1.jpg" alt="">
+            <p>نبرد با حشاشین</p>
+          </div>
+        </div>
+        <div class="event bottom">
+          <div class="event-content">
+            <img src="phase5-2.jpg" alt="">
+            <p>سرگذشت نیما و رها</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- فاز ۶ -->
+    <div class="phase">
+      <h2>فاز ۶</h2>
+      <div class="timeline-line">
+        <div class="event top">
+          <div class="event-content">
+            <img src="phase6-1.jpg" alt="">
+            <p>کراس‌اور بزرگ توشان‌ورس</p>
+          </div>
+        </div>
+        <div class="event bottom">
+          <div class="event-content">
+            <img src="phase6-2.jpg" alt="">
+            <p>اتحاد قهرمانان و ویلن‌ها</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- فاز ۷ -->
+    <div class="phase">
+      <h2>فاز ۷</h2>
+      <div class="timeline-line">
+        <div class="event top">
+          <div class="event-content">
+            <img src="phase7-1.jpg" alt="">
+            <p>پایان‌نامه توشان‌ورس</p>
+          </div>
+        </div>
+        <div class="event bottom">
+          <div class="event-content">
+            <img src="phase7-2.jpg" alt="">
+            <p>شروع دنیای جدید</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
 </body>
 </html>
