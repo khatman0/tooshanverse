@@ -358,59 +358,19 @@ footer{
 <footer class="reveal">© 2025 توشان‌ورس — همهٔ حقوق محفوظ است</footer>
 
 <script>
-// Reveal animation
-const revealEls=document.querySelectorAll('.reveal');
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting)e.target.classList.add('in')
-  })
-},{threshold:0.12});
-revealEls.forEach(el=>io.observe(el));
-
-// Cards slider with infinite scroll & center highlight
+// Cards slider with infinite scroll
 const container = document.querySelector('#heroes .cards-container');
-const originalCards = Array.from(container.querySelectorAll('.card'));
-const gap = 18;
+const cards = Array.from(container.querySelectorAll('.card'));
 
 // duplicate cards for infinite scroll
 container.innerHTML += container.innerHTML;
 const allCards = Array.from(container.querySelectorAll('.card'));
-
-function updateFade(){
-  const containerRect = container.getBoundingClientRect();
-  const containerCenter = containerRect.left + containerRect.width/2;
-
-  let closestCard = null;
-  let closestDistance = Infinity;
-
-  allCards.forEach(card=>{
-    const cardRect = card.getBoundingClientRect();
-    const cardCenter = cardRect.left + cardRect.width/2;
-    const distance = Math.abs(containerCenter - cardCenter);
-
-    if(distance < closestDistance){
-      closestDistance = distance;
-      closestCard = card;
-    }
-  });
-
-  allCards.forEach(card=>{
-    card.style.opacity = "0.3";
-    card.classList.remove('active');
-  });
-
-  if(closestCard){
-    closestCard.style.opacity = "1";
-    closestCard.classList.add('active');
-  }
-}
 
 // infinite scroll logic
 container.addEventListener('scroll', ()=>{
   const scrollWidth = container.scrollWidth / 2; // because we duplicated cards
   if(container.scrollLeft >= scrollWidth) container.scrollLeft -= scrollWidth;
   else if(container.scrollLeft <= 0) container.scrollLeft += scrollWidth;
-  updateFade();
 });
 
 // mouse/touch drag support
@@ -427,7 +387,6 @@ container.addEventListener('mousemove', e=>{
   if(!isUserScrolling) return;
   const x = e.pageX - container.offsetLeft;
   container.scrollLeft = scrollLeft + (startX - x);
-  updateFade();
 });
 
 container.addEventListener('touchstart', e=>{
@@ -440,47 +399,11 @@ container.addEventListener('touchmove', e=>{
   if(!isUserScrolling) return;
   const x = e.touches[0].pageX - container.offsetLeft;
   container.scrollLeft = scrollLeft + (startX - x);
-  updateFade();
 });
 
-// init
-container.scrollLeft = container.scrollWidth / 4; // start from middle (first copy)
-updateFade();
-
-// Hamburger menu
-const hamburger = document.getElementById('hamburgerBtn');
-const sideNav = document.getElementById('sideNav');
-const overlay = document.getElementById('overlay');
-
-function openMenu(){
-  hamburger.classList.add('active');
-  sideNav.classList.add('active');
-  overlay.classList.add('active');
-}
-function closeMenu(){
-  hamburger.classList.remove('active');
-  sideNav.classList.remove('active');
-  overlay.classList.remove('active');
-}
-const sideNavLinks = document.querySelectorAll('.side-nav a');
-sideNavLinks.forEach(link=>link.addEventListener('click',closeMenu));
-hamburger.addEventListener('click', ()=>{ sideNav.classList.contains('active')?closeMenu():openMenu(); });
-overlay.addEventListener('click', closeMenu);
-
-// swipe support for side nav
-let startTouchX=0, currentX=0, touching=false;
-sideNav.addEventListener('touchstart', e=>{ touching=true; startTouchX=e.touches[0].clientX; });
-sideNav.addEventListener('touchmove', e=>{
-  if(!touching) return;
-  currentX = e.touches[0].clientX;
-  const deltaX = currentX-startTouchX;
-  if(deltaX<0){ sideNav.style.left=Math.max(-280,deltaX)+'px'; overlay.style.opacity=1+deltaX/280; }
-});
-sideNav.addEventListener('touchend', e=>{
-  touching=false;
-  if(currentX-startTouchX<-80) closeMenu();
-  else sideNav.style.left='0px';
-});
+// start from middle (first copy) to allow infinite scroll both sides
+container.scrollLeft = container.scrollWidth / 4;
 </script>
+
 </body>
 </html>
