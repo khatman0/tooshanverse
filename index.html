@@ -250,6 +250,13 @@
     sideNav.classList.remove('active');
     overlay.classList.remove('active');
   }
+    // همه لینک‌های منوی همبرگری
+const sideNavLinks = document.querySelectorAll('.side-nav a');
+
+// وقتی روی هر لینک کلیک شد، منو بسته شود
+sideNavLinks.forEach(link => {
+  link.addEventListener('click', closeMenu);
+});
 
   hamburger.addEventListener('click', ()=>{
     sideNav.classList.contains('active') ? closeMenu() : openMenu();
