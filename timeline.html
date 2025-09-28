@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>توشان‌ورس — تایم‌لاین</title>
-<link rel="icon" href="favicon.png" type="image/x-icon" />
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #070812;
-    --line: #19a7ff;
+    --line-bg: #ffffff;
+    --line-active: #19a7ff;
     --card-bg: rgba(10,12,18,0.6);
     --shadow: rgba(25,167,255,0.12);
     --accent-light: #9be3ff;
@@ -21,16 +21,16 @@
   h1,h2,h3,h4{margin-bottom:12px;}
   a{text-decoration:none;color:inherit;}
 
-  /* Header */
   header{margin-bottom:40px;text-align:center;}
-  header h1{font-size:2.5rem;color:var(--line);margin-bottom:6px;}
+  header h1{font-size:2.5rem;color:var(--line-active);margin-bottom:6px;}
   header p{color:var(--accent-light);font-size:1.1rem;}
 
   /* Timeline */
   .timeline{position:relative;max-width:900px;margin:0 auto;padding-left:20px;}
   .timeline::before{
-    content:'';position:absolute;left:10px;top:0;width:3px;height:100%;background:linear-gradient(180deg,var(--line),var(--accent-light));border-radius:3px;
+    content:'';position:absolute;left:10px;top:0;width:3px;height:100%;background:var(--line-bg);border-radius:3px;
   }
+  .timeline .line-active{position:absolute;left:10px;top:0;width:3px;height:0;background:var(--line-active);border-radius:3px;transition:height 0.4s ease;}
 
   .tl-item{
     display:flex;
@@ -43,7 +43,10 @@
   }
   .tl-item.in{opacity:1;transform:none;}
   .tl-item::before{
-    content:'';position:absolute;left:-7px;top:5px;width:14px;height:14px;background:var(--line);border-radius:50%;box-shadow:0 4px 12px var(--shadow);
+    content:'';position:absolute;left:-7px;top:5px;width:14px;height:14px;background:var(--line-bg);border-radius:50%;box-shadow:0 4px 12px var(--shadow);z-index:2;
+  }
+  .tl-item.active::before{
+    background: var(--line-active);
   }
 
   .tl-image{
@@ -65,15 +68,12 @@
     box-shadow:0 6px 20px rgba(2,6,23,0.5);
   }
 
-  /* Footer */
   footer{margin-top:60px;padding:40px 20px;color:rgba(200,220,255,0.6);text-align:center;border-top:1px solid rgba(155,227,255,0.08);}
 
-  /* Responsive */
   @media(max-width:700px){
     .tl-item{flex-direction:column;align-items:flex-start;}
     .tl-image{width:100%;height:200px;}
   }
-
 </style>
 </head>
 <body>
@@ -83,8 +83,11 @@
   <p>لحظات کلیدی و مهم در دنیای توشان‌ورس</p>
 </header>
 
-<section class="timeline">
-  <div class="tl-item">
+<section class="timeline" id="timeline">
+  <!-- active line -->
+  <div class="line-active" id="lineActive"></div>
+
+  <div class="tl-item active">
     <img src="event1.jpg" alt="آغاز تحقیقات" class="tl-image">
     <div class="tl-content">
       <time>سال ۱۳۸۸ - آغاز تحقیقات</time>
@@ -92,7 +95,7 @@
     </div>
   </div>
 
-  <div class="tl-item">
+  <div class="tl-item active">
     <img src="event2.jpg" alt="نبرد کاتالیزور" class="tl-image">
     <div class="tl-content">
       <time>سال ۱۳۹۲ - نبرد کاتالیزور</time>
@@ -130,6 +133,19 @@
     });
   }, {threshold:0.2});
   items.forEach(i=>observer.observe(i));
+
+  // Active line height calculation
+  function updateLine(){
+    const line = document.getElementById('lineActive');
+    const activeItems = document.querySelectorAll('.tl-item.active');
+    if(activeItems.length === 0) return;
+    const last = activeItems[activeItems.length-1];
+    const timeline = document.getElementById('timeline');
+    const height = last.offsetTop + last.offsetHeight/2;
+    line.style.height = height + 'px';
+  }
+  updateLine();
+  window.addEventListener('resize', updateLine);
 </script>
 
 </body>
