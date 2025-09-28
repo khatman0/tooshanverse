@@ -12,13 +12,18 @@
       --accent: #19a7ff;
       --accent-2: #9be3ff;
       --muted: rgba(255,255,255,0.08);
-      --card-bg: rgba(10,12,18,0.6);
+      --card-bg: rgba(10,12,18,0.8);
       --glass: rgba(255,255,255,0.04);
     }
 
     /* Reset */
     *{box-sizing:border-box;}
-    html, body {height:100%; margin:0; font-family:'Vazirmatn', sans-serif; background:linear-gradient(180deg,var(--bg-1),var(--bg-2)); color:#e9f6ff; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden; overflow-y:auto;}
+    html, body {
+      height:100%; margin:0; font-family:'Vazirmatn', sans-serif;
+      background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#e9f6ff; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden; overflow-y:auto;
+    }
     a{text-decoration:none; color:inherit;}
 
     /* Header & Footer */
@@ -34,25 +39,28 @@
     header{top:16px;}
     footer{bottom:16px; font-weight:400; color:rgba(200,220,255,0.6);}
     header::after, footer::after{
-      content:""; position:absolute; inset:0; background:linear-gradient(120deg, transparent, rgba(25,167,255,0.06), transparent); mix-blend-mode:screen; animation:shine 12s linear infinite; pointer-events:none; border-radius:10px;
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(120deg, transparent, rgba(25,167,255,0.06), transparent);
+      mix-blend-mode:screen; animation:shine 12s linear infinite; pointer-events:none; border-radius:10px;
     }
     @keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 
     /* Phase container */
     .phase{
       position:relative;
-      margin:100px 0 60px;
+      margin:100px 0 80px;
       padding:20px;
       max-width:1200px; margin-left:auto; margin-right:auto;
     }
     .phase-title{
       font-family:'Orbitron',sans-serif; font-size:1.8rem; font-weight:700;
-      color:var(--accent); margin-bottom:20px; text-align:center; text-shadow:0 4px 15px rgba(25,167,255,0.08);
+      color:var(--accent); margin-bottom:30px; text-align:center; text-shadow:0 4px 15px rgba(25,167,255,0.08);
     }
 
     /* Timeline line */
     .phase-line{
-      position:relative; height:4px; background:linear-gradient(90deg,var(--accent), var(--accent-2)); margin:40px auto; border-radius:3px;
+      position:relative; height:4px; background:linear-gradient(90deg,var(--accent), var(--accent-2));
+      margin:40px auto; border-radius:3px;
     }
 
     /* Events */
@@ -61,7 +69,8 @@
       transition:transform .3s, box-shadow .3s;
     }
     .event img{
-      width:180px; border-radius:12px; border:1px solid rgba(25,167,255,0.3); filter:drop-shadow(0 6px 18px rgba(25,167,255,0.08));
+      width:180px; border-radius:12px; border:1px solid rgba(25,167,255,0.3);
+      filter:drop-shadow(0 6px 18px rgba(25,167,255,0.08));
       transition:transform .35s;
     }
     .event:hover img{transform:scale(1.05);}
@@ -69,7 +78,8 @@
     .event .label{margin-top:8px; font-size:1rem; color:var(--accent-2);}
 
     .event::before{
-      content:""; position:absolute; top:50%; left:50%; transform:translateX(-50%); width:2px; height:50px; background:var(--accent); border-radius:2px;
+      content:""; position:absolute; left:50%; width:2px; height:50px; background:var(--accent); border-radius:2px;
+      transform:translateX(-50%);
     }
     .event.top{bottom:120px;}
     .event.top::before{top:auto; bottom:-50px;}
@@ -80,9 +90,10 @@
     .modal{
       display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(6px); z-index:1000;
       align-items:center; justify-content:center;
+      padding:20px;
     }
     .modal-content{
-      background:var(--card-bg); border:1px solid rgba(25,167,255,0.3); border-radius:12px; padding:22px; max-width:400px; text-align:center; color:#e9f6ff;
+      background:var(--card-bg); border:1px solid rgba(25,167,255,0.3); border-radius:12px; padding:22px; max-width:400px; width:100%; text-align:center; color:#e9f6ff;
     }
     .close-btn{
       background:var(--accent); color:#00101b; font-weight:600; border:none; padding:8px 14px; border-radius:10px; cursor:pointer; margin-top:15px; transition:all .25s ease;
@@ -113,22 +124,22 @@
   <div class="phase-title">فاز ۱</div>
   <div class="phase-line"></div>
 
-  <div class="event top" style="left:10%;" onclick="openModal('لرد فیزیکا','اولین قهرمان و آغازگر داستان توشان‌ورس.')">
+  <div class="event" data-title="لرد فیزیکا" data-text="اولین قهرمان و آغازگر داستان توشان‌ورس.">
     <img src="lord-physica.jpg" alt="لرد فیزیکا">
     <div class="label">لرد فیزیکا</div>
   </div>
 
-  <div class="event bottom" style="left:30%;" onclick="openModal('الکتروپالس','قهرمانی با قدرت الکتریسیته و پالس انرژی.')">
+  <div class="event" data-title="الکتروپالس" data-text="قهرمانی با قدرت الکتریسیته و پالس انرژی.">
     <img src="electropulse.jpg" alt="الکتروپالس">
     <div class="label">الکتروپالس</div>
   </div>
 
-  <div class="event top" style="left:50%;" onclick="openModal('استریکس','موجود مرموز با قدرت‌های شبانه.')">
+  <div class="event" data-title="استریکس" data-text="موجود مرموز با قدرت‌های شبانه.">
     <img src="strix.jpg" alt="استریکس">
     <div class="label">استریکس</div>
   </div>
 
-  <div class="event bottom" style="left:70%;" onclick="openModal('تسکین','شخصیتی با توانایی‌های درمانی و روحی.')">
+  <div class="event" data-title="تسکین" data-text="شخصیتی با توانایی‌های درمانی و روحی.">
     <img src="taskin.jpg" alt="تسکین">
     <div class="label">تسکین</div>
   </div>
@@ -138,12 +149,12 @@
   <div class="phase-title">فاز ۲</div>
   <div class="phase-line"></div>
 
-  <div class="event top" style="left:20%;" onclick="openModal('آگناتوس','ابرشروری با قدرت کنترل ذهن.')">
+  <div class="event" data-title="آگناتوس" data-text="ابرشروری با قدرت کنترل ذهن.">
     <img src="villain.jpg" alt="آگناتوس">
     <div class="label">آگناتوس</div>
   </div>
 
-  <div class="event bottom" style="left:60%;" onclick="openModal('قهرمان جدید','ورود نسل تازه‌ای از قهرمان‌ها.')">
+  <div class="event" data-title="قهرمان جدید" data-text="ورود نسل تازه‌ای از قهرمان‌ها.">
     <img src="another-hero.jpg" alt="قهرمان جدید">
     <div class="label">قهرمان جدید</div>
   </div>
@@ -174,6 +185,38 @@
     document.getElementById('modal').style.display='flex';
   }
   function closeModal(){document.getElementById('modal').style.display='none';}
+
+  // Dynamic timeline positioning
+  function arrangeTimeline(){
+    const phases = document.querySelectorAll('.phase');
+    phases.forEach(phase=>{
+      const events = phase.querySelectorAll('.event');
+      const total = events.length;
+      events.forEach((event,i)=>{
+        // فاصله افقی مساوی
+        const percent = total===1?50: 10 + i*(80/(total-1));
+        event.style.left = percent + '%';
+        // فاصله عمودی متناوب
+        if(window.innerWidth > 1000){
+          if(i % 2 === 0){
+            event.classList.add('top'); event.classList.remove('bottom');
+          }else{
+            event.classList.add('bottom'); event.classList.remove('top');
+          }
+        } else {
+          event.classList.remove('top','bottom'); event.style.left='0';
+        }
+
+        // کلیک برای باز کردن modal
+        event.onclick = ()=>{
+          openModal(event.dataset.title, event.dataset.text);
+        }
+      });
+    });
+  }
+
+  window.addEventListener('resize', arrangeTimeline);
+  window.addEventListener('DOMContentLoaded', arrangeTimeline);
 </script>
 
 </body>
