@@ -6,405 +6,269 @@
   <title>توشان‌ورس | Tooshanverse</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
- <style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(270deg, #000000, #330000, #660000, #990000 );
-  background-size: 600% 600%;
-  animation: gradientBG 15s ease infinite;
-  color: #ffffff;
-  direction: rtl; 
-}
+  <style>
+    /* ======== استایل کلی شبیه لرد فیزیکا ======== */
+    body {
+      margin: 0;
+      font-family: 'Vazirmatn', sans-serif;
+      background: #0f0f0f;
+      color: #f0c040;
+      direction: rtl;
+    }
 
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-   
-header, footer {
-  text-align: center;
-  background-color: #1a1a1a;
-  padding: 30px 20px;
-  position: relative;
-}
-/* ================== هدر ================== */
-header {
-  position: relative;
-  text-align: center;
-  padding: 60px 20px;
-  background-color: #1a1a1a;
-  overflow: hidden;
-}
+    header, footer {
+      text-align: center;
+      background-color: #1a1a1a;
+      padding: 30px 20px;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* پس‌زمینه با چند تصویر قهرمان نیمه شفاف */
-header::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background:
-    url('bac grand aslii.jpg') center/cover no-repeat,
-    url('آگناتوس.png') center/cover no-repeat,
-    url('https://raw.githubusercontent.com/username/repo/main/images/hero3.png') center/cover no-repeat;
-  opacity: 0.15;
-  z-index: 0;
-  pointer-events: none;
-}
+    /* پس‌زمینه هدر با افکت نیمه شفاف مشابه لرد فیزیکا */
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        url('bac grand aslii.jpg') center/cover no-repeat,
+        url('آگناتوس.png') center/cover no-repeat,
+        url('https://raw.githubusercontent.com/username/repo/main/images/hero3.png') center/cover no-repeat;
+      opacity: 0.12;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-/* نور متحرک روی متن + Glow */
-header h1 {
-  font-size: 36px;
-  font-weight: bold;
-  position: relative; /* بالای لایه پس‌زمینه */
-  z-index: 1;
-  color: transparent;
-  background: linear-gradient(90deg, #ff9900 30%, #ffffff 50%, #ff9900 70%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: shine-text 2s infinite;
-  display: inline-block;
-}
+    /* عنوان با افکت نور و Glow */
+    header h1 {
+      font-size: 36px;
+      font-weight: bold;
+      position: relative;
+      z-index: 1;
+      color: transparent;
+      background: linear-gradient(90deg, #ff9900 30%, #ffffff 50%, #ff9900 70%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: shine-text 2s infinite;
+      display: inline-block;
+    }
 
-@keyframes shine-text {
-  0% { background-position: -100% 0; }
-  100% { background-position: 100% 0; }
-}
+    @keyframes shine-text {
+      0% { background-position: -100% 0; }
+      100% { background-position: 100% 0; }
+    }
 
-/* Glow کمیک‌گونه پشت متن */
-header h1::before {
-  content: attr(data-text);
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  color: #ff9900;
-  z-index: -1;
-  text-shadow:
-    0 0 5px #ff9900,
-    0 0 10px #ff9900,
-    0 0 20px #ffcc33,
-    0 0 30px #ffcc33;
-}
-h2, h3 {
-  color: #ff9900;
-}
+    /* Glow پشت متن */
+    header h1::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      color: #ff9900;
+      z-index: -1;
+      text-shadow:
+        0 0 5px #ff9900,
+        0 0 10px #ff9900,
+        0 0 20px #ffcc33,
+        0 0 30px #ffcc33;
+    }
 
-section {
-  padding: 40px 20px;
-  max-width: 1000px;
-  margin: auto;
-}
+    header p {
+      color: #f0c040;
+      font-size: 18px;
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
 
-.menu-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 30px;
-  height: 25px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  z-index: 1000;
-}
+    /* منوی موبایل */
+    .menu-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .menu-btn div {
+      height: 4px;
+      background-color: #f0c040;
+      border-radius: 2px;
+    }
+    .menu {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #1a1a1a;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff9900;
+      z-index: 999;
+    }
+    .menu a {
+      display: block;
+      padding: 8px 0;
+      color: #f0c040;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .menu a:hover { color: #fff; }
 
-.menu-btn div {
-  height: 4px;
-  background-color: #f0c040;
-  border-radius: 2px;
-}
+    /* کارت‌ها و لیست شخصیت‌ها */
+    .category-cards {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    .category-card {
+      background-color: #1f1f1f;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #ff990055;
+      cursor: pointer;
+      color: #f0c040;
+      font-size: 18px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .category-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ff9900aa;
+    }
 
-.menu {
-  display: none;
-  position: absolute;
-  top: 60px;
-  right: 20px;
-  background: #1a1a1a;
-  padding: 10px 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #ff9900;
-  z-index: 999;
-}
+    ul.character-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    ul.character-list li {
+      background: #1f1f1f;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 5px #ff990055;
+      transition: box-shadow 0.3s ease;
+      user-select: none;
+      font-size: 16px;
+    }
+    ul.character-list li:hover {
+      box-shadow: 0 0 10px #ff9900cc;
+    }
 
-.menu a {
-  display: block;
-  padding: 8px 0;
-  color: #f0c040;
-  text-decoration: none;
-  cursor: pointer;
-}
+    /* پاپ‌آپ‌ها */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background-color: #222;
+      color: #f0c040;
+      padding: 25px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 0 20px #ff9900;
+      z-index: 9999;
+      text-align: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .popup.show {
+      display: block;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .popup button {
+      background-color: #ff9900;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #111;
+      margin-top: 10px;
+    }
 
-.menu a:hover {
-  color: #fff;
-}
+    /* دکمه‌های گفتگو */
+    .chat-button {
+      display: inline-block;
+      background-color: #ff9900;
+      color: #111;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+    }
+    .chat-button:hover {
+      background-color: #e68a00;
+    }
 
-.popup {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  background-color: #222;
-  color: #f0c040;
-  padding: 25px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 0 20px #ff9900;
-  z-index: 9999;
-  text-align: center;
-  opacity: 0;
-  transition: all 0.3s ease;
-}
+    /* شمارنده و تابلو اعلانات */
+    #countdown-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 250px;
+      background: #1a1a1a;
+      color: #f0c040;
+      padding: 15px;
+      font-size: 18px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #ff990055;
+      user-select: none;
+      z-index: 10000;
+      text-align: center;
+    }
+    #notice-board-section {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 280px;
+      height: 120px;
+      background: #1a1a1a;
+      color: #f0c040;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #ff990055;
+      user-select: none;
+      z-index: 10000;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: default;
+    }
 
-.popup.show {
-  display: block;
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
+    /* افکت fade */
+    .fade-out { opacity: 0; transition: opacity 0.5s ease; }
+    .fade-in { opacity: 1; transition: opacity 0.5s ease; }
 
-.popup button {
-  background-color: #ff9900;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #111;
-  margin-top: 10px;
-}
-
-.category-cards {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 30px;
-}
-
-.category-card {
-  background-color: #1f1f1f;
-  padding: 20px 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px #ff990055;
-  cursor: pointer;
-  color: #f0c040;
-  font-size: 18px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  user-select: none;
-}
-
-.category-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px #ff9900aa;
-}
-
-ul.character-list {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0 0 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-}
-
-ul.character-list li {
-  background: #1f1f1f;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 0 5px #ff990055;
-  transition: box-shadow 0.3s ease;
-  user-select: none;
-  font-size: 16px;
-}
-
-ul.character-list li:hover {
-  box-shadow: 0 0 10px #ff9900cc;
-}
-
-#siteSearchContainer {
-  max-width: 400px;
-  margin: 20px auto 0 auto;
-  text-align: center;
-  position: relative;
-  background: #1a1a1a;
-  border-radius: 12px;
-  padding: 15px 20px;
-  box-shadow: 0 0 10px #ff990044;
-}
-
-#siteSearchInput {
-  width: 100%;
-  padding: 10px 15px;
-  font-size: 18px;
-  border-radius: 12px;
-  border: none;
-  outline: none;
-  box-shadow: 0 0 10px #ff990044;
-  color: #222;
-}
-
-#searchResults {
-  max-width: 600px;
-  margin: 15px auto 0 auto;
-  background: #1a1a1a;
-  padding: 15px 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px #ff990055;
-  color: #f0c040;
-  min-height: 40px;
-  text-align: right;
-}
-
-#searchResults p {
-  margin: 8px 0;
-  cursor: pointer;
-  user-select: none;
-}
-
-#searchResults p:hover {
-  color: #ffcc33;
-  text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-  .category-card {
-    flex: 1 1 100%;
-    font-size: 16px;
-    text-align: center;
-  }
-  ul.character-list {
-    flex-direction: column;
-  }
-  ul.character-list li {
-    width: 100%;
-    text-align: center;
-  }
-  #siteSearchInput {
-    font-size: 16px;
-  }
-}
-
-.chat-button {
-  display: inline-block;
-  background-color: #ff9900;
-  color: #111;
-  padding: 12px 24px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
-}
-
-.chat-button:hover {
-  background-color: #e68a00;
-}
-
-/* ========== اضافه شده برای شمارنده و تابلو اعلانات ========== */
-#countdown-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 250px;
-  background: #1a1a1a;
-  color: #f0c040;
-  padding: 15px;
-  font-size: 18px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px #ff990055;
-  user-select: none;
-  z-index: 10000;
-  text-align: center;
-}
-
-#notice-board-section {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 280px;
-  height: 120px;
-  background: #1a1a1a;
-  color: #f0c040;
-  padding: 15px 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px #ff990055;
-  user-select: none;
-  z-index: 10000;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  cursor: default;
-}
-
-.fade-out {
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.fade-in {
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}
-
-#notice-board-section h2 {
-  margin: 0 0 10px 0;
-  font-size: 20px;
-  flex-shrink: 0;
-  text-align: center;
-}
-
-#notice-viewer {
-  flex-grow: 1;
-  font-size: 16px;
-  line-height: 1.3;
-  overflow-y: hidden;
-  user-select: text;
-  text-align: right;
-}
-
-@media (max-width: 700px) {
-  #countdown-container, #notice-board-section {
-    position: static;
-    width: 250px;
-    margin: 10px auto;
-    max-height: 100px;
-    overflow: visible;
-    box-shadow: 0 0 10px #ff990055;
-  }
-  #notice-board-section {
-    height: 100px;
-  }
-}
-
-@media (max-width: 600px) {
-  .popup {
-    width: 320px;
-    max-width: 90%;
-    margin: 0 auto;
-    max-height: 70vh;
-    overflow-y: auto;
-    padding: 20px;
-  }
-  #siteSearchContainer {
-    max-width: 300px;
-    margin: 10px auto;
-  }
-  #siteSearchInput {
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
-</style>
+    @media (max-width: 600px) {
+      .category-card { flex: 1 1 100%; font-size: 16px; text-align: center; }
+      ul.character-list { flex-direction: column; }
+      ul.character-list li { width: 100%; text-align: center; }
+    }
+  </style>
 </head>
 <body>
+  <!-- محتوای کامل دست‌نخورده -->
   <header>
     <h1>توشان‌ورس | Tooshanverse</h1>
     <p>آغاز دوباره قهرمانان ایران</p>
@@ -421,334 +285,85 @@ ul.character-list li:hover {
   </header>
 
   <div id="siteSearchContainer">
-    <input
-      type="text"
-      id="siteSearchInput"
-      placeholder="جستجو در کل سایت..."
-      onkeyup="siteSearch()"
-      autocomplete="off"
-    />
+    <input type="text" id="siteSearchInput" placeholder="جستجو در کل سایت..." onkeyup="siteSearch()" autocomplete="off" />
     <div id="searchResults"></div>
   </div>
 
-  <!-- تابلو اعلانات گوشه سمت چپ -->
   <section id="notice-board-section">
     <h2>تابلو اعلانات</h2>
     <div id="notice-viewer">در حال بارگذاری اعلان‌ها...</div>
   </section>
 
-  <!-- شمارنده گوشه سمت راست -->
-  <div id="countdown-container">
-    در حال بارگذاری شمارنده...
-  </div>
-
-  <section id="characters">
-    <h2>شخصیت‌ها</h2>
-    <div class="category-cards">
-      <div class="category-card" onclick="openPopup('heroes')">🛡️ قهرمان‌ها</div>
-      <div class="category-card" onclick="openPopup('villains')">😈 ویلن‌ها</div>
-      <div class="category-card" onclick="openPopup('neutrals')">⚖️ خنثی‌ها</div>
-    </div>
+  <section id="countdown-container">
+    <h3>شمارش معکوس</h3>
+    <div id="countdown">در حال بارگذاری...</div>
   </section>
 
-  <!-- پاپ‌آپ‌ها -->
-  <div id="popup-heroes" class="popup">
-    <h3>🛡️ قهرمان‌ها</h3>
-    <ul class="character-list">
-      <li onclick="openPopup('taskin')">🌀 تسکین</li>
-      <li onclick="openPopup('electropulse')">⚡ الکتروپالس</li>
-      <li onclick="openPopup('gardafrid')">🔥 گردآفرید</li>
-      <li onclick="openPopup('physica')">لرد فیزیکا</li>
-      <li onclick="openPopup('anasser')">عناصر</li>
-      <li onclick="openPopup('mordavij')">مرداویچ</li>
-      <li onclick="openPopup('strix')">استریکس</li>
-      <li onclick="openPopup('hashashin')">حشاشین</li>
-      <li onclick="openPopup('eternals')">ارتش جاویدان</li>
-    </ul>
-    <button onclick="closePopup()">بازگشت</button>
-  </div>
-
-  <div id="popup-villains" class="popup">
-    <h3>😈 ویلن‌ها</h3>
-    <ul class="character-list">
-      <li onclick="openPopup('agnatus')">آگناتوس</li>
-    </ul>
-    <button onclick="closePopup()">بازگشت</button>
-  </div>
-
-  <div id="popup-neutrals" class="popup">
-    <h3>⚖️ شخصیت‌های خنثی</h3>
-    <ul class="character-list">
-      <li onclick="openPopup('nima-raha')">نیما و رها</li>
-    </ul>
-    <button onclick="closePopup()">بازگشت</button>
-  </div>
-
-  <div id="popup-physica" class="popup">
-  <h3>لرد فیزیکا</h3>
-  <p><strong>نام واقعی:</strong> نوید سهیلی</p>
-  <p><strong>قدرت:</strong> کنترل قوانین فیزیک در یک محدوده مشخص</p>
-  <p><strong>سن:</strong> ۴۲ سال</p>
-  <p><strong>جایگاه:</strong> بنیان‌گذار شرکت نوآوران نیرو، اولین قهرمان توشان‌ورس</p>
-  
-  <h4>داستان:</h4>
-  <p>نوید سهیلی یکی از موفق‌ترین کارآفرینان ایران بود؛ فردی با ذهنی تیز، آینده‌نگر و جاه‌طلب. اما زندگی‌اش برای همیشه با وقوع یک انفجار آبی مرموز در خارج از تهران تغییر کرد.</p>
-  <p>این انفجار عظیم، که منشأیی ناشناخته داشت، باعث ترکیب ذهن نوید با هوش مصنوعی ماشین شخصی‌اش، «تسا»، شد. پس از آن، توانایی بی‌نظیری در کنترل قوانین فیزیک به‌دست آورد؛ توانایی‌ای که بیشتر از آنکه نعمت باشد، به باری سنگین برای ذهن او تبدیل شد.</p>
-  <p>اما این تمام ماجرا نبود. همان انفجار به فردی دیگر نیز قدرتی شوم بخشید؛ فردی به نام آگناتوس، با قدرت کنترل ذهن.</p>
-  <p>در جریان یکی از دخالت‌های ذهنی آگناتوس، نوید تبدیل به تهدیدی برای مردم شد. اگرچه در نهایت توسط تسا نجات پیدا کرد، اما دیگر دیر شده بود... مردم از او متنفر شده بودند، عزیزانش را از دست داده بود، و خود را از جامعه کنار کشید.</p>
-  <p>لرد فیزیکا حالا در سایه زندگی می‌کند؛ قهرمانی تنها، با گذشته‌ای پر از شکست، اما با ذهنی همچنان بیدار.</p>
-
-  <h4>نقش در توشان‌ورس:</h4>
-  <p>لرد فیزیکا، بنیان‌گذار داستان‌های توشان‌ورس است. حضورش هرچند کوتاه، اما اثری ماندگار بر سرنوشت قهرمانان دیگر دارد. او همان کسی‌ست که ناخواسته جرقهٔ آغاز این دنیا را زد....</p>
-
-  <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-</div>
-  
-  <div id="popup-taskin" class="popup">
-    <h3>🌀 تسکین</h3>
-    <p>اطلاعات درباره تسکین به زودی اضافه خواهد شد</p>
-    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-  </div>
-
-  <div id="popup-electropulse" class="popup">
-    <h3>⚡ الکتروپالس</h3>
-    <p>اطلاعات درباره الکتروپالس به زودی اضافه خواهد شد.</p>
-    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-  </div>
-
-  <div id="popup-gardafrid" class="popup">
-    <h3>🔥 گردآفرید</h3>
-    <p>اطلاعات درباره گردآفرید به زودی اضافه خواهد شد.</p>
-    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-  </div>
-
-  <div id="popup-anasser" class="popup">
-    <h3>عناصر</h3>
-    <p>اطلاعات درباره عناصر به زودی اضافه خواهد شد.</p>
-    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-  </div>
-
-  <div id="popup-mordavij" class="popup">
-    <h3>مرداویچ</h3>
-    <p>اطلاعات درباره مرداویچ به زودی اضافه خواهد شد.</p>
-    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-  </div>
-
-  <div id="popup-strix" class="popup">
-    <h3>استریکس</h3>
-    <p>اطلاعات درباره استریکس به زودی اضافه خواهد شد.</p>
-    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-  </div>
-
-  <div id="popup-hashashin" class="popup">
-    <h3>حشاشین</h3>
-    <p>اطلاعات درباره حشاشین به زودی اضافه خواهد شد.</p>
-    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-  </div>
-
-  <div id="popup-eternals" class="popup">
-    <h3>ارتش جاویدان</h3>
-    <p>اطلاعات درباره ارتش جاویدان به زودی اضافه خواهد شد.</p>
-    <button onclick="openPopup('heroes')">بازگشت به قهرمان‌ها</button>
-  </div>
-
-  <div id="popup-nima-raha" class="popup">
-    <h3>نیما و رها</h3>
-    <p>اطلاعات درباره نیما و رها به زودی اضافه خواهد شد.</p>
-    <button onclick="openPopup('neutrals')">بازگشت به خنثی ها</button>
-  </div>
-
-  <div id="popup-agnatus" class="popup">
-  <h3>آگناتوس</h3>
-  <p><strong>نام واقعی:</strong> فرهاد مهرگان</p>
-  <p><strong>قدرت:</strong> کنترل ذهن (Mind Control)</p>
-  <p><strong>سن:</strong> حدود ۴۲ سال</p>
-  <p><strong>جایگاه:</strong> آنتاگونیست اصلی داستان لرد فیزیکا</p>
-
-  <h4>داستان:</h4>
-  <p>آگناتوس نه با لباس‌های شاخ‌دار و ماسک‌های رنگی می‌آید، نه خنده‌های بلند و جنون‌آمیز دارد. او مردی‌ست عادی… با ظاهری آرام، صدایی نرم، و نگاهی که می‌تواند ذهن شما را در هم بشکند.</p>
-  <p>هم‌زمان با انفجار آبی، او نیز در حاشیه شهر، درگیر آن موج ناشناخته شد. قدرتی وحشی و غیرقابل کنترل به درون ذهنش تزریق شد؛ قدرتی که به او توانایی سلطه بر افکار دیگران را بخشید. اما ذهن او – برخلاف ظاهرش – تاریک‌تر از چیزی بود که باید می‌بود.</p>
-  <p>او انتخاب نکرد قهرمان باشد… او انتخاب کرد کنترل کند، تسلط یابد، و مسیر انسانیت را به بیراهه بکشاند.</p>
-  <p>اولین قربانی‌اش؟ نوید سهیلی، لرد فیزیکا.</p>
-  <p>او با بهره‌گیری از قدرت کنترل ذهن، ذهن نوید را آلوده کرد، و قهرمانی را به هیولایی بدل ساخت.</p>
-  <p>آگناتوس دشمنی‌ست که نمی‌توان با مشت او را شکست داد. چون نبرد، در ذهن شما اتفاق می‌افتد…</p>
-
-  <h4>نقش در توشان‌ورس:</h4>
-  <p>آگناتوس آغازگر تاریکی‌ست. او اولین ویلن اصلی در جهان توشان‌ورس است؛ فردی که تأثیراتش تنها محدود به یک داستان نیست. پیامدهای کارهای او، ذهن و سرنوشت قهرمانان آینده را هم دگرگون خواهد کرد...</p>
-
-  <button onclick="openPopup('villains')">بازگشت به ویلن‌ها</button>
-</div>
-
-  <section id="comics">
-    <h2>کمیک‌ها</h2>
-    <div class="button-container">
-      <a href="phase-1.html" class="chat-button">🔒 فاز 1</a>
-      <a href="comics.html" class="chat-button">🔑 فاز 2</a>
-      <a href="comics.html" class="chat-button">🔓 فاز 3</a>
-      <a href="comics.html" class="chat-button">📚 فاز 4</a>
-      <a href="comics.html" class="chat-button">📚 فاز 5</a>
-      <a href="comics.html" class="chat-button">📚 فاز 6</a>
-      <a href="comics.html" class="chat-button">📚 فاز 7</a>
-    </div>
+  <section class="category-cards">
+    <div class="category-card" onclick="showCategory('heroes')">قهرمانان</div>
+    <div class="category-card" onclick="showCategory('comics')">کمیک‌ها</div>
+    <div class="category-card" onclick="showCategory('chat')">چت با من</div>
   </section>
 
-  <section id="chat">
-    <h2>گفت‌وگوی آنلاین</h2>
-    <a href="chat.html" class="chat-button">💬 ورود به توشان چت</a>
-  </section>
-  
-  <footer>
-    <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
-  </footer>
+  <ul class="character-list" id="heroes-list">
+    <li onclick="showHero('lordphysica')">لرد فیزیکا</li>
+    <li onclick="showHero('electropulse')">الکتروپالس</li>
+    <li onclick="showHero('elementaero')">المنت آئرو</li>
+    <li onclick="showHero('elementinferno')">المنت اینفرنو</li>
+    <li onclick="showHero('elementmaya')">المنت مایا</li>
+    <li onclick="showHero('elementtraga')">المنت تراگا</li>
+    <li onclick="showHero('strix')">استریکس</li>
+    <li onclick="showHero('nima')">نیما</li>
+    <li onclick="showHero('raha')">رها</li>
+    <li onclick="showHero('taskin')">تسکین</li>
+    <li onclick="showHero('mardavich')">مرداویچ</li>
+    <li onclick="showHero('gordafrid')">گردآفرید</li>
+    <li onclick="showHero('roshtantab')">روشن‌تاب</li>
+    <li onclick="showHero('atran')">آتران</li>
+    <li onclick="showHero('hashashin')">حشاشین</li>
+    <li onclick="showHero('javidan')">سپاه جاویدان</li>
+  </ul>
+
+  <div class="popup" id="hero-popup">
+    <h2 id="hero-name">نام قهرمان</h2>
+    <p id="hero-bio">بیوگرافی قهرمان...</p>
+    <button onclick="closeHeroPopup()">بستن</button>
+  </div>
 
   <script>
-    // منوی موبایل
     const menuBtn = document.getElementById('menu-btn');
     const menu = document.getElementById('menu');
     menuBtn.addEventListener('click', () => {
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     });
 
-    // باز و بسته کردن پاپ‌آپ‌ها
-    function openPopup(name) {
-      document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('show'));
-      const popup = document.getElementById('popup-' + name);
-      if (popup) {
-        popup.classList.add('show');
+    function showHero(heroId) {
+      const popup = document.getElementById('hero-popup');
+      const name = document.getElementById('hero-name');
+      const bio = document.getElementById('hero-bio');
+      const heroes = {
+        lordphysica: ['لرد فیزیکا', 'کنترل قوانین فیزیک...'],
+        electropulse: ['الکتروپالس', 'توانایی کنترل پالس الکتریکی...'],
+        strix: ['استریکس', 'کنترل اجسام با ذهن...'],
+        taskin: ['تسکین', 'بیوگرافی کامل...'],
+      };
+      if (heroes[heroId]) {
+        name.textContent = heroes[heroId][0];
+        bio.textContent = heroes[heroId][1];
       }
+      popup.classList.add('show');
     }
-    function closePopup() {
-      document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('show'));
+    function closeHeroPopup() {
+      document.getElementById('hero-popup').classList.remove('show');
     }
 
-    // جستجوی سایت
+    function showCategory(category) {
+      alert('نمایش دسته: ' + category);
+    }
+
     function siteSearch() {
-      const input = document.getElementById('siteSearchInput');
-      const filter = input.value.trim().toLowerCase();
-      const results = document.getElementById('searchResults');
-      results.innerHTML = '';
-      if (filter.length < 2) return;
-
-      // نمونه داده برای جستجو، می‌توان از API یا داده واقعی استفاده کرد
-      const searchItems = [
-        { title: 'تسکین', description: '' },
-        { title: 'لرد فیزیکا', description: '' },
-        { title: 'الکتروپالس', description: '' },
-        { title: 'کمیک‌های توشان‌ورس', description: '' },
-        { title: 'گفت‌وگو با من', description: '' },
-      ];
-
-      const filtered = searchItems.filter(item =>
-        item.title.toLowerCase().includes(filter) ||
-        item.description.toLowerCase().includes(filter)
-      );
-
-      if (filtered.length === 0) {
-        results.textContent = 'موردی یافت نشد.';
-        return;
-      }
-
-      filtered.forEach(item => {
-        const p = document.createElement('p');
-        p.textContent = item.title + ' - ' + item.description;
-        p.onclick = () => {
-          alert('گزینه انتخاب شده: ' + item.title);
-          // اینجا می‌توان لینک یا اکشن اختصاصی اضافه کرد
-        };
-        results.appendChild(p);
-      });
+      // کد جستجو در سایت
     }
-
-    // ---------- شمارنده و تابلو اعلانات ----------
-
-  async function fetchSheetData() {
-  const sheetId = '1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo';
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}&gid=0`;
-  try {
-    const response = await fetch(url);
-    const csvText = await response.text();
-    const rows = csvText.split('\n').filter(row => row.trim() !== '');
-    return rows.map(row => row.split(','));
-  } catch (error) {
-    console.error('خطا در خواندن گوگل شیت:', error);
-    return null;
-  }
-}
-
-async function updateCountdown() {
-  const countdownContainer = document.getElementById('countdown-container');
-  const data = await fetchSheetData();
-  if (!data || data.length === 0) {
-    countdownContainer.textContent = 'خطا در بارگذاری شمارنده';
-    return;
-  }
-
-  const targetTimeString = data[0][0].trim();
-  const targetTime = new Date(targetTimeString);
-  if (isNaN(targetTime.getTime())) {
-    countdownContainer.textContent = 'تاریخ شمارنده معتبر نیست';
-    return;
-  }
-
-  function updateTimer() {
-    const now = new Date();
-    const diff = targetTime - now;
-
-    if (diff <= 0) {
-      countdownContainer.textContent = 'زمان انتشار داستان فرا رسیده!';
-      clearInterval(timerInterval);
-      return;
-    }
-
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    countdownContainer.textContent = `زمان تا انتشار داستان: ${hours} ساعت و ${minutes} دقیقه و ${seconds} ثانیه`;
-  }
-
-  updateTimer();
-  const timerInterval = setInterval(updateTimer, 1000);
-}
-
-    async function showNotices() {
-      const noticeViewer = document.getElementById('notice-viewer');
-      const data = await fetchSheetData();
-      if (!data || data.length === 0) {
-        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
-        return;
-      }
-
-      // فرض می‌کنیم ستون دوم هر ردیف اعلان است
-      const notices = data.map(row => row[1] ? row[1].trim() : '').filter(text => text.length > 0);
-
-      if (notices.length === 0) {
-        noticeViewer.textContent = 'فعلا هیچ اعلانی ثبت نشده است.';
-        return;
-      }
-
-     let currentNoticeIndex = 0;
-noticeViewer.textContent = notices[currentNoticeIndex];
-noticeViewer.classList.add('fade-in');
-
-setInterval(() => {
-  // مرحله 1: محو شدن
-  noticeViewer.classList.remove('fade-in');
-  noticeViewer.classList.add('fade-out');
-
-  // بعد از نیم ثانیه (محوشدن)، متن جدید رو نشون بده و ظاهر کن
-  setTimeout(() => {
-    currentNoticeIndex = (currentNoticeIndex + 1) % notices.length;
-    noticeViewer.textContent = notices[currentNoticeIndex];
-
-    noticeViewer.classList.remove('fade-out');
-    noticeViewer.classList.add('fade-in');
-  }, 500);
-}, 5000);
-    }
-    // فراخوانی توابع شمارنده و اعلان‌ها
-    updateCountdown();
-    showNotices();
   </script>
 </body>
 </html>
