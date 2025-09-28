@@ -1,314 +1,176 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>توشان‌ورس | Tooshanverse</title>
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
-<style>
-/* ====================== بدنه ====================== */
-body {
-  margin: 0;
-  font-family: 'Vazirmatn', sans-serif;
-  background: #0d0d0d;
-  color: #fff;
-  direction: rtl;
-  overflow-x: hidden;
-}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>توشان‌ورس — صفحه اصلی</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#070812;
+      --bg-2:#081229;
+      --accent:#19a7ff;
+      --accent-2:#9be3ff;
+      --muted:rgba(255,255,255,0.08);
+      --card-bg:rgba(10,12,18,0.6);
+      --glass:rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:'Vazirmatn', Tahoma, sans-serif;
+      background: linear-gradient(180deg,var(--bg-1), var(--bg-2));
+      color:#e9f6ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit;text-decoration:none}
+    header{
+      position:fixed;top:16px;left:16px;right:16px;z-index:40;
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .logo{font-weight:700;font-size:1rem;letter-spacing:0.6px}
+    .subnav{display:flex;gap:14px;align-items:center}
+    .subnav a{background:var(--glass);padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);font-size:0.95rem}
 
-/* ====================== هدر ====================== */
-header {
-  position: relative;
-  text-align: center;
-  padding: 60px 20px;
-  background-color: #1a1a1a;
-  overflow: hidden;
-}
+    /* HERO */
+    .hero{
+      position:relative;min-height:78vh;display:flex;align-items:center;justify-content:center;padding:80px 24px;
+      overflow:hidden;
+    }
+    .hero-bg{
+      position:absolute;inset:0;z-index:0;background-size:cover;background-position:center center;
+      filter:brightness(0.45) saturate(1.05) contrast(1.05);
+    }
+    .hero::after{
+      content:"";position:absolute;inset:-20% -40%;z-index:1;pointer-events:none;
+      background:linear-gradient(120deg, rgba(25,167,255,0.06), rgba(155,227,255,0.06) 30%, rgba(255,255,255,0.02));
+      transform:rotate(10deg);mix-blend-mode:screen;animation:slidelight 12s linear infinite;
+    }
+    @keyframes slidelight{0%{transform:translateX(-30%) rotate(10deg)}50%{transform:translateX(30%) rotate(10deg)}100%{transform:translateX(-30%) rotate(10deg)}}
+    .hero-inner{position:relative;z-index:5;display:flex;gap:36px;align-items:center;max-width:1200px;width:100%;}
+    .portrait{flex:0 0 320px;height:420px;border-radius:16px;overflow:hidden;border:1px solid rgba(25,167,255,0.12);box-shadow:0 30px 80px rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
+    .portrait img{width:100%;height:100%;object-fit:cover;display:block;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.6))}
+    .hero-meta{flex:1;}
+    .hero-meta h1{font-family:'Orbitron',sans-serif;font-size:3.6rem;margin:0 0 6px;color:var(--accent);text-shadow:0 6px 30px rgba(25,167,255,0.08)}
+    .hero-meta h2{margin:0;color:var(--accent-2);opacity:0.85;font-weight:600}
+    .tagline{margin-top:14px;font-size:1.05rem;color:rgba(235,245,255,0.9);max-width:72%}
+    .cta-row{margin-top:26px;display:flex;gap:12px;align-items:center}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.06);transition:all .25s ease}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#1fb6ff);color:#00101b;box-shadow:0 8px 30px rgba(25,167,255,0.12)}
+    .btn.ghost{background:transparent;color:#e6f7ff;border:1px solid rgba(255,255,255,0.06)}
+    .btn:hover{transform:translateY(-3px)}
 
-header::before {
-  content: "";
-  position: absolute;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:
-    url('bac grand aslii.jpg') center/cover no-repeat,
-    url('آگناتوس.png') center/cover no-repeat,
-    url('hero3.png') center/cover no-repeat;
-  opacity: 0.15;
-  z-index:0;
-  pointer-events:none;
-}
+    /* info cards */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+    .card{background:var(--card-bg);backdrop-filter:blur(6px);padding:18px;border-radius:12px;border:1px solid rgba(155,227,255,0.06);box-shadow:0 10px 30px rgba(2,6,23,0.5)}
+    .card h3{margin:0 0 10px;color:var(--accent);font-size:1.1rem}
+    .card p{margin:0;color:rgba(230,245,255,0.9);line-height:1.6}
 
-header h1 {
-  font-size: 36px;
-  font-weight: bold;
-  position: relative;
-  z-index:1;
-  color: transparent;
-  background: linear-gradient(90deg,#ff9900 30%,#fff 50%,#ff9900 70%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: shine-text 2s infinite;
-  display: inline-block;
-}
+    /* powers */
+    .powers{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .power{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;text-align:center;border:1px solid rgba(25,167,255,0.06);transition:transform .28s ease,box-shadow .28s ease}
+    .power:hover{transform:translateY(-8px);box-shadow:0 18px 60px rgba(25,167,255,0.09)}
+    .power svg{width:48px;height:48px;margin-bottom:10px;filter:drop-shadow(0 6px 18px rgba(25,167,255,0.08))}
+    .power h4{margin:6px 0 0;font-size:1rem}
+    .power p{font-size:0.95rem;color:rgba(235,245,255,0.85)}
 
-@keyframes shine-text {
-  0% { background-position: -100% 0; }
-  100% { background-position: 100% 0; }
-}
+    footer{margin-top:60px;padding:40px 20px;color:rgba(200,220,255,0.6);text-align:center}
 
-header h1::before {
-  content: attr(data-text);
-  position: absolute;
-  top:0; left:0;
-  width:100%; height:100%;
-  color:#ff9900;
-  z-index:-1;
-  text-shadow: 0 0 5px #ff9900,0 0 10px #ff9900,0 0 20px #ffcc33,0 0 30px #ffcc33;
-}
-
-header p {
-  margin-top: 10px;
-  color: #ffcc33;
-}
-
-/* ====================== منوی همبرگر ====================== */
-.menu-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 30px;
-  height: 25px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  z-index:1000;
-}
-
-.menu-btn div {
-  height: 4px;
-  background-color: #f0c040;
-  border-radius: 2px;
-}
-
-.menu {
-  display: none;
-  position: absolute;
-  top: 60px;
-  right: 20px;
-  background: #1a1a1a;
-  padding: 10px 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #ff9900;
-  z-index:999;
-}
-
-.menu a {
-  display:block;
-  padding:8px 0;
-  color:#f0c040;
-  text-decoration:none;
-}
-
-.menu a:hover { color:#fff; }
-
-/* ====================== پاپ‌آپ ====================== */
-.popup {
-  display: none;
-  position: fixed;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%) scale(0.8);
-  background-color: #222;
-  color: #f0c040;
-  padding: 25px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 0 20px #ff9900;
-  z-index:9999;
-  text-align:center;
-  opacity:0;
-  transition: all 0.3s ease;
-}
-
-.popup.show {
-  display:block;
-  opacity:1;
-  transform: translate(-50%,-50%) scale(1);
-}
-
-.popup button {
-  background-color:#ff9900;
-  border:none;
-  padding:10px 20px;
-  border-radius:8px;
-  cursor:pointer;
-  color:#111;
-  margin-top:10px;
-}
-
-/* ====================== کارت‌ها ====================== */
-.category-cards {
-  display:flex;
-  gap:20px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top:30px;
-}
-
-.category-card {
-  background-color:#1f1f1f;
-  padding:20px 30px;
-  border-radius:12px;
-  box-shadow:0 0 10px #ff990055;
-  cursor:pointer;
-  color:#f0c040;
-  font-size:18px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.category-card:hover {
-  transform:scale(1.05);
-  box-shadow:0 0 15px #ff9900aa;
-}
-
-/* ====================== لیست شخصیت‌ها ====================== */
-ul.character-list {
-  list-style:none;
-  padding:0;
-  margin:20px 0 0 0;
-  display:flex;
-  flex-wrap:wrap;
-  gap:15px;
-  justify-content:center;
-}
-
-ul.character-list li {
-  background:#1f1f1f;
-  padding:10px 20px;
-  border-radius:10px;
-  cursor:pointer;
-  box-shadow:0 0 5px #ff990055;
-  transition: box-shadow 0.3s ease;
-  user-select:none;
-  font-size:16px;
-}
-
-ul.character-list li:hover {
-  box-shadow:0 0 10px #ff9900cc;
-}
-
-/* ====================== تابلو اعلانات و شمارنده ====================== */
-#countdown-container {
-  position: fixed;
-  top:20px;
-  right:20px;
-  width:250px;
-  background:#1a1a1a;
-  color:#f0c040;
-  padding:15px;
-  font-size:18px;
-  border-radius:10px;
-  box-shadow:0 0 15px #ff990055;
-  user-select:none;
-  text-align:center;
-  z-index:10000;
-}
-
-#notice-board-section {
-  position: fixed;
-  top:20px;
-  left:20px;
-  width:280px;
-  height:120px;
-  background:#1a1a1a;
-  color:#f0c040;
-  padding:15px 20px;
-  border-radius:10px;
-  box-shadow:0 0 15px #ff990055;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  cursor:default;
-  z-index:10000;
-}
-
-.fade-out {opacity:0; transition:opacity 0.5s ease;}
-.fade-in {opacity:1; transition:opacity 0.5s ease;}
-
-#notice-board-section h2 {margin:0 0 10px 0; font-size:20px; text-align:center;}
-#notice-viewer {flex-grow:1; font-size:16px; line-height:1.3; overflow-y:hidden; user-select:text; text-align:right;}
-
-/* ====================== رسانه کوچک ====================== */
-@media (max-width:600px){
-  .category-card {flex:1 1 100%; font-size:16px; text-align:center;}
-  ul.character-list {flex-direction:column;}
-  ul.character-list li {width:100%; text-align:center;}
-}
-</style>
+    @media (max-width:1000px){
+      .hero-inner{flex-direction:column-reverse;align-items:center}
+      .portrait{width:320px;height:360px}
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .powers{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      .portrait{width:220px;height:300px}
+      .hero-meta h1{font-size:2.1rem}
+      .hero-meta h2{font-size:1rem}
+      .cards{grid-template-columns:1fr}
+      .powers{grid-template-columns:1fr}
+    }
+    .reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
+    .reveal.in{opacity:1;transform:none}
+  </style>
 </head>
 <body>
+
 <header>
-<h1 data-text="توشان‌ورس | Tooshanverse">توشان‌ورس | Tooshanverse</h1>
-<p>آغاز دوباره قهرمانان ایران</p>
-<div class="menu-btn" id="menu-btn"><div></div><div></div><div></div></div>
-<nav class="menu" id="menu">
-  <a href="#">خانه</a>
-  <a href="photos.html">عکس‌ها</a>
-  <a href="#">ساخته‌های هوش مصنوعی</a>
-  <a href="about.html">درباره ما</a>
-  <a href="#">گفتگو با من</a>
-</nav>
+  <div class="logo">توشان‌ورس</div>
+  <nav class="subnav">
+    <a href="#hero">خانه</a>
+    <a href="#cards">قهرمانان</a>
+    <a href="#powers">قدرت‌ها</a>
+  </nav>
 </header>
 
-<section id="characters">
-<h2>شخصیت‌ها</h2>
-<div class="category-cards">
-<div class="category-card" onclick="openPopup('heroes')">🛡️ قهرمان‌ها</div>
-<div class="category-card" onclick="openPopup('villains')">😈 ویلن‌ها</div>
-<div class="category-card" onclick="openPopup('neutrals')">⚖️ خنثی‌ها</div>
-</div>
+<section class="hero" id="hero">
+  <div class="hero-bg" style="background-image:url('toshan-hero.jpg')"></div>
+  <div class="hero-inner reveal">
+    <div class="portrait">
+      <img src="hero-main.jpg" alt="تصویر توشان‌ورس">
+    </div>
+    <div class="hero-meta">
+      <h1>توشان‌ورس</h1>
+      <h2>Tooshanverse</h2>
+      <p class="tagline">جهان قهرمانان و ماجراهای حماسی — جایی که قدرت‌ها و اسرار با هم تلاقی می‌کنند.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#cards">کاوش قهرمانان</a>
+        <a class="btn ghost" href="#powers">مشاهده قدرت‌ها</a>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- پاپ‌آپ نمونه -->
-<div id="popup-heroes" class="popup">
-<h3>🛡️ قهرمان‌ها</h3>
-<ul class="character-list">
-<li>🌀 تسکین</li>
-<li>⚡ الکتروپالس</li>
-<li>🔥 گردآفرید</li>
-<li>لرد فیزیکا</li>
-</ul>
-<button onclick="closePopup()">بازگشت</button>
-</div>
-
-<div id="countdown-container">در حال بارگذاری شمارنده...</div>
-<section id="notice-board-section">
-<h2>تابلو اعلانات</h2>
-<div id="notice-viewer">در حال بارگذاری اعلان‌ها...</div>
+<section class="cards reveal" id="cards" style="margin:40px 20px 0">
+  <div class="card">
+    <h3>لرد فیزیکا</h3>
+    <p>کنترل قوانین فیزیک و میدان‌ها — رهبر و پایه‌گذار داستان توشان‌ورس</p>
+  </div>
+  <div class="card">
+    <h3>تسکین</h3>
+    <p>قدرت بی‌حس کردن درد اطرافیان و آرامش‌بخشی در میدان نبرد</p>
+  </div>
+  <div class="card">
+    <h3>استریکس</h3>
+    <p>کنترل اشیا با ذهن، اما محدودیت‌های جسمی و خستگی شدید دارد</p>
+  </div>
 </section>
+
+<section class="powers reveal" id="powers" style="margin:40px 20px 60px">
+  <div class="power">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.2"/></svg>
+    <h4>قدرت اولیه</h4>
+    <p>نمایش قدرت‌های اصلی هر قهرمان در میدان نبرد</p>
+  </div>
+  <div class="power">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.6"/></svg>
+    <h4>قدرت ثانویه</h4>
+    <p>توانایی‌های تخصصی و تکنیکی هر شخصیت</p>
+  </div>
+  <div class="power">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12c0 4 4 8 9 8s9-4 9-8-4-8-9-8-9 4-9 8z" stroke="currentColor" stroke-width="1.2"/></svg>
+    <h4>تاکتیک</h4>
+    <p>استراتژی و مهارت استفاده از توانایی‌ها در نبرد</p>
+  </div>
+  <div class="power">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l4 8-4 8-4-8 4-8z" stroke="currentColor" stroke-width="1.2"/></svg>
+    <h4>فنون ویژه</h4>
+    <p>حملات و تکنیک‌های خاص که هر قهرمان را متمایز می‌کند</p>
+  </div>
+</section>
+
+<footer class="reveal">
+  © 2025 توشان‌ورس — همهٔ حقوق محفوظ است
+</footer>
 
 <script>
-// منوی همبرگر
-const menuBtn=document.getElementById('menu-btn');
-const menu=document.getElementById('menu');
-menuBtn.addEventListener('click',()=>{menu.style.display=menu.style.display==='block'?'none':'block';});
-
-// پاپ‌آپ
-function openPopup(name){
-  document.querySelectorAll('.popup').forEach(p=>p.classList.remove('show'));
-  const popup=document.getElementById('popup-'+name);
-  if(popup){popup.classList.add('show');}
-}
-function closePopup(){
-  document.querySelectorAll('.popup').forEach(p=>p.classList.remove('show'));
-}
+  const revealEls=document.querySelectorAll('.reveal');
+  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
 </script>
+
 </body>
 </html>
