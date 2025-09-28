@@ -1,55 +1,46 @@
-/* === Tooshanverse Shared Background === */
-
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0f, #1a1a2e, #0f0f1c);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  color: #fff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow-x: hidden;
-  position: relative;
+:root{
+  --bg-1: #070812; /* Very dark */
+  --bg-2: #081229; /* Deep blue */
+  --accent: #19a7ff; /* Electric blue */
+  --accent-2: #9be3ff;
+  --muted: rgba(255,255,255,0.08);
+  --card-bg: rgba(10,12,18,0.6);
+  --glass: rgba(255,255,255,0.04);
+  --font-primary: 'Vazirmatn', Tahoma, sans-serif;
+  --font-accent: 'Orbitron', sans-serif;
 }
 
-/* گرادیانت متحرک */
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+/* Reset */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:var(--font-primary);background:linear-gradient(180deg,var(--bg-1), var(--bg-2));color:#e9f6ff;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;}
 
-/* خطوط انرژی مورب */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: repeating-linear-gradient(
-    -45deg,
-    rgba(255, 165, 0, 0.08),
-    rgba(255, 165, 0, 0.08) 2px,
-    transparent 2px,
-    transparent 6px
-  );
-  z-index: 1;
-  pointer-events: none;
-}
+a{color:inherit;text-decoration:none}
 
-/* ذرات نورانی */
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: #ffae42;
-  border-radius: 50%;
-  box-shadow: 0 0 6px #ffae42;
-  animation: floatParticles linear infinite;
-  z-index: 2;
-}
+/* محتوا و لایه‌بندی */
+.content{position:relative;max-width:1200px;margin:0 auto;padding:100px 24px 50px;}
+.story-list{display:flex;flex-direction:column;gap:16px;}
+.story-item{padding:16px 20px;background:var(--card-bg);border-radius:12px;border:1px solid rgba(155,227,255,0.06);cursor:pointer;transition:all .3s ease;}
+.story-item:hover{transform:translateY(-4px);box-shadow:0 12px 35px rgba(25,167,255,0.15);}
 
-@keyframes floatParticles {
-  from { transform: translateY(0) rotate(0deg); opacity: 1; }
-  to { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+/* همبرگری */
+.hamburger{position:fixed;top:16px;right:16px;z-index:50;font-size:28px;cursor:pointer;color:var(--accent);}
+.side-menu{position:fixed;top:0;right:-260px;width:260px;height:100%;background:var(--bg-2);padding:60px 20px;display:flex;flex-direction:column;gap:20px;transition:right .35s ease;z-index:49;}
+.side-menu.show{right:0;}
+.side-menu a{color:#e9f6ff;padding:10px 14px;border-radius:8px;transition:background .25s ease;}
+.side-menu a:hover{background:rgba(25,167,255,0.08);}
+
+/* بکگراند عمومی */
+.background{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,var(--bg-1),var(--bg-2));background-size:cover;background-position:center;transition:background-image .8s ease;}
+
+/* عنوان و افکت نور مورب */
+.header-title{position:relative;font-family:var(--font-accent);font-size:3rem;color:var(--accent);display:inline-block;overflow:hidden;}
+.header-title::after{content:'';position:absolute;top:0;left:-120%;width:100%;height:100%;background:linear-gradient(120deg, rgba(155,227,255,0.15), rgba(25,167,255,0.25), rgba(155,227,255,0.15));transform:skewX(-25deg);animation:slideLight 12s linear infinite;}
+@keyframes slideLight{0%{left:-120%}50%{left:120%}100%{left:-120%}}
+
+/* ریسپانسیو */
+@media (max-width:768px){
+  .story-list{gap:12px;}
+  .story-item{padding:12px 16px;}
+  .hamburger{font-size:24px;}
+  .side-menu{width:220px;padding:50px 16px;}
 }
