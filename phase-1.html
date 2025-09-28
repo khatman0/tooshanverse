@@ -1,99 +1,24 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فاز ۱: برخورد نخست</title>
-<link rel="stylesheet" href="css/tooshanverse-theme.css">
-<script src="js/tooshanverse-theme.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فاز ۱: برخورد نخست</title>
+  <!-- لینک به بکگراند مشترک -->
+  <link rel="stylesheet" href="css/tooshanverse-theme.css">
+  <script src="js/tooshanverse-theme.js" defer></script>
 </head>
 <body>
 
-<div class="background" id="background"></div>
-
-<!-- منوی همبرگری -->
-<div class="hamburger" id="hamburger">&#9776;</div>
-<div class="side-menu" id="sideMenu">
-  <a href="index.html">خانه</a>
-  <a href="phase1.html">فاز ۱</a>
-  <a href="phase2.html">فاز ۲</a>
-  <a href="contact.html">تماس با ما</a>
-</div>
-
-<div class="content">
-  <h1>فاز ۱: برخورد نخست</h1>
-  <div class="story-list" id="storyList"></div>
-</div>
-
-<script>
-  const stories = [
-    { name: "لردفیزیکا: انفجار آبی", url: "Lord-physica.html", image: "hero1.jpg" },
-    { name: "الکتروپالس: ولتاژ ناشناخته", url: "electropulse.html", image: "hero2.png" },
-    { name: "استریکس: بند ذهن", url: "strix.html", image: "hero 4.png" },
-    { name: "تسکین: خاموشی سنسور", url: "taskin.html", image: "hero3.png" }
-  ];
-
-  const storyList = document.getElementById('storyList');
-  const bgDiv = document.getElementById('background');
-
-  const isMobile = window.innerWidth <= 768;
-  let current = 0;
-
-  if(!isMobile){
-    stories.forEach(story => {
-      const div = document.createElement('div');
-      div.classList.add('story-item');
-      div.innerText = story.name;
-      div.addEventListener('mouseover', () => {
-        bgDiv.style.backgroundImage = `url('${story.image}')`;
-      });
-      div.addEventListener('mouseout', () => {
-        bgDiv.style.backgroundImage = ''; // می‌تونید بک‌گراند اولیه نگه دارید
-      });
-      div.addEventListener('click', () => { window.location.href = story.url; });
-      storyList.appendChild(div);
-    });
-  } else {
-    stories.forEach(story => {
-      const div = document.createElement('div');
-      div.classList.add('story-item');
-      div.innerText = story.name;
-      div.addEventListener('click', () => { window.location.href = story.url; });
-      storyList.appendChild(div);
-    });
-
-    function changeBackground() {
-      bgDiv.style.backgroundImage = `url('${stories[current].image}')`;
-      current = (current + 1) % stories.length;
-    }
-
-    changeBackground();
-    setInterval(changeBackground, 5000);
-  }
-
-  // همبرگری
-  const hamburger = document.getElementById('hamburger');
-  const sideMenu = document.getElementById('sideMenu');
-
-  hamburger.addEventListener('click', () => {
-    sideMenu.classList.toggle('show');
-  });
-
-  // بستن منو وقتی روی لینک کلیک شد
-  sideMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      sideMenu.classList.remove('show');
-    });
-  });
-
-  // بستن منو وقتی روی بیرون کلیک شد
-  document.addEventListener('click', (e) => {
-    if(!sideMenu.contains(e.target) && e.target !== hamburger){
-      sideMenu.classList.remove('show');
-    }
-  });
-
-</script>
+  <div class="content">
+    <h1>فاز ۱: برخورد نخست</h1>
+    <ul class="story-list">
+      <li><a href="Lord-physica.html">لردفیزیکا: انفجار آبی</a></li>
+      <li><a href="electropulse.html">الکتروپالس: ولتاژ ناشناخته</a></li>
+      <li><a href="strix.html">استریکس: بند ذهن</a></li>
+      <li><a href="taskin.html">تسکین: خاموشی سنسور</a></li>
+    </ul>
+  </div>
 
 </body>
 </html>
