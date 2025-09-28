@@ -1,198 +1,274 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>استریکس | Elina Kianpour</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>استریکس — توشان‌ورس</title>
+  <link rel="icon" href="favicon.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Tahoma', sans-serif;
-      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-      color: #f5f5f5;
-      overflow-x: hidden;
+    :root{
+      --bg-1: #07070d; /* Very dark */
+      --bg-2: #0c1024; /* deep dark */
+      --accent: #ff4c4c; /* قرمز */
+      --accent-2: #ff8a8a; /* قرمز روشن‌تر */
+      --muted: rgba(255,255,255,0.08);
+      --card-bg: rgba(10,12,18,0.6);
+      --glass: rgba(255,255,255,0.04);
     }
-    header {
-      text-align: center;
-      padding: 80px 20px 40px;
-      position: relative;
-      overflow: hidden;
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Vazirmatn', Tahoma, sans-serif;
+      background: linear-gradient(180deg,var(--bg-1), var(--bg-2));
+      color:#e9f6ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
     }
-    header h1 {
-      font-size: 2.5rem;
-      color: #a855f7; /* بنفش اصلی */
-      margin-bottom: 10px;
+    a{color:inherit;text-decoration:none}
+
+    header{
+      position:fixed;top:16px;left:16px;right:16px;z-index:40;
+      display:flex;align-items:center;justify-content:space-between;
+      pointer-events:auto;
     }
-    header p {
-      font-size: 1.2rem;
-      color: #bbb;
+    .logo{font-weight:700;font-size:1rem;letter-spacing:0.6px}
+    .subnav{display:flex;gap:14px;align-items:center}
+    .subnav a{background:var(--glass);padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);font-size:0.95rem}
+
+    .hero{
+      position:relative;min-height:78vh;display:flex;align-items:center;justify-content:center;padding:80px 24px;
+      overflow:hidden;
     }
-    .hero-line {
-      margin: 30px auto;
-      width: 80%;
-      height: 3px;
-      background: linear-gradient(90deg, #a855f7, #ff4b91);
-      position: relative;
-      overflow: hidden;
+
+    .hero-bg{
+      position:absolute;inset:0;z-index:0;background-size:cover;background-position:center center;transition:opacity 0.9s ease, filter 0.9s ease;
+      filter:brightness(0.45) saturate(1.05) contrast(1.05);
     }
-    .hero-line::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -50%;
-      width: 50%;
-      height: 100%;
-      background: rgba(255,255,255,0.8);
-      transform: skewX(-30deg);
-      animation: shine 3s infinite;
+
+    .hero::after{
+      content:"";position:absolute;inset:-20% -40%;z-index:1;pointer-events:none;
+      background:linear-gradient(120deg, rgba(255,76,76,0.06), rgba(255,138,138,0.06) 30%, rgba(255,255,255,0.02));
+      transform:rotate(10deg);mix-blend-mode:screen;animation:slidelight 12s linear infinite;
     }
-    @keyframes shine {
-      0% { left: -50%; }
-      50% { left: 100%; }
-      100% { left: 100%; }
+    @keyframes slidelight{0%{transform:translateX(-30%) rotate(10deg)}50%{transform:translateX(30%) rotate(10deg)}100%{transform:translateX(-30%) rotate(10deg)}}
+
+    .hero-inner{position:relative;z-index:5;display:flex;gap:36px;align-items:center;max-width:1200px;width:100%;}
+
+    .portrait{
+      flex:0 0 320px;height:420px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,76,76,0.12);box-shadow:0 30px 80px rgba(2,6,23,0.6);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex;align-items:center;justify-content:center;
     }
-    section {
-      padding: 50px 20px;
-      max-width: 900px;
-      margin: auto;
+    .portrait img{width:100%;height:100%;object-fit:cover;display:block;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.6))}
+
+    .hero-meta{flex:1;}
+    .hero-meta h1{font-family:'Orbitron',sans-serif;font-size:3.6rem;margin:0 0 6px;color:var(--accent);text-shadow:0 6px 30px rgba(255,76,76,0.08)}
+    .hero-meta h2{margin:0;color:var(--accent-2);opacity:0.85;font-weight:600}
+    .tagline{margin-top:14px;font-size:1.05rem;color:rgba(235,245,255,0.9);max-width:72%}
+
+    .cta-row{margin-top:26px;display:flex;gap:12px;align-items:center}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.06);transition:all .25s ease}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#ff6b6b);color:#00101b;box-shadow:0 8px 30px rgba(255,76,76,0.12)}
+    .btn.ghost{background:transparent;color:#e6f7ff;border:1px solid rgba(255,255,255,0.06)}
+    .btn:hover{transform:translateY(-3px)}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+    .card{background:var(--card-bg);backdrop-filter:blur(6px);padding:18px;border-radius:12px;border:1px solid rgba(255,138,138,0.06);box-shadow:0 10px 30px rgba(2,6,23,0.5)}
+    .card h3{margin:0 0 10px;color:var(--accent);font-size:1.1rem}
+    .card p{margin:0;color:rgba(230,245,255,0.9);line-height:1.6}
+
+    .powers{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .power{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;text-align:center;border:1px solid rgba(255,76,76,0.06);transition:transform .28s ease,box-shadow .28s ease}
+    .power:hover{transform:translateY(-8px);box-shadow:0 18px 60px rgba(255,76,76,0.09)}
+    .power svg{width:48px;height:48px;margin-bottom:10px;filter:drop-shadow(0 6px 18px rgba(255,76,76,0.08))}
+    .power h4{margin:6px 0 0;font-size:1rem}
+    .power p{font-size:0.95rem;color:rgba(235,245,255,0.85)}
+
+    .timeline{margin-top:48px;padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.18));border:1px solid rgba(255,255,255,0.03)}
+    .timeline h3{color:var(--accent);margin:0 0 18px}
+    .tl-list{position:relative;padding-left:18px}
+    .tl-list::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:3px;background:linear-gradient(180deg,var(--accent),rgba(255,138,138,0.5));border-radius:6px}
+    .tl-item{position:relative;margin:18px 0 28px;padding-right:24px}
+    .dot{position:absolute;left:-3px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 6px 20px rgba(255,76,76,0.18)}
+    .tl-item time{display:block;font-weight:700;color:var(--accent-2);margin-bottom:6px}
+    .tl-item p{margin:0;color:rgba(230,245,255,0.9)}
+
+    .appear{margin-top:40px}
+    .appear-grid{display:flex;gap:12px;flex-wrap:wrap}
+    .appear-item{width:160px;height:90px;border-radius:8px;overflow:hidden;background-size:cover;background-position:center;border:1px solid rgba(255,255,255,0.04)}
+
+    footer{margin-top:60px;padding:40px 20px;color:rgba(200,220,255,0.6);text-align:center}
+
+    @media (max-width:1000px){
+      .hero-inner{flex-direction:column-reverse;align-items:center}
+      .portrait{width:320px;height:360px}
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .powers{grid-template-columns:repeat(2,1fr)}
     }
-    h2 {
-      color: #a855f7;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
+    @media (max-width:640px){
+      .portrait{width:220px;height:300px}
+      .hero-meta h1{font-size:2.1rem}
+      .hero-meta h2{font-size:1rem}
+      .cards{grid-template-columns:1fr}
+      .powers{grid-template-columns:1fr}
     }
-    .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      backdrop-filter: blur(6px);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 18px rgba(168,85,247,0.3); /* بنفش */
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    ul li {
-      margin-bottom: 10px;
-      position: relative;
-      padding-right: 20px;
-    }
-    ul li::before {
-      content: "✦";
-      position: absolute;
-      right: 0;
-      color: #ff4b91;
-    }
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
-    }
-    .reveal.in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    #energyCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
+
+    .reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
+    .reveal.in{opacity:1;transform:none}
+
   </style>
 </head>
 <body>
-  <canvas id="energyCanvas"></canvas>
-  <header>
-    <h1>استریکس | Elina Kianpour</h1>
-    <p>ذهنی که مرزها را در هم می‌شکند</p>
-    <div class="hero-line"></div>
-  </header>
 
-  <section>
-    <div class="card reveal">
-      <h2>قدرت‌ها</h2>
-      <ul>
-        <li>کنترل اجسام با ذهن (Telekinesis)</li>
-      </ul>
+<header>
+  <div class="logo">توشان‌ورس</div>
+  <nav class="subnav">
+    <a href="index.html">خانه</a>
+    <a href="phase1.html">بازگشت به فاز ۱</a>
+    <a href="#appearances">حضورها</a>
+  </nav>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg" style="background-image:url('strix-hero.jpg')"></div>
+  <canvas id="energyCanvas" style="position:absolute;inset:0;z-index:3;pointer-events:none"></canvas>
+
+  <div class="hero-inner reveal" id="heroInner">
+    <div class="portrait" aria-hidden="true">
+      <img src="strix-portrait.jpg" alt="پرتره استریکس">
     </div>
 
-    <div class="card reveal">
-      <h2>محدودیت‌ها</h2>
-      <ul>
-        <li>استفاده بیش‌ازحد باعث سردردهای شدید</li>
-        <li>خون‌ریزی از بینی هنگام فشار بیش از حد</li>
-      </ul>
+    <div class="hero-meta">
+      <h1>استریکس</h1>
+      <h2>Elina Kianpour</h2>
+      <p class="tagline">قدرت ذهنی فراتر از مرزهای انسان — کنترل اجسام با تمرکز و خلق نبردهای بی‌همتا.</p>
+
+      <div class="cta-row">
+        <a class="btn primary" href="strix-story.html">مطالعه داستان</a>
+        <a class="btn ghost" href="phase1.html">بازگشت به فاز ۱</a>
+      </div>
+
+      <div class="cards" style="margin-top:28px">
+        <div class="card">
+          <h3>لقب</h3>
+          <p>استریکس — شاهزاده ذهن و تسلط بر اشیا</p>
+        </div>
+        <div class="card">
+          <h3>نقش</h3>
+          <p>یک نیروی متعادل‌کننده در نبردهای حیاتی و محور رویدادهای کلیدی توشان‌ورس</p>
+        </div>
+        <div class="card">
+          <h3>محدودیت</h3>
+          <p>استفاده بیش‌ازحد باعث سردرد شدید و خون‌ریزی بینی می‌شود.</p>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <div class="card reveal">
-      <h2>بیوگرافی</h2>
-      <p>
-        الینا کیان‌پور، زنی است که ذهنش فراتر از مرزهای عادی انسان عمل می‌کند. 
-        او می‌تواند تنها با تمرکز، اجسام را جابه‌جا کرده و در نبردها سرنوشت را تغییر دهد. 
-        اما این توانایی بهای سنگینی دارد: فشار طاقت‌فرسا بر مغزش، سردردهای ویرانگر و خون‌ریزی بینی 
-        که به او یادآوری می‌کنند قدرت ذهنی بی‌پایان نیست.
-      </p>
-      <p>
-        با وجود این محدودیت‌ها، استریکس تسلیم نمی‌شود. او آموخته است میان قدرت و نابودی تعادل برقرار کند 
-        و در لحظه‌های حساس، ذهنش را به سلاحی بی‌همتا تبدیل سازد.
-      </p>
-    </div>
-  </section>
+<section class="content-section" id="about" style="padding:30px 20px 10px">
+  <div class="container" style="max-width:1200px;margin:0 auto">
+    <article class="card reveal" style="padding:22px;margin-bottom:18px">
+      <h3 style="color:var(--accent);margin-bottom:10px">بیوگرافی</h3>
+      <p>الینا کیان‌پور، زنی است که ذهنش فراتر از مرزهای عادی انسان عمل می‌کند. او می‌تواند تنها با تمرکز، اجسام را جابه‌جا کند و در نبردها سرنوشت را تغییر دهد. اما این توانایی بهای سنگینی دارد: فشار طاقت‌فرسا بر مغزش، سردردهای ویرانگر و خون‌ریزی بینی که به او یادآوری می‌کنند قدرت ذهنی بی‌پایان نیست. با وجود این محدودیت‌ها، استریکس تسلیم نمی‌شود و ذهنش را به سلاحی بی‌همتا تبدیل می‌کند.</p>
+    </article>
 
-  <script>
-    const revealEls = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if(e.isIntersecting) e.target.classList.add('in');
-      });
-    }, {threshold: 0.2});
-    revealEls.forEach(el => io.observe(el));
+    <section class="powers reveal">
+      <h3 style="grid-column:1/-1;color:var(--accent);margin-bottom:10px">قدرت‌ها</h3>
 
+      <div class="power">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.2"/></svg>
+        <h4>تلکینسیس</h4>
+        <p>جابه‌جایی و کنترل اجسام تنها با قدرت ذهن.</p>
+      </div>
+
+      <div class="power">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h4>تمرکز شدید</h4>
+        <p>قدرت تقویت‌شده هنگام تمرکز کامل، حتی برای جابه‌جایی اجسام بزرگ.</p>
+      </div>
+
+      <div class="power">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12c0 4 4 8 9 8s9-4 9-8-4-8-9-8-9 4-9 8z" stroke="currentColor" stroke-width="1.2"/></svg>
+        <h4>محیط ذهنی</h4>
+        <p>ایجاد حواس و نیروهای متمرکز ذهنی برای محافظت یا حمله.</p>
+      </div>
+    </section>
+
+    <section class="timeline reveal timeline" id="timeline">
+      <h3>لحظات کلیدی</h3>
+      <div class="tl-list">
+        <div class="tl-item">
+          <span class="dot"></span>
+          <time>سال ۱۳۹۰ - کشف توانایی</time>
+          <p>اولین بروز تلکینسیس در شرایط اضطراری و درک محدودیت‌های ذهنی.</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <time>سال ۱۳۹۵ - نبرد آزمایشی</time>
+          <p>استفاده عملی از قدرت ذهن در مبارزه با دشمنان و یادگیری مدیریت فشار مغزی.</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <time>سال ۱۳۹۸ - تثبیت مهارت</time>
+          <p>کنترل دقیق اجسام و حفظ تعادل میان قدرت و محدودیت‌ها.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="appear reveal" id="appearances">
+      <h3 style="color:var(--accent);margin-bottom:12px">حضور‌ها و کراس‌اور‌ها</h3>
+      <div class="appear-grid">
+        <a class="appear-item" href="strix-issue1.html" style="background-image:url('strix-event1.jpg')" title="آغاز تمرین ذهن"></a>
+        <a class="appear-item" href="strix-issue2.html" style="background-image:url('strix-event2.jpg')" title="نبرد ذهنی"></a>
+        <a class="appear-item" href="strix-issue3.html" style="background-image:url('strix-event3.jpg')" title="تمرین تمرکز"></a>
+      </div>
+    </section>
+
+    <footer class="reveal">
+      © 2025 توشان‌ورس — همهٔ حقوق محفوظ است • طراحی شده برای دنیای توشان‌ورس
+    </footer>
+  </div>
+</section>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.12});
+  revealEls.forEach(el => io.observe(el));
+
+  (() => {
     const canvas = document.getElementById('energyCanvas');
+    if(!canvas) return;
     const ctx = canvas.getContext('2d');
-    let width, height;
-    function resizeCanvas(){
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+    const particles = [];
+    const count = Math.floor(Math.min(80, w/12));
+    function rand(min,max){return Math.random()*(max-min)+min}
+    for(let i=0;i<count;i++){
+      particles.push({x:rand(0,w),y:rand(0,h),r:rand(1,3),dx:rand(-0.4,0.4),dy:rand(-0.6,0.6)});
     }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    let particles = [];
-    for(let i=0;i<120;i++){
-      particles.push({
-        x: Math.random()*width,
-        y: Math.random()*height,
-        dx: (Math.random()-0.5)*0.6,
-        dy: (Math.random()-0.5)*0.6,
-        radius: Math.random()*2+1
-      });
-    }
-
-    function animate(){
-      ctx.clearRect(0,0,width,height);
-      ctx.globalCompositeOperation = 'lighter';
-      particles.forEach(p=>{
-        p.x += p.dx;
-        p.y += p.dy;
-        if(p.x<0||p.x>width)p.dx*=-1;
-        if(p.y<0||p.y>height)p.dy*=-1;
+    function loop(){
+      ctx.clearRect(0,0,w,h);
+      for(let p of particles){
+        p.x+=p.dx; p.y+=p.dy;
+        if(p.x<0||p.x>w)p.dx*=-1;
+        if(p.y<0||p.y>h)p.dy*=-1;
         ctx.beginPath();
-        ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
-        ctx.fillStyle = 'rgba(168,85,247,0.5)'; // بنفش ذرات
-        ctx.fill();
-      });
-      requestAnimationFrame(animate);
+        ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fillStyle='rgba(255,76,76,0.18)';ctx.fill();
+      }
+      requestAnimationFrame(loop);
     }
-    animate();
-  </script>
+    loop();
+    window.addEventListener('resize',()=>{w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight})
+  })();
+</script>
+
 </body>
 </html>
