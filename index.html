@@ -93,10 +93,77 @@
     }
     .reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
     .reveal.in{opacity:1;transform:none}
+
+     :root {
+    --bg-1: #070812;
+    --bg-2: #081229;
+    --accent: #19a7ff;
+    --accent-2: #9be3ff;
+  }
+
+  /* overlay background */
+  .overlay {
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(4px);
+    opacity:0;visibility:hidden;
+    transition:opacity 0.35s ease;
+    z-index:39;
+  }
+  .overlay.active {opacity:1;visibility:visible;}
+
+  /* side nav */
+  .side-nav {
+    position:fixed;top:0;left:-280px;width:280px;height:100%;
+    background:linear-gradient(180deg,var(--bg-2), var(--bg-1));
+    padding:40px 20px;
+    display:flex;flex-direction:column;gap:24px;
+    transition:left 0.35s cubic-bezier(0.25,0.8,0.25,1);
+    z-index:40;
+    touch-action: pan-y;
+  }
+  .side-nav.active {left:0;}
+  .side-nav a {
+    color:var(--accent-2);text-decoration:none;font-weight:600;
+    font-size:1.05rem;padding:10px 12px;border-radius:8px;
+    transition:background 0.25s ease;
+  }
+  .side-nav a:hover {background:rgba(25,167,255,0.12);}
+
+  /* hamburger button */
+  .hamburger {
+    position:fixed;top:16px;left:16px;z-index:41;
+    width:36px;height:36px;display:flex;flex-direction:column;
+    justify-content:space-around;cursor:pointer;
+  }
+  .hamburger span {
+    display:block;height:4px;width:100%;
+    background:var(--accent);border-radius:2px;
+    transition:all 0.3s ease;
+  }
+  .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
+  .hamburger.active span:nth-child(2){opacity:0;}
+  .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
   </style>
 </head>
 <body>
 
+  <div class="hamburger" id="hamburgerBtn">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<nav class="side-nav" id="sideNav">
+  <a href="#hero">خانه</a>
+  <a href="#cards">قهرمانان</a>
+  <a href="#powers">قدرت‌ها</a>
+  <a href="#timeline">لحظات کلیدی</a>
+  <a href="#appearances">حضور‌ها</a>
+</nav>
+  
 <header>
   <div class="logo">توشان‌ورس</div>
   <nav class="subnav">
@@ -172,5 +239,79 @@
   revealEls.forEach(el=>io.observe(el));
 </script>
 
+  <script>
+  const hamburger = document.getElementById('hamburgerBtn');
+  const sideNav = document.getElementById('sideNav');
+  const overlay = document.getElementById('overlay');
+
+  function openMenu(){
+    hamburger.classList.add('active');
+    sideNav.classList.add('active');
+    overlay.classList.add('active');
+  }
+
+  function closeMenu(){
+    hamburger.classList.remove('active');
+    sideNav.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+
+  hamburger.addEventListener('click', ()=>{
+    sideNav.classList.contains('active') ? closeMenu() : openMenu();
+  });
+  overlay.addEventListener('click', closeMenu);
+
+  // ----- swipe support for mobile -----
+  let startX = 0;
+  let currentX = 0;
+  let touching = false;
+
+  sideNav.addEventListener('touchstart', e=>{
+    touching = true;
+    startX = e.touches[0].clientX;
+  });
+
+  sideNav.addEventListener('touchmove', e=>{
+    if(!touching) return;
+    currentX = e.touches[0].clientX;
+    const deltaX = currentX - startX;
+    if(deltaX < 0){ // swiping left
+      sideNav.style.left = Math.max(-280, deltaX)+'px';
+      overlay.style.opacity = 1 + deltaX/280;
+    }
+  });
+
+  sideNav.addEventListener('touchend', e=>{
+    touching = false;
+    if(currentX - startX < -100){
+      closeMenu();
+      sideNav.style.left = '';
+      overlay.style.opacity = '';
+    } else {
+      sideNav.style.left = '';
+      overlay.style.opacity = '';
+    }
+  });
+
+  // also allow swipe from screen edge to open menu
+  let edgeStartX = 0;
+  document.addEventListener('touchstart', e=>{
+    if(e.touches[0].clientX < 20 && !sideNav.classList.contains('active')){
+      edgeStartX = e.touches[0].clientX;
+      touching = true;
+    }
+  });
+  document.addEventListener('touchmove', e=>{
+    if(!touching) return;
+    currentX = e.touches[0].clientX;
+    const deltaX = currentX - edgeStartX;
+    if(deltaX > 20){
+      openMenu();
+      touching = false;
+    }
+  });
+  document.addEventListener('touchend', ()=>{touching=false});
+</script>
+  
 </body>
 </html>
