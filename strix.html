@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>استریکس | Elina Kianpour</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Tahoma', sans-serif;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: #f5f5f5;
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      padding: 80px 20px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      color: #a855f7; /* بنفش اصلی */
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1.2rem;
+      color: #bbb;
+    }
+    .hero-line {
+      margin: 30px auto;
+      width: 80%;
+      height: 3px;
+      background: linear-gradient(90deg, #a855f7, #ff4b91);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-line::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -50%;
+      width: 50%;
+      height: 100%;
+      background: rgba(255,255,255,0.8);
+      transform: skewX(-30deg);
+      animation: shine 3s infinite;
+    }
+    @keyframes shine {
+      0% { left: -50%; }
+      50% { left: 100%; }
+      100% { left: 100%; }
+    }
+    section {
+      padding: 50px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h2 {
+      color: #a855f7;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(6px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 18px rgba(168,85,247,0.3); /* بنفش */
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      margin-bottom: 10px;
+      position: relative;
+      padding-right: 20px;
+    }
+    ul li::before {
+      content: "✦";
+      position: absolute;
+      right: 0;
+      color: #ff4b91;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #energyCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="energyCanvas"></canvas>
+  <header>
+    <h1>استریکس | Elina Kianpour</h1>
+    <p>ذهنی که مرزها را در هم می‌شکند</p>
+    <div class="hero-line"></div>
+  </header>
+
+  <section>
+    <div class="card reveal">
+      <h2>قدرت‌ها</h2>
+      <ul>
+        <li>کنترل اجسام با ذهن (Telekinesis)</li>
+      </ul>
+    </div>
+
+    <div class="card reveal">
+      <h2>محدودیت‌ها</h2>
+      <ul>
+        <li>استفاده بیش‌ازحد باعث سردردهای شدید</li>
+        <li>خون‌ریزی از بینی هنگام فشار بیش از حد</li>
+      </ul>
+    </div>
+
+    <div class="card reveal">
+      <h2>بیوگرافی</h2>
+      <p>
+        الینا کیان‌پور، زنی است که ذهنش فراتر از مرزهای عادی انسان عمل می‌کند. 
+        او می‌تواند تنها با تمرکز، اجسام را جابه‌جا کرده و در نبردها سرنوشت را تغییر دهد. 
+        اما این توانایی بهای سنگینی دارد: فشار طاقت‌فرسا بر مغزش، سردردهای ویرانگر و خون‌ریزی بینی 
+        که به او یادآوری می‌کنند قدرت ذهنی بی‌پایان نیست.
+      </p>
+      <p>
+        با وجود این محدودیت‌ها، استریکس تسلیم نمی‌شود. او آموخته است میان قدرت و نابودی تعادل برقرار کند 
+        و در لحظه‌های حساس، ذهنش را به سلاحی بی‌همتا تبدیل سازد.
+      </p>
+    </div>
+  </section>
+
+  <script>
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting) e.target.classList.add('in');
+      });
+    }, {threshold: 0.2});
+    revealEls.forEach(el => io.observe(el));
+
+    const canvas = document.getElementById('energyCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    function resizeCanvas(){
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let particles = [];
+    for(let i=0;i<120;i++){
+      particles.push({
+        x: Math.random()*width,
+        y: Math.random()*height,
+        dx: (Math.random()-0.5)*0.6,
+        dy: (Math.random()-0.5)*0.6,
+        radius: Math.random()*2+1
+      });
+    }
+
+    function animate(){
+      ctx.clearRect(0,0,width,height);
+      ctx.globalCompositeOperation = 'lighter';
+      particles.forEach(p=>{
+        p.x += p.dx;
+        p.y += p.dy;
+        if(p.x<0||p.x>width)p.dx*=-1;
+        if(p.y<0||p.y>height)p.dy*=-1;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+        ctx.fillStyle = 'rgba(168,85,247,0.5)'; // بنفش ذرات
+        ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
