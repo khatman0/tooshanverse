@@ -329,10 +329,11 @@ footer{
       <h3>استریکس</h3>
       <p>کنترل اشیا با ذهن</p>
     </a>
+    <!-- می‌توان کارت‌های بیشتری اضافه کرد و بی‌نهایت اسکرول خواهد شد -->
   </div>
 </section>
 
-  <section id="villains" style="margin:40px 20px">
+<section id="villains" style="margin:40px 20px">
   <h2 style="color:#ff4d4d;margin-bottom:16px">ویلن‌ها</h2>
   <div class="cards-container">
     <a href="agnatus.html" class="card">
@@ -358,52 +359,84 @@ footer{
 <footer class="reveal">© 2025 توشان‌ورس — همهٔ حقوق محفوظ است</footer>
 
 <script>
-// Cards slider with infinite scroll
-const container = document.querySelector('#heroes .cards-container');
-const cards = Array.from(container.querySelectorAll('.card'));
+// Reveal animation
+const revealEls=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting)e.target.classList.add('in')
+  })
+},{threshold:0.12});
+revealEls.forEach(el=>io.observe(el));
 
-// duplicate cards for infinite scroll
-container.innerHTML += container.innerHTML;
-const allCards = Array.from(container.querySelectorAll('.card'));
+// Infinite auto-scroll cards
+document.querySelectorAll('.cards-container').forEach(container=>{
+  container.innerHTML += container.innerHTML; // duplicate for infinite effect
+  const cards = Array.from(container.querySelectorAll('.card'));
+  container.scrollLeft = container.scrollWidth / 4; // start from middle
 
-// infinite scroll logic
-container.addEventListener('scroll', ()=>{
-  const scrollWidth = container.scrollWidth / 2; // because we duplicated cards
-  if(container.scrollLeft >= scrollWidth) container.scrollLeft -= scrollWidth;
-  else if(container.scrollLeft <= 0) container.scrollLeft += scrollWidth;
+  let speed = 0.3; // کنترل سرعت اسکرول
+  function scrollCards(){
+    container.scrollLeft += speed;
+    const halfWidth = container.scrollWidth / 2;
+    if(container.scrollLeft >= halfWidth) container.scrollLeft -= halfWidth;
+    requestAnimationFrame(scrollCards);
+  }
+  scrollCards();
+
+  // Drag & touch support
+  let isDragging=false, startX=0, scrollStart=0;
+  container.addEventListener('mousedown', e=>{ isDragging=true; startX=e.pageX-container.offsetLeft; scrollStart=container.scrollLeft; container.style.scrollBehavior='auto'; });
+  container.addEventListener('mouseup', ()=>{ isDragging=false; });
+  container.addEventListener('mouseleave', ()=>{ isDragging=false; });
+  container.addEventListener('mousemove', e=>{
+    if(!isDragging) return;
+    const x=e.pageX-container.offsetLeft;
+    container.scrollLeft = scrollStart - (x-startX);
+  });
+
+  container.addEventListener('touchstart', e=>{ isDragging=true; startX=e.touches[0].pageX-container.offsetLeft; scrollStart=container.scrollLeft; });
+  container.addEventListener('touchend', ()=>{ isDragging=false; });
+  container.addEventListener('touchmove', e=>{
+    if(!isDragging) return;
+    const x=e.touches[0].pageX-container.offsetLeft;
+    container.scrollLeft = scrollStart - (x-startX);
+  });
 });
 
-// mouse/touch drag support
-let isUserScrolling = false, startX=0, scrollLeft=0;
-container.addEventListener('mousedown', e=>{
-  isUserScrolling = true;
-  startX = e.pageX - container.offsetLeft;
-  scrollLeft = container.scrollLeft;
-  container.style.scrollBehavior = 'auto';
-});
-container.addEventListener('mouseleave', ()=>{ isUserScrolling=false; });
-container.addEventListener('mouseup', ()=>{ isUserScrolling=false; });
-container.addEventListener('mousemove', e=>{
-  if(!isUserScrolling) return;
-  const x = e.pageX - container.offsetLeft;
-  container.scrollLeft = scrollLeft + (startX - x);
-});
+// Hamburger menu
+const hamburger = document.getElementById('hamburgerBtn');
+const sideNav = document.getElementById('sideNav');
+const overlay = document.getElementById('overlay');
 
-container.addEventListener('touchstart', e=>{
-  isUserScrolling = true;
-  startX = e.touches[0].pageX - container.offsetLeft;
-  scrollLeft = container.scrollLeft;
-});
-container.addEventListener('touchend', ()=>{ isUserScrolling=false; });
-container.addEventListener('touchmove', e=>{
-  if(!isUserScrolling) return;
-  const x = e.touches[0].pageX - container.offsetLeft;
-  container.scrollLeft = scrollLeft + (startX - x);
-});
+function openMenu(){
+  hamburger.classList.add('active');
+  sideNav.classList.add('active');
+  overlay.classList.add('active');
+}
+function closeMenu(){
+  hamburger.classList.remove('active');
+  sideNav.classList.remove('active');
+  overlay.classList.remove('active');
+}
+const sideNavLinks = document.querySelectorAll('.side-nav a');
+sideNavLinks.forEach(link=>link.addEventListener('click',closeMenu));
+hamburger.addEventListener('click', ()=>{ sideNav.classList.contains('active')?closeMenu():openMenu(); });
+overlay.addEventListener('click', closeMenu);
 
-// start from middle (first copy) to allow infinite scroll both sides
-container.scrollLeft = container.scrollWidth / 4;
+// swipe support
+let startTouchX=0, currentX=0, touching=false;
+sideNav.addEventListener('touchstart', e=>{ touching=true; startTouchX=e.touches[0].clientX; });
+sideNav.addEventListener('touchmove', e=>{
+  if(!touching) return;
+  currentX = e.touches[0].clientX;
+  const deltaX = currentX-startTouchX;
+  if(deltaX<0){ sideNav.style.left=Math.max(-280,deltaX)+'px'; overlay.style.opacity=1+deltaX/280; }
+});
+sideNav.addEventListener('touchend', e=>{
+  touching=false;
+  if(currentX-startTouchX<-80) closeMenu();
+  else sideNav.style.left='0px';
+});
 </script>
-
 </body>
 </html>
