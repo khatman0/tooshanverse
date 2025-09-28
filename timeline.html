@@ -3,194 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>توشان‌ورس | تایم‌لاین</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+<title>توشان‌ورس — تایم‌لاین</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg-1:#070812;
-  --bg-2:#081229;
-  --accent:#19a7ff;
-  --accent-2:#9be3ff;
-  --muted:rgba(255,255,255,0.08);
-  --card-bg:rgba(10,12,18,0.8);
-  --glass:rgba(255,255,255,0.04);
-}
+  :root {
+    --bg: #070812;
+    --line: #19a7ff;
+    --card-bg: rgba(10,12,18,0.6);
+    --shadow: rgba(25,167,255,0.12);
+    --accent-light: #9be3ff;
+    --transition: all 0.3s ease;
+  }
 
-/* Reset */
-*{box-sizing:border-box;}
-html,body{
-  height:100%; margin:0; font-family:'Vazirmatn',sans-serif;
-  background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
-  color:#e9f6ff; overflow-x:hidden; overflow-y:auto;
-}
-a{text-decoration:none;color:inherit;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Vazirmatn', sans-serif;background:linear-gradient(180deg,#070812,#081229);color:#e9f6ff;line-height:1.6;padding:40px;}
+  h1,h2,h3,h4{margin-bottom:12px;}
+  a{text-decoration:none;color:inherit;}
 
-/* Header & Footer */
-header,footer{
-  position:fixed; left:16px; right:16px; z-index:40;
-  display:flex; justify-content:center; align-items:center;
-  padding:16px; border-radius:10px;
-  background:var(--glass); border:1px solid rgba(255,255,255,0.04);
-  font-weight:700; color:var(--accent);
-  font-size:1.1rem; text-align:center;
-}
-header{top:16px;}
-footer{bottom:16px; font-weight:400; color:rgba(200,220,255,0.6);}
-header::after,footer::after{
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(120deg,transparent,rgba(25,167,255,0.06),transparent);
-  mix-blend-mode:screen; animation:shine 12s linear infinite; pointer-events:none; border-radius:10px;
-}
-@keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  /* Header */
+  header{margin-bottom:40px;text-align:center;}
+  header h1{font-size:2.5rem;color:var(--line);margin-bottom:6px;}
+  header p{color:var(--accent-light);font-size:1.1rem;}
 
-/* Phase */
-.phase{
-  position:relative; margin:100px 0 80px; padding:20px; max-width:1200px; margin-left:auto; margin-right:auto;
-}
-.phase-title{
-  font-family:'Orbitron',sans-serif; font-size:1.8rem; font-weight:700;
-  color:var(--accent); margin-bottom:40px; text-align:center; text-shadow:0 4px 15px rgba(25,167,255,0.08);
-}
+  /* Timeline */
+  .timeline{position:relative;max-width:800px;margin:0 auto;padding-left:20px;}
+  .timeline::before{
+    content:'';position:absolute;left:10px;top:0;width:3px;height:100%;background:linear-gradient(180deg,var(--line),var(--accent-light));border-radius:3px;
+  }
+  .tl-item{
+    position:relative;margin-bottom:40px;padding-right:20px;opacity:0;transform:translateY(20px);transition:var(--transition);
+  }
+  .tl-item.in{opacity:1;transform:none;}
+  .tl-item::before{
+    content:'';position:absolute;left:-7px;top:5px;width:14px;height:14px;background:var(--line);border-radius:50%;box-shadow:0 4px 12px var(--shadow);
+  }
+  .tl-item time{display:block;font-weight:700;color:var(--accent-light);margin-bottom:6px;}
+  .tl-item p{background:var(--card-bg);padding:12px 16px;border-radius:12px;border:1px solid rgba(155,227,255,0.06);box-shadow:0 6px 20px rgba(2,6,23,0.5);}
 
-/* Timeline */
-.phase-line{
-  position:relative; height:4px; background:linear-gradient(90deg,var(--accent), var(--accent-2));
-  margin:0 auto 60px; border-radius:3px;
-}
-
-/* Events */
-.event{
-  position:absolute; width:200px; text-align:center; cursor:pointer;
-  transition:transform .3s, box-shadow .3s;
-}
-.event img{
-  width:180px; border-radius:12px; border:1px solid rgba(25,167,255,0.3);
-  filter:drop-shadow(0 6px 18px rgba(25,167,255,0.08));
-  transition:transform .35s;
-}
-.event:hover img{transform:scale(1.05);}
-.event:hover{transform:translateY(-6px); box-shadow:0 18px 60px rgba(25,167,255,0.09);}
-.event .label{margin-top:8px; font-size:1rem; color:var(--accent-2);}
-
-/* Connection line */
-.event::before{
-  content:""; position:absolute; left:50%; width:2px; background:var(--accent); border-radius:2px;
-  transform:translateX(-50%);
-}
-.event.top{bottom:140px;}
-.event.top::before{top:auto; bottom:-70px;}
-.event.bottom{top:140px;}
-.event.bottom::before{top:-70px;}
-
-/* Modal */
-.modal{
-  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(6px); z-index:1000;
-  align-items:center; justify-content:center; padding:20px;
-}
-.modal-content{
-  background:var(--card-bg); border:1px solid rgba(25,167,255,0.3); border-radius:12px;
-  padding:22px; max-width:400px; width:100%; text-align:center; color:#e9f6ff;
-}
-.close-btn{
-  background:var(--accent); color:#00101b; font-weight:600; border:none; padding:8px 14px;
-  border-radius:10px; cursor:pointer; margin-top:15px; transition:all .25s ease;
-}
-.close-btn:hover{transform:translateY(-3px); box-shadow:0 8px 30px rgba(25,167,255,0.12);}
-
-/* Responsive */
-@media(max-width:1000px){
-  .event{position:relative; width:90%; margin:40px auto;}
-  .event::before{display:none;}
-  .phase-line{display:none;}
-}
-@media(max-width:640px){.phase-title{font-size:1.5rem;}}
-
-/* Reveal */
-.reveal{opacity:0; transform:translateY(14px); transition:all .6s cubic-bezier(.2,.9,.2,1);}
-.reveal.in{opacity:1; transform:none;}
+  /* Responsive */
+  @media(max-width:600px){
+    body{padding:20px;}
+    .timeline{padding-left:10px;}
+    .tl-item p{font-size:0.95rem;padding:10px;}
+  }
 </style>
 </head>
 <body>
 
-<header class="reveal">توشان‌ورس | تایم‌لاین</header>
+<header>
+  <h1>تایم‌لاین لرد فیزیکا</h1>
+  <p>لحظات کلیدی و مهم در دنیای توشان‌ورس</p>
+</header>
 
-<div class="phase reveal">
-  <div class="phase-title">فاز ۱</div>
-  <div class="phase-line"></div>
-  <div class="event" data-title="لرد فیزیکا" data-text="اولین قهرمان و آغازگر داستان توشان‌ورس.">
-    <img src="lord-physica.jpg" alt="لرد فیزیکا"><div class="label">لرد فیزیکا</div>
+<section class="timeline">
+  <div class="tl-item">
+    <time>سال ۱۳۸۸ - آغاز تحقیقات</time>
+    <p>شروع پژوهش‌های مخفی روی معادلات تغییرپذیری که منجر به اولین آزمون میدانی شد.</p>
   </div>
-  <div class="event" data-title="الکتروپالس" data-text="قهرمانی با قدرت الکتریسیته و پالس انرژی.">
-    <img src="electropulse.jpg" alt="الکتروپالس"><div class="label">الکتروپالس</div>
+  <div class="tl-item">
+    <time>سال ۱۳۹۲ - نبرد کاتالیزور</time>
+    <p>برخورد نخست با شبکهٔ حشاشین که اولین نمایش خونین توانایی‌ها بود.</p>
   </div>
-  <div class="event" data-title="استریکس" data-text="موجود مرموز با قدرت‌های شبانه.">
-    <img src="strix.jpg" alt="استریکس"><div class="label">استریکس</div>
+  <div class="tl-item">
+    <time>سال ۱۳۹۶ - معاهدهٔ بی‌نهایت</time>
+    <p>پیشنهاد یک قرارداد برای کنترل توانایی‌ها که با مخالفت گروهی از هم‌رزمان مواجه شد.</p>
   </div>
-  <div class="event" data-title="تسکین" data-text="شخصیتی با توانایی‌های درمانی و روحی.">
-    <img src="taskin.jpg" alt="تسکین"><div class="label">تسکین</div>
+  <div class="tl-item">
+    <time>سال ۱۳۹۹ - انفجار انرژی</time>
+    <p>آزمون مهارت‌ها در میدان باز با نتیجه‌ای غیرمنتظره و کنترل نشده.</p>
   </div>
-</div>
-
-<div class="phase reveal">
-  <div class="phase-title">فاز ۲</div>
-  <div class="phase-line"></div>
-  <div class="event" data-title="آگناتوس" data-text="ابرشروری با قدرت کنترل ذهن.">
-    <img src="villain.jpg" alt="آگناتوس"><div class="label">آگناتوس</div>
-  </div>
-  <div class="event" data-title="قهرمان جدید" data-text="ورود نسل تازه‌ای از قهرمان‌ها.">
-    <img src="another-hero.jpg" alt="قهرمان جدید"><div class="label">قهرمان جدید</div>
-  </div>
-</div>
-
-<footer class="reveal">© 2025 توشان‌ورس — همهٔ حقوق محفوظ است</footer>
-
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <h2 id="modal-title"></h2>
-    <p id="modal-text"></p>
-    <button class="close-btn" onclick="closeModal()">بستن</button>
-  </div>
-</div>
+</section>
 
 <script>
-function openModal(title,text){
-  document.getElementById('modal-title').innerText=title;
-  document.getElementById('modal-text').innerText=text;
-  document.getElementById('modal').style.display='flex';
-}
-function closeModal(){document.getElementById('modal').style.display='none';}
-
-// Reveal scroll
-const revealEls=document.querySelectorAll('.reveal');
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('in');});
-},{threshold:0.12});
-revealEls.forEach(el=>io.observe(el));
-
-// Dynamic positioning
-function arrangeTimeline(){
-  const phases=document.querySelectorAll('.phase');
-  phases.forEach(phase=>{
-    const events=phase.querySelectorAll('.event');
-    const total=events.length;
-    const line=phase.querySelector('.phase-line');
-    const lineRect=line.getBoundingClientRect();
-    const parentRect=phase.getBoundingClientRect();
-    events.forEach((event,i)=>{
-      const percent=total===1?50: 10+i*(80/(total-1));
-      event.style.left=percent+'%';
-      if(window.innerWidth>1000){
-        if(i%2===0){event.classList.add('top'); event.classList.remove('bottom');}
-        else{event.classList.add('bottom'); event.classList.remove('top');}
-      } else {
-        event.classList.remove('top','bottom'); event.style.left='0';
-      }
-      event.onclick=()=>{openModal(event.dataset.title,event.dataset.text);}
+  // reveal on scroll
+  const items = document.querySelectorAll('.tl-item');
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); }
     });
-  });
-}
-window.addEventListener('resize',arrangeTimeline);
-window.addEventListener('DOMContentLoaded',arrangeTimeline);
+  }, {threshold:0.2});
+  items.forEach(i=>observer.observe(i));
 </script>
 
 </body>
