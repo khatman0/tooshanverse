@@ -62,24 +62,34 @@
     .btn.ghost{background:transparent;color:#e6f7ff;border:1px solid rgba(255,255,255,0.06)}
     .btn:hover{transform:translateY(-3px)}
 
-    /* cards container */
-    .cards-container {
-      display: flex;
-      overflow: hidden; /* اسکرول مخفی */
-      gap: 18px;
-      padding-bottom: 12px;
-      position: relative;
-      scroll-behavior: smooth;
-      direction: ltr; /* مهم برای اسکرول افقی در rtl */
+    footer{margin-top:60px;padding:40px 20px;color:rgba(200,220,255,0.6);text-align:center}
+
+    @media (max-width:1000px){
+      .hero-inner{flex-direction:column-reverse;align-items:center}
+      .portrait{width:320px;height:360px}
+    }
+    @media (max-width:640px){
+      .portrait{width:220px;height:300px}
+      .hero-meta h1{font-size:2.1rem}
+      .hero-meta h2{font-size:1rem}
     }
 
-    .cards-container::-webkit-scrollbar {
-      height: 8px;
+    .reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
+    .reveal.in{opacity:1;transform:none}
+
+    /* کارت‌ها */
+    .cards-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 18px;
+      padding-bottom: 12px;
+      scroll-behavior: smooth;
+      cursor: grab;
     }
-    .cards-container::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 4px;
-    }
+    .cards-container:active { cursor: grabbing; }
+
+    .cards-container::-webkit-scrollbar { height: 8px; }
+    .cards-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
     .card {
       flex: 0 0 280px;
@@ -92,60 +102,15 @@
       transition: transform 0.28s ease, box-shadow 0.28s ease, opacity 0.5s ease;
       opacity: 0.6;
     }
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 18px 60px rgba(25,167,255,0.09);
-    }
     .card.active {
       opacity: 1;
       transform: scale(1.05);
       box-shadow: 0 18px 60px rgba(25,167,255,0.09);
     }
-
-    /* responsive */
-    @media (max-width:1000px){
-      .hero-inner{flex-direction:column-reverse;align-items:center}
-      .portrait{width:320px;height:360px}
-    }
-    @media (max-width:640px){
-      .portrait{width:220px;height:300px}
-      .hero-meta h1{font-size:2.1rem}
-    }
-    .reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
-    .reveal.in{opacity:1;transform:none}
-
-    /* overlay & side nav */
-    .overlay {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity 0.35s ease;z-index:39;}
-    .overlay.active {opacity:1;visibility:visible;}
-    .side-nav {position:fixed;top:0;left:-280px;width:280px;height:100%;background:linear-gradient(180deg,var(--bg-2), var(--bg-1));padding:40px 20px;display:flex;flex-direction:column;gap:24px;transition:left 0.35s cubic-bezier(0.25,0.8,0.25,1);z-index:40;touch-action: pan-y;}
-    .side-nav.active {left:0;}
-    .side-nav a {color:var(--accent-2);text-decoration:none;font-weight:600;font-size:1.05rem;padding:10px 12px;border-radius:8px;transition:background 0.25s ease;}
-    .side-nav a:hover {background:rgba(25,167,255,0.12);}
-    .hamburger {position:fixed;top:16px;left:16px;z-index:41;width:36px;height:36px;display:flex;flex-direction:column;justify-content:space-around;cursor:pointer;}
-    .hamburger span {display:block;height:4px;width:100%;background:var(--accent);border-radius:2px;transition:all 0.3s ease;}
-    .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
-    .hamburger.active span:nth-child(2){opacity:0;}
-    .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
   </style>
 </head>
 <body>
 
-<div class="hamburger" id="hamburgerBtn">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<nav class="side-nav" id="sideNav">
-  <a href="#hero">خانه</a>
-  <a href="#heroes">قهرمانان</a>
-  <a href="#powers">قدرت‌ها</a>
-  <a href="#timeline">لحظات کلیدی</a>
-  <a href="#appearances">حضور‌ها</a>
-</nav>
-  
 <header>
   <div class="logo">توشان‌ورس</div>
 </header>
@@ -162,7 +127,6 @@
       <p class="tagline">جهان قهرمانان و ماجراهای حماسی — توشان‌ورس؛ جایی که قهرمانان ایرانی برمی‌خیزند.</p>
       <div class="cta-row">
         <a class="btn primary" href="#heroes">کاوش قهرمانان</a>
-        <a class="btn ghost" href="#powers">مشاهده قدرت‌ها</a>
       </div>
     </div>
   </div>
@@ -174,7 +138,6 @@
     <div class="card"><h3>لرد فیزیکا</h3><p>کنترل قوانین فیزیک و میدان‌ها</p></div>
     <div class="card"><h3>تسکین</h3><p>بی‌حس کردن درد اطرافیان</p></div>
     <div class="card"><h3>استریکس</h3><p>کنترل اشیا با ذهن</p></div>
-    <!-- کارت‌های قهرمان جدید را اینجا اضافه کن -->
   </div>
 </section>
 
@@ -182,94 +145,65 @@
   <h2 style="color:#ff4d4d;margin-bottom:16px">ویلن‌ها</h2>
   <div class="cards-container">
     <div class="card"><h3>آگناتوس</h3><p>ویلن اصلی داستان توشان‌ورس</p></div>
-    <!-- کارت‌های ویلن جدید را اینجا اضافه کن -->
   </div>
 </section>
 
-<footer class="reveal" style="margin-top:60px;padding:40px 20px;text-align:center;color:rgba(200,220,255,0.6);">
+<footer class="reveal">
   © 2025 توشان‌ورس — همهٔ حقوق محفوظ است
 </footer>
 
 <script>
-  // reveal animation
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); })
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => io.observe(el));
+  // افکت reveal
+  const revealEls=document.querySelectorAll('.reveal');
+  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
 
-  // HEROES SCROLL
-  const container = document.querySelector('#heroes .cards-container');
-  const cards = Array.from(container.querySelectorAll('.card'));
-  const cardWidth = cards[0].offsetWidth + 18;
-  let position = 0;
-  const speed = 0.5;
+  // کارت‌ها - اسکرول افقی و drag
+  const container = document.querySelectorAll('.cards-container');
+  container.forEach(containerEl => {
+    let cards = Array.from(containerEl.querySelectorAll('.card'));
+    containerEl.innerHTML += containerEl.innerHTML; // حلقه
+    let allCards = Array.from(containerEl.querySelectorAll('.card'));
+    let position = 0;
+    const speed = 0.5;
+    let isUserScrolling = false;
 
-  // کپی کارت‌ها برای حلقه بی‌نهایت یک بار
-  container.innerHTML += container.innerHTML;
-  const allCards = Array.from(container.querySelectorAll('.card'));
-
-  function updateFade() {
-    allCards.forEach(card => {
-      const cardRect = card.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
-      const cardCenter = cardRect.left + cardRect.width / 2;
-      const containerCenter = containerRect.left + containerRect.width / 2;
-      const distance = Math.abs(containerCenter - cardCenter);
-      const maxDistance = containerRect.width / 2;
-      const opacity = Math.max(0.3, 1 - distance / maxDistance);
-      card.style.opacity = opacity;
-    });
-  }
-
-  let isUserScrolling = false;
-  container.addEventListener('mousedown', () => { isUserScrolling = true; });
-  container.addEventListener('mouseup', () => { isUserScrolling = false; });
-  container.addEventListener('touchstart', () => { isUserScrolling = true; });
-  container.addEventListener('touchend', () => { isUserScrolling = false; });
-
-  function animate() {
-    if(!isUserScrolling) {
-      position += speed;
-      if (position >= container.scrollWidth / 2) position = 0;
-      container.scrollTo({ left: position, behavior: 'auto' });
+    function updateFade() {
+      allCards.forEach(card => {
+        const cardRect = card.getBoundingClientRect();
+        const containerRect = containerEl.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const containerCenter = containerRect.left + containerRect.width / 2;
+        const distance = Math.abs(containerCenter - cardCenter);
+        const maxDistance = containerRect.width / 2;
+        const opacity = Math.max(0.3, 1 - distance / maxDistance);
+        card.style.opacity = opacity;
+      });
     }
-    updateFade();
-    requestAnimationFrame(animate);
-  }
-  animate();
 
-  // HAMBURGER MENU
-  const hamburger = document.getElementById('hamburgerBtn');
-  const sideNav = document.getElementById('sideNav');
-  const overlay = document.getElementById('overlay');
+    function animate() {
+      if (!isUserScrolling) {
+        position += speed;
+        if (position >= containerEl.scrollWidth / 2) position = 0;
+        containerEl.scrollTo({ left: position, behavior: 'auto' });
+        updateFade();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
 
-  function openMenu(){ hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active'); }
-  function closeMenu(){ hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active'); }
+    // drag موس
+    let isDown = false, startX, scrollLeft;
+    containerEl.addEventListener('mousedown', e => { isDown=true; isUserScrolling=true; startX=e.pageX-containerEl.offsetLeft; scrollLeft=containerEl.scrollLeft; });
+    containerEl.addEventListener('mouseleave', ()=>{ isDown=false; isUserScrolling=false; });
+    containerEl.addEventListener('mouseup', ()=>{ isDown=false; isUserScrolling=false; });
+    containerEl.addEventListener('mousemove', e => { if(!isDown) return; e.preventDefault(); const x=e.pageX-containerEl.offsetLeft; containerEl.scrollLeft = scrollLeft - (x-startX)*2; });
 
-  const sideNavLinks = document.querySelectorAll('.side-nav a');
-  sideNavLinks.forEach(link => link.addEventListener('click', closeMenu));
-  hamburger.addEventListener('click', ()=>{ sideNav.classList.contains('active') ? closeMenu() : openMenu(); });
-  overlay.addEventListener('click', closeMenu);
-
-  // swipe support
-  let startX=0, currentX=0, touching=false, edgeStartX=0;
-  sideNav.addEventListener('touchstart', e=>{ touching=true; startX=e.touches[0].clientX; });
-  sideNav.addEventListener('touchmove', e=>{
-    if(!touching) return; currentX=e.touches[0].clientX;
-    const deltaX = currentX - startX;
-    if(deltaX < 0){ sideNav.style.left = Math.max(-280, deltaX)+'px'; overlay.style.opacity = 1 + deltaX/280; }
+    // لمس موبایل
+    containerEl.addEventListener('touchstart', e => { isDown=true; isUserScrolling=true; startX=e.touches[0].pageX-containerEl.offsetLeft; scrollLeft=containerEl.scrollLeft; });
+    containerEl.addEventListener('touchend', ()=>{ isDown=false; isUserScrolling=false; });
+    containerEl.addEventListener('touchmove', e => { if(!isDown) return; const x=e.touches[0].pageX-containerEl.offsetLeft; containerEl.scrollLeft = scrollLeft - (x-startX)*2; });
   });
-  sideNav.addEventListener('touchend', e=>{ touching=false; sideNav.style.left=''; overlay.style.opacity=''; if(currentX-startX<-100) closeMenu(); });
-
-  document.addEventListener('touchstart', e=>{
-    if(e.touches[0].clientX<20 && !sideNav.classList.contains('active')) { edgeStartX = e.touches[0].clientX; touching=true; }
-  });
-  document.addEventListener('touchmove', e=>{
-    if(!touching) return; currentX=e.touches[0].clientX;
-    if(currentX - edgeStartX > 20) { openMenu(); touching=false; }
-  });
-  document.addEventListener('touchend', ()=>{ touching=false; });
 </script>
 
 </body>
