@@ -4,77 +4,93 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>توشان‌ورس — تایم‌لاین</title>
-<link rel="icon" href="favicon.png" type="image/x-icon" />
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #070812;
-    --line-bg: #ffffff;
-    --line-active: #19a7ff;
-    --card-bg: rgba(10,12,18,0.6);
-    --shadow: rgba(25,167,255,0.12);
-    --accent-light: #9be3ff;
-    --transition: all 0.3s ease;
-  }
+:root {
+  --bg: #070812;
+  --line-bg: #ffffff;
+  --line-active: #19a7ff;
+  --card-bg: rgba(10,12,18,0.6);
+  --shadow: rgba(25,167,255,0.12);
+  --accent-light: #9be3ff;
+  --transition: all 0.3s ease;
+}
 
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Vazirmatn', sans-serif;background:linear-gradient(180deg,#070812,#081229);color:#e9f6ff;line-height:1.6;padding:40px;}
-  h1,h2,h3,h4{margin-bottom:12px;}
-  a{text-decoration:none;color:inherit;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Vazirmatn', sans-serif;background:linear-gradient(180deg,#070812,#081229);color:#e9f6ff;line-height:1.6;padding:40px;}
+h1,h2,h3,h4{margin-bottom:12px;}
+a{text-decoration:none;color:inherit;}
 
-  header{margin-bottom:40px;text-align:center;}
-  header h1{font-size:2.5rem;color:var(--line-active);margin-bottom:6px;}
-  header p{color:var(--accent-light);font-size:1.1rem;}
+header{margin-bottom:40px;text-align:center;}
+header h1{font-size:2.5rem;color:var(--line-active);margin-bottom:6px;}
+header p{color:var(--accent-light);font-size:1.1rem;}
 
-  /* Timeline */
-  .timeline{position:relative;max-width:900px;margin:0 auto;padding-left:20px;}
-  .timeline::before{
-    content:'';position:absolute;left:10px;top:0;width:3px;height:100%;background:var(--line-bg);border-radius:3px;
-  }
-  .timeline .line-active{position:absolute;left:10px;top:0;width:3px;height:0;background:var(--line-active);border-radius:3px;transition:height 0.4s ease;}
+/* Timeline */
+.timeline{position:relative;max-width:900px;margin:0 auto;padding-left:20px;}
+.timeline::before{
+  content:'';position:absolute;left:10px;top:0;width:3px;height:100%;background:var(--line-bg);border-radius:3px;
+}
 
-  .tl-item{
-    display:flex;
-    gap:16px;
-    align-items:flex-start;
-    position:relative;
-    margin-bottom:40px;
-    padding-right:20px;
-    opacity:0; transform:translateY(20px); transition:var(--transition);
-  }
-  .tl-item.in{opacity:1;transform:none;}
-  .tl-item::before{
-    content:'';position:absolute;left:-7px;top:5px;width:14px;height:14px;background:var(--line-bg);border-radius:50%;box-shadow:0 4px 12px var(--shadow);z-index:2;
-  }
-  .tl-item.active::before{
-    background: var(--line-active);
-  }
+/* active line with moving glow */
+.line-active {
+  position:absolute;
+  left:10px;
+  top:0;
+  width:3px;
+  height:0; /* will be set by JS */
+  background: linear-gradient(to bottom, var(--line-active) 30%, rgba(255,255,255,0.6) 50%, var(--line-active) 70%);
+  border-radius:3px;
+  transition:height 0.4s ease;
+  animation: glowMove 2s linear infinite;
+}
 
-  .tl-image{
-    flex:0 0 120px;
-    height:80px;
-    border-radius:8px;
-    object-fit:cover;
-    box-shadow:0 4px 20px var(--shadow);
-    border:1px solid rgba(155,227,255,0.06);
-  }
+@keyframes glowMove {
+  0% { background-position:0 -20px; }
+  100% { background-position:0 20px; }
+}
 
-  .tl-content{flex:1;}
-  .tl-content time{display:block;font-weight:700;color:var(--accent-light);margin-bottom:6px;}
-  .tl-content p{
-    background:var(--card-bg);
-    padding:12px 16px;
-    border-radius:12px;
-    border:1px solid rgba(155,227,255,0.06);
-    box-shadow:0 6px 20px rgba(2,6,23,0.5);
-  }
+.tl-item{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  position:relative;
+  margin-bottom:40px;
+  padding-right:20px;
+  opacity:0; transform:translateY(20px); transition:var(--transition);
+}
+.tl-item.in{opacity:1;transform:none;}
+.tl-item::before{
+  content:'';position:absolute;left:-7px;top:5px;width:14px;height:14px;background:var(--line-bg);border-radius:50%;box-shadow:0 4px 12px var(--shadow);z-index:2;
+}
+.tl-item.active::before{
+  background: var(--line-active);
+}
 
-  footer{margin-top:60px;padding:40px 20px;color:rgba(200,220,255,0.6);text-align:center;border-top:1px solid rgba(155,227,255,0.08);}
+.tl-image{
+  flex:0 0 120px;
+  height:80px;
+  border-radius:8px;
+  object-fit:cover;
+  box-shadow:0 4px 20px var(--shadow);
+  border:1px solid rgba(155,227,255,0.06);
+}
 
-  @media(max-width:700px){
-    .tl-item{flex-direction:column;align-items:flex-start;}
-    .tl-image{width:100%;height:200px;}
-  }
+.tl-content{flex:1;}
+.tl-content time{display:block;font-weight:700;color:var(--accent-light);margin-bottom:6px;}
+.tl-content p{
+  background:var(--card-bg);
+  padding:12px 16px;
+  border-radius:12px;
+  border:1px solid rgba(155,227,255,0.06);
+  box-shadow:0 6px 20px rgba(2,6,23,0.5);
+}
+
+footer{margin-top:60px;padding:40px 20px;color:rgba(200,220,255,0.6);text-align:center;border-top:1px solid rgba(155,227,255,0.08);}
+
+@media(max-width:700px){
+  .tl-item{flex-direction:column;align-items:flex-start;}
+  .tl-image{width:100%;height:200px;}
+}
 </style>
 </head>
 <body>
@@ -126,7 +142,7 @@
 </footer>
 
 <script>
-  // reveal on scroll
+  // Reveal on scroll
   const items = document.querySelectorAll('.tl-item');
   const observer = new IntersectionObserver(entries=>{
     entries.forEach(e=>{
