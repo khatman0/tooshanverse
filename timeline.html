@@ -26,26 +26,53 @@
   header p{color:var(--accent-light);font-size:1.1rem;}
 
   /* Timeline */
-  .timeline{position:relative;max-width:800px;margin:0 auto;padding-left:20px;}
+  .timeline{position:relative;max-width:900px;margin:0 auto;padding-left:20px;}
   .timeline::before{
     content:'';position:absolute;left:10px;top:0;width:3px;height:100%;background:linear-gradient(180deg,var(--line),var(--accent-light));border-radius:3px;
   }
+
   .tl-item{
-    position:relative;margin-bottom:40px;padding-right:20px;opacity:0;transform:translateY(20px);transition:var(--transition);
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    position:relative;
+    margin-bottom:40px;
+    padding-right:20px;
+    opacity:0; transform:translateY(20px); transition:var(--transition);
   }
   .tl-item.in{opacity:1;transform:none;}
   .tl-item::before{
     content:'';position:absolute;left:-7px;top:5px;width:14px;height:14px;background:var(--line);border-radius:50%;box-shadow:0 4px 12px var(--shadow);
   }
-  .tl-item time{display:block;font-weight:700;color:var(--accent-light);margin-bottom:6px;}
-  .tl-item p{background:var(--card-bg);padding:12px 16px;border-radius:12px;border:1px solid rgba(155,227,255,0.06);box-shadow:0 6px 20px rgba(2,6,23,0.5);}
+
+  .tl-image{
+    flex:0 0 120px;
+    height:80px;
+    border-radius:8px;
+    object-fit:cover;
+    box-shadow:0 4px 20px var(--shadow);
+    border:1px solid rgba(155,227,255,0.06);
+  }
+
+  .tl-content{flex:1;}
+  .tl-content time{display:block;font-weight:700;color:var(--accent-light);margin-bottom:6px;}
+  .tl-content p{
+    background:var(--card-bg);
+    padding:12px 16px;
+    border-radius:12px;
+    border:1px solid rgba(155,227,255,0.06);
+    box-shadow:0 6px 20px rgba(2,6,23,0.5);
+  }
+
+  /* Footer */
+  footer{margin-top:60px;padding:40px 20px;color:rgba(200,220,255,0.6);text-align:center;border-top:1px solid rgba(155,227,255,0.08);}
 
   /* Responsive */
-  @media(max-width:600px){
-    body{padding:20px;}
-    .timeline{padding-left:10px;}
-    .tl-item p{font-size:0.95rem;padding:10px;}
+  @media(max-width:700px){
+    .tl-item{flex-direction:column;align-items:flex-start;}
+    .tl-image{width:100%;height:200px;}
   }
+
 </style>
 </head>
 <body>
@@ -57,22 +84,41 @@
 
 <section class="timeline">
   <div class="tl-item">
-    <time>سال ۱۳۸۸ - آغاز تحقیقات</time>
-    <p>شروع پژوهش‌های مخفی روی معادلات تغییرپذیری که منجر به اولین آزمون میدانی شد.</p>
+    <img src="event1.jpg" alt="آغاز تحقیقات" class="tl-image">
+    <div class="tl-content">
+      <time>سال ۱۳۸۸ - آغاز تحقیقات</time>
+      <p>شروع پژوهش‌های مخفی روی معادلات تغییرپذیری که منجر به اولین آزمون میدانی شد.</p>
+    </div>
   </div>
+
   <div class="tl-item">
-    <time>سال ۱۳۹۲ - نبرد کاتالیزور</time>
-    <p>برخورد نخست با شبکهٔ حشاشین که اولین نمایش خونین توانایی‌ها بود.</p>
+    <img src="event2.jpg" alt="نبرد کاتالیزور" class="tl-image">
+    <div class="tl-content">
+      <time>سال ۱۳۹۲ - نبرد کاتالیزور</time>
+      <p>برخورد نخست با شبکهٔ حشاشین که اولین نمایش خونین توانایی‌ها بود.</p>
+    </div>
   </div>
+
   <div class="tl-item">
-    <time>سال ۱۳۹۶ - معاهدهٔ بی‌نهایت</time>
-    <p>پیشنهاد یک قرارداد برای کنترل توانایی‌ها که با مخالفت گروهی از هم‌رزمان مواجه شد.</p>
+    <img src="event3.jpg" alt="معاهده بی‌نهایت" class="tl-image">
+    <div class="tl-content">
+      <time>سال ۱۳۹۶ - معاهدهٔ بی‌نهایت</time>
+      <p>پیشنهاد یک قرارداد برای کنترل توانایی‌ها که با مخالفت گروهی از هم‌رزمان مواجه شد.</p>
+    </div>
   </div>
+
   <div class="tl-item">
-    <time>سال ۱۳۹۹ - انفجار انرژی</time>
-    <p>آزمون مهارت‌ها در میدان باز با نتیجه‌ای غیرمنتظره و کنترل نشده.</p>
+    <img src="event4.jpg" alt="انفجار انرژی" class="tl-image">
+    <div class="tl-content">
+      <time>سال ۱۳۹۹ - انفجار انرژی</time>
+      <p>آزمون مهارت‌ها در میدان باز با نتیجه‌ای غیرمنتظره و کنترل نشده.</p>
+    </div>
   </div>
 </section>
+
+<footer>
+  © 2025 توشان‌ورس — همهٔ حقوق محفوظ است
+</footer>
 
 <script>
   // reveal on scroll
