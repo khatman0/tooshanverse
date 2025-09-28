@@ -1,241 +1,252 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تایم‌لاین توشان‌ورس</title>
   <style>
-    :root{
-      --bg1: #0d0d0d;
-      --bg2: #1a1a1a;
-      --accent: gold;
-      --line: #ffffff;
-      --card-bg: rgba(0,0,0,0.55);
-      --max-width: 1100px;
-    }
-
-    /* پایه */
-    *{box-sizing: border-box;}
-    html,body{height:100%;}
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2), #000);
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a, #000);
       color: #fff;
       overflow-x: hidden;
-      direction: rtl; /* مهم برای فارسی */
-      -webkit-font-smoothing:antialiased;
     }
 
     header, footer {
       text-align: center;
-      padding: 18px 16px;
-      background: rgba(0,0,0,0.7);
-      color: var(--accent);
-      font-size: 1.25rem;
-      letter-spacing: .6px;
+      padding: 20px;
+      background: rgba(0,0,0,0.6);
+      color: gold;
+      font-size: 1.5rem;
+      position: relative;
+      overflow: hidden;
     }
 
-    main.timeline {
-      max-width: var(--max-width);
-      margin: 30px auto;
-      padding: 0 16px 60px;
+    /* افکت نور روی متن هدر/فوتر */
+    header::after, footer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shine 6s infinite linear;
+    }
+    @keyframes shine {
+      0% { left: -100%; }
+      100% { left: 100%; }
     }
 
     .phase {
       position: relative;
-      margin: 60px 0;
+      margin: 80px 0;
+      padding: 40px 0;
     }
 
-    /* خط مرکزی افقی (در هر فاز) */
     .phase-line {
       position: relative;
-      height: 260px; /* ارتفاع ظرف که کارت‌ها را بالا/پایین می‌برد */
-      width: 100%;
+      height: 3px;
+      background: white;
       margin: 0 auto;
-    }
-
-    /* خودِ خط افقی */
-    .phase-line::before {
-      content: "";
-      position: absolute;
-      left: 5%;
-      right: 5%;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 4px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,215,0,0.9), rgba(255,255,255,0.12));
-      border-radius: 3px;
-      z-index: 1;
+      width: 90%;
     }
 
     .phase-title {
       position: absolute;
-      top: -28px;
+      top: -30px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.9);
-      padding: 6px 14px;
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 1.15rem;
-      border-radius: 8px;
-      z-index: 6;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.7);
+      padding: 5px 15px;
+      color: gold;
+      font-weight: bold;
+      font-size: 1.3rem;
+      border-radius: 6px;
+      animation: pulse 2s infinite;
+    }
+    /* پالس برای فاز */
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,215,0,0.6); }
+      70% { box-shadow: 0 0 10px 15px rgba(255,215,0,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); }
     }
 
-    /* کارت رویداد */
     .event {
-      position: absolute; /* مکان‌یابی با left: % */
-      width: 200px;
-      transform: translateX(-50%);
+      position: absolute;
       text-align: center;
-      z-index: 4;
-      pointer-events: auto;
-    }
-
-    .event figure {
-      margin: 0;
-      background: var(--card-bg);
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      overflow: hidden;
+      width: 200px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
 
     .event img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 6px;
-      border: 2px solid var(--accent);
+      width: 180px;
+      border-radius: 8px;
+      border: 2px solid gold;
+      transition: transform 0.3s;
+    }
+
+    .event:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px gold;
     }
 
     .event .label {
-      margin-top: 8px;
-      font-size: 0.95rem;
+      margin-top: 10px;
+      font-size: 1rem;
       color: #fff;
-      line-height: 1.1;
     }
 
-    /* اتصال کارت به خط مرکزی (برای کارت‌های بالا و پایین) */
-    .event.top {
-      bottom: calc(50% + 20px); /* قرار گرفتن بالای خط */
-    }
-    .event.top::after {
+    .event::before {
       content: "";
       position: absolute;
+      top: 50%;
+      width: 2px;
+      height: 50px;
+      background: white;
       left: 50%;
       transform: translateX(-50%);
-      bottom: -20px; /* از پایین کارت تا خط */
-      width: 2px;
-      height: 20px;
-      background: var(--line);
-      z-index: 3;
+    }
+
+    .event.top {
+      bottom: 100px;
+    }
+
+    .event.top::before {
+      top: auto;
+      bottom: -50px;
     }
 
     .event.bottom {
-      top: calc(50% + 20px); /* قرار گرفتن پایین خط */
-    }
-    .event.bottom::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: -20px; /* از بالای کارت تا خط */
-      width: 2px;
-      height: 20px;
-      background: var(--line);
-      z-index: 3;
+      top: 100px;
     }
 
-    /* افکت hover کوچک برای خوانایی */
-    .event:hover figure { transform: translateY(-6px); transition: transform .18s ease; }
+    .event.bottom::before {
+      top: -50px;
+    }
 
-    /* واکنش‌گرایی: در موبایل کارت‌ها زیر هم قرار می‌گیرند */
-    @media (max-width: 800px) {
-      .phase-line { height: auto; padding: 20px 0; }
-      .phase-line::before { display: none; } /* خط حذف می‌شود تا طراحی خواناتر باشد */
-      .phase-title { position: relative; top: 0; left: auto; transform: none; display: inline-block; margin-bottom: 12px; }
+    /* ریسپانسیو موبایل */
+    @media (max-width: 768px) {
       .event {
-        position: static;
-        width: min(92%, 420px);
-        margin: 16px auto;
-        transform: none;
+        position: relative;
+        width: 90%;
+        margin: 40px auto;
       }
-      .event.top::after,
-      .event.bottom::after { display: none; }
+      .event::before {
+        display: none;
+      }
+      .phase-line {
+        display: none;
+      }
+      .phase-title {
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+      }
     }
 
-    /* ریزتنظیم برای خیلی کوچک */
-    @media (max-width: 420px){
-      .event{ width: 100%; }
-      .event .label { font-size: .92rem; }
+    /* مودال پاپ‌آپ */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: rgba(20,20,20,0.9);
+      border: 2px solid gold;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 400px;
+      text-align: center;
+      color: white;
+    }
+    .close-btn {
+      background: gold;
+      color: black;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <header>توشان‌ورس | تایم‌لاین</header>
 
-  <main class="timeline" role="main" aria-label="تایم‌لاین توشان‌ورس">
-    <!-- فاز ۱ -->
-    <section class="phase" aria-labelledby="phase1">
-      <div class="phase-line" role="list" aria-labelledby="phase1">
-        <div id="phase1" class="phase-title">فاز ۱</div>
+<header>توشان‌ورس | تایم‌لاین</header>
 
-        <!-- کارت‌ها: برای تغییر موقعیت، مقدار left را ویرایش کنید (مثلاً left:10%) -->
-        <article class="event top" style="left:10%;" role="listitem" aria-label="لرد فیزیکا">
-          <figure>
-            <img src="lord-physica.jpg" alt="پرترهٔ لرد فیزیکا — شخصیت مرکزی" />
-            <figcaption class="label">لرد فیزیکا</figcaption>
-          </figure>
-        </article>
+<div class="phase">
+  <div class="phase-line">
+    <div class="phase-title">فاز ۱</div>
 
-        <article class="event bottom" style="left:30%;" role="listitem" aria-label="الکتروپالس">
-          <figure>
-            <img src="electropulse.jpg" alt="الکتروپالس" />
-            <figcaption class="label">الکتروپالس</figcaption>
-          </figure>
-        </article>
+    <div class="event top" style="left:10%;" onclick="openModal('لرد فیزیکا', 'اولین قهرمان و آغازگر داستان توشان‌ورس.')">
+      <img src="lord-physica.jpg" alt="لرد فیزیکا">
+      <div class="label">لرد فیزیکا</div>
+    </div>
 
-        <article class="event top" style="left:50%;" role="listitem" aria-label="استریکس">
-          <figure>
-            <img src="strix.jpg" alt="استریکس" />
-            <figcaption class="label">استریکس</figcaption>
-          </figure>
-        </article>
+    <div class="event bottom" style="left:30%;" onclick="openModal('الکتروپالس', 'قهرمانی با قدرت الکتریسیته و پالس انرژی.')">
+      <img src="electropulse.jpg" alt="الکتروپالس">
+      <div class="label">الکتروپالس</div>
+    </div>
 
-        <article class="event bottom" style="left:70%;" role="listitem" aria-label="تسکین">
-          <figure>
-            <img src="taskin.jpg" alt="تسکین" />
-            <figcaption class="label">تسکین</figcaption>
-          </figure>
-        </article>
-      </div>
-    </section>
+    <div class="event top" style="left:50%;" onclick="openModal('استریکس', 'موجود مرموز با قدرت‌های شبانه.')">
+      <img src="strix.jpg" alt="استریکس">
+      <div class="label">استریکس</div>
+    </div>
 
-    <!-- فاز ۲ -->
-    <section class="phase" aria-labelledby="phase2">
-      <div class="phase-line" role="list" aria-labelledby="phase2">
-        <div id="phase2" class="phase-title">فاز ۲</div>
+    <div class="event bottom" style="left:70%;" onclick="openModal('تسکین', 'شخصیتی با توانایی‌های درمانی و روحی.')">
+      <img src="taskin.jpg" alt="تسکین">
+      <div class="label">تسکین</div>
+    </div>
+  </div>
+</div>
 
-        <article class="event top" style="left:20%;" role="listitem" aria-label="آگناتوس">
-          <figure>
-            <img src="villain.jpg" alt="آگناتوس — آنتاگونیست" />
-            <figcaption class="label">آگناتوس</figcaption>
-          </figure>
-        </article>
+<div class="phase">
+  <div class="phase-line">
+    <div class="phase-title">فاز ۲</div>
 
-        <article class="event bottom" style="left:60%;" role="listitem" aria-label="قهرمان جدید">
-          <figure>
-            <img src="another-hero.jpg" alt="قهرمان جدید" />
-            <figcaption class="label">قهرمان جدید</figcaption>
-          </figure>
-        </article>
-      </div>
-    </section>
-  </main>
+    <div class="event top" style="left:20%;" onclick="openModal('آگناتوس', 'ابرشروری با قدرت کنترل ذهن.')">
+      <img src="villain.jpg" alt="آگناتوس">
+      <div class="label">آگناتوس</div>
+    </div>
 
-  <footer>© 2025 Tooshanverse - All Rights Reserved</footer>
+    <div class="event bottom" style="left:60%;" onclick="openModal('قهرمان جدید', 'ورود نسل تازه‌ای از قهرمان‌ها.')">
+      <img src="another-hero.jpg" alt="قهرمان جدید">
+      <div class="label">قهرمان جدید</div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 Tooshanverse - All Rights Reserved</footer>
+
+<!-- مودال -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h2 id="modal-title"></h2>
+    <p id="modal-text"></p>
+    <button class="close-btn" onclick="closeModal()">بستن</button>
+  </div>
+</div>
+
+<script>
+  function openModal(title, text) {
+    document.getElementById('modal-title').innerText = title;
+    document.getElementById('modal-text').innerText = text;
+    document.getElementById('modal').style.display = 'flex';
+  }
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+</script>
+
 </body>
 </html>
