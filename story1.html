@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>داستان — توشان‌ورس</title>
+  <link rel="icon" href="favicon.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #0a0a0a;
+      --bg-2: #1a1a1a;
+      --accent: #b0b0b0;
+      --accent-2: #d9d9d9;
+      --muted: rgba(255,255,255,0.08);
+      --glass: rgba(255,255,255,0.04);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Vazirmatn',Tahoma,sans-serif;
+      background: linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#e5e5e5;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      line-height:1.9;
+    }
+
+    header{
+      position:fixed;top:16px;left:16px;right:16px;z-index:50;
+      display:flex;align-items:center;justify-content:space-between;
+      background:rgba(10,10,10,0.3);backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.05);
+      padding:10px 16px;
+      border-radius:12px;
+    }
+    .logo{font-weight:700;font-size:1rem;letter-spacing:0.5px;color:var(--accent-2)}
+    nav a{color:var(--accent-2);text-decoration:none;margin:0 10px;font-size:0.9rem;background:var(--glass);padding:6px 10px;border-radius:8px}
+
+    .story-hero{
+      padding-top:110px;
+      padding-bottom:30px;
+      text-align:center;
+      max-width:800px;
+      margin:0 auto;
+    }
+    .story-hero h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:2.8rem;
+      color:var(--accent);
+      margin-bottom:12px;
+    }
+    .story-hero p{
+      font-size:1.05rem;
+      opacity:0.85;
+      color:var(--accent-2);
+      margin:0 auto;
+      max-width:600px;
+    }
+
+    .story-body{
+      max-width:800px;
+      margin:40px auto;
+      padding:0 18px;
+      background:rgba(20,20,20,0.4);
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:16px;
+      padding-top:28px;
+      padding-bottom:28px;
+      font-size:1.05rem;
+    }
+    .story-body p{
+      margin-bottom:22px;
+      text-align:justify;
+      color:#e5e5e5;
+    }
+    .story-body p:first-letter{
+      font-size:1.4rem;
+      font-weight:bold;
+      color:var(--accent-2);
+      margin-right:4px;
+    }
+
+    footer{
+      text-align:center;
+      padding:40px 20px;
+      color:rgba(200,200,200,0.6);
+      font-size:0.9rem;
+    }
+
+    /* reveal animation */
+    .reveal{opacity:0;transform:translateY(20px);transition:all .7s cubic-bezier(.2,.9,.2,1)}
+    .reveal.in{opacity:1;transform:none}
+
+    @media (max-width:640px){
+      .story-hero h1{font-size:2rem}
+      .story-body{font-size:1rem;padding:20px 14px}
+      nav a{font-size:0.8rem;padding:5px 8px}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">توشان‌ورس</div>
+  <nav>
+    <a href="index.html">خانه</a>
+    <a href="#story">شروع داستان</a>
+    <a href="#footer">پایان</a>
+  </nav>
+</header>
+
+<section class="story-hero reveal">
+  <h1>عنوان داستان</h1>
+  <p>در این بخش خلاصه‌ای کوتاه یا جمله‌ای الهام‌بخش درباره‌ی داستان قرار می‌گیرد — جرقه‌ای برای ورود به جهان توشان‌ورس.</p>
+</section>
+
+<section class="story-body reveal" id="story">
+  <p>باد شب با صدایی آرام میان خیابان‌های متروک می‌پیچید. آسمان سیاه‌تر از همیشه بود و تنها نور ضعیف ماه روی ساختمان‌های ترک‌خورده می‌افتاد. نوید قدم‌هایش را بی‌صدا روی آسفالت ترک‌خورده می‌گذاشت، گویی هر صدایی می‌توانست سرنوشتش را عوض کند.</p>
+
+  <p>در آن لحظه، چیزی درونش زمزمه کرد... صدایی نه بیرونی، بلکه از عمق ذهنش. «همه‌چیز از اینجا شروع می‌شود.» نگاهش را به آسمان دوخت؛ جایی که نقطه‌ای نورانی در حال گسترش بود.</p>
+
+  <p>انفجار آبی‌رنگ، آسمان را شکافت و موجی از انرژی خیابان را لرزاند. نوید احساس کرد قوانین جهان در یک لحظه به زانو درآمده‌اند. دیگر چیزی مثل قبل نبود.</p>
+
+  <p>او آهسته زیر لب گفت: «پس این… همون لحظه‌ست.» و بعد، زمان از حرکت ایستاد.</p>
+</section>
+
+<footer id="footer" class="reveal">
+  © 2025 توشان‌ورس — همهٔ حقوق محفوظ است
+</footer>
+
+<script>
+  // Reveal animation on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add('in');
+    });
+  },{threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // Smooth scroll for anchors
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const href=a.getAttribute('href');
+      if(href.length>1){
+        e.preventDefault();
+        document.querySelector(href)?.scrollIntoView({behavior:'smooth'});
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
