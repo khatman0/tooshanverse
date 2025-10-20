@@ -382,10 +382,8 @@ revealEls.forEach(el=>io.observe(el));
 
 // Infinite auto-scroll cards
 document.querySelectorAll('.cards-container').forEach(container=>{
-  if (!container.dataset.duplicated) {  // فقط یه بار کپی می‌کنه
-    container.innerHTML += container.innerHTML;
-    container.dataset.duplicated = "true";
-  }
+  // ❌ این خط باعث تکرار میشه
+  // container.innerHTML += container.innerHTML; 
   const cards = Array.from(container.querySelectorAll('.card'));
   container.scrollLeft = container.scrollWidth / 4;
 
