@@ -382,9 +382,12 @@ revealEls.forEach(el=>io.observe(el));
 
 // Infinite auto-scroll cards
 document.querySelectorAll('.cards-container').forEach(container=>{
-  container.innerHTML += container.innerHTML; // duplicate for infinite effect
+  if (!container.dataset.duplicated) {  // فقط یه بار کپی می‌کنه
+    container.innerHTML += container.innerHTML;
+    container.dataset.duplicated = "true";
+  }
   const cards = Array.from(container.querySelectorAll('.card'));
-  container.scrollLeft = container.scrollWidth / 4; // start from middle
+  container.scrollLeft = container.scrollWidth / 4;
 
   let speed = 0.3; // کنترل سرعت اسکرول
   function scrollCards(){
