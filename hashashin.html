@@ -8,12 +8,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg-1: #0b0c12;
-      --bg-2: #1c1a29;
-      --accent: #6cffc5;
-      --accent-2: #a8fff0;
-      --muted: rgba(255,255,255,0.08);
-      --card-bg: rgba(12,14,20,0.6);
+      --bg-1: #0a0a0a;
+      --bg-2: #121212;
+      --accent: #cfa63c; /* طلایی کم‌رنگ */
+      --accent-2: #e6c85a;
+      --muted: rgba(255,255,255,0.06);
+      --card-bg: rgba(18,18,18,0.7);
       --glass: rgba(255,255,255,0.03);
     }
 
@@ -24,14 +24,16 @@
       font-family: 'Vazirmatn', Tahoma, sans-serif;
       background: linear-gradient(180deg,var(--bg-1), var(--bg-2));
       color:#e9f6ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
       overflow-y:auto;
     }
-
     a{color:inherit;text-decoration:none}
 
     header{
       position:fixed;top:16px;left:16px;right:16px;z-index:40;
       display:flex;align-items:center;justify-content:space-between;
+      pointer-events:auto;
     }
     .logo{font-weight:700;font-size:1rem;letter-spacing:0.6px}
     .subnav{display:flex;gap:14px;align-items:center}
@@ -41,56 +43,54 @@
       position:relative;min-height:78vh;display:flex;align-items:center;justify-content:center;padding:80px 24px;
       overflow:hidden;
     }
-
     .hero-bg{
       position:absolute;inset:0;z-index:0;background-size:cover;background-position:center center;
       transition:opacity 0.9s ease, filter 0.9s ease;
-      filter:brightness(0.45) saturate(1.1) contrast(1.1);
+      filter:brightness(0.35) saturate(1.05) contrast(1.1);
     }
-
     .hero::after{
       content:"";position:absolute;inset:-20% -40%;z-index:1;pointer-events:none;
-      background:linear-gradient(120deg, rgba(108,255,197,0.06), rgba(168,255,240,0.06) 30%, rgba(255,255,255,0.02));
+      background:linear-gradient(120deg, rgba(207,166,60,0.06), rgba(230,200,90,0.06) 30%, rgba(255,255,255,0.02));
       transform:rotate(10deg);mix-blend-mode:screen;animation:slidelight 12s linear infinite;
     }
-    @keyframes slidelight{
-      0%{transform:translateX(-30%) rotate(10deg)}
-      50%{transform:translateX(30%) rotate(10deg)}
-      100%{transform:translateX(-30%) rotate(10deg)}
-    }
+    @keyframes slidelight{0%{transform:translateX(-30%) rotate(10deg)}50%{transform:translateX(30%) rotate(10deg)}100%{transform:translateX(-30%) rotate(10deg)}}
 
     .hero-inner{position:relative;z-index:5;display:flex;gap:36px;align-items:center;max-width:1200px;width:100%;}
     .portrait{
-      flex:0 0 320px;height:420px;border-radius:16px;overflow:hidden;
-      border:1px solid rgba(108,255,197,0.12);
-      box-shadow:0 30px 80px rgba(2,6,23,0.6);
+      flex:0 0 320px;height:420px;border-radius:16px;overflow:hidden;border:1px solid rgba(207,166,60,0.15);box-shadow:0 30px 80px rgba(2,6,23,0.6);
       background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       display:flex;align-items:center;justify-content:center;
     }
     .portrait img{width:100%;height:100%;object-fit:cover;display:block;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.6))}
-
     .hero-meta{flex:1;}
-    .hero-meta h1{font-family:'Orbitron',sans-serif;font-size:3.6rem;margin:0 0 6px;color:var(--accent)}
+    .hero-meta h1{font-family:'Orbitron',sans-serif;font-size:3.2rem;margin:0 0 6px;color:var(--accent);text-shadow:0 6px 30px rgba(207,166,60,0.08)}
     .hero-meta h2{margin:0;color:var(--accent-2);opacity:0.85;font-weight:600}
-    .tagline{margin-top:14px;font-size:1.05rem;color:rgba(235,245,255,0.9);max-width:72%}
+    .tagline{margin-top:14px;font-size:1.05rem;color:rgba(235,245,255,0.85);max-width:72%}
 
-    .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:28px}
-    .card{background:var(--card-bg);backdrop-filter:blur(6px);padding:18px;border-radius:12px;border:1px solid rgba(168,255,240,0.06);box-shadow:0 10px 30px rgba(2,6,23,0.5)}
+    .cta-row{margin-top:26px;display:flex;gap:12px;align-items:center}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.06);transition:all .25s ease}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#e6c85a);color:#0a0a0a;box-shadow:0 8px 30px rgba(207,166,60,0.12)}
+    .btn.ghost{background:transparent;color:#e6e6e6;border:1px solid rgba(255,255,255,0.06)}
+    .btn:hover{transform:translateY(-3px)}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+    .card{background:var(--card-bg);backdrop-filter:blur(6px);padding:18px;border-radius:12px;border:1px solid rgba(207,166,60,0.06);box-shadow:0 10px 30px rgba(2,6,23,0.5)}
     .card h3{margin:0 0 10px;color:var(--accent);font-size:1.1rem}
     .card p{margin:0;color:rgba(230,245,255,0.9);line-height:1.6}
 
     .powers{margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .power{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;text-align:center;border:1px solid rgba(108,255,197,0.06);transition:transform .28s ease,box-shadow .28s ease}
-    .power:hover{transform:translateY(-8px);box-shadow:0 18px 60px rgba(108,255,197,0.09)}
+    .power{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));padding:18px;border-radius:12px;text-align:center;border:1px solid rgba(207,166,60,0.08);transition:transform .28s ease,box-shadow .28s ease}
+    .power:hover{transform:translateY(-8px);box-shadow:0 18px 60px rgba(207,166,60,0.12)}
+    .power svg{width:48px;height:48px;margin-bottom:10px;filter:drop-shadow(0 6px 18px rgba(207,166,60,0.1))}
     .power h4{margin:6px 0 0;font-size:1rem}
     .power p{font-size:0.95rem;color:rgba(235,245,255,0.85)}
 
     .timeline{margin-top:48px;padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.18));border:1px solid rgba(255,255,255,0.03)}
     .timeline h3{color:var(--accent);margin:0 0 18px}
     .tl-list{position:relative;padding-left:18px}
-    .tl-list::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:3px;background:linear-gradient(180deg,var(--accent),rgba(168,255,240,0.5));border-radius:6px}
+    .tl-list::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:3px;background:linear-gradient(180deg,var(--accent),rgba(230,200,90,0.5));border-radius:6px}
     .tl-item{position:relative;margin:18px 0 28px;padding-right:24px}
-    .dot{position:absolute;left:-3px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 6px 20px rgba(108,255,197,0.18)}
+    .dot{position:absolute;left:-3px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 6px 20px rgba(207,166,60,0.18)}
     .tl-item time{display:block;font-weight:700;color:var(--accent-2);margin-bottom:6px}
     .tl-item p{margin:0;color:rgba(230,245,255,0.9)}
 
@@ -99,12 +99,13 @@
     @media (max-width:1000px){
       .hero-inner{flex-direction:column-reverse;align-items:center}
       .portrait{width:320px;height:360px}
-      .cards{grid-template-columns:1fr}
+      .cards{grid-template-columns:repeat(2,1fr)}
       .powers{grid-template-columns:repeat(2,1fr)}
     }
     @media (max-width:640px){
       .portrait{width:220px;height:300px}
-      .hero-meta h1{font-size:2.4rem}
+      .hero-meta h1{font-size:2.1rem}
+      .hero-meta h2{font-size:1rem}
       .cards{grid-template-columns:1fr}
       .powers{grid-template-columns:1fr}
     }
@@ -116,38 +117,46 @@
 <body>
 
 <header>
-  <div class="logo">توشان‌ورس</div>
+  <div class="logo">فرقهٔ حشاشین</div>
   <nav class="subnav">
     <a href="index.html">خانه</a>
-    <a href="#timeline">ساختار</a>
+    <a href="phase1.html">بازگشت به فاز ۱</a>
+    <a href="#structure">ساختار فرقه</a>
   </nav>
 </header>
 
 <section class="hero" id="hero">
   <div class="hero-bg" style="background-image:url('hashashin-bg.jpg')"></div>
-  <canvas id="energyCanvas" style="position:absolute;inset:0;z-index:3;pointer-events:none"></canvas>
 
   <div class="hero-inner reveal">
-    <div class="portrait" aria-hidden="true">
-      <img src="hashashin.png" alt="پیر خفا">
+    <div class="portrait">
+      <img src="pir-khafa.png" alt="پیر خفا">
     </div>
 
     <div class="hero-meta">
       <h1>پیر خفا</h1>
-      <h2>مقام اعظم فرقهٔ حشاشین</h2>
-      <p class="tagline">رهبر جاودانهٔ سایه‌ها — نمادی از قدرت، دانش و مرگ خاموش.</p>
+      <h2>Supreme Shadow</h2>
+      <p class="tagline">مقام اعظم فرقهٔ حشاشین — سایهٔ جاودانهٔ دانش و قدرت.</p>
 
-      <div class="cards">
-        <div class="card">
-          <h3>لقب</h3>
-          <p>پیر خفا — تاج سایه و مقام جاودانهٔ رهبر فرقه</p>
-        </div>
-        <div class="card">
-          <h3>نقش</h3>
-          <p>مظهر قدرت مطلق در سایه‌ها، آغازگر هر دوران نوین در تاریخ فرقه</p>
-        </div>
+      <div class="cta-row">
+        <a class="btn primary" href="hashashin-story.html">مطالعه داستان</a>
+        <a class="btn ghost" href="phase1.html">بازگشت به فاز ۱</a>
       </div>
 
+      <div class="cards" style="margin-top:28px">
+        <div class="card">
+          <h3>لقب</h3>
+          <p>پیر خفا — تجسم قدرت و حکمت در تاریکی‌ها</p>
+        </div>
+        <div class="card">
+          <h3>مقام</h3>
+          <p>رئیس فرقه و مرجع نهایی تصمیمات</p>
+        </div>
+        <div class="card">
+          <h3>راز</h3>
+          <p>هویت حقیقی مخفی است و فقط وارثان سایه قادر به چالش او هستند</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -156,57 +165,40 @@
   <div class="container" style="max-width:1200px;margin:0 auto">
 
     <article class="card reveal" style="padding:22px;margin-bottom:18px">
-      <h3 style="color:var(--accent);margin-bottom:10px">ساختار فرقه</h3>
-      <p>فرقهٔ حشاشین در دنیای توشان‌ورس بر اساس سه رکن اصلی — ساحران، معلمان و سربازان — بنا شده است. در رأس آن، مقام «پیر خفا» قرار دارد؛ نه یک شخص، بلکه عنوانی جاودانه که هر نسل توسط وارثان سایه به دست می‌آید.</p>
+      <h3 style="color:var(--accent);margin-bottom:10px">ارکان سه‌گانهٔ فرقه</h3>
+      <p><strong>۱. ساحران (جادوگران):</strong> تسلط بر علوم باطنی، طلسم و جادوی تاریک. جدا از ساختار فرماندهی و برای مشاورهٔ پنهان به پیر خفا.</p>
+      <p><strong>۲. معلمان:</strong> استادان دانش‌های فقهی، فلسفی، نظامی و قضاوت. حق ندارند پیر خفا شوند اما شاگردان نهایی را انتخاب می‌کنند.</p>
+      <p><strong>۳. سربازان:</strong> قلب تپندهٔ فرقه. مسیر پیشرفت سه طبقه: نوآموزان، مریدان و وارثان سایه.</p>
     </article>
 
-    <section class="powers reveal">
-      <h3 style="grid-column:1/-1;color:var(--accent);margin-bottom:10px">ارکان سه‌گانهٔ فرقه</h3>
-
-      <div class="power">
-        <h4>⚗️ ساحران</h4>
-        <p>استادان جادو، طلسم، توهم و سموم. خارج از ساختار فرماندهی و تنها مشاور پیر خفا.</p>
-      </div>
-
-      <div class="power">
-        <h4>📜 معلمان</h4>
-        <p>استادان فقه، قضاوت و نظامی. تربیت‌کنندهٔ سربازان و تعیین‌کنندهٔ وارثان نهایی.</p>
-      </div>
-
-      <div class="power">
-        <h4>🗡️ سربازان</h4>
-        <p>قلب تپندهٔ فرقه؛ از نوآموزان تا وارثان سایه که قدرت به چالش کشیدن پیر خفا را دارند.</p>
-      </div>
-    </section>
-
-    <section class="timeline reveal" id="timeline">
+    <section class="timeline reveal" id="structure">
       <h3>قانون جانشینی پیر خفا</h3>
       <div class="tl-list">
         <div class="tl-item">
           <span class="dot"></span>
-          <time>بند ۱</time>
-          <p>فقط وارثان سایه حق چالش با پیر خفا را دارند.</p>
+          <time>۱</time>
+          <p>تا زمانی که پیر خفا زنده است، هیچ‌کس جز وارثان سایه حق چالش ندارد.</p>
         </div>
         <div class="tl-item">
           <span class="dot"></span>
-          <time>بند ۲</time>
-          <p>هر وارثی که پیر خفا را شکست دهد، خود پیر خفا می‌شود.</p>
+          <time>۲</time>
+          <p>وارثی که پیر خفا را شکست دهد، خود «پیر خفا» می‌شود.</p>
         </div>
         <div class="tl-item">
           <span class="dot"></span>
-          <time>بند ۳</time>
-          <p>در صورت مرگ بی‌نبرد پیر خفا، وارثان در نبردی آیینی تا مرگ می‌جنگند.</p>
+          <time>۳</time>
+          <p>در صورت مرگ بدون نبرد، وارثان سایه با یکدیگر می‌جنگند تا بازمانده تاج سایه را بگیرد.</p>
         </div>
         <div class="tl-item">
           <span class="dot"></span>
-          <time>بند ۴</time>
-          <p>معلمان تنها ناظرند و حق دخالت ندارند.</p>
+          <time>۴</time>
+          <p>معلمان تنها ناظر نبردند و حق دخالت ندارند.</p>
         </div>
       </div>
     </section>
 
     <footer class="reveal">
-      © 2025 توشان‌ورس — همهٔ حقوق محفوظ است • سایه‌ها جاودانه‌اند
+      © 2025 توشان‌ورس — همهٔ حقوق محفوظ است • طراحی شده برای دنیای توشان‌ورس
     </footer>
   </div>
 </section>
@@ -214,50 +206,9 @@
 <script>
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if(e.isIntersecting) e.target.classList.add('in');
-    });
-  }, {threshold: 0.15});
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.12});
   revealEls.forEach(el => io.observe(el));
-
-  // افکت نور متحرک
-  const canvas = document.getElementById('energyCanvas');
-  const ctx = canvas.getContext('2d');
-  let width, height;
-  function resizeCanvas(){
-    width = canvas.width = canvas.offsetWidth;
-    height = canvas.height = canvas.offsetHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  let particles = [];
-  for(let i=0;i<100;i++){
-    particles.push({
-      x: Math.random()*width,
-      y: Math.random()*height,
-      dx: (Math.random()-0.5)*0.6,
-      dy: (Math.random()-0.5)*0.6,
-      radius: Math.random()*2+1
-    });
-  }
-
-  function animate(){
-    ctx.clearRect(0,0,width,height);
-    ctx.globalCompositeOperation = 'lighter';
-    particles.forEach(p=>{
-      p.x += p.dx;
-      p.y += p.dy;
-      if(p.x<0||p.x>width)p.dx*=-1;
-      if(p.y<0||p.y>height)p.dy*=-1;
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
-      ctx.fillStyle = 'rgba(108,255,197,0.6)';
-      ctx.fill();
-    });
-    requestAnimationFrame(animate);
-  }
-  animate();
 </script>
 
 </body>
