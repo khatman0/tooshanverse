@@ -1,179 +1,195 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>توشان‌ورس — تایم‌لاین</title>
-<link rel="icon" href="favicon.png" type="image/x-icon" />
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #070812;
-  --line-bg: #ffffff;
-  --line-active: #19a7ff;
-  --card-bg: rgba(10,12,18,0.6);
-  --shadow: rgba(25,167,255,0.12);
-  --accent-light: #9be3ff;
-  --transition: all 0.3s ease;
-}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>خط زمانی — توشان‌ورس</title>
+  <link rel="icon" href="favicon.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #05060d; /* Very dark */
+      --bg-2: #0a0f24; /* deep dark */
+      --accent: #4c9dff; /* آبی */
+      --accent-2: #8ac4ff; /* آبی روشن‌تر */
+      --muted: rgba(255,255,255,0.08);
+      --card-bg: rgba(10,12,18,0.6);
+      --glass: rgba(255,255,255,0.04);
+    }
 
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Vazirmatn', sans-serif;background:linear-gradient(180deg,#070812,#081229);color:#e9f6ff;line-height:1.6;padding:40px;}
-h1,h2,h3,h4{margin-bottom:12px;}
-a{text-decoration:none;color:inherit;}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Vazirmatn', Tahoma, sans-serif;
+      background: linear-gradient(180deg,var(--bg-1), var(--bg-2));
+      color:#e9f6ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+    }
+    a{color:inherit;text-decoration:none}
 
-header{margin-bottom:40px;text-align:center;}
-header h1{font-size:2.5rem;color:var(--line-active);margin-bottom:6px;}
-header p{color:var(--accent-light);font-size:1.1rem;}
+    header{
+      position:fixed;top:16px;left:16px;right:16px;z-index:40;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .logo{font-weight:700;font-size:1rem}
+    .subnav{display:flex;gap:14px;align-items:center}
+    .subnav a{background:var(--glass);padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);font-size:0.95rem}
 
-/* Timeline */
-.timeline{position:relative;max-width:900px;margin:0 auto;padding-left:20px;}
-.timeline::before{
-  content:'';position:absolute;left:10px;top:0;width:3px;height:100%;background:var(--line-bg);border-radius:3px;
-}
+    .timeline-wrapper{
+      max-width:800px;
+      margin:140px auto 60px;
+      padding:30px 20px;
+    }
 
-/* active line with moving glow */
-.line-active {
-  position:absolute;
-  left:10px;
-  top:0;
-  width:3px;
-  height:0; /* will be set by JS */
-  background: var(--line-active);
-  border-radius:3px;
-  transition:height 0.4s ease;
-  overflow:hidden;
-}
-.line-active::after {
-  content:'';
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
-  animation: glowMove 2s linear infinite;
-}
+    .timeline-header{
+      text-align:center;
+      margin-bottom:40px;
+    }
+    .timeline-header h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:2.8rem;
+      color:var(--accent);
+      text-shadow:0 6px 30px rgba(76,157,255,0.1);
+      margin:0;
+    }
+    .timeline-header p{
+      color:var(--accent-2);
+      margin-top:6px;
+      font-size:1.1rem;
+    }
 
-@keyframes glowMove {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
+    .timeline{
+      padding:22px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.18));
+      border:1px solid rgba(255,255,255,0.03);
+      position:relative;
+    }
+    .tl-list{
+      position:relative;
+      padding-left:18px;
+    }
+    .tl-list::before{
+      content:'';
+      position:absolute;
+      left:8px;
+      top:8px;
+      bottom:8px;
+      width:3px;
+      background:linear-gradient(180deg,var(--accent),rgba(138,196,255,0.5));
+      border-radius:6px;
+      overflow:hidden;
+    }
 
-.tl-item{
-  display:flex;
-  gap:16px;
-  align-items:flex-start;
-  position:relative;
-  margin-bottom:40px;
-  padding-right:20px;
-  opacity:0; transform:translateY(20px); transition:var(--transition);
-}
-.tl-item.in{opacity:1;transform:none;}
-.tl-item::before{
-  content:'';position:absolute;left:-7px;top:5px;width:14px;height:14px;background:var(--line-bg);border-radius:50%;box-shadow:0 4px 12px var(--shadow);z-index:2;
-}
-.tl-item.active::before{
-  background: var(--line-active);
-}
+    /* انیمیشن خط نور */
+    .tl-list::after{
+      content:'';
+      position:absolute;
+      left:7px;
+      top:0;
+      width:5px;
+      height:40px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.8),rgba(76,157,255,0));
+      border-radius:6px;
+      animation: lightmove 4s linear infinite;
+    }
+    @keyframes lightmove {
+      0% { transform: translateY(0); opacity:1;}
+      100% { transform: translateY(100%); opacity:0;}
+    }
 
-.tl-image{
-  flex:0 0 120px;
-  height:80px;
-  border-radius:8px;
-  object-fit:cover;
-  box-shadow:0 4px 20px var(--shadow);
-  border:1px solid rgba(155,227,255,0.06);
-}
+    .tl-item{
+      position:relative;
+      margin:18px 0 28px;
+      padding-right:24px;
+    }
+    .dot{
+      position:absolute;
+      left:-3px;
+      top:6px;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 6px 20px rgba(76,157,255,0.18);
+    }
+    .tl-item time{
+      display:block;
+      font-weight:700;
+      color:var(--accent-2);
+      margin-bottom:6px;
+    }
+    .tl-item p{
+      margin:0;
+      color:rgba(230,245,255,0.9);
+    }
 
-.tl-content{flex:1;}
-.tl-content time{display:block;font-weight:700;color:var(--accent-light);margin-bottom:6px;}
-.tl-content p{
-  background:var(--card-bg);
-  padding:12px 16px;
-  border-radius:12px;
-  border:1px solid rgba(155,227,255,0.06);
-  box-shadow:0 6px 20px rgba(2,6,23,0.5);
-}
+    footer{
+      margin-top:60px;
+      padding:40px 20px;
+      color:rgba(200,220,255,0.6);
+      text-align:center;
+    }
 
-footer{margin-top:60px;padding:40px 20px;color:rgba(200,220,255,0.6);text-align:center;border-top:1px solid rgba(155,227,255,0.08);}
-
-@media(max-width:700px){
-  .tl-item{flex-direction:column;align-items:flex-start;}
-  .tl-image{width:100%;height:200px;}
-}
-</style>
+    .reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
+    .reveal.in{opacity:1;transform:none}
+  </style>
 </head>
 <body>
 
 <header>
-  <h1>تایم‌لاین لرد فیزیکا</h1>
-  <p>لحظات کلیدی و مهم در دنیای توشان‌ورس</p>
+  <div class="logo">توشان‌ورس</div>
+  <nav class="subnav">
+    <a href="index.html">خانه</a>
+    <a href="phase1.html">بازگشت به فاز ۱</a>
+  </nav>
 </header>
 
-<section class="timeline" id="timeline">
-  <!-- active line -->
-  <div class="line-active" id="lineActive"></div>
-
-  <div class="tl-item active">
-    <img src="event1.jpg" alt="آغاز تحقیقات" class="tl-image">
-    <div class="tl-content">
-      <time>سال ۱۳۸۸ - آغاز تحقیقات</time>
-      <p>شروع پژوهش‌های مخفی روی معادلات تغییرپذیری که منجر به اولین آزمون میدانی شد.</p>
-    </div>
+<section class="timeline-wrapper reveal">
+  <div class="timeline-header">
+    <h1>خط زمانی</h1>
+    <p>مرور لحظات سرنوشت‌ساز در جهان توشان‌ورس</p>
   </div>
 
-  <div class="tl-item active">
-    <img src="event2.jpg" alt="نبرد کاتالیزور" class="tl-image">
-    <div class="tl-content">
-      <time>سال ۱۳۹۲ - نبرد کاتالیزور</time>
-      <p>برخورد نخست با شبکهٔ حشاشین که اولین نمایش خونین توانایی‌ها بود.</p>
-    </div>
-  </div>
-
-  <div class="tl-item">
-    <img src="event3.jpg" alt="معاهده بی‌نهایت" class="tl-image">
-    <div class="tl-content">
-      <time>سال ۱۳۹۶ - معاهدهٔ بی‌نهایت</time>
-      <p>پیشنهاد یک قرارداد برای کنترل توانایی‌ها که با مخالفت گروهی از هم‌رزمان مواجه شد.</p>
-    </div>
-  </div>
-
-  <div class="tl-item">
-    <img src="event4.jpg" alt="انفجار انرژی" class="tl-image">
-    <div class="tl-content">
-      <time>سال ۱۳۹۹ - انفجار انرژی</time>
-      <p>آزمون مهارت‌ها در میدان باز با نتیجه‌ای غیرمنتظره و کنترل نشده.</p>
+  <div class="timeline">
+    <div class="tl-list">
+      <div class="tl-item">
+        <span class="dot"></span>
+        <time>سال ۱۳۸۹</time>
+        <p>آغاز وقایع اولیه و شکل‌گیری اولین نیروهای فرابشری.</p>
+      </div>
+      <div class="tl-item">
+        <span class="dot"></span>
+        <time>سال ۱۳۹۲</time>
+        <p>اولین نبرد بزرگ میان گروه‌های ابرقهرمانی.</p>
+      </div>
+      <div class="tl-item">
+        <span class="dot"></span>
+        <time>سال ۱۳۹۸</time>
+        <p>تشکیل اتحاد جهانی توشان‌ورس و آغاز عصر جدید.</p>
+      </div>
+      <div class="tl-item">
+        <span class="dot"></span>
+        <time>سال ۱۴۰۴</time>
+        <p>رویداد سرنوشت‌ساز و نقطهٔ عطف در تاریخ قدرت‌ها.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<footer>
-  © 2025 توشان‌ورس — همهٔ حقوق محفوظ است
+<footer class="reveal">
+  © 2025 توشان‌ورس — همهٔ حقوق محفوظ است • طراحی خط زمانی با استایل آبی
 </footer>
 
 <script>
-  // Reveal on scroll
-  const items = document.querySelectorAll('.tl-item');
-  const observer = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('in'); }
-    });
-  }, {threshold:0.2});
-  items.forEach(i=>observer.observe(i));
-
-  // Active line height calculation
-  function updateLine(){
-    const line = document.getElementById('lineActive');
-    const activeItems = document.querySelectorAll('.tl-item.active');
-    if(activeItems.length === 0) return;
-    const last = activeItems[activeItems.length-1];
-    const timeline = document.getElementById('timeline');
-    const height = last.offsetTop + last.offsetHeight/2;
-    line.style.height = height + 'px';
-  }
-  updateLine();
-  window.addEventListener('resize', updateLine);
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.12});
+  revealEls.forEach(el => io.observe(el));
 </script>
 
 </body>
