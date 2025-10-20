@@ -1,257 +1,122 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>توشان‌چت | Tooshan Chat</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>چت آنلاین — توشان‌ورس</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Vazirmatn', sans-serif;
-      background: linear-gradient(135deg, #3e0f0f, #5c1a1a, #2b0a0a);
-      color: #f0c040;
-      margin: 0;
-      padding: 0;
-      direction: rtl;
+    :root{
+      --bg: #0a0f2a;
+      --card-bg: rgba(20,40,70,0.6);
+      --accent: #4aa3ff;
+      --muted: rgba(255,255,255,0.1);
     }
-    header, footer {
-      text-align: center;
-      background-color: #1a1a1a;
-      padding: 20px 20px;
-      position: relative;
-      box-shadow: 0 2px 5px #ff990044;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Vazirmatn',sans-serif;
+      background: linear-gradient(180deg,#0a0f2a,#06112b);
+      color:#fff;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
     }
-    h1 {
-      color: #ff9900;
-      margin: 0;
-      padding: 10px 0;
+    header{
+      padding:16px;
+      font-size:1.2rem;
+      font-weight:700;
+      color:var(--accent);
+      border-bottom:1px solid var(--muted);
     }
-    .menu-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 30px;
-      height: 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      cursor: pointer;
-      z-index: 1000;
+    #chatContainer{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      padding:16px;
+      overflow-y:auto;
+      gap:8px;
     }
-    .menu-btn div {
-      height: 4px;
-      background-color: #f0c040;
-      border-radius: 2px;
+    .message{
+      background:var(--card-bg);
+      padding:10px 14px;
+      border-radius:10px;
+      max-width:70%;
+      word-wrap:break-word;
     }
-    .menu {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background: #1a1a1a;
-      padding: 10px 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ff9900;
-      z-index: 999;
-      min-width: 150px;
-      text-align: right;
+    .message.self{
+      margin-left:auto;
+      background:#1e3f7f;
     }
-    .menu a {
-      display: block;
-      padding: 8px 0;
-      color: #f0c040;
-      text-decoration: none;
-      cursor: pointer;
+    #inputRow{
+      display:flex;
+      border-top:1px solid var(--muted);
     }
-    .menu a:hover {
-      color: #fff;
+    #msgInput{
+      flex:1;
+      padding:12px;
+      border:none;
+      background:var(--card-bg);
+      color:#fff;
+      border-radius:0;
+      font-size:1rem;
     }
-    main {
-      max-width: 700px;
-      margin: 20px auto 40px auto;
-      background: #1a1a1a;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 0 20px #ff9900aa;
-      height: 70vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    #sendBtn{
+      padding:12px 16px;
+      border:none;
+      background:var(--accent);
+      color:#111;
+      cursor:pointer;
+      font-weight:600;
     }
-    #messages {
-      flex-grow: 1;
-      overflow-y: auto;
-      border: 1px solid #ff990033;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      background: #2b0a0a;
-      color: #f0c040;
-      font-size: 16px;
-    }
-    #messages p {
-      margin: 5px 0;
-      padding: 6px 10px;
-      background: #3e0f0f;
-      border-radius: 10px;
-      max-width: 80%;
-      word-wrap: break-word;
-    }
-    #messages p.you {
-      background: #ff9900;
-      color: #111;
-      align-self: flex-end;
-    }
-    #usernameForm, #chatForm {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-      justify-content: center;
-      direction: rtl;
-    }
-    #usernameInput, #messageInput {
-      flex-grow: 1;
-      padding: 10px 15px;
-      font-size: 16px;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-    }
-    #usernameSubmit, #sendBtn {
-      background-color: #ff9900;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 25px;
-      color: #111;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    #usernameSubmit:hover, #sendBtn:hover {
-      background-color: #e68a00;
-    }
-    footer {
-      color: #f0c040;
-      font-size: 14px;
-      padding: 10px;
-      background-color: #1a1a1a;
-      text-align: center;
-      box-shadow: 0 -2px 5px #ff990044;
-    }
+    #sendBtn:hover{opacity:0.9}
   </style>
 </head>
 <body>
-  <header>
-    <h1>توشان‌چت</h1>
-    <p>برای استفاده از این قسمت لطفا از IP های غیر از ایران استفاده کنید</p>
-    <div class="menu-btn" id="menu-btn">
-      <div></div><div></div><div></div>
-    </div>
-    <nav class="menu" id="menu">
-      <a id="homeBtn" href="#">خانه</a>
-      <a href="photos.html">عکس‌ها</a>
-      <a href="#">ساخته‌های هوش مصنوعی</a>
-      <a href="about.html">درباره ما</a>
-      <a href="#">گفتگو با من</a>
-    </nav>
-  </header>
 
-  <main>
-    <div id="usernameArea">
-      <form id="usernameForm">
-        <input type="text" id="usernameInput" placeholder="نام کاربری خود را وارد کنید" autocomplete="off" required />
-        <button type="submit" id="usernameSubmit">شروع چت</button>
-      </form>
-    </div>
+<header>چت آنلاین — توشان‌ورس</header>
 
-    <div id="chatArea" style="display:none; flex-direction: column; height: 100%;">
-      <div id="messages"></div>
-      <form id="chatForm">
-        <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..." autocomplete="off" required />
-        <button type="submit" id="sendBtn">ارسال</button>
-      </form>
-    </div>
-  </main>
+<div id="chatContainer"></div>
 
-  <footer>
-    <p>تمام حقوق متعلق به توشان استودیو © 2025</p>
-  </footer>
+<div id="inputRow">
+  <input type="text" id="msgInput" placeholder="پیام خود را بنویسید...">
+  <button id="sendBtn">ارسال</button>
+</div>
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script>
+  // --------- این قسمت باید با سرور شما مطابقت داشته باشد ---------
+  // فرض: کاربر قبلاً وارد شده و یک نام کاربری داریم
+  const username = localStorage.getItem('username') || 'کاربر ناشناس';
 
-  <script>
-    // منوی همبرگری
-    const menuBtn = document.getElementById('menu-btn');
-    const menu = document.getElementById('menu');
-    menuBtn.addEventListener('click', () => {
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    });
+  const chatContainer = document.getElementById('chatContainer');
+  const msgInput = document.getElementById('msgInput');
+  const sendBtn = document.getElementById('sendBtn');
 
-    // تنظیمات Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyBI9L7fSuounX5Dy4fJNbjNJQg3grRAafk",
-      authDomain: "tooshanchat.firebaseapp.com",
-      databaseURL: "https://tooshanchat-default-rtdb.firebaseio.com",
-      projectId: "tooshanchat",
-      storageBucket: "tooshanchat.firebasestorage.app",
-      messagingSenderId: "444788859489",
-      appId: "1:444788859489:web:ecc4619d8ce56136b00020",
-      measurementId: "G-KWZMRPN48E"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+  // اتصال WebSocket به سرور
+  const ws = new WebSocket('ws://localhost:3000'); // جایگزین سرور خودت
 
-    const usernameForm = document.getElementById('usernameForm');
-    const usernameInput = document.getElementById('usernameInput');
-    const chatArea = document.getElementById('chatArea');
-    const messagesDiv = document.getElementById('messages');
-    const chatForm = document.getElementById('chatForm');
-    const messageInput = document.getElementById('messageInput');
+  ws.onopen = ()=> console.log('اتصال برقرار شد');
 
-    let currentUsername = null;
+  ws.onmessage = (event)=>{
+    const data = JSON.parse(event.data);
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message');
+    if(data.username === username) msgDiv.classList.add('self');
+    msgDiv.innerHTML = `<strong>${data.username}</strong>: ${data.text}`;
+    chatContainer.appendChild(msgDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
 
-    usernameForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const username = usernameInput.value.trim();
-      if (!username) return alert("لطفا نام کاربری وارد کنید.");
-      currentUsername = username;
-      document.getElementById('usernameArea').style.display = 'none';
-      chatArea.style.display = 'flex';
-      messageInput.focus();
-      loadMessages();
-    });
+  sendBtn.addEventListener('click', sendMessage);
+  msgInput.addEventListener('keypress', (e)=>{ if(e.key==='Enter') sendMessage(); });
 
-    function loadMessages() {
-      db.ref('tooshanchat/messages').off();
-      messagesDiv.innerHTML = '';
-      db.ref('tooshanchat/messages').on('child_added', snapshot => {
-        const msg = snapshot.val();
-        displayMessage(msg.username, msg.text);
-      });
-    }
+  function sendMessage(){
+    const text = msgInput.value.trim();
+    if(!text) return;
+    ws.send(JSON.stringify({username,text}));
+    msgInput.value = '';
+  }
+</script>
 
-    function displayMessage(username, text) {
-      const p = document.createElement('p');
-      p.textContent = username + ": " + text;
-      if (username === currentUsername) {
-        p.classList.add('you');
-      }
-      messagesDiv.appendChild(p);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    chatForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const text = messageInput.value.trim();
-      if (!text || !currentUsername) return;
-      db.ref('tooshanchat/messages').push({
-        username: currentUsername,
-        text: text
-      });
-      messageInput.value = '';
-    });
-  </script>
 </body>
 </html>
