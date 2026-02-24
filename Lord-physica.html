@@ -368,6 +368,21 @@ const sideNavLinks = document.querySelectorAll('.side-nav a');
 sideNavLinks.forEach(link=>link.addEventListener('click',closeMenu));
 hamburger.addEventListener('click', ()=>{ sideNav.classList.contains('active')?closeMenu():openMenu(); });
 overlay.addEventListener('click', closeMenu);
+
+// swipe support
+let startTouchX=0, currentX=0, touching=false;
+sideNav.addEventListener('touchstart', e=>{ touching=true; startTouchX=e.touches[0].clientX; });
+sideNav.addEventListener('touchmove', e=>{
+  if(!touching) return;
+  currentX = e.touches[0].clientX;
+  const deltaX = currentX-startTouchX;
+  if(deltaX<0){ sideNav.style.left=Math.max(-280,deltaX)+'px'; overlay.style.opacity=1+deltaX/280; }
+});
+sideNav.addEventListener('touchend', e=>{
+  touching=false;
+  if(currentX-startTouchX<-80) closeMenu();
+  else sideNav.style.left='0px';
+});
 </script>
 
 </body>
