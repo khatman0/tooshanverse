@@ -1,203 +1,193 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>لرد فیزیکا — توشان‌ورس</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لرد فیزیکا — توشان‌ورس</title>
+  <link rel="icon" href="favicon.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #0a0a0a; /* Very dark gray */
+      --bg-2: #1a1a1a; /* deep gray */
+      --accent: #b0b0b0; /* main gray accent */
+      --accent-2: #d9d9d9; /* lighter gray */
+      --muted: rgba(255,255,255,0.08);
+      --card-bg: rgba(20,20,20,0.6);
+      --glass: rgba(255,255,255,0.04);
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Vazirmatn', Tahoma, sans-serif;
+      background: linear-gradient(180deg,var(--bg-1), var(--bg-2));
+      color:#efefef;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+    }
 
-<style>
-:root{
-  --bg-1:#0a0a0a;
-  --bg-2:#1a1a1a;
-  --accent:#b0b0b0;
-  --accent-2:#d9d9d9;
-  --glass:rgba(255,255,255,0.04);
-}
+    a{color:inherit;text-decoration:none}
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:'Vazirmatn',sans-serif;
-  background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
-  color:#efefef;
-}
+    header{
+      position:fixed;top:16px;left:16px;right:16px;z-index:40;
+      display:flex;align-items:center;justify-content:space-between;
+      pointer-events:auto;
+    }
+    .logo{font-weight:700;font-size:1rem;letter-spacing:0.6px}
+    .subnav{display:flex;gap:14px;align-items:center}
+    .subnav a{background:var(--glass);padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);font-size:0.95rem}
 
-/* ================= HEADER ================= */
+    .hero{
+      position:relative;min-height:78vh;display:flex;align-items:center;justify-content:center;padding:80px 24px;
+      overflow:hidden;
+    }
 
-header{
-  position:fixed;
-  top:16px;
-  right:16px;
-  z-index:42;
-}
+    .hero-bg{
+      position:absolute;inset:0;z-index:0;background-size:cover;background-position:center center;transition:opacity 0.9s ease, filter 0.9s ease;
+      filter:brightness(0.45) saturate(1.05) contrast(1.05);
+    }
 
-.logo{
-  font-weight:700;
-  font-size:1.1rem;
-  background:var(--glass);
-  padding:8px 14px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.05);
-}
+    .hero::after{
+      content:"";position:absolute;inset:-20% -40%;z-index:1;pointer-events:none;
+      background:linear-gradient(120deg, rgba(176,176,176,0.06), rgba(217,217,217,0.06) 30%, rgba(255,255,255,0.02));
+      transform:rotate(10deg);mix-blend-mode:screen;animation:slidelight 12s linear infinite;
+    }
+    @keyframes slidelight{0%{transform:translateX(-30%) rotate(10deg)}50%{transform:translateX(30%) rotate(10deg)}100%{transform:translateX(-30%) rotate(10deg)}}
 
-/* ================= HAMBURGER ================= */
+    .hero-inner{position:relative;z-index:5;display:flex;gap:36px;align-items:center;max-width:1200px;width:100%;}
 
+    .portrait{
+      flex:0 0 320px;height:420px;border-radius:16px;overflow:hidden;border:1px solid rgba(176,176,176,0.12);box-shadow:0 30px 80px rgba(2,6,23,0.6);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex;align-items:center;justify-content:center;
+    }
+    .portrait img{width:100%;height:100%;object-fit:cover;display:block;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.6))}
+
+    .hero-meta{flex:1;}
+    .hero-meta h1{font-family:'Orbitron',sans-serif;font-size:3.6rem;margin:0 0 6px;color:var(--accent);text-shadow:0 6px 30px rgba(176,176,176,0.08)}
+    .hero-meta h2{margin:0;color:var(--accent-2);opacity:0.85;font-weight:600}
+    .tagline{margin-top:14px;font-size:1.05rem;color:rgba(235,235,235,0.9);max-width:72%}
+
+    .cta-row{margin-top:26px;display:flex;gap:12px;align-items:center}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.06);transition:all .25s ease}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#d9d9d9);color:#111;box-shadow:0 8px 30px rgba(176,176,176,0.12)}
+    .btn.ghost{background:transparent;color:#f0f0f0;border:1px solid rgba(255,255,255,0.06)}
+    .btn:hover{transform:translateY(-3px)}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+    .card{background:var(--card-bg);backdrop-filter:blur(6px);padding:18px;border-radius:12px;border:1px solid rgba(200,200,200,0.06);box-shadow:0 10px 30px rgba(2,6,23,0.5)}
+    .card h3{margin:0 0 10px;color:var(--accent);font-size:1.1rem}
+    .card p{margin:0;color:rgba(235,235,235,0.9);line-height:1.6}
+
+    .powers{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .power{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;text-align:center;border:1px solid rgba(176,176,176,0.06);transition:transform .28s ease,box-shadow .28s ease}
+    .power:hover{transform:translateY(-8px);box-shadow:0 18px 60px rgba(176,176,176,0.09)}
+    .power svg{width:48px;height:48px;margin-bottom:10px;filter:drop-shadow(0 6px 18px rgba(176,176,176,0.08))}
+    .power h4{margin:6px 0 0;font-size:1rem}
+    .power p{font-size:0.95rem;color:rgba(230,230,230,0.85)}
+
+    .timeline{margin-top:48px;padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.18));border:1px solid rgba(255,255,255,0.03)}
+    .timeline h3{color:var(--accent);margin:0 0 18px}
+    .tl-list{position:relative;padding-left:18px}
+    .tl-list::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:3px;background:linear-gradient(180deg,var(--accent),rgba(217,217,217,0.5));border-radius:6px}
+    .tl-item{position:relative;margin:18px 0 28px;padding-right:24px}
+    .dot{position:absolute;left:-3px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 6px 20px rgba(176,176,176,0.18)}
+    .tl-item time{display:block;font-weight:700;color:var(--accent-2);margin-bottom:6px}
+    .tl-item p{margin:0;color:rgba(230,230,230,0.9)}
+
+    .appear{margin-top:40px}
+    .appear-grid{display:flex;gap:12px;flex-wrap:wrap}
+    .appear-item{width:160px;height:90px;border-radius:8px;overflow:hidden;background-size:cover;background-position:center;border:1px solid rgba(255,255,255,0.04)}
+
+    footer{margin-top:60px;padding:40px 20px;color:rgba(200,200,200,0.6);text-align:center}
+
+    @media (max-width:1000px){
+      .hero-inner{flex-direction:column-reverse;align-items:center}
+      .portrait{width:320px;height:360px}
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .powers{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      .portrait{width:220px;height:300px}
+      .hero-meta h1{font-size:2.1rem}
+      .hero-meta h2{font-size:1rem}
+      .cards{grid-template-columns:1fr}
+      .powers{grid-template-columns:1fr}
+    }
+
+    .reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
+    .reveal.in{opacity:1;transform:none}
+    /* hamburger */
 .hamburger{
-  position:fixed;
-  top:16px;
-  left:16px;
-  z-index:43;
-  width:36px;
-  height:36px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-around;
+  position:fixed;top:16px;left:16px;z-index:41;
+  width:36px;height:36px;display:flex;flex-direction:column;justify-content:space-around;
   cursor:pointer;
 }
 .hamburger span{
-  height:4px;
-  width:100%;
+  display:block;height:4px;width:100%;
   background:var(--accent);
-  border-radius:3px;
-  transition:.3s;
+  border-radius:2px;transition:all 0.3s ease;
 }
-.hamburger.active span:nth-child(1){
-  transform:rotate(45deg) translate(6px,6px);
-}
-.hamburger.active span:nth-child(2){
-  opacity:0;
-}
-.hamburger.active span:nth-child(3){
-  transform:rotate(-45deg) translate(6px,-6px);
-}
-
-/* ================= SIDE NAV ================= */
-
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
+.hamburger.active span:nth-child(2){opacity:0;}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+    /* ===== Side Navigation ===== */
 .side-nav{
   position:fixed;
   top:0;
   left:-280px;
-  width:280px;
+  width:260px;
   height:100%;
-  padding:90px 24px;
+  background:#111;
+  padding:80px 20px;
   display:flex;
   flex-direction:column;
-  gap:22px;
-  transition:left .35s ease;
-  z-index:41;
-
-  background:linear-gradient(
-    180deg,
-    rgba(20,20,20,0.95),
-    rgba(10,10,10,0.98)
-  );
-  backdrop-filter:blur(12px);
-  box-shadow:20px 0 60px rgba(0,0,0,0.6);
+  gap:18px;
+  transition:left 0.3s ease;
+  z-index:42;
+  border-right:1px solid rgba(255,255,255,0.06);
 }
 
 .side-nav a{
   color:#eee;
-  font-size:1.05rem;
-  padding:10px;
-  border-radius:8px;
-  transition:.25s;
-}
-.side-nav a:hover{
-  background:rgba(255,255,255,0.06);
-  transform:translateX(-6px);
+  font-size:1rem;
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
 }
 
 .side-nav.active{
   left:0;
 }
 
-/* ================= OVERLAY ================= */
-
+/* ===== Overlay ===== */
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.65);
+  background:rgba(0,0,0,0.5);
   backdrop-filter:blur(4px);
   opacity:0;
   pointer-events:none;
-  transition:opacity .3s ease;
-  z-index:40;
+  transition:opacity 0.3s ease;
+  z-index:41;
 }
+
 .overlay.active{
   opacity:1;
   pointer-events:auto;
 }
-
-/* ================= HERO ================= */
-
-.hero{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:120px 20px 40px;
-  text-align:center;
-}
-
-.hero h1{
-  font-family:'Orbitron',sans-serif;
-  font-size:3rem;
-  color:var(--accent);
-  margin-bottom:10px;
-}
-.hero h2{
-  color:var(--accent-2);
-  margin:0;
-}
-
-.cta-row{
-  margin-top:25px;
-  display:flex;
-  justify-content:center;
-  gap:14px;
-  flex-wrap:wrap;
-}
-
-.btn{
-  padding:12px 20px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.1);
-  font-weight:600;
-  cursor:pointer;
-  transition:.25s;
-}
-.btn.primary{
-  background:linear-gradient(90deg,var(--accent),#d9d9d9);
-  color:#111;
-}
-.btn.ghost{
-  background:transparent;
-  color:#fff;
-}
-.btn:hover{
-  transform:translateY(-3px);
-}
-
-/* responsive */
-@media(max-width:640px){
-  .hero h1{font-size:2.2rem}
-}
-
-</style>
+  </style>
 </head>
-
 <body>
-
+  
 <div class="hamburger" id="hamburgerBtn">
   <span></span>
   <span></span>
   <span></span>
 </div>
-
 <div class="overlay" id="overlay"></div>
-
 <nav class="side-nav" id="sideNav">
   <a href="#hero">خانه</a>
   <a href="#heroes">قهرمانان</a>
@@ -209,19 +199,37 @@ header{
 
 <header>
   <div class="logo">توشان‌ورس</div>
+  <nav class="subnav">
+    <a href="index.html">خانه</a>
+    <a href="phase1.html">بازگشت به فاز ۱</a>
+    <a href="#appearances">حضورها</a>
+  </nav>
 </header>
 
 <section class="hero" id="hero">
-  <div>
-    <h1>لرد فیزیکا</h1>
-    <h2>Lord Physica</h2>
+  <!-- Replace 'lord-physica-hero.jpg' with your hero image (1200x900 recommended) -->
+  <div class="hero-bg" id="heroBg" style="background-image:url('hhfgghjj.jpg')"></div>
 
-    <div class="cta-row">
-      <a class="btn primary" href="story/story1.html">مطالعه داستان</a>
-      <a class="btn ghost" href="phase1.html">بازگشت به فاز ۱</a>
+  <!-- canvas for subtle particles (energy dust) -->
+  <canvas id="energyCanvas" style="position:absolute;inset:0;z-index:3;pointer-events:none"></canvas>
+
+  <div class="hero-inner reveal" id="heroInner">
+    <div class="portrait" aria-hidden="true">
+      <!-- Replace with portrait PNG/WEBP of the character -->
+      <img src="hero1.jpg" alt="پرتره لرد فیزیکا">
     </div>
-  </div>
-   <div class="cards" style="margin-top:28px">
+
+    <div class="hero-meta">
+      <h1>لرد فیزیکا</h1>
+      <h2>Lord Physica</h2>
+      <p class="tagline">ارباب قوانین فیزیک — کسی که با بازنویسی معادلات، میدان‌ها را به فرمان خود درمی‌آورد.</p>
+
+      <div class="cta-row">
+        <a class="btn primary" href="story1.html">مطالعه داستان</a>
+        <a class="btn ghost" href="phase1.html">بازگشت به فاز ۱</a>
+      </div>
+
+      <div class="cards" style="margin-top:28px">
         <div class="card">
           <h3>لقب</h3>
           <p>ارباب قوانین — نماد نظم و بازتاب عقل بر میدان</p>
@@ -316,9 +324,79 @@ header{
 </section>
 
 <script>
-const hamburger=document.getElementById('hamburgerBtn');
-const sideNav=document.getElementById('sideNav');
-const overlay=document.getElementById('overlay');
+  // ---------- Small utilities: reveal on scroll ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.12});
+  revealEls.forEach(el => io.observe(el));
+
+  // ---------- subtle particle energy on hero (canvas) ----------
+  (() => {
+    const canvas = document.getElementById('energyCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+
+    const particles = [];
+    const count = Math.floor(Math.min(80, w/12));
+
+    function rand(min,max){return Math.random()*(max-min)+min}
+
+    for(let i=0;i<count;i++){
+      particles.push({x:rand(0,w),y:rand(0,h),vx:rand(-0.2,0.2),vy:rand(-0.15,0.15),r:rand(0.6,2.2),alpha:rand(0.03,0.12)});
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      for(let p of particles){
+        p.x += p.vx; p.y += p.vy;
+        if(p.x<0) p.x=w; if(p.x>w) p.x=0; if(p.y<0) p.y=h; if(p.y>h) p.y=0;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = 'rgba(25,167,255,'+p.alpha+')'; ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    window.addEventListener('resize', ()=>{
+      w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight;
+    });
+  })();
+
+  // ---------- interactive hero background swap on hover ----------
+  (function(){
+    const heroBg = document.getElementById('heroBg');
+    const heroInner = document.getElementById('heroInner');
+    const portraitImg = document.querySelector('.portrait img');
+    // Preload images (listed in HTML as filenames). If missing, nothing breaks.
+    const imgs = ['lord-physica-hero.jpg','lp-event1.jpg','lp-event2.jpg','lp-event3.jpg'];
+    imgs.forEach(src=>{const i=new Image(); i.src=src;});
+
+    // make the portrait pulse effect on hover
+    heroInner.addEventListener('mouseenter', ()=>{
+      portraitImg.style.transform = 'scale(1.02)';
+      portraitImg.style.transition = 'transform .45s ease';
+    });
+    heroInner.addEventListener('mouseleave', ()=>{portraitImg.style.transform='scale(1)'});
+  })();
+
+  // ---------- smooth scroll for anchor links ----------
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      const href = a.getAttribute('href');
+      if(href.length>1){
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if(target) target.scrollIntoView({behavior:'smooth'});
+      }
+    });
+  });
+// Hamburger menu
+const hamburger = document.getElementById('hamburgerBtn');
+const sideNav = document.getElementById('sideNav');
+const overlay = document.getElementById('overlay');
 
 function openMenu(){
   hamburger.classList.add('active');
@@ -330,14 +408,25 @@ function closeMenu(){
   sideNav.classList.remove('active');
   overlay.classList.remove('active');
 }
+const sideNavLinks = document.querySelectorAll('.side-nav a');
+sideNavLinks.forEach(link=>link.addEventListener('click',closeMenu));
+hamburger.addEventListener('click', ()=>{ sideNav.classList.contains('active')?closeMenu():openMenu(); });
+overlay.addEventListener('click', closeMenu);
 
-hamburger.addEventListener('click',()=>{
-  sideNav.classList.contains('active')?closeMenu():openMenu();
+// swipe support
+let startTouchX=0, currentX=0, touching=false;
+sideNav.addEventListener('touchstart', e=>{ touching=true; startTouchX=e.touches[0].clientX; });
+sideNav.addEventListener('touchmove', e=>{
+  if(!touching) return;
+  currentX = e.touches[0].clientX;
+  const deltaX = currentX-startTouchX;
+  if(deltaX<0){ sideNav.style.left=Math.max(-280,deltaX)+'px'; overlay.style.opacity=1+deltaX/280; }
 });
-overlay.addEventListener('click',closeMenu);
-
-document.querySelectorAll('.side-nav a')
-.forEach(link=>link.addEventListener('click',closeMenu));
+sideNav.addEventListener('touchend', e=>{
+  touching=false;
+  if(currentX-startTouchX<-80) closeMenu();
+  else sideNav.style.left='0px';
+});
 </script>
 
 </body>
