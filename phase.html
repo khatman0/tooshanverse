@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tooshanverse Timeline</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Vazirmatn', sans-serif;
+    background:#0f0f0f;
+    color:#fff;
+}
+
+.container{
+    width:90%;
+    max-width:1000px;
+    margin:60px auto;
+}
+
+h1{
+    text-align:center;
+    color:#f5b942;
+    margin-bottom:50px;
+}
+
+.phase{
+    background:#1a1a1a;
+    border-radius:12px;
+    margin-bottom:25px;
+    overflow:hidden;
+    box-shadow:0 0 15px rgba(0,0,0,0.6);
+    transition:0.3s;
+}
+
+.phase-header{
+    padding:18px 25px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:18px;
+    background:#222;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:0.3s;
+}
+
+.phase-header:hover{
+    background:#2b2b2b;
+}
+
+.phase-content{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.5s ease;
+    background:#161616;
+}
+
+.story{
+    padding:15px 30px;
+    border-bottom:1px solid #2a2a2a;
+    transition:0.3s;
+}
+
+.story:last-child{
+    border:none;
+}
+
+.story:hover{
+    background:#1f1f1f;
+}
+
+.story-number{
+    color:#f5b942;
+    font-weight:700;
+    margin-left:8px;
+}
+
+.description{
+    font-size:14px;
+    opacity:0.8;
+    margin-top:6px;
+}
+
+.arrow{
+    transition:0.4s;
+}
+
+.phase.active .phase-content{
+    max-height:800px;
+}
+
+.phase.active .arrow{
+    transform:rotate(90deg);
+}
+
+.timeline-line{
+    position:relative;
+    margin-right:15px;
+}
+
+.timeline-line::before{
+    content:'';
+    position:absolute;
+    right:-12px;
+    top:0;
+    width:2px;
+    height:100%;
+    background:#f5b942;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>تایم‌لاین رسمی توشان‌ورس</h1>
+
+    <!-- فاز یک -->
+    <div class="phase">
+        <div class="phase-header">
+            <span>فاز یک – آغاز بیداری</span>
+            <span class="arrow">▶</span>
+        </div>
+        <div class="phase-content timeline-line">
+
+            <div class="story">
+                <div>
+                    <span class="story-number">01</span>
+                    لرد فیزیکا
+                </div>
+                <div class="description">
+                    شروع فروپاشی قوانین فیزیک و اولین اختلال بزرگ در جهان.
+                </div>
+            </div>
+
+            <div class="story">
+                <div>
+                    <span class="story-number">02</span>
+                    تسکین
+                </div>
+                <div class="description">
+                    ظهور ابرنورونی که درد را خاموش می‌کند، اما بهای سنگینی دارد.
+                </div>
+            </div>
+
+            <div class="story">
+                <div>
+                    <span class="story-number">03</span>
+                    گردآفرید
+                </div>
+                <div class="description">
+                    جاودانگی‌ای که تبدیل به نفرین شد.
+                </div>
+            </div>
+
+            <div class="story">
+                <div>
+                    <span class="story-number">04</span>
+                    مرداویچ
+                </div>
+                <div class="description">
+                    بازگشت از مرگ و آغاز ارتباط با جهان ارواح.
+                </div>
+            </div>
+
+            <div class="story">
+                <div>
+                    <span class="story-number">05</span>
+                    المنت‌ها
+                </div>
+                <div class="description">
+                    بیداری عناصر چهارگانه در تعادل شکننده جهان.
+                </div>
+            </div>
+
+            <div class="story">
+                <div>
+                    <span class="story-number">06</span>
+                    اتحاد نخست (کراس‌اور فاز یک)
+                </div>
+                <div class="description">
+                    اولین برخورد قهرمانان و شکل‌گیری جبهه‌ای مشترک.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+const phases = document.querySelectorAll('.phase');
+
+phases.forEach(phase => {
+    phase.querySelector('.phase-header').addEventListener('click', () => {
+        phase.classList.toggle('active');
+    });
+});
+</script>
+
+</body>
+</html>
