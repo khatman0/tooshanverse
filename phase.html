@@ -8,224 +8,100 @@
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
+:root{
+    --bg-1:#0a0a0a;
+    --bg-2:#1a1a1a;
+    --accent:#f5b942;
+    --accent-2:#ccc;
+    --glass:rgba(255,255,255,0.04);
+}
+
+/* Body */
 body{
     margin:0;
     font-family:'Vazirmatn', sans-serif;
-    background:#0f0f0f;
+    background: linear-gradient(180deg,var(--bg-1),var(--bg-2));
     color:#fff;
+    padding-top:60px; /* header space */
 }
 
-.container{
-    width:90%;
-    max-width:1000px;
-    margin:60px auto;
-}
+/* Reveal */
+.reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1);}
+.reveal.in{opacity:1;transform:none;}
 
-h1{
-    text-align:center;
-    color:#f5b942;
-    margin-bottom:50px;
+/* Header */
+header{
+  position:fixed; top:0; left:0; width:100%; height:60px;
+  background:#111; display:flex; align-items:center; padding:0 20px;
+  z-index:50; box-shadow:0 2px 10px rgba(0,0,0,0.5);
 }
+header .logo{font-weight:700; font-size:1.3rem; color:var(--accent);}
 
-.phase{
-    background:#1a1a1a;
-    border-radius:12px;
-    margin-bottom:25px;
-    overflow:hidden;
-    box-shadow:0 0 15px rgba(0,0,0,0.6);
-    transition:0.3s;
-}
-
-.phase-header{
-    padding:18px 25px;
-    cursor:pointer;
-    font-weight:700;
-    font-size:18px;
-    background:#222;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    transition:0.3s;
-}
-
-.phase-header:hover{
-    background:#2b2b2b;
-}
-
-.phase-content{
-    max-height:0;
-    overflow:hidden;
-    transition:max-height 0.5s ease;
-    background:#161616;
-}
-
-.story{
-    padding:15px 30px;
-    border-bottom:1px solid #2a2a2a;
-    transition:0.3s;
-}
-
-.story:last-child{
-    border:none;
-}
-
-.story:hover{
-    background:#1f1f1f;
-}
-
-.story-number{
-    color:#f5b942;
-    font-weight:700;
-    margin-left:8px;
-}
-
-.description{
-    font-size:14px;
-    opacity:0.8;
-    margin-top:6px;
-}
-
-.arrow{
-    transition:0.4s;
-}
-
-.phase.active .phase-content{
-    max-height:800px;
-}
-
-.phase.active .arrow{
-    transform:rotate(90deg);
-}
-
-.timeline-line{
-    position:relative;
-    margin-right:15px;
-}
-
-.timeline-line::before{
-    content:'';
-    position:absolute;
-    right:-12px;
-    top:0;
-    width:2px;
-    height:100%;
-    background:#f5b942;
-}
-    .story-card{
-  display:block;
-  background:#1a1a1a;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:15px;
-  text-decoration:none;
-  color:#fff;
-  box-shadow:0 5px 15px rgba(0,0,0,0.5);
-  transition:transform 0.3s, background 0.3s;
-}
-
-.story-card:hover{
-  transform:translateY(-4px);
-  background:#2a2a2a;
-}
-
-.story-label{
-  font-weight:700;
-  font-size:1.1rem;
-  margin-bottom:6px;
-  color:#f5b942;
-}
-
-.story-desc{
-  font-size:0.95rem;
-  color:#ccc;
-  line-height:1.4;
-}
-
-    
-/* reveal */
-.reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
-.reveal.in{opacity:1;transform:none}
-
-/* overlay & side nav */
-.overlay{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);
-  opacity:0;visibility:hidden;transition:opacity 0.35s ease;z-index:39;
-}
-.overlay.active{opacity:1;visibility:visible;}
-
-.side-nav{
-  position:fixed;top:0;left:-280px;width:280px;height:100%;
-  background:linear-gradient(180deg,var(--bg-2), var(--bg-1));
-  padding:40px 20px;display:flex;flex-direction:column;gap:24px;
-  transition:left 0.35s cubic-bezier(0.25,0.8,0.25,1);
-  z-index:40;touch-action: pan-y;
-}
-.side-nav.active{left:0;}
-.side-nav a{
-  color:var(--accent-2);text-decoration:none;font-weight:600;
-  font-size:1.05rem;padding:10px 12px;border-radius:8px;
-  transition:background 0.25s ease;
-}
-.side-nav a:hover{background:rgba(25,167,255,0.12);}
-
-/* hamburger */
+/* Hamburger & Side Nav */
 .hamburger{
-  position:fixed;top:16px;left:16px;z-index:41;
-  width:36px;height:36px;display:flex;flex-direction:column;justify-content:space-around;
+  position:fixed; top:16px; left:16px; z-index:51;
+  width:36px; height:36px; display:flex; flex-direction:column; justify-content:space-around;
   cursor:pointer;
 }
 .hamburger span{
-  display:block;height:4px;width:100%;
-  background:var(--accent);
-  border-radius:2px;transition:all 0.3s ease;
+  display:block; height:4px; width:100%; background:var(--accent); border-radius:2px; transition:all 0.3s ease;
 }
 .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
 .hamburger.active span:nth-child(2){opacity:0;}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+.overlay{
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);
+  opacity:0; visibility:hidden; transition:opacity 0.35s ease; z-index:40;
+}
+.overlay.active{opacity:1; visibility:visible;}
+.side-nav{
+  position:fixed; top:0; left:-280px; width:280px; height:100%;
+  background:linear-gradient(180deg,var(--bg-2), var(--bg-1));
+  padding:60px 20px 20px 20px; display:flex; flex-direction:column; gap:24px;
+  transition:left 0.35s cubic-bezier(0.25,0.8,0.25,1); z-index:50;
+}
+.side-nav.active{left:0;}
+.side-nav a{
+  color:var(--accent-2); text-decoration:none; font-weight:600;
+  font-size:1.05rem; padding:10px 12px; border-radius:8px;
+  transition:background 0.25s ease;
+}
+.side-nav a:hover{background:rgba(25,167,255,0.12);}
 
-    /*هدر*/
-    header{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:60px;
-  background:#111;
-  display:flex;
-  align-items:center;
-  padding:0 20px;
-  z-index:50;
-  box-shadow:0 2px 10px rgba(0,0,0,0.5);
+/* Container */
+.container{width:90%; max-width:1000px; margin:0 auto;}
+
+/* Title */
+h1{text-align:center; color:var(--accent); margin:50px 0;}
+
+/* Timeline & Story Cards (unchanged) */
+.phase{background:var(--bg-2); border-radius:12px; margin-bottom:25px; overflow:hidden; box-shadow:0 0 15px rgba(0,0,0,0.6); transition:0.3s;}
+.phase-header{padding:18px 25px; cursor:pointer; font-weight:700; font-size:18px; background:#222; display:flex; justify-content:space-between; align-items:center; transition:0.3s;}
+.phase-header:hover{background:#2b2b2b;}
+.phase-content{max-height:0; overflow:hidden; transition:max-height 0.5s ease; background:#161616;}
+.story-card{display:block; background:#1a1a1a; padding:20px; border-radius:12px; margin-bottom:15px; text-decoration:none; color:#fff; box-shadow:0 5px 15px rgba(0,0,0,0.5); transition:transform 0.3s, background 0.3s;}
+.story-card:hover{transform:translateY(-4px); background:#2a2a2a;}
+.story-label{font-weight:700; font-size:1.1rem; margin-bottom:6px; color:var(--accent);}
+.story-desc{font-size:0.95rem; color:#ccc; line-height:1.4;}
+.story-number{color:var(--accent); font-weight:700; margin-left:8px;}
+.description{font-size:14px; opacity:0.8; margin-top:6px;}
+.arrow{transition:0.4s;}
+.phase.active .phase-content{max-height:800px;}
+.phase.active .arrow{transform:rotate(90deg);}
+.timeline-line{position:relative; margin-right:15px;}
+.timeline-line::before{content:''; position:absolute; right:-12px; top:0; width:2px; height:100%; background:var(--accent);}
+
+/* Footer */
+footer{
+  background:#111; text-align:center; padding:20px; margin-top:40px;
+  font-size:0.9rem; color:var(--accent-2); box-shadow:0 -2px 10px rgba(0,0,0,0.5);
 }
-header .logo{
-  font-weight:700;
-  font-size:1.3rem;
-  color:#f5b942;
-}
-body{
-  padding-top:60px; /* فضای بالای صفحه برای هدر ثابت */
-}
-    /*فوتر*/
-    footer{
-  background:#111;
-  text-align:center;
-  padding:15px 20px;
-  margin-top:40px;
-  font-size:0.9rem;
-  color:#ccc;
-  box-shadow:0 -2px 10px rgba(0,0,0,0.5);
-}
-    
 </style>
 </head>
 <body>
-    
-<div class="hamburger" id="hamburgerBtn">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
+
+<div class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
 <div class="overlay" id="overlay"></div>
 <nav class="side-nav" id="sideNav">
   <a href="#hero">خانه</a>
@@ -239,7 +115,7 @@ body{
 <header>
   <div class="logo">توشان‌ورس</div>
 </header>
-    
+
 <div class="container">
     <h1>تایم‌لاین رسمی توشان‌ورس</h1>
 
@@ -252,58 +128,33 @@ body{
         <div class="phase-content timeline-line">
 
            <a href="../story/story1.html" class="story-card">
-  <div class="story-label">لرد فیزیکا</div>
-  <p class="story-desc">شروع فروپاشی قوانین فیزیک و اولین اختلال بزرگ در جهان.</p>
-</a>
+             <div class="story-label">لرد فیزیکا</div>
+             <p class="story-desc">شروع فروپاشی قوانین فیزیک و اولین اختلال بزرگ در جهان.</p>
+           </a>
 
             <div class="story">
-                <div>
-                    <span class="story-number">02</span>
-                    تسکین
-                </div>
-                <div class="description">
-                    ظهور ابرنورونی که درد را خاموش می‌کند، اما بهای سنگینی دارد.
-                </div>
+                <div><span class="story-number">02</span> تسکین</div>
+                <div class="description">ظهور ابرنورونی که درد را خاموش می‌کند، اما بهای سنگینی دارد.</div>
             </div>
 
             <div class="story">
-                <div>
-                    <span class="story-number">03</span>
-                    گردآفرید
-                </div>
-                <div class="description">
-                    جاودانگی‌ای که تبدیل به نفرین شد.
-                </div>
+                <div><span class="story-number">03</span> گردآفرید</div>
+                <div class="description">جاودانگی‌ای که تبدیل به نفرین شد.</div>
             </div>
 
             <div class="story">
-                <div>
-                    <span class="story-number">04</span>
-                    مرداویچ
-                </div>
-                <div class="description">
-                    بازگشت از مرگ و آغاز ارتباط با جهان ارواح.
-                </div>
+                <div><span class="story-number">04</span> مرداویچ</div>
+                <div class="description">بازگشت از مرگ و آغاز ارتباط با جهان ارواح.</div>
             </div>
 
             <div class="story">
-                <div>
-                    <span class="story-number">05</span>
-                    المنت‌ها
-                </div>
-                <div class="description">
-                    بیداری عناصر چهارگانه در تعادل شکننده جهان.
-                </div>
+                <div><span class="story-number">05</span> المنت‌ها</div>
+                <div class="description">بیداری عناصر چهارگانه در تعادل شکننده جهان.</div>
             </div>
 
             <div class="story">
-                <div>
-                    <span class="story-number">06</span>
-                    اتحاد نخست (کراس‌اور فاز یک)
-                </div>
-                <div class="description">
-                    اولین برخورد قهرمانان و شکل‌گیری جبهه‌ای مشترک.
-                </div>
+                <div><span class="story-number">06</span> اتحاد نخست (کراس‌اور فاز یک)</div>
+                <div class="description">اولین برخورد قهرمانان و شکل‌گیری جبهه‌ای مشترک.</div>
             </div>
 
         </div>
@@ -311,40 +162,34 @@ body{
 
 </div>
 
-    <footer class="reveal">© 2025 توشان‌ورس — همهٔ حقوق محفوظ است</footer>
+<footer class="reveal">© 2025 توشان‌ورس — همهٔ حقوق محفوظ است</footer>
 
 <script>
+// Phase toggle
 const phases = document.querySelectorAll('.phase');
-
-phases.forEach(phase => {
-    phase.querySelector('.phase-header').addEventListener('click', () => {
+phases.forEach(phase=>{
+    phase.querySelector('.phase-header').addEventListener('click', ()=>{
         phase.classList.toggle('active');
     });
 });
 
-    // Hamburger menu
+// Hamburger menu
 const hamburger = document.getElementById('hamburgerBtn');
 const sideNav = document.getElementById('sideNav');
 const overlay = document.getElementById('overlay');
 
-function openMenu(){
-  hamburger.classList.add('active');
-  sideNav.classList.add('active');
-  overlay.classList.add('active');
-}
-function closeMenu(){
-  hamburger.classList.remove('active');
-  sideNav.classList.remove('active');
-  overlay.classList.remove('active');
-}
+function openMenu(){hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active');}
+function closeMenu(){hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active');}
+
 const sideNavLinks = document.querySelectorAll('.side-nav a');
 sideNavLinks.forEach(link=>link.addEventListener('click',closeMenu));
-hamburger.addEventListener('click', ()=>{ sideNav.classList.contains('active')?closeMenu():openMenu(); });
+
+hamburger.addEventListener('click', ()=>{sideNav.classList.contains('active')?closeMenu():openMenu();});
 overlay.addEventListener('click', closeMenu);
 
 // swipe support
 let startTouchX=0, currentX=0, touching=false;
-sideNav.addEventListener('touchstart', e=>{ touching=true; startTouchX=e.touches[0].clientX; });
+sideNav.addEventListener('touchstart', e=>{touching=true; startTouchX=e.touches[0].clientX;});
 sideNav.addEventListener('touchmove', e=>{
   if(!touching) return;
   currentX = e.touches[0].clientX;
@@ -356,7 +201,6 @@ sideNav.addEventListener('touchend', e=>{
   if(currentX-startTouchX<-80) closeMenu();
   else sideNav.style.left='0px';
 });
-    
 </script>
 
 </body>
