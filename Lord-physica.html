@@ -120,9 +120,38 @@
 
     .reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
     .reveal.in{opacity:1;transform:none}
+    /* hamburger */
+.hamburger{
+  position:fixed;top:16px;left:16px;z-index:41;
+  width:36px;height:36px;display:flex;flex-direction:column;justify-content:space-around;
+  cursor:pointer;
+}
+.hamburger span{
+  display:block;height:4px;width:100%;
+  background:var(--accent);
+  border-radius:2px;transition:all 0.3s ease;
+}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
+.hamburger.active span:nth-child(2){opacity:0;}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
   </style>
 </head>
 <body>
+  
+<div class="hamburger" id="hamburgerBtn">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<div class="overlay" id="overlay"></div>
+<nav class="side-nav" id="sideNav">
+  <a href="#hero">خانه</a>
+  <a href="#heroes">قهرمانان</a>
+  <a href="#villains">ویلن ها</a>
+  <a href="timeline.html">خط زمانی</a>
+  <a href="chat.html">نظردهی</a>
+  <a href="stories.html">داستان ها</a>
+</nav>
 
 <header>
   <div class="logo">توشان‌ورس</div>
@@ -320,7 +349,25 @@
       }
     });
   });
+// Hamburger menu
+const hamburger = document.getElementById('hamburgerBtn');
+const sideNav = document.getElementById('sideNav');
+const overlay = document.getElementById('overlay');
 
+function openMenu(){
+  hamburger.classList.add('active');
+  sideNav.classList.add('active');
+  overlay.classList.add('active');
+}
+function closeMenu(){
+  hamburger.classList.remove('active');
+  sideNav.classList.remove('active');
+  overlay.classList.remove('active');
+}
+const sideNavLinks = document.querySelectorAll('.side-nav a');
+sideNavLinks.forEach(link=>link.addEventListener('click',closeMenu));
+hamburger.addEventListener('click', ()=>{ sideNav.classList.contains('active')?closeMenu():openMenu(); });
+overlay.addEventListener('click', closeMenu);
 </script>
 
 </body>
