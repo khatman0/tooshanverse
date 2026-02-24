@@ -111,6 +111,36 @@ h1{
     height:100%;
     background:#f5b942;
 }
+    .story-card{
+  display:block;
+  background:#1a1a1a;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:15px;
+  text-decoration:none;
+  color:#fff;
+  box-shadow:0 5px 15px rgba(0,0,0,0.5);
+  transition:transform 0.3s, background 0.3s;
+}
+
+.story-card:hover{
+  transform:translateY(-4px);
+  background:#2a2a2a;
+}
+
+.story-label{
+  font-weight:700;
+  font-size:1.1rem;
+  margin-bottom:6px;
+  color:#f5b942;
+}
+
+.story-desc{
+  font-size:0.95rem;
+  color:#ccc;
+  line-height:1.4;
+}
+    
 </style>
 </head>
 <body>
@@ -126,15 +156,10 @@ h1{
         </div>
         <div class="phase-content timeline-line">
 
-            <div class="story">
-                <div>
-                    <span class="story-number">01</span>
-                    لرد فیزیکا
-                </div>
-                <div class="description">
-                    شروع فروپاشی قوانین فیزیک و اولین اختلال بزرگ در جهان.
-                </div>
-            </div>
+           <a href="../story/story1.html" class="story-card">
+  <div class="story-label">لرد فیزیکا</div>
+  <p class="story-desc">شروع فروپاشی قوانین فیزیک و اولین اختلال بزرگ در جهان.</p>
+</a>
 
             <div class="story">
                 <div>
