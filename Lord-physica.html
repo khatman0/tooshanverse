@@ -117,10 +117,34 @@
       .cards{grid-template-columns:1fr}
       .powers{grid-template-columns:1fr}
     }
+  /* reveal */
+.reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
+.reveal.in{opacity:1;transform:none}
 
-    .reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1)}
-    .reveal.in{opacity:1;transform:none}
-    /* hamburger */
+/* overlay & side nav */
+.overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);
+  opacity:0;visibility:hidden;transition:opacity 0.35s ease;z-index:39;
+}
+.overlay.active{opacity:1;visibility:visible;}
+
+.side-nav{
+  position:fixed;top:0;left:-280px;width:280px;height:100%;
+  background:linear-gradient(180deg,var(--bg-2), var(--bg-1));
+  padding:40px 20px;display:flex;flex-direction:column;gap:24px;
+  transition:left 0.35s cubic-bezier(0.25,0.8,0.25,1);
+  z-index:40;touch-action: pan-y;
+}
+.side-nav.active{left:0;}
+.side-nav a{
+  color:var(--accent-2);text-decoration:none;font-weight:600;
+  font-size:1.05rem;padding:10px 12px;border-radius:8px;
+  transition:background 0.25s ease;
+}
+.side-nav a:hover{background:rgba(25,167,255,0.12);}
+
+/* hamburger */
 .hamburger{
   position:fixed;top:16px;left:16px;z-index:41;
   width:36px;height:36px;display:flex;flex-direction:column;justify-content:space-around;
@@ -134,50 +158,6 @@
 .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
 .hamburger.active span:nth-child(2){opacity:0;}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
-    /* ===== Side Navigation ===== */
-.side-nav{
-  position:fixed;
-  top:0;
-  left:-280px;
-  width:260px;
-  height:100%;
-  background:#111;
-  padding:80px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-  transition:left 0.3s ease;
-  z-index:42;
-  border-right:1px solid rgba(255,255,255,0.06);
-}
-
-.side-nav a{
-  color:#eee;
-  font-size:1rem;
-  padding:8px 0;
-  border-bottom:1px solid rgba(255,255,255,0.05);
-}
-
-.side-nav.active{
-  left:0;
-}
-
-/* ===== Overlay ===== */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.5);
-  backdrop-filter:blur(4px);
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.3s ease;
-  z-index:41;
-}
-
-.overlay.active{
-  opacity:1;
-  pointer-events:auto;
-}
   </style>
 </head>
 <body>
