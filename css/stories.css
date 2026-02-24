@@ -1,95 +1,111 @@
-:root{
-  --bg1:#05070f;
-  --bg2:#0a1428;
-  --accent:#19a7ff;
-  --text:#e9f6ff;
-  --glass:rgba(255,255,255,0.04);
-  --border-glow:rgba(25,167,255,0.15);
+:root {
+    --bg1: #05070f;
+    --bg2: #0a1428;
+    --accent: #19a7ff;
+    --text: #e9f6ff;
+    --highlight: rgba(25, 167, 255, 0.2);
+    --link: #19a7ff;
 }
 
-body{
-  margin:0;
-  font-family:'Vazirmatn', sans-serif;
-  background:linear-gradient(180deg,var(--bg1),var(--bg2));
-  color:var(--text);
-  line-height:1.8;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-.stories-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:40px 10%;
-  backdrop-filter:blur(6px);
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: linear-gradient(180deg, var(--bg1), var(--bg2));
+    color: var(--text);
+    line-height: 1.8;
+    min-height: 100vh;
+    padding: 0 10%;
 }
 
-.stories-header h1{
-  font-family:'Orbitron',sans-serif;
-  font-size:2.5rem;
-  color:var(--accent);
-  letter-spacing:1.5px;
+/* هدر داستان */
+.story-header {
+    margin-top: 40px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 30px;
 }
 
-.back-btn{
-  padding:10px 18px;
-  border:1px solid rgba(255,255,255,0.15);
-  border-radius:10px;
-  font-weight:500;
-  cursor:pointer;
-  transition:0.3s;
-}
-.back-btn:hover{
-  background:rgba(25,167,255,0.1);
-  transform:scale(1.05);
-}
-
-.timeline{
-  width:80%;
-  margin:50px auto;
-  display:flex;
-  flex-direction:column;
-  gap:40px;
-  position:relative;
+/* متن اصلی داستان */
+.story-content {
+    font-size: 1.1rem;
+    line-height: 2;
+    color: var(--text);
+    background: rgba(255,255,255,0.03);
+    padding: 30px 25px;
+    border-radius: 12px;
+    border: 1px solid var(--highlight);
+    box-shadow: 0 10px 30px rgba(25,167,255,0.1);
+    backdrop-filter: blur(5px);
 }
 
-.story-card{
-  background:var(--glass);
-  padding:30px 25px;
-  border-radius:16px;
-  border:1px solid var(--border-glow);
-  transition:0.3s;
-  display:block;
-  backdrop-filter:blur(6px);
+/* پاراگراف‌ها */
+.story-content p {
+    margin-bottom: 20px;
 }
 
-.story-card:hover{
-  transform:translateY(-8px) scale(1.02);
-  box-shadow:0 20px 50px rgba(25,167,255,0.15);
+/* بخش های مهم / نقل قول */
+.story-content blockquote {
+    border-left: 4px solid var(--accent);
+    padding-left: 15px;
+    margin: 20px 0;
+    font-style: italic;
+    opacity: 0.9;
 }
 
-.story-number{
-  font-size:0.9rem;
-  opacity:0.6;
-  margin-bottom:10px;
-  display:block;
-  letter-spacing:0.5px;
+/* لینک‌ها */
+.story-content a {
+    color: var(--link);
+    text-decoration: underline;
+    transition: all 0.2s;
 }
 
-.story-content{
-  width:70%;
-  margin:30px auto;
-  line-height:2.2;
-  font-size:1.15rem;
-  padding:0 10px;
+.story-content a:hover {
+    color: var(--accent);
 }
 
-@media screen and (max-width:768px){
-  .timeline, .story-content{
-    width:90%;
-  }
-  .stories-header{
-    flex-direction:column;
-    gap:20px;
-    text-align:center;
-  }
+/* تصاویر داخل داستان */
+.story-content img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 10px 30px rgba(25,167,255,0.15);
+}
+
+/* دکمه بازگشت یا لینک‌ها پایین صفحه */
+.back-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    border: 1px solid var(--highlight);
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: var(--highlight);
+    transform: scale(1.05);
+}
+
+/* ریسپانسیو */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 0 5%;
+    }
+    .story-header {
+        font-size: 1.6rem;
+    }
+    .story-content {
+        padding: 20px 15px;
+        font-size: 1rem;
+    }
 }
