@@ -133,7 +133,7 @@ footer {
             <span>فاز یک – آغاز بیداری</span>
             <span class="arrow">▶</span>
         </div>
-        <div class="phase-content">
+        <div class="phase-content" id="lord-story">
 
           <a href="story1.html" class="story-card">
             <div class="story-label">لرد فیزیکا</div>
@@ -216,6 +216,19 @@ footer {
     if(currentX-startX<-80) closeMenu();
     else sideNav.style.left='0px';
   });
+
+window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash; // مثلا #phase-lord
+    if(hash){
+        const targetPhase = document.querySelector(hash);
+        if(targetPhase){
+            targetPhase.classList.add('active'); // فاز باز میشه
+            // اسکرول بهش هم میتونه باشه
+            targetPhase.scrollIntoView({behavior: "smooth", block: "start"});
+        }
+    }
+});
+  
 </script>
 
 </body>
