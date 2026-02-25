@@ -275,6 +275,81 @@ footer{
 .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
 .hamburger.active span:nth-child(2){opacity:0;}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+
+  /*کادر معرفی*/
+  .about-box{
+  max-width:900px;
+  margin:80px auto;
+  padding:50px 40px;
+  background:linear-gradient(145deg, rgba(15,25,35,0.9), rgba(10,15,25,0.95));
+  border:1px solid rgba(0,255,255,0.2);
+  border-radius:20px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 40px rgba(0,255,255,0.08);
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.about-box::before{
+  content:"";
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:radial-gradient(circle at center, rgba(0,255,255,0.08), transparent 60%);
+  animation:rotateGlow 12s linear infinite;
+}
+
+@keyframes rotateGlow{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+.about-box h2{
+  color:var(--accent);
+  font-size:2.2rem;
+  margin-bottom:25px;
+}
+
+.about-box p{
+  color:rgba(235,245,255,0.85);
+  line-height:2.2;
+  font-size:1.1rem;
+}
+/*پایان کادر معرفی*/  
+
+  /*اخبار*/
+  .news-board{
+  width:90%;
+  max-width:1100px;
+  margin:80px auto;
+  padding:20px;
+  background:rgba(10,20,30,0.95);
+  border:1px solid rgba(0,255,255,0.25);
+  border-radius:15px;
+  overflow:hidden;
+  position:relative;
+}
+
+.news-track{
+  display:flex;
+  gap:80px;
+  white-space:nowrap;
+  animation:scrollNews 25s linear infinite;
+}
+
+.news-item{
+  font-size:1.1rem;
+  color:var(--accent-2);
+}
+
+@keyframes scrollNews{
+  from { transform:translateX(100%); }
+  to { transform:translateX(-100%); }
+}
+  /*پایان اخبار*/
 </style>
 </head>
 <body>
@@ -287,8 +362,6 @@ footer{
 <div class="overlay" id="overlay"></div>
 <nav class="side-nav" id="sideNav">
   <a href="index.html">خانه</a>
-  <a href="#heroes">قهرمان ها</a>
-  <a href="#villains">ویلن ها</a>
   <a href="phase.html">فاز ها</a>
   <a href="characters.html">شخصیت ها</a>
 </nav>
@@ -309,73 +382,28 @@ footer{
       <p class="tagline">جهان قهرمانان و ماجراهای حماسی — توشان‌ورس؛ جایی که قهرمانان ایرانی برمی‌خیزند.</p>
       <div class="cta-row">
         <a class="btn primary" href="timeline.html">خط زمانی</a>
-        <a class="btn ghost" href="#powers">مشاهده قدرت‌ها</a>
+        <a class="btn ghost" href="#powers">مشاهده</a>
       </div>
     </div>
   </div>
 </section>
 
-<section id="heroes" style="margin:40px 20px">
-  <h2 style="color:var(--accent);margin-bottom:16px">قهرمان‌ها</h2>
-  <div class="cards-container">
-    <a href="Lord-physica.html" class="card">
-      <h3>لرد فیزیکا</h3>
-      <p>کنترل قوانین فیزیک و میدان‌ها</p>
-    </a>
-     <a href="electropulse.html" class="card">
-      <h3>الکتروپالس</h3>
-      <p>انفجاری از پالس های الکتریکی</p>
-    </a>
-    <a href="taskin.html" class="card">
-      <h3>تسکین</h3>
-      <p>بی‌حس کردن درد اطرافیان</p>
-    </a>
-    <a href="strix.html" class="card">
-      <h3>استریکس</h3>
-      <p>کنترل اشیا با ذهن</p>
-    </a>
-    <!-- می‌توان کارت‌های بیشتری اضافه کرد و بی‌نهایت اسکرول خواهد شد -->
-  </div>
-</section>
-  
-<section id="villains" style="margin:40px 20px">
-  <h2 style="color:#ff4d4d;margin-bottom:16px">ویلن‌ها</h2>
-  <div class="cards-container">
-    <a href="comics.html" class="card">
-      <h3>آگناتوس</h3>
-      <p>فریبنده ذهن</p>
-    </a>
-     <a href="General-Kianfar.html" class="card">
-      <h3>ژنرال کیان‌فر</h3>
-      <p>فرمانده نیروی ویژه سدرا</p>
-    </a>
-     <a href="boslame.html" class="card">
-      <h3>بوسلامه</h3>
-      <p>افسانه ای از دریا</p>
-    </a>
+  <section id="about" class="reveal">
+  <div class="about-box">
+    <h2>توشان‌ورس چیست؟</h2>
+    <p>
+      توشان‌ورس یک جهان داستانی مستقل و علمی–حماسی است که در آن
+      نیروهای پنهان، فناوری‌های فراتر از زمان و اسطوره‌های فراموش‌شده
+      با سرنوشت انسان گره می‌خورند.
+      این جهان بستری برای روایت قهرمانانی است که میان تاریکی و نور،
+      آینده‌ای تازه برای بشر رقم می‌زنند.
+    </p>
   </div>
 </section>
 
-  <section id="groups" style="margin:40px 20px">
-  <h2 style="color:#yellow;margin-bottom:16px">گروه ها / فرقه ها</h2>
-  <div class="cards-container">
-    <a href="hashashin.html" class="card">
-      <h3>حشاشین</h3>
-      <p>پنهان در سایه</p>
-    </a>
-  </div>
-</section>
-
-<section class="powers reveal" id="powers" style="margin:40px 20px 60px">
-  <div class="power">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.2"/></svg>
-    <h4>قدرت اولیه</h4>
-    <p>نمایش قدرت‌های اصلی هر قهرمان در میدان نبرد</p>
-  </div>
-  <div class="power">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.6"/></svg>
-    <h4>قدرت ثانویه</h4>
-    <p>توانایی‌های تخصصی و تکنیکی هر شخصیت</p>
+  <section id="news" class="reveal">
+  <div class="news-board">
+    <div class="news-track" id="newsTrack"></div>
   </div>
 </section>
 
@@ -461,6 +489,30 @@ sideNav.addEventListener('touchend', e=>{
   if(currentX-startTouchX<-80) closeMenu();
   else sideNav.style.left='0px';
 });
+
+  const sheetURL = "LINK_YOUR_WEB_APP_HERE";
+
+async function loadNews(){
+  try{
+    const res = await fetch(sheetURL);
+    const data = await res.json();
+    const newsTrack = document.getElementById("newsTrack");
+
+    data.news.forEach(text=>{
+      const div = document.createElement("div");
+      div.className = "news-item";
+      div.textContent = "✦ " + text;
+      newsTrack.appendChild(div);
+    });
+
+  }catch(err){
+    document.getElementById("newsTrack").innerHTML="خطا در دریافت اخبار";
+  }
+}
+
+loadNews();
+
+  
 </script>
 </body>
 </html>
