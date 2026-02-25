@@ -494,7 +494,7 @@ sideNav.addEventListener('touchend', e=>{
 
 async function loadNews() {
   try {
-    const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSDe1H_dgMBbVCCvAThsg2mhENWNKWQQ2XI8_JMvNLEE8M7oycXggyUZH-rtXnkJ6PKssz1pC_LUe7n/pubhtml?gid=0&single=true");
+    const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSDe1H_dgMBbVCCvAThsg2mhENWNKWQQ2XI8_JMvNLEE8M7oycXggyUZH-rtXnkJ6PKssz1pC_LUe7n/gviz/tq?tqx=out:json");
     const text = await res.text();
     const lines = text.split("\n").slice(1); // خط اول عنوان هست
     const newsTrack = document.getElementById("newsTrack");
