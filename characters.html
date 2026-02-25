@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>شخصیت‌ها | توشان‌ورس</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg-1:#0b0615;
+  --bg-2:#140a25;
+  --accent:#a855f7;
+  --accent-2:#d8b4fe;
+  --card-bg:rgba(20,10,35,0.6);
+  --glass:rgba(255,255,255,0.04);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Vazirmatn', Tahoma, sans-serif;
+  background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
+  color:#f3e8ff;
+}
+
+a{text-decoration:none;color:inherit}
+
+/* HEADER */
+header{
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-family:'Orbitron',sans-serif;
+  color:var(--accent);
+  font-size:1.4rem;
+}
+
+.back-btn{
+  background:var(--glass);
+  padding:8px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.06);
+  transition:0.3s;
+}
+.back-btn:hover{
+  background:rgba(168,85,247,0.2);
+}
+
+/* TITLE */
+.page-title{
+  text-align:center;
+  margin:40px 0;
+}
+
+.page-title h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:2.8rem;
+  color:var(--accent);
+  margin:0;
+}
+
+.page-title p{
+  color:var(--accent-2);
+  opacity:0.8;
+}
+
+/* CHARACTER GRID */
+.characters{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+  padding:20px 40px 60px;
+}
+
+.character-card{
+  background:var(--card-bg);
+  backdrop-filter:blur(8px);
+  border-radius:16px;
+  padding:20px;
+  border:1px solid rgba(168,85,247,0.15);
+  box-shadow:0 15px 40px rgba(0,0,0,0.6);
+  transition:0.35s;
+  text-align:center;
+}
+
+.character-card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 20px 60px rgba(168,85,247,0.25);
+}
+
+.character-card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-bottom:15px;
+}
+
+.character-card h3{
+  color:var(--accent);
+  margin:8px 0;
+}
+
+.role{
+  color:var(--accent-2);
+  font-size:0.9rem;
+  margin-bottom:10px;
+}
+
+.character-card p{
+  font-size:0.95rem;
+  opacity:0.85;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:30px;
+  color:rgba(255,255,255,0.4);
+  font-size:0.9rem;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .page-title h1{font-size:2rem}
+  .characters{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">توشان‌ورس</div>
+  <a href="index.html" class="back-btn">بازگشت</a>
+</header>
+
+<section class="page-title">
+  <h1>شخصیت‌های توشان‌ورس</h1>
+  <p>قهرمانان، ضدقهرمانان و افسانه‌ها</p>
+</section>
+
+<section class="characters">
+
+  <div class="character-card">
+    <img src="lord-physica.jpg" alt="">
+    <h3>لرد فیزیکا</h3>
+    <div class="role">قهرمان اصلی</div>
+    <p>توانایی تغییر قوانین فیزیک در یک محدوده مشخص. ذهنی نابغه و قدرتی فراتر از تصور.</p>
+  </div>
+
+  <div class="character-card">
+    <img src="agnatos.jpg" alt="">
+    <h3>آگناتوس</h3>
+    <div class="role">ابرشرور</div>
+    <p>کنترل ذهن، نفوذ در اراده انسان‌ها و هدایت آشوب برای تسلط بر تهران.</p>
+  </div>
+
+  <div class="character-card">
+    <img src="strix.jpg" alt="">
+    <h3>استریکس</h3>
+    <div class="role">قهرمان</div>
+    <p>کنترل اشیا با ذهن و توانایی پیش‌بینی حرکات دشمنان.</p>
+  </div>
+
+  <div class="character-card">
+    <img src="taskin.jpg" alt="">
+    <h3>تسکین</h3>
+    <div class="role">پشتیبان</div>
+    <p>توانایی بی‌حس کردن درد و کنترل سیستم عصبی اطرافیان.</p>
+  </div>
+
+</section>
+
+<footer>
+© 2026 توشان‌ورس — صفحه شخصیت‌ها
+</footer>
+
+</body>
+</html>
