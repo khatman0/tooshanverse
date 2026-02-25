@@ -492,24 +492,26 @@ sideNav.addEventListener('touchend', e=>{
 
   const sheetURL = "https://docs.google.com/spreadsheets/d/1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo/edit?usp=sharing";
 
-async function loadNews(){
-  try{
-    const res = await fetch(sheetURL);
-    const data = await res.json();
+async function loadNews() {
+  try {
+    const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSDe1H_dgMBbVCCvAThsg2mhENWNKWQQ2XI8_JMvNLEE8M7oycXggyUZH-rtXnkJ6PKssz1pC_LUe7n/pubhtml?gid=0&single=true");
+    const text = await res.text();
+    const lines = text.split("\n").slice(1); // خط اول عنوان هست
     const newsTrack = document.getElementById("newsTrack");
 
-    data.forEach(row=>{
-      const text = row[1]; // ستون B
-      if(text){ // فقط سلول‌های غیر خالی
+    lines.forEach(line => {
+      const cols = line.split(",");
+      const content = cols[1]; // ستون دوم
+      if(content) {
         const div = document.createElement("div");
         div.className = "news-item";
-        div.textContent = "✦ " + text;
+        div.textContent = "✦ " + content;
         newsTrack.appendChild(div);
       }
     });
 
-  }catch(err){
-    document.getElementById("newsTrack").innerHTML="خطا در دریافت اخبار";
+  } catch(err) {
+    document.getElementById("newsTrack").textContent = "خطا در دریافت اخبار";
     console.error(err);
   }
 }
