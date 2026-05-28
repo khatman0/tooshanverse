@@ -337,7 +337,7 @@ footer{
   display:flex;
   gap:80px;
   white-space:nowrap;
-  animation:scrollNews 25s linear infinite;
+  animation:scrollNews 30s linear infinite;
 }
 
 .news-item{
@@ -503,15 +503,18 @@ async function loadNews() {
     const rows = json.table.rows;
     const newsTrack = document.getElementById("newsTrack");
 
-    rows.forEach(row => {
-      const content = row.c[1]?.v; // ستون B
-      if(content) {
-        const div = document.createElement("div");
-        div.className = "news-item";
-        div.textContent = "✦ " + content;
-        newsTrack.appendChild(div);
-      }
-    });
+   rows.forEach(row => {
+  const content = row.c[1]?.v;
+  if(content) {
+    const div = document.createElement("div");
+    div.className = "news-item";
+    div.textContent = "✦ " + content;
+    newsTrack.appendChild(div);
+  }
+});
+
+// فقط این یه خط رو اضافه کن
+newsTrack.innerHTML += newsTrack.innerHTML;
 
   } catch(err) {
     document.getElementById("newsTrack").textContent = "خطا در دریافت اخبار";
