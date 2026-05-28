@@ -337,7 +337,7 @@ footer{
   display:flex;
   gap:80px;
   white-space:nowrap;
-  animation:scrollNews 60s linear infinite;
+  animation:scrollNews 30s linear infinite;
 }
 
 .news-item{
@@ -346,8 +346,8 @@ footer{
 }
 
 @keyframes scrollNews{
-  from { transform:translateX(-100%); }
-  to { transform:translateX(100%); }
+  from { transform:translateX(0); }
+  to { transform:translateX(-50%); }
 }
   /*پایان اخبار*/
 </style>
@@ -496,23 +496,30 @@ async function loadNews() {
   try {
     const res = await fetch("https://docs.google.com/spreadsheets/d/1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo/gviz/tq?tqx=out:json");
     const text = await res.text();
-
-    // حذف wrapper google
     const json = JSON.parse(text.substring(text.indexOf("{"), text.lastIndexOf("}")+1));
-
     const rows = json.table.rows;
     const newsTrack = document.getElementById("newsTrack");
 
-   rows.forEach(row => {
-  const content = row.c[1]?.v;
-  if(content) {
-    const div = document.createElement("div");
-    div.className = "news-item";
-    div.textContent = "✦ " + content;
-    newsTrack.appendChild(div);
-  }
-});
+    // اول همه خبرها رو اضافه کن
+    rows.forEach(row => {
+      const content = row.c[1]?.v;
+      if(content) {
+        const div = document.createElement("div");
+        div.className = "news-item";
+        div.textContent = "✦ " + content;
+        newsTrack.appendChild(div);
+      }
+    });
 
+    // بعد دوباره کپی کن برای loop بی‌نقص
+    const original = newsTrack.innerHTML;
+    newsTrack.innerHTML = original + original;
+
+  } catch(err) {
+    document.getElementById("newsTrack").textContent = "خطا در دریافت اخبار";
+    console.error(err);
+  }
+}
 // فقط این یه خط رو اضافه کن
 newsTrack.innerHTML += newsTrack.innerHTML;
 
