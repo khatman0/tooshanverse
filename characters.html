@@ -4,161 +4,573 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>شخصیت‌ها | توشان‌ورس</title>
-<link rel="icon" href="favicon.png" type="image/x-icon" />
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
-
+<link rel="icon" href="/images/favicon.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg-1:#0b0615;
-  --bg-2:#140a25;
-  --accent:#a855f7;
-  --accent-2:#d8b4fe;
-  --card-bg:rgba(20,10,35,0.6);
-  --glass:rgba(255,255,255,0.04);
+/* ══════════════════════════════
+   TOKENS
+══════════════════════════════ */
+:root {
+  --bg:    #04060e;
+  --bg2:   #070c1a;
+  --blue:  #19a7ff;
+  --blue2: #9be3ff;
+  --gold:  #f0c060;
+  --red:   #ff4060;
+  --text:  #ddeeff;
+  --muted: rgba(180,210,255,0.5);
+  --glass: rgba(255,255,255,0.03);
+  --line:  rgba(25,167,255,0.1);
+  --card:  rgba(8,14,28,0.7);
 }
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:'Vazirmatn', Tahoma, sans-serif;
-  background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
-  color:#f3e8ff;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+  min-height: 100vh;
 }
 
-a{text-decoration:none;color:inherit}
+a { color: inherit; text-decoration: none; }
 
-/* HEADER */
-header{
-  padding:20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+/* ══════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════ */
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--blue);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, background .2s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(25,167,255,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform .12s ease, width .3s, height .3s;
+}
+body:has(a:hover) #cursor,
+body:has(.character-card:hover) #cursor { width: 20px; height: 20px; background: var(--gold); }
+body:has(a:hover) #cursor-ring,
+body:has(.character-card:hover) #cursor-ring { width: 50px; height: 50px; }
+
+body:has(.character-card:hover) #cursor { 
+  width: 20px; 
+  height: 20px; 
+  background: var(--gold); 
+}
+body:has(.character-card:hover) #cursor-ring { 
+  width: 50px; 
+  height: 50px; 
 }
 
-.logo{
-  font-family:'Orbitron',sans-serif;
-  color:var(--accent);
-  font-size:1.4rem;
+/* ══════════════════════════════
+   GRID OVERLAY
+══════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(25,167,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25,167,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.back-btn{
-  background:var(--glass);
-  padding:8px 14px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.06);
-  transition:0.3s;
+/* ══════════════════════════════
+   HAMBURGER
+══════════════════════════════ */
+.hamburger {
+  position: fixed; top: 20px; left: 20px;
+  z-index: 100;
+  width: 40px; height: 40px;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 6px;
+  cursor: none; padding: 6px;
+  background: rgba(4,6,14,0.8);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
 }
-.back-btn:hover{
-  background:rgba(168,85,247,0.2);
+.hamburger span {
+  display: block; height: 2px; width: 100%;
+  background: var(--blue);
+  border-radius: 2px;
+  transition: all .3s ease;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+/* ══════════════════════════════
+   OVERLAY + SIDE NAV
+══════════════════════════════ */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  opacity: 0; visibility: hidden;
+  transition: all .35s ease;
+  z-index: 80;
+}
+.overlay.active { opacity: 1; visibility: visible; }
+
+.side-nav {
+  position: fixed; top: 0; left: -300px;
+  width: 280px; height: 100%;
+  background: linear-gradient(180deg, #070c1a, #04060e);
+  border-right: 1px solid var(--line);
+  padding: 80px 24px 40px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: left .35s cubic-bezier(.25,.8,.25,1);
+  z-index: 90;
+}
+.side-nav.active { left: 0; }
+
+.side-nav .nav-label {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.side-nav a {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all .25s ease;
+  cursor: none;
+}
+.side-nav a::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0.4;
+  flex-shrink: 0;
+  transition: opacity .25s, transform .25s;
+}
+.side-nav a:hover {
+  background: rgba(25,167,255,0.08);
+  border-color: var(--line);
+  color: var(--blue2);
+}
+.side-nav a:hover::before { opacity: 1; transform: scale(1.5); }
+.side-nav a.active-link {
+  background: rgba(25,167,255,0.1);
+  border-color: rgba(25,167,255,0.2);
+  color: var(--blue2);
+}
+.side-nav a.active-link::before { opacity: 1; background: var(--gold); }
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 16px 24px 16px 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(4,6,14,0.95), transparent);
+  pointer-events: none;
+}
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--blue);
+  pointer-events: all;
+}
+.logo span { color: var(--gold); }
+
+/* ══════════════════════════════
+   PAGE HERO
+══════════════════════════════ */
+.page-hero {
+  position: relative;
+  padding: 140px 40px 80px;
+  text-align: center;
+  z-index: 1;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(25,167,255,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px;
+  animation: fadeUp .6s ease both;
+}
+.page-hero-eyebrow::before, .page-hero-eyebrow::after {
+  content: ''; height: 1px; width: 24px;
+  background: var(--gold); opacity: 0.6;
+}
+.page-hero h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900; color: #fff;
+  letter-spacing: -1px; line-height: 1.1;
+  animation: fadeUp .6s .1s ease both;
+}
+.page-hero h1 .accent { color: var(--blue); }
+.page-hero p {
+  font-size: 1rem; color: var(--muted);
+  margin-top: 16px;
+  animation: fadeUp .6s .2s ease both;
+}
+.page-hero-divider {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  margin: 24px auto 0;
+  animation: fadeUp .6s .25s ease both;
 }
 
-/* TITLE */
-.page-title{
-  text-align:center;
-  margin:40px 0;
+/* ══════════════════════════════
+   CHARACTERS GRID
+══════════════════════════════ */
+.characters-section {
+  position: relative; z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 40px 100px;
 }
 
-.page-title h1{
-  font-family:'Orbitron',sans-serif;
-  font-size:2.8rem;
-  color:var(--accent);
-  margin:0;
+.section-label {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 32px;
+}
+.section-label::before {
+  content: ''; width: 20px; height: 1px; background: var(--blue);
 }
 
-.page-title p{
-  color:var(--accent-2);
-  opacity:0.8;
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }
 
-/* CHARACTER GRID */
-.characters{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:24px;
-  padding:20px 40px 60px;
+/* ══════════════════════════════
+   CHARACTER CARD
+══════════════════════════════ */
+.character-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  transition: all .35s ease;
+  cursor: none;
+  display: block;
+}
+.character-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(25,167,255,0.5), transparent);
+  opacity: 0; transition: opacity .35s;
+}
+.character-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(25,167,255,0.3);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(25,167,255,0.08);
+}
+.character-card:hover::before { opacity: 1; }
+
+/* image wrapper */
+.card-img-wrap {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+}
+.card-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.85);
+  transition: transform .5s ease, filter .35s;
+}
+.character-card:hover .card-img-wrap img {
+  transform: scale(1.05);
+  filter: saturate(1);
 }
 
-.character-card{
-  background:var(--card-bg);
-  backdrop-filter:blur(8px);
-  border-radius:16px;
-  padding:20px;
-  border:1px solid rgba(168,85,247,0.15);
-  box-shadow:0 15px 40px rgba(0,0,0,0.6);
-  transition:0.35s;
-  text-align:center;
+/* gradient over image */
+.card-img-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(4,6,14,0.95) 100%);
 }
 
-.character-card:hover{
-  transform:translateY(-10px);
-  box-shadow:0 20px 60px rgba(168,85,247,0.25);
+/* corner decorations */
+.corner {
+  position: absolute; width: 14px; height: 14px; z-index: 2;
+  opacity: 0; transition: opacity .35s;
+}
+.character-card:hover .corner { opacity: 1; }
+.corner-tl { top: 10px; left: 10px; border-top: 2px solid var(--blue); border-left: 2px solid var(--blue); }
+.corner-tr { top: 10px; right: 10px; border-top: 2px solid var(--blue); border-right: 2px solid var(--blue); }
+.corner-bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--blue); border-left: 2px solid var(--blue); }
+.corner-br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--blue); border-right: 2px solid var(--blue); }
+
+/* role badge */
+.role-badge {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 3;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+}
+.role-badge.hero {
+  background: rgba(25,167,255,0.15);
+  border: 1px solid rgba(25,167,255,0.3);
+  color: var(--blue2);
+}
+.role-badge.villain {
+  background: rgba(255,64,96,0.15);
+  border: 1px solid rgba(255,64,96,0.3);
+  color: #ff8099;
+}
+.role-badge.neutral {
+  background: rgba(240,192,96,0.15);
+  border: 1px solid rgba(240,192,96,0.3);
+  color: var(--gold);
 }
 
-.character-card img{
-  width:100%;
-  height:260px;
-  object-fit:cover;
-  border-radius:12px;
-  margin-bottom:15px;
+/* card body */
+.card-body {
+  padding: 20px 22px 24px;
+}
+.card-body h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.card-body p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.card-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 16px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--blue);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .25s, transform .25s;
+}
+.character-card:hover .card-link { opacity: 1; transform: none; }
+.card-link svg { width: 12px; height: 12px; }
+
+/* ══════════════════════════════
+   REVEAL + ANIMATIONS
+══════════════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
 }
 
-.character-card h3{
-  color:var(--accent);
-  margin:8px 0;
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--line);
+  padding: 32px 40px;
+  display: flex; align-items: center; justify-content: space-between;
 }
-
-.role{
-  color:var(--accent-2);
-  font-size:0.9rem;
-  margin-bottom:10px;
+.footer-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem; font-weight: 700;
+  color: var(--blue); letter-spacing: 2px;
 }
-
-.character-card p{
-  font-size:0.95rem;
-  opacity:0.85;
+.footer-copy { font-size: 0.8rem; color: var(--muted); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a {
+  font-size: 0.8rem; color: var(--muted);
+  transition: color .2s; cursor: none;
 }
+.footer-links a:hover { color: var(--blue2); }
 
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:30px;
-  color:rgba(255,255,255,0.4);
-  font-size:0.9rem;
-}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .page-title h1{font-size:2rem}
-  .characters{padding:20px}
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 768px) {
+  .characters-section { padding: 20px 20px 80px; }
+  .page-hero { padding: 120px 20px 60px; }
+  footer { flex-direction: column; gap: 16px; text-align: center; }
+  .footer-links { justify-content: center; }
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
 }
 </style>
 </head>
 <body>
 
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- hamburger -->
+<div class="hamburger" id="hamburgerBtn">
+  <span></span><span></span><span></span>
+</div>
+
+<!-- overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- side nav -->
+<nav class="side-nav" id="sideNav">
+  <div class="nav-label">ناوبری</div>
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+    خانه
+  </a>
+  <a href="phase.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    فازها
+  </a>
+  <a href="characters.html" class="active-link">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    شخصیت‌ها
+  </a>
+</nav>
+
+<!-- header -->
 <header>
-  <div class="logo">توشان‌ورس</div>
-  <a href="index.html" class="back-btn">بازگشت</a>
+  <div class="logo">توشان<span>‌</span>ورس</div>
 </header>
 
-<section class="page-title">
-  <h1>شخصیت‌های توشان‌ورس</h1>
-  <p>قهرمانان، ضدقهرمانان و افسانه‌ها</p>
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-eyebrow">دایره‌المعارف</div>
+  <h1>شخصیت‌های <span class="accent">توشان‌ورس</span></h1>
+  <p>قهرمانان، ضدقهرمانان و افسانه‌های این جهان</p>
+  <div class="page-hero-divider"></div>
+</div>
+
+<!-- CHARACTERS -->
+<section class="characters-section">
+  <div class="section-label reveal">شخصیت‌ها</div>
+  <div class="characters-grid">
+
+    <a href="Lord-physica.html" class="character-card reveal">
+      <div class="card-img-wrap">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <div class="role-badge hero">قهرمان</div>
+        <img src="photo/lord.png" alt="لرد فیزیکا">
+      </div>
+      <div class="card-body">
+        <h3>لرد فیزیکا</h3>
+        <p>توانایی تغییر قوانین فیزیک در یک محدوده مشخص. ذهنی نابغه و قدرتی فراتر از تصور.</p>
+        <div class="card-link">
+          مشاهده پروفایل
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
+
+  </div>
 </section>
 
-<section class="characters">
-
- <a href="Lord-physica.html" class="character-card">
-    <img src="photo/lord.png" alt="">
-    <h3>لرد فیزیکا</h3>
-    <div class="role">قهرمان اصلی</div>
-    <p>توانایی تغییر قوانین فیزیک در یک محدوده مشخص. ذهنی نابغه و قدرتی فراتر از تصور.</p>
-</a>
-  
-</section>
-
-<footer>
-© 2026 توشان‌ورس — صفحه شخصیت‌ها
+<!-- FOOTER -->
+<footer class="reveal">
+  <div class="footer-logo">TOOSHANVERSE</div>
+  <div class="footer-copy">© ۱۴۰۴ توشان‌ورس — همهٔ حقوق محفوظ است</div>
+  <div class="footer-links">
+    <a href="index.html">خانه</a>
+    <a href="phase.html">فازها</a>
+  </div>
 </footer>
 
+<script>
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+/* ── HAMBURGER ── */
+const hamburger = document.getElementById('hamburgerBtn');
+const sideNav   = document.getElementById('sideNav');
+const overlay   = document.getElementById('overlay');
+const openMenu  = () => { hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active'); };
+const closeMenu = () => { hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active'); };
+hamburger.addEventListener('click', () => sideNav.classList.contains('active') ? closeMenu() : openMenu());
+overlay.addEventListener('click', closeMenu);
+document.querySelectorAll('.side-nav a').forEach(a => a.addEventListener('click', closeMenu));
+
+/* swipe */
+let tx = 0, swiping = false, cx2 = 0;
+sideNav.addEventListener('touchstart', e => { swiping = true; tx = e.touches[0].clientX; });
+sideNav.addEventListener('touchmove', e => {
+  if (!swiping) return;
+  cx2 = e.touches[0].clientX;
+  const dx = cx2 - tx;
+  if (dx < 0) { sideNav.style.left = Math.max(-280, dx) + 'px'; overlay.style.opacity = 1 + dx/280; }
+});
+sideNav.addEventListener('touchend', () => {
+  swiping = false;
+  if (cx2 - tx < -80) closeMenu(); else sideNav.style.left = '0';
+});
+
+/* ── REVEAL ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
