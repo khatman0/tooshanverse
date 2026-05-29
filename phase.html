@@ -1,210 +1,684 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>توشان‌ورس | تایم‌لاین رسمی</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700&display=swap" rel="stylesheet">
-
+<link rel="icon" href="/images/favicon.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg-1:#0a0a0a;
-  --bg-2:#1a1a1a;
-  --accent:#f5b942;
-  --accent-2:#ccc;
-  --glass:rgba(255,255,255,0.04);
+/* ══════════════════════════════
+   TOKENS
+══════════════════════════════ */
+:root {
+  --bg:    #04060e;
+  --bg2:   #070c1a;
+  --blue:  #19a7ff;
+  --blue2: #9be3ff;
+  --gold:  #f0c060;
+  --red:   #ff4060;
+  --text:  #ddeeff;
+  --muted: rgba(180,210,255,0.5);
+  --glass: rgba(255,255,255,0.03);
+  --line:  rgba(25,167,255,0.1);
+  --card:  rgba(8,14,28,0.7);
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
 body {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ══════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════ */
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--blue);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, background .2s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(25,167,255,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform .12s ease, width .3s, height .3s, opacity .3s;
+}
+body:has(a:hover) #cursor { width: 20px; height: 20px; background: var(--gold); }
+body:has(a:hover) #cursor-ring { width: 50px; height: 50px; }
+
+  body:has(.phase-header:hover) #cursor,
+body:has(.story-card:hover) #cursor { 
+  width: 20px; 
+  height: 20px; 
+  background: var(--gold); 
+}
+body:has(.phase-header:hover) #cursor-ring,
+body:has(.story-card:hover) #cursor-ring { 
+  width: 50px; 
+  height: 50px; 
+}
+
+/* ══════════════════════════════
+   GRID OVERLAY
+══════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(25,167,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25,167,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════
+   HAMBURGER
+══════════════════════════════ */
+.hamburger {
+  position: fixed; top: 20px; left: 20px;
+  z-index: 100;
+  width: 40px; height: 40px;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 6px;
+  cursor: none; padding: 6px;
+  background: rgba(4,6,14,0.8);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
+}
+.hamburger span {
+  display: block; height: 2px; width: 100%;
+  background: var(--blue);
+  border-radius: 2px;
+  transition: all .3s ease;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+/* ══════════════════════════════
+   OVERLAY + SIDE NAV
+══════════════════════════════ */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  opacity: 0; visibility: hidden;
+  transition: all .35s ease;
+  z-index: 80;
+}
+.overlay.active { opacity: 1; visibility: visible; }
+
+.side-nav {
+  position: fixed; top: 0; left: -300px;
+  width: 280px; height: 100%;
+  background: linear-gradient(180deg, #070c1a, #04060e);
+  border-right: 1px solid var(--line);
+  padding: 80px 24px 40px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: left .35s cubic-bezier(.25,.8,.25,1);
+  z-index: 90;
+}
+.side-nav.active { left: 0; }
+
+.side-nav .nav-label {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+.side-nav a {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all .25s ease;
+  cursor: none;
+}
+.side-nav a::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0.4;
+  flex-shrink: 0;
+  transition: opacity .25s, transform .25s;
+}
+.side-nav a:hover {
+  background: rgba(25,167,255,0.08);
+  border-color: var(--line);
+  color: var(--blue2);
+}
+.side-nav a:hover::before { opacity: 1; transform: scale(1.5); }
+.side-nav a.active-link {
+  background: rgba(25,167,255,0.1);
+  border-color: rgba(25,167,255,0.2);
+  color: var(--blue2);
+}
+.side-nav a.active-link::before { opacity: 1; background: var(--gold); }
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 16px 24px 16px 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(4,6,14,0.95), transparent);
+  pointer-events: none;
+}
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--blue);
+  pointer-events: all;
+}
+.logo span { color: var(--gold); }
+
+/* ══════════════════════════════
+   PAGE HERO
+══════════════════════════════ */
+.page-hero {
+  position: relative;
+  padding: 140px 40px 80px;
+  text-align: center;
+  z-index: 1;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(25,167,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  animation: fadeUp .6s ease both;
+}
+.page-hero-eyebrow::before, .page-hero-eyebrow::after {
+  content: '';
+  height: 1px; width: 24px;
+  background: var(--gold); opacity: 0.6;
+}
+.page-hero h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  animation: fadeUp .6s .1s ease both;
+}
+.page-hero h1 .accent { color: var(--blue); }
+.page-hero p {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-top: 16px;
+  animation: fadeUp .6s .2s ease both;
+}
+.page-hero-divider {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  margin: 24px auto 0;
+  animation: fadeUp .6s .25s ease both;
+}
+
+/* ══════════════════════════════
+   TIMELINE CONTAINER
+══════════════════════════════ */
+.timeline-wrap {
+  position: relative; z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 20px 40px 100px;
+}
+
+/* vertical line */
+.timeline-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  right: 50%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--line) 10%, var(--line) 90%, transparent);
+  transform: translateX(50%);
+}
+
+/* ══════════════════════════════
+   PHASE BLOCK
+══════════════════════════════ */
+.phase-block {
+  position: relative;
+  margin-bottom: 60px;
+}
+
+/* dot on the timeline */
+.phase-block::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  right: calc(50% - 6px);
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 16px var(--blue);
+  z-index: 2;
+  transition: transform .3s, box-shadow .3s;
+}
+.phase-block.open::before {
+  background: var(--gold);
+  box-shadow: 0 0 24px var(--gold);
+  transform: scale(1.3);
+}
+
+/* alternating left/right — on mobile stack to one side */
+.phase-block:nth-child(odd) .phase-card  { margin-right: calc(50% + 30px); margin-left: 0; }
+.phase-block:nth-child(even) .phase-card { margin-left: calc(50% + 30px);  margin-right: 0; }
+
+/* ══════════════════════════════
+   PHASE CARD
+══════════════════════════════ */
+.phase-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  transition: border-color .3s, box-shadow .3s;
+  position: relative;
+}
+.phase-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(25,167,255,0.4), transparent);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.phase-block.open .phase-card {
+  border-color: rgba(25,167,255,0.25);
+  box-shadow: 0 0 40px rgba(25,167,255,0.07);
+}
+.phase-block.open .phase-card::before { opacity: 1; }
+
+.phase-header {
+  padding: 22px 26px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: none;
+  gap: 16px;
+}
+.phase-header:hover { background: rgba(25,167,255,0.04); }
+
+.phase-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--gold);
+  opacity: 0.8;
+}
+.phase-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+}
+.phase-arrow {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--blue);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  transition: all .3s;
+}
+.phase-block.open .phase-arrow {
+  background: rgba(25,167,255,0.1);
+  border-color: rgba(25,167,255,0.3);
+  transform: rotate(90deg);
+}
+
+/* ══════════════════════════════
+   PHASE CONTENT
+══════════════════════════════ */
+.phase-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .5s cubic-bezier(.25,.8,.25,1);
+}
+.phase-block.open .phase-content { max-height: 1200px; }
+
+.phase-inner {
+  padding: 0 26px 26px;
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* حداقل ارتفاع صفحه */
-  margin: 0;
-  font-family:'Vazirmatn', sans-serif;
-  background:#0f0f0f;
-  color:#fff;
+  gap: 12px;
 }
 
-.container {
-  flex: 1; /* این باعث میشه محتوا فضا رو پر کنه */
-  width:90%;
-  max-width:1000px;
-  margin:60px auto 0; /* بالای صفحه برای هدر */
+/* ══════════════════════════════
+   STORY CARD
+══════════════════════════════ */
+.story-card {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 18px 20px;
+  background: rgba(25,167,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: all .25s ease;
+  cursor: none;
+}
+.story-card:hover {
+  background: rgba(25,167,255,0.08);
+  border-color: rgba(25,167,255,0.2);
+  transform: translateX(-4px);
+}
+.story-index {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0.7;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.story-info h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 5px;
+}
+.story-info p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.story-arrow {
+  margin-right: auto;
+  color: var(--blue);
+  opacity: 0.4;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  padding-top: 2px;
+  transition: opacity .2s, transform .2s;
+}
+.story-card:hover .story-arrow { opacity: 1; transform: translateX(-3px); }
+
+/* ══════════════════════════════
+   COMING SOON BADGE
+══════════════════════════════ */
+.coming-soon {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px dashed rgba(240,192,96,0.2);
+  background: rgba(240,192,96,0.04);
+  font-size: 0.8rem;
+  color: rgba(240,192,96,0.5);
+  letter-spacing: 1px;
 }
 
-header{
-  position:fixed;top:0;left:0;width:100%;height:60px; background: rgba(0,0,0,0.0);display:flex;align-items:center;padding:0 20px;z-index:50;box-shadow:none;
+/* ══════════════════════════════
+   REVEAL + ANIMATIONS
+══════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .7s ease, transform .7s ease;
 }
-header .logo{
-  font-weight:700;
-  font-size:1rem; /* کوچیک تر شد */
-  color:#ffffff;  /* سفید */
+.reveal.in { opacity: 1; transform: none; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
 }
 
-  
-.hamburger{
-  position:fixed;top:16px;left:16px;z-index:51;width:36px;height:36px;display:flex;flex-direction:column;justify-content:space-around;cursor:pointer;
-}
-.hamburger span{display:block;height:4px;width:100%;background:var(--accent);border-radius:2px;transition:all 0.3s ease;}
-.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
-.hamburger.active span:nth-child(2){opacity:0;}
-.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
-
-.overlay{
-  position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity 0.35s ease;z-index:49;
-}
-.overlay.active{opacity:1;visibility:visible;}
-
-.side-nav{
-  position:fixed;top:0;left:-280px;width:280px;height:100%;background:linear-gradient(180deg,var(--bg-2), var(--bg-1));padding:40px 20px;display:flex;flex-direction:column;gap:24px;transition:left 0.35s cubic-bezier(0.25,0.8,0.25,1);z-index:50;
-}
-.side-nav.active{left:0;}
-.side-nav a{
-  color:var(--accent-2);text-decoration:none;font-weight:600;font-size:1.05rem;padding:10px 12px;border-radius:8px;transition:background 0.25s ease;
-}
-.side-nav a:hover{background:rgba(25,167,255,0.12);}
-
-body{padding-top:60px;}
-.container{width:90%;max-width:1000px;margin:0 auto;padding:30px 0;}
-h1{text-align:center;color:var(--accent);margin-bottom:40px;font-size:2rem;}
-
-/* فازها */
-.phase{background:var(--bg-2);border-radius:12px;margin-bottom:25px;overflow:hidden;box-shadow:0 0 15px rgba(0,0,0,0.6);transition:0.3s;}
-.phase-header{padding:18px 25px;cursor:pointer;font-weight:700;font-size:18px;background:#222;display:flex;justify-content:space-between;align-items:center;transition:0.3s;}
-.phase-header:hover{background:#2b2b2b;}
-.arrow{transition:0.4s;}
-.phase-content{max-height:0;overflow:hidden;transition:max-height 0.5s ease;background:#161616;}
-.phase.active .phase-content{max-height:1000px;}
-.phase.active .arrow{transform:rotate(90deg);}
-
-/* داستان‌ها */
-.story-card, .story{display:block;background:#1a1a1a;padding:15px 25px;border-radius:12px;margin:10px 20px 10px 0;color:#fff;text-decoration:none;transition:transform 0.3s, background 0.3s;}
-.story-card:hover, .story:hover{background:#2a2a2a;transform:translateY(-3px);}
-.story-label{font-weight:700;font-size:1.1rem;margin-bottom:6px;color:var(--accent);}
-.story-desc{font-size:0.95rem;color:#ccc;line-height:1.4;}
-.story-number{color:var(--accent);font-weight:700;margin-left:6px;}
-.description{font-size:0.9rem;color:#ccc;margin-top:4px;}
-
-/* reveal */
-.reveal{opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.9,.2,1);}
-.reveal.in{opacity:1;transform:none;}
-
-/* footer */
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
 footer {
-  background:#111;
-  text-align:center;
-  padding:15px 20px;
-  font-size:0.9rem;
-  color:#ccc;
-  box-shadow:0 -2px 10px rgba(0,0,0,0.5);
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--line);
+  padding: 32px 40px;
+  display: flex; align-items: center; justify-content: space-between;
 }
-  </style>
+.footer-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 2px;
+}
+.footer-copy { font-size: 0.8rem; color: var(--muted); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a {
+  font-size: 0.8rem;
+  color: var(--muted);
+  transition: color .2s;
+  cursor: none;
+}
+.footer-links a:hover { color: var(--blue2); }
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 760px) {
+  .timeline-wrap::before { right: 20px; transform: none; }
+  .phase-block::before   { right: 14px; }
+  .phase-block:nth-child(odd) .phase-card,
+  .phase-block:nth-child(even) .phase-card {
+    margin-right: 44px;
+    margin-left: 0;
+  }
+  .page-hero { padding: 120px 20px 60px; }
+  .timeline-wrap { padding: 20px 20px 80px; }
+  footer { flex-direction: column; gap: 16px; text-align: center; }
+  .footer-links { justify-content: center; }
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+}
+</style>
 </head>
 <body>
 
-<header>
-  <div class="logo">توشان‌ورس</div>
-</header>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
+<!-- hamburger -->
 <div class="hamburger" id="hamburgerBtn">
-  <span></span>
-  <span></span>
-  <span></span>
+  <span></span><span></span><span></span>
 </div>
 
+<!-- overlay -->
 <div class="overlay" id="overlay"></div>
 
+<!-- side nav -->
 <nav class="side-nav" id="sideNav">
-  <a href="#hero">خانه</a>
-  <a href="#heroes">قهرمانان</a>
-  <a href="#villains">ویلن ها</a>
-  <a href="timeline.html">خط زمانی</a>
-  <a href="chat.html">نظردهی</a>
-  <a href="stories.html">داستان ها</a>
+  <div class="nav-label">ناوبری</div>
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+    خانه
+  </a>
+  <a href="phase.html" class="active-link">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    فازها
+  </a>
+  <a href="characters.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    شخصیت‌ها
+  </a>
 </nav>
 
-<div class="container">
-    <h1>تایم‌لاین رسمی توشان‌ورس</h1>
+<!-- header -->
+<header>
+  <div class="logo">توشان<span>‌</span>ورس</div>
+</header>
 
-    <div class="phase">
-        <div class="phase-header">
-            <span>فاز یک – آغاز بیداری</span>
-            <span class="arrow">▶</span>
-        </div>
-        <div class="phase-content" id="lord-story">
-
-          <a href="story1.html" class="story-card">
-            <div class="story-label">لرد فیزیکا</div>
-            <p class="story-desc">شروع فروپاشی قوانین فیزیک و اولین اختلال بزرگ در جهان.</p>
-          </a>
-
-        </div>
-    </div>
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-eyebrow">خط زمانی رسمی</div>
+  <h1>فازهای <span class="accent">توشان‌ورس</span></h1>
+  <p>مسیر داستانی جهان — از آغاز بیداری تا آینده‌ای ناشناخته</p>
+  <div class="page-hero-divider"></div>
 </div>
 
-<footer class="reveal">© 2025 توشان‌ورس — همهٔ حقوق محفوظ است</footer>
+<!-- TIMELINE -->
+<div class="timeline-wrap">
+
+  <!-- فاز یک -->
+  <div class="phase-block reveal" id="phase-1">
+    <div class="phase-card">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div>
+          <div class="phase-num">PHASE 01</div>
+          <div class="phase-title">آغاز بیداری</div>
+        </div>
+        <div class="phase-arrow">▶</div>
+      </div>
+      <div class="phase-content">
+        <div class="phase-inner">
+          <a href="story1.html" class="story-card">
+            <span class="story-index">۰۱</span>
+            <div class="story-info">
+              <h4>لرد فیزیکا</h4>
+              <p>شروع فروپاشی قوانین فیزیک و اولین اختلال بزرگ در جهان.</p>
+            </div>
+            <span class="story-arrow">◀</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- فاز دو (Coming Soon) -->
+  <div class="phase-block reveal" id="phase-2">
+    <div class="phase-card">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div>
+          <div class="phase-num">PHASE 02</div>
+          <div class="phase-title">سایه‌های پنهان</div>
+        </div>
+        <div class="phase-arrow">▶</div>
+      </div>
+      <div class="phase-content">
+        <div class="phase-inner">
+          <div class="coming-soon">
+            ⏳ &nbsp; به زودی معرفی می‌شود
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="reveal">
+  <div class="footer-logo">TOOSHANVERSE</div>
+  <div class="footer-copy">© ۱۴۰۴ توشان‌ورس — همهٔ حقوق محفوظ است</div>
+  <div class="footer-links">
+    <a href="index.html">خانه</a>
+    <a href="characters.html">شخصیت‌ها</a>
+  </div>
+</footer>
 
 <script>
-  // Reveal
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('in');});
-  },{threshold:0.12});
-  revealEls.forEach(el=>io.observe(el));
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
 
-  // فاز باز/بسته
-  const phases = document.querySelectorAll('.phase');
-  phases.forEach(phase => {
-      phase.querySelector('.phase-header').addEventListener('click',()=>{
-          phase.classList.toggle('active');
-      });
-  });
+/* ── HAMBURGER ── */
+const hamburger = document.getElementById('hamburgerBtn');
+const sideNav   = document.getElementById('sideNav');
+const overlay   = document.getElementById('overlay');
+const openMenu  = () => { hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active'); };
+const closeMenu = () => { hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active'); };
+hamburger.addEventListener('click', () => sideNav.classList.contains('active') ? closeMenu() : openMenu());
+overlay.addEventListener('click', closeMenu);
+document.querySelectorAll('.side-nav a').forEach(a => a.addEventListener('click', closeMenu));
 
-  // همبرگر و منو
-  const hamburger = document.getElementById('hamburgerBtn');
-  const sideNav = document.getElementById('sideNav');
-  const overlay = document.getElementById('overlay');
-
-  function openMenu(){
-    hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active');
-  }
-  function closeMenu(){
-    hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active');
-  }
-  hamburger.addEventListener('click',()=>{ sideNav.classList.contains('active')?closeMenu():openMenu(); });
-  overlay.addEventListener('click',closeMenu);
-  document.querySelectorAll('.side-nav a').forEach(a=>a.addEventListener('click',closeMenu));
-
-  // لمس (swipe) برای موبایل
-  let startX=0,currentX=0,touching=false;
-  sideNav.addEventListener('touchstart',e=>{touching=true;startX=e.touches[0].clientX;});
-  sideNav.addEventListener('touchmove',e=>{
-    if(!touching) return;
-    currentX=e.touches[0].clientX;
-    let delta=currentX-startX;
-    if(delta<0){ sideNav.style.left=Math.max(-280,delta)+'px'; overlay.style.opacity=1+delta/280; }
-  });
-  sideNav.addEventListener('touchend',e=>{
-    touching=false;
-    if(currentX-startX<-80) closeMenu();
-    else sideNav.style.left='0px';
-  });
-
-window.addEventListener('DOMContentLoaded', () => {
-    const hash = window.location.hash; // مثلا #phase-lord
-    if(hash){
-        const targetPhase = document.querySelector(hash);
-        if(targetPhase){
-            targetPhase.classList.add('active'); // فاز باز میشه
-            // اسکرول بهش هم میتونه باشه
-            targetPhase.scrollIntoView({behavior: "smooth", block: "start"});
-        }
-    }
+/* swipe */
+let tx = 0, swiping = false, cx2 = 0;
+sideNav.addEventListener('touchstart', e => { swiping = true; tx = e.touches[0].clientX; });
+sideNav.addEventListener('touchmove', e => {
+  if (!swiping) return;
+  cx2 = e.touches[0].clientX;
+  const dx = cx2 - tx;
+  if (dx < 0) { sideNav.style.left = Math.max(-280, dx) + 'px'; overlay.style.opacity = 1 + dx/280; }
 });
-  
-</script>
+sideNav.addEventListener('touchend', () => {
+  swiping = false;
+  if (cx2 - tx < -80) closeMenu(); else sideNav.style.left = '0';
+});
 
+/* ── PHASE TOGGLE ── */
+function togglePhase(header) {
+  const block = header.closest('.phase-block');
+  block.classList.toggle('open');
+}
+
+/* ── REVEAL ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── DEEP LINK via hash ── */
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash;
+  if (hash) {
+    const target = document.querySelector(hash);
+    if (target) {
+      target.classList.add('open');
+      setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+    }
+  }
+});
+</script>
 </body>
 </html>
