@@ -1150,7 +1150,11 @@ async function loadSheetData() {
 
     /* پیدا کردن آخرین مقدار پر در A */
     for (let i = rows.length - 1; i >= 0; i--) {
-      if (rows[i].c[0]?.v) { timerDateStr = rows[i].c[0].v; break; }
+      if (rows[i].c[0] !== null && rows[i].c[0] !== undefined) {
+        timerDateStr = rows[i].c[0].v;
+        console.log('RAW A1 value:', timerDateStr, typeof timerDateStr);
+        break;
+      }
     }
 
     /* پیدا کردن آخرین مقدار پر در B (اسم داستان برای تایمر) */
@@ -1158,15 +1162,35 @@ async function loadSheetData() {
       if (rows[i].c[1]?.v) { storyName = rows[i].c[1].v; break; }
     }
 
-    /* تایمر */
-    if (timerDateStr) {
-      const target = new Date(timerDateStr);
-      if (!isNaN(target)) {
-        document.getElementById('timerStoryName').textContent = storyName || '';
-        startTimer(target);
-      } else {
-        document.getElementById('timerStoryName').textContent = 'تاریخ نامعتبر';
+    /* پارس تاریخ گوگل شیت — فرمت‌های مختلف */
+    function parseSheetDate(v) {
+      if (!v) return null;
+
+      /* اگه گوگل شیت Date(year,month,day,...) برگردوند */
+      if (typeof v === 'string' && v.startsWith('Date(')) {
+        const parts = v.replace('Date(','').replace(')','').split(',').map(Number);
+        /* ماه در گوگل شیت از 0 شروع میشه */
+        return new Date(parts[0], parts[1], parts[2], parts[3]||0, parts[4]||0, parts[5]||0);
       }
+
+      /* اگه عدد (میلی‌ثانیه یا روز از 1899/12/30) برگردوند */
+      if (typeof v === 'number') {
+        /* گوگل شیت روزها رو از 1899/12/30 می‌شمره */
+        const msPerDay = 86400000;
+        const epoch = new Date(1899, 11, 30).getTime();
+        return new Date(epoch + v * msPerDay);
+      }
+
+      /* اگه متن بود مستقیم پارس کن */
+      const d = new Date(v);
+      return isNaN(d) ? null : d;
+    }
+
+    /* تایمر */
+    const target = parseSheetDate(timerDateStr);
+    if (target && !isNaN(target)) {
+      document.getElementById('timerStoryName').textContent = storyName || '';
+      startTimer(target);
     } else {
       document.getElementById('timerStoryName').textContent = 'به زودی...';
       document.getElementById('tDays').textContent  = '--';
