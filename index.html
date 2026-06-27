@@ -197,7 +197,6 @@ header {
   z-index: 1;
 }
 
-/* Hero background */
 .hero-bg {
   position: absolute; inset: 0; z-index: 0;
   background-image: url('toshan-hero.jpg');
@@ -212,14 +211,12 @@ header {
   to   { transform: scale(1.12); }
 }
 
-/* Vignette */
 .hero::before {
   content: '';
   position: absolute; inset: 0; z-index: 1;
   background: radial-gradient(ellipse at center, transparent 30%, rgba(4,6,14,0.9) 100%);
 }
 
-/* Scan lines */
 .hero::after {
   content: '';
   position: absolute; inset: 0; z-index: 2;
@@ -233,7 +230,6 @@ header {
   pointer-events: none;
 }
 
-/* Blue orbs */
 .orb {
   position: absolute;
   border-radius: 50%;
@@ -270,7 +266,6 @@ header {
   padding: 0 40px;
 }
 
-/* Portrait */
 .portrait {
   flex: 0 0 300px;
   height: 400px;
@@ -303,7 +298,6 @@ header {
   filter: saturate(0.9);
 }
 
-/* Corner decorations */
 .portrait .corner {
   position: absolute;
   width: 16px; height: 16px;
@@ -314,7 +308,6 @@ header {
 .corner-bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--blue); border-left: 2px solid var(--blue); }
 .corner-br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--blue); border-right: 2px solid var(--blue); }
 
-/* Hero text */
 .hero-meta { flex: 1; }
 
 .hero-eyebrow {
@@ -429,7 +422,6 @@ header {
 }
 .btn svg { width: 16px; height: 16px; }
 
-/* Scroll indicator */
 .scroll-indicator {
   position: absolute; bottom: 32px; left: 50%;
   transform: translateX(-50%);
@@ -586,79 +578,166 @@ header {
 }
 
 /* ══════════════════════════════
-   NEWS TICKER
+   ANNOUNCEMENT BOARD
 ══════════════════════════════ */
-.news-section {
+.announce-section {
   position: relative; z-index: 1;
-  padding: 0 0 80px;
+  padding: 0 40px 80px;
 }
-.news-header {
-  max-width: 1200px;
-  margin: 0 auto 20px;
-  padding: 0 40px;
-  display: flex; align-items: center; gap: 16px;
+.announce-box {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  position: relative;
 }
-.news-badge {
+.announce-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* تایمر */
+.timer-wrap {
+  padding: 40px 40px 32px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+.timer-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-bottom: 8px;
+}
+.timer-label::before, .timer-label::after {
+  content: '';
+  height: 1px; width: 24px;
+  background: var(--gold);
+  opacity: 0.6;
+}
+.timer-story-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 28px;
+  min-height: 1.4em;
+}
+.timer-digits {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.timer-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  color: var(--blue);
+  background: rgba(25,167,255,0.06);
+  border: 1px solid rgba(25,167,255,0.15);
+  border-radius: 12px;
+  padding: 12px 18px;
+  min-width: 80px;
+  line-height: 1;
+  text-align: center;
+}
+.timer-unit-label {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.timer-sep {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--blue);
+  opacity: 0.4;
+  margin-bottom: 22px;
+}
+.timer-done {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+  display: none;
+}
+
+/* تابلو اعلانات */
+.board-wrap {
+  padding: 28px 40px 36px;
+}
+.board-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+.board-badge {
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--red);
+  color: var(--blue);
   display: flex; align-items: center; gap: 6px;
 }
-.news-badge::before {
+.board-badge::before {
   content: '';
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--red);
-  animation: blink 1.2s ease infinite;
+  background: var(--blue);
 }
-@keyframes blink {
-  0%,100% { opacity: 1; }
-  50%      { opacity: 0.2; }
-}
-.news-board {
-  background: rgba(8,14,28,0.9);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 16px 0;
-  overflow: hidden;
-  position: relative;
-}
-.news-board::before, .news-board::after {
-  content: '';
-  position: absolute; top: 0; bottom: 0;
-  width: 80px; z-index: 2;
-  pointer-events: none;
-}
-.news-board::before {
-  right: 0;
-  background: linear-gradient(to left, rgba(8,14,28,1), transparent);
-}
-.news-board::after {
-  left: 0;
-  background: linear-gradient(to right, rgba(8,14,28,1), transparent);
-}
-.news-track {
+.board-list {
   display: flex;
-  gap: 60px;
-  white-space: nowrap;
-  animation: ticker 35s linear infinite;
+  flex-direction: column;
+  gap: 10px;
 }
-.news-item {
-  font-size: 0.9rem;
+.board-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 18px;
+  background: rgba(25,167,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 0.92rem;
   color: var(--blue2);
-  display: inline-flex; align-items: center; gap: 10px;
-  flex-shrink: 0;
+  line-height: 1.7;
 }
-.news-item::before {
+.board-item::before {
   content: '◆';
   color: var(--gold);
   font-size: 0.5rem;
+  margin-top: 6px;
+  flex-shrink: 0;
 }
-@keyframes ticker {
-  from { transform: translateX(-150); }
-  to   { transform: translateX(100%); }
+.board-empty {
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* کانفتی */
+#confetti-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9990;
+  display: none;
 }
 
 /* ══════════════════════════════
@@ -716,6 +795,9 @@ footer {
   .hero-stats { gap: 20px; }
   footer { flex-direction: column; gap: 16px; text-align: center; }
   .footer-links { justify-content: center; }
+  .timer-wrap { padding: 30px 20px 24px; }
+  .board-wrap { padding: 20px 20px 28px; }
+  .announce-section { padding: 0 20px 60px; }
 }
 @media (max-width: 640px) {
   .section { padding: 60px 20px; }
@@ -726,11 +808,14 @@ footer {
   .btn { justify-content: center; }
   body { cursor: auto; }
   #cursor, #cursor-ring { display: none; }
+  .timer-num { min-width: 60px; font-size: 1.6rem; padding: 10px 12px; }
+  .timer-sep { font-size: 1.4rem; }
 }
 </style>
 </head>
 <body>
 
+<canvas id="confetti-canvas"></canvas>
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
@@ -822,13 +907,48 @@ footer {
   </div>
 </section>
 
-<!-- NEWS TICKER -->
-<div class="news-section reveal">
-  <div class="news-header">
-    <div class="news-badge">اخبار زنده</div>
-  </div>
-  <div class="news-board">
-    <div class="news-track" id="newsTrack"></div>
+<!-- ANNOUNCEMENT BOARD -->
+<div class="announce-section reveal">
+  <div class="announce-box">
+
+    <!-- تایمر -->
+    <div class="timer-wrap">
+      <div class="timer-label">انتشار تا داستان بعدی</div>
+      <div class="timer-story-name" id="timerStoryName">در حال بارگذاری...</div>
+      <div class="timer-digits" id="timerDigits">
+        <div class="timer-unit">
+          <div class="timer-num" id="tDays">--</div>
+          <div class="timer-unit-label">روز</div>
+        </div>
+        <div class="timer-sep">:</div>
+        <div class="timer-unit">
+          <div class="timer-num" id="tHours">--</div>
+          <div class="timer-unit-label">ساعت</div>
+        </div>
+        <div class="timer-sep">:</div>
+        <div class="timer-unit">
+          <div class="timer-num" id="tMins">--</div>
+          <div class="timer-unit-label">دقیقه</div>
+        </div>
+        <div class="timer-sep">:</div>
+        <div class="timer-unit">
+          <div class="timer-num" id="tSecs">--</div>
+          <div class="timer-unit-label">ثانیه</div>
+        </div>
+      </div>
+      <div class="timer-done" id="timerDone">🎉 منتشر شد!</div>
+    </div>
+
+    <!-- تابلو اعلانات -->
+    <div class="board-wrap">
+      <div class="board-header">
+        <div class="board-badge">تابلو اعلانات</div>
+      </div>
+      <div class="board-list" id="boardList">
+        <div class="board-empty">در حال بارگذاری...</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -907,8 +1027,7 @@ hamburger.addEventListener('click', () => sideNav.classList.contains('active') ?
 overlay.addEventListener('click', close);
 document.querySelectorAll('.side-nav a').forEach(a => a.addEventListener('click', close));
 
-/* swipe to close */
-let tx = 0, ty2 = 0, swiping = false;
+let tx = 0, swiping = false;
 sideNav.addEventListener('touchstart', e => { swiping = true; tx = e.touches[0].clientX; });
 sideNav.addEventListener('touchmove', e => {
   if (!swiping) return;
@@ -927,38 +1046,153 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-/* ── NEWS ── */
-async function loadNews() {
+/* ── CONFETTI ── */
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+let confettiPieces = [];
+let confettiRunning = false;
+
+function startConfetti() {
+  canvas.style.display = 'block';
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  confettiPieces = [];
+  const colors = ['#19a7ff','#f0c060','#ff4060','#9be3ff','#ffffff','#a0ff60'];
+  for (let i = 0; i < 150; i++) {
+    confettiPieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * -canvas.height,
+      w: Math.random() * 10 + 5,
+      h: Math.random() * 6 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: Math.random() * 3 + 2,
+      angle: Math.random() * 360,
+      spin: (Math.random() - 0.5) * 4,
+      drift: (Math.random() - 0.5) * 2
+    });
+  }
+  confettiRunning = true;
+  animateConfetti();
+  setTimeout(() => { confettiRunning = false; canvas.style.display = 'none'; }, 5000);
+}
+
+function animateConfetti() {
+  if (!confettiRunning) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  confettiPieces.forEach(p => {
+    p.y += p.speed;
+    p.x += p.drift;
+    p.angle += p.spin;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.angle * Math.PI / 180);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    ctx.restore();
+  });
+  requestAnimationFrame(animateConfetti);
+}
+
+/* ── GOOGLE SHEETS DATA ── */
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo/gviz/tq?tqx=out:json";
+
+let timerInterval = null;
+let confettiFired = false;
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function startTimer(targetDate) {
+  if (timerInterval) clearInterval(timerInterval);
+
+  function tick() {
+    const now  = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('timerDigits').style.display = 'none';
+      document.getElementById('timerDone').style.display = 'block';
+      if (!confettiFired) { confettiFired = true; startConfetti(); }
+      return;
+    }
+
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000)  / 60000);
+    const secs  = Math.floor((diff % 60000)    / 1000);
+
+    document.getElementById('tDays').textContent  = pad(days);
+    document.getElementById('tHours').textContent = pad(hours);
+    document.getElementById('tMins').textContent  = pad(mins);
+    document.getElementById('tSecs').textContent  = pad(secs);
+  }
+
+  tick();
+  timerInterval = setInterval(tick, 1000);
+}
+
+async function loadSheetData() {
   try {
-    const res  = await fetch("https://docs.google.com/spreadsheets/d/1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo/gviz/tq?tqx=out:json");
+    const res  = await fetch(SHEET_URL);
     const text = await res.text();
     const json = JSON.parse(text.substring(text.indexOf("{"), text.lastIndexOf("}")+1));
-    const track = document.getElementById("newsTrack");
+    const rows = json.table.rows;
 
-    json.table.rows.forEach(row => {
-      const v = row.c[1]?.v;
-      if (v) {
-        const d = document.createElement('div');
-        d.className = 'news-item';
-        d.textContent = v;
-        track.appendChild(d);
-      }
+    /* ── ستون A: تاریخ و ساعت تایمر (آخرین ردیف پر) ── */
+    let timerDateStr = null;
+    let storyName    = null;
+    rows.forEach(row => {
+      const a = row.c[0]?.v;
+      const b = row.c[1]?.v;
+      if (a) timerDateStr = a;
+      if (b && row === rows[rows.length - 1 - [...rows].reverse().findIndex(r => r.c[0]?.v)]) {}
     });
 
-    // clone for seamless loop
-    track.innerHTML += track.innerHTML;
+    /* پیدا کردن آخرین مقدار پر در A */
+    for (let i = rows.length - 1; i >= 0; i--) {
+      if (rows[i].c[0]?.v) { timerDateStr = rows[i].c[0].v; break; }
+    }
 
-    // adjust speed based on content width
-    const totalW = track.scrollWidth / 2;
-    const duration = Math.max(30, totalW / 80);
-    track.style.animationDuration = duration + 's';
+    /* پیدا کردن آخرین مقدار پر در B (اسم داستان برای تایمر) */
+    for (let i = rows.length - 1; i >= 0; i--) {
+      if (rows[i].c[1]?.v) { storyName = rows[i].c[1].v; break; }
+    }
+
+    /* تایمر */
+    if (timerDateStr) {
+      const target = new Date(timerDateStr);
+      if (!isNaN(target)) {
+        document.getElementById('timerStoryName').textContent = storyName || '';
+        startTimer(target);
+      } else {
+        document.getElementById('timerStoryName').textContent = 'تاریخ نامعتبر';
+      }
+    } else {
+      document.getElementById('timerStoryName').textContent = 'به زودی...';
+      document.getElementById('tDays').textContent  = '--';
+      document.getElementById('tHours').textContent = '--';
+      document.getElementById('tMins').textContent  = '--';
+      document.getElementById('tSecs').textContent  = '--';
+    }
+
+    /* ── ستون B: تابلو اعلانات (همه ردیف‌ها) ── */
+    const boardList = document.getElementById('boardList');
+    const items = rows.map(r => r.c[1]?.v).filter(Boolean);
+    if (items.length) {
+      boardList.innerHTML = items.map(v =>
+        `<div class="board-item">${v}</div>`
+      ).join('');
+    } else {
+      boardList.innerHTML = '<div class="board-empty">اعلانی موجود نیست</div>';
+    }
 
   } catch(err) {
-    const track = document.getElementById("newsTrack");
-    track.innerHTML = '<div class="news-item">خطا در بارگذاری اخبار</div>';
+    document.getElementById('timerStoryName').textContent = 'خطا در بارگذاری';
+    document.getElementById('boardList').innerHTML = '<div class="board-empty">خطا در بارگذاری اطلاعات</div>';
   }
 }
-loadNews();
+
+loadSheetData();
 </script>
 </body>
 </html>
