@@ -1157,10 +1157,8 @@ async function loadSheetData() {
       }
     }
 
-    /* پیدا کردن آخرین مقدار پر در B (اسم داستان برای تایمر) */
-    for (let i = rows.length - 1; i >= 0; i--) {
-      if (rows[i].c[1]?.v) { storyName = rows[i].c[1].v; break; }
-    }
+    /* ستون C ردیف اول: اسم داستان بعدی */
+    storyName = rows[0]?.c[2]?.v || '';
 
     /* پارس تاریخ گوگل شیت — فرمت‌های مختلف */
     function parseSheetDate(v) {
