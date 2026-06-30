@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>نظرات | توشان‌ورس</title>
+<link rel="icon" href="/photo/favicon.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #04060e;
+  --blue:     #19a7ff;
+  --blue2:    #9be3ff;
+  --gold:     #f0c060;
+  --text:     #ddeeff;
+  --muted:    rgba(180,210,255,0.5);
+  --line:     rgba(25,167,255,0.1);
+  --card:     rgba(8,14,28,0.7);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ─── CUSTOM CURSOR ─── */
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--blue);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, background .2s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(25,167,255,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform .12s ease, width .3s, height .3s, opacity .3s;
+}
+body:has(a:hover) #cursor { width: 20px; height: 20px; background: var(--gold); }
+body:has(a:hover) #cursor-ring { width: 50px; height: 50px; }
+
+/* ─── HAMBURGER ─── */
+.hamburger {
+  position: fixed; top: 20px; left: 20px;
+  z-index: 100;
+  width: 40px; height: 40px;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 6px;
+  padding: 6px;
+  background: rgba(4,6,14,0.8);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+.hamburger span {
+  display: block; height: 2px; width: 100%;
+  background: var(--blue);
+  border-radius: 2px;
+  transition: all .3s ease;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+/* ─── OVERLAY + SIDE NAV ─── */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  opacity: 0; visibility: hidden;
+  transition: all .35s ease;
+  z-index: 80;
+}
+.overlay.active { opacity: 1; visibility: visible; }
+
+.side-nav {
+  position: fixed; top: 0; left: -300px;
+  width: 280px; height: 100%;
+  background: linear-gradient(180deg, #070c1a, #04060e);
+  border-right: 1px solid var(--line);
+  padding: 80px 24px 40px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: left .35s cubic-bezier(.25,.8,.25,1);
+  z-index: 90;
+}
+.side-nav.active { left: 0; }
+
+.side-nav .nav-label {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+.side-nav a {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all .25s ease;
+}
+.side-nav a::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0.4;
+  transition: opacity .25s, transform .25s;
+}
+.side-nav a:hover {
+  background: rgba(25,167,255,0.08);
+  border-color: var(--line);
+  color: var(--blue2);
+}
+.side-nav a:hover::before { opacity: 1; transform: scale(1.5); }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(25,167,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25,167,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.back {
+  position: fixed;
+  top: 20px; left: 20px;
+  z-index: 50;
+  display: flex; align-items: center; gap: 8px;
+  color: var(--blue);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: rgba(9,12,24,0.8);
+  backdrop-filter: blur(12px);
+  transition: all .25s;
+}
+.back:hover {
+  background: rgba(25,167,255,0.08);
+  border-color: rgba(25,167,255,0.3);
+}
+.back svg { width: 14px; height: 14px; }
+
+/* ─── HEADER ─── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 16px 24px 16px 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(4,6,14,0.95), transparent);
+  pointer-events: none;
+}
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--blue);
+  pointer-events: all;
+}
+.logo span { color: var(--gold); }
+
+.page-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 100px 24px 100px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--line);
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: rgba(240,192,96,0.04);
+  margin-bottom: 20px;
+}
+.page-header h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.page-header p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* فرم ارسال نظر */
+.comment-form-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  background: rgba(25,167,255,0.05);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--blue2);
+  font-family: 'Vazirmatn', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: all .25s;
+}
+.comment-form-toggle:hover {
+  background: rgba(25,167,255,0.09);
+  border-color: rgba(25,167,255,0.25);
+}
+.comment-form-toggle svg {
+  width: 16px; height: 16px;
+  transition: transform .3s ease;
+}
+.comment-form-toggle.open svg { transform: rotate(45deg); }
+
+.comment-form-wrap {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s ease;
+  margin-bottom: 16px;
+}
+.comment-form-wrap.open {
+  max-height: 600px;
+  margin-bottom: 40px;
+}
+
+.comment-form {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+.comment-form::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--blue2);
+  margin-bottom: 8px;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(25,167,255,0.04);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.92rem;
+  outline: none;
+  transition: all .25s;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: rgba(25,167,255,0.4);
+  background: rgba(25,167,255,0.07);
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.7;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--blue), #1fb6ff);
+  color: #001828;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Vazirmatn', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all .25s;
+  box-shadow: 0 8px 30px rgba(25,167,255,0.2);
+}
+.submit-btn:hover { transform: translateY(-2px); }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.form-status {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  text-align: center;
+  min-height: 1.2em;
+}
+.form-status.success { color: #6ee7a8; }
+.form-status.error { color: #ff6b6b; }
+
+/* لیست نظرات */
+.comments-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.comments-section-title span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--blue);
+  white-space: nowrap;
+}
+.comments-section-title .line {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.comment-card {
+  background: rgba(25,167,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 22px;
+  transition: all .25s;
+}
+.comment-card:hover {
+  background: rgba(25,167,255,0.06);
+  border-color: rgba(25,167,255,0.2);
+}
+.comment-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.comment-name {
+  font-weight: 700;
+  color: var(--blue2);
+  font-size: 0.92rem;
+}
+.comment-date {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.comment-text {
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: rgba(200,225,255,0.85);
+}
+
+.comments-empty {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .page-wrap { padding: 80px 18px 80px; }
+  .comment-form { padding: 22px; }
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="hamburger" id="hamburgerBtn">
+  <span></span><span></span><span></span>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<nav class="side-nav" id="sideNav">
+  <div class="nav-label">ناوبری</div>
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+    خانه
+  </a>
+  <a href="phase.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    فازها
+  </a>
+  <a href="characters.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    شخصیت‌ها
+  </a>
+  <a href="comments.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+    نظرات
+  </a>
+</nav>
+
+<header>
+  <div class="logo">توشان<span>‌</span>ورس</div>
+</header>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="page-badge">نظرات خوانندگان</div>
+    <h1>نظرت رو بگو</h1>
+    <p>هر چیزی که درباره‌ی توشان‌ورس فکر می‌کنی رو اینجا بنویس</p>
+  </div>
+
+  <!-- فرم ارسال نظر -->
+  <button class="comment-form-toggle" id="formToggle">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    نظر بده
+  </button>
+
+  <div class="comment-form-wrap" id="formWrap">
+  <form class="comment-form" id="commentForm">
+    <div class="form-group">
+      <label for="nameInput">اسم</label>
+      <input type="text" id="nameInput" placeholder="اسمت رو بنویس" required maxlength="40">
+    </div>
+    <div class="form-group">
+      <label for="commentInput">نظر</label>
+      <textarea id="commentInput" placeholder="نظرتو بنویس..." required maxlength="500"></textarea>
+    </div>
+    <button type="submit" class="submit-btn" id="submitBtn">ارسال نظر</button>
+    <div class="form-status" id="formStatus"></div>
+  </form>
+  </div>
+
+  <!-- لیست نظرات -->
+  <div class="comments-section-title">
+    <span>نظرات</span>
+    <div class="line"></div>
+  </div>
+
+  <div class="comments-list" id="commentsList">
+    <div class="comments-empty">در حال بارگذاری نظرات...</div>
+  </div>
+
+</div>
+
+<script>
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+/* ── HAMBURGER ── */
+const hamburger = document.getElementById('hamburgerBtn');
+const sideNav   = document.getElementById('sideNav');
+const overlay   = document.getElementById('overlay');
+const openNav  = () => { hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active'); };
+const closeNav = () => { hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active'); };
+hamburger.addEventListener('click', () => sideNav.classList.contains('active') ? closeNav() : openNav());
+overlay.addEventListener('click', closeNav);
+document.querySelectorAll('.side-nav a').forEach(a => a.addEventListener('click', closeNav));
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVoK7N2aodgp9d3O20jismW7OT_4bpIHzbZRB1SydIdws0uGkt5Vs4N1I2kZ9KtMZpAg/exec";
+
+/* ── FORM TOGGLE ── */
+const formToggle = document.getElementById('formToggle');
+const formWrap = document.getElementById('formWrap');
+formToggle.addEventListener('click', () => {
+  formToggle.classList.toggle('open');
+  formWrap.classList.toggle('open');
+});
+const SHEET_GVIZ_URL = "https://docs.google.com/spreadsheets/d/1tuMO4XO3i6cUBEPcsEwlcSWU8EKy6BZmsx1APncszPE/gviz/tq?tqx=out:json";
+
+const form = document.getElementById('commentForm');
+const nameInput = document.getElementById('nameInput');
+const commentInput = document.getElementById('commentInput');
+const submitBtn = document.getElementById('submitBtn');
+const formStatus = document.getElementById('formStatus');
+const commentsList = document.getElementById('commentsList');
+
+// ── ارسال نظر ──
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = nameInput.value.trim();
+  const comment = commentInput.value.trim();
+  if (!name || !comment) return;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'در حال ارسال...';
+  formStatus.textContent = '';
+  formStatus.className = 'form-status';
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ name, comment })
+    });
+
+    formStatus.textContent = 'نظرت با موفقیت ثبت شد!';
+    formStatus.classList.add('success');
+    form.reset();
+
+    // نمایش فوری نظر تازه (چون no-cors جواب رو نمیده، دستی اضافه می‌کنیم)
+    addCommentToTop(name, comment, 'همین الان');
+
+  } catch (err) {
+    formStatus.textContent = 'مشکلی پیش اومد. دوباره امتحان کن.';
+    formStatus.classList.add('error');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'ارسال نظر';
+  }
+});
+
+function addCommentToTop(name, comment, date) {
+  const empty = commentsList.querySelector('.comments-empty');
+  if (empty) empty.remove();
+
+  const card = document.createElement('div');
+  card.className = 'comment-card';
+  card.innerHTML = `
+    <div class="comment-card-header">
+      <span class="comment-name">${escapeHtml(name)}</span>
+      <span class="comment-date">${escapeHtml(date)}</span>
+    </div>
+    <div class="comment-text">${escapeHtml(comment)}</div>
+  `;
+  commentsList.prepend(card);
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ── بارگذاری نظرات قبلی ──
+async function loadComments() {
+  try {
+    const res = await fetch(SHEET_GVIZ_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1));
+    const rows = json.table.rows;
+
+    commentsList.innerHTML = '';
+
+    if (!rows || rows.length === 0) {
+      commentsList.innerHTML = '<div class="comments-empty">هنوز نظری ثبت نشده. اولین نفر باش!</div>';
+      return;
+    }
+
+    // جدیدترین‌ها بالا
+    const items = rows.map(r => ({
+      name: r.c[0]?.v || 'ناشناس',
+      comment: r.c[1]?.v || '',
+      date: r.c[2]?.v || ''
+    })).filter(item => item.comment).reverse();
+
+    if (items.length === 0) {
+      commentsList.innerHTML = '<div class="comments-empty">هنوز نظری ثبت نشده. اولین نفر باش!</div>';
+      return;
+    }
+
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'comment-card';
+      card.innerHTML = `
+        <div class="comment-card-header">
+          <span class="comment-name">${escapeHtml(item.name)}</span>
+          <span class="comment-date">${escapeHtml(item.date)}</span>
+        </div>
+        <div class="comment-text">${escapeHtml(item.comment)}</div>
+      `;
+      commentsList.appendChild(card);
+    });
+
+  } catch (err) {
+    commentsList.innerHTML = '<div class="comments-empty">خطا در بارگذاری نظرات</div>';
+  }
+}
+
+loadComments();
+</script>
+</body>
+</html>
