@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>الکتروپالس - ارتباط الکتریکی</title>
-  <link rel="icon" href="/photo/favicon.png" type="image/png">
+<link rel="icon" href="/photo/favicon.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -19,7 +19,6 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -30,7 +29,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── NOISE OVERLAY ─── */
 body::before {
   content: '';
   position: fixed;
@@ -41,7 +39,6 @@ body::before {
   opacity: 0.6;
 }
 
-/* ─── AMBIENT GLOW ─── */
 .ambient {
   position: fixed;
   width: 600px; height: 600px;
@@ -49,7 +46,6 @@ body::before {
   background: radial-gradient(circle, rgba(25,167,255,0.07), transparent 70%);
   pointer-events: none;
   z-index: 0;
-  transition: transform 1.2s ease;
   top: -200px; left: 50%;
   transform: translateX(-50%);
   animation: breathe 8s ease-in-out infinite;
@@ -59,7 +55,6 @@ body::before {
   50%      { opacity: 1;   transform: translateX(-50%) scale(1.15); }
 }
 
-/* ─── BACK BUTTON ─── */
 .back {
   position: fixed;
   top: 20px; left: 20px;
@@ -82,7 +77,6 @@ body::before {
 }
 .back svg { width: 14px; height: 14px; }
 
-/* ─── PROGRESS BAR ─── */
 #progress {
   position: fixed;
   top: 0; left: 0;
@@ -92,6 +86,72 @@ body::before {
   z-index: 100;
   transition: width .1s linear;
   box-shadow: 0 0 10px rgba(25,167,255,0.6);
+}
+
+/* ─── CHAPTER SIDEBAR ─── */
+.chapter-nav {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.chapter-nav::-webkit-scrollbar { display: none; }
+
+.chapter-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all .25s ease;
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid transparent;
+  direction: rtl;
+}
+.chapter-nav-item:hover {
+  background: rgba(25,167,255,0.08);
+  border-color: var(--line);
+}
+.chapter-nav-item.active {
+  background: rgba(25,167,255,0.12);
+  border-color: rgba(25,167,255,0.3);
+}
+.chapter-nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex-shrink: 0;
+  transition: all .25s;
+}
+.chapter-nav-item:hover .chapter-nav-dot,
+.chapter-nav-item.active .chapter-nav-dot {
+  background: var(--blue);
+  box-shadow: 0 0 6px rgba(25,167,255,0.6);
+  transform: scale(1.4);
+}
+.chapter-nav-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color .25s;
+}
+.chapter-nav-item:hover .chapter-nav-label,
+.chapter-nav-item.active .chapter-nav-label {
+  color: var(--blue);
+}
+
+@media (max-width: 900px) {
+  .chapter-nav { display: none; }
 }
 
 /* ─── HERO ─── */
@@ -163,13 +223,8 @@ body::before {
   font-size: 0.88rem;
   animation: fadeUp .8s .2s ease both;
 }
-.hero-meta span {
-  display: flex; align-items: center; gap: 6px;
-}
-.hero-meta span::before {
-  content: '·';
-  opacity: 0.4;
-}
+.hero-meta span { display: flex; align-items: center; gap: 6px; }
+.hero-meta span::before { content: '·'; opacity: 0.4; }
 .hero-meta span:first-child::before { display: none; }
 
 .scroll-hint {
@@ -184,8 +239,7 @@ body::before {
   animation: fadeUp .8s .4s ease both;
 }
 .scroll-hint .line {
-  width: 1px;
-  height: 40px;
+  width: 1px; height: 40px;
   background: linear-gradient(to bottom, var(--blue), transparent);
   animation: scrollLine 2s ease-in-out infinite;
 }
@@ -201,7 +255,6 @@ body::before {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── DIVIDER ─── */
 .divider {
   width: 100%;
   height: 1px;
@@ -210,7 +263,6 @@ body::before {
   margin: 0;
 }
 
-/* ─── STORY WRAPPER ─── */
 .story-wrap {
   position: relative;
   z-index: 1;
@@ -219,7 +271,6 @@ body::before {
   padding: 80px 32px 120px;
 }
 
-/* ─── CHAPTER MARKER ─── */
 .chapter {
   display: flex;
   align-items: center;
@@ -230,7 +281,6 @@ body::before {
   transition: all .7s ease;
 }
 .chapter.visible { opacity: 1; transform: none; }
-
 .chapter-num {
   font-size: 0.7rem;
   font-weight: 700;
@@ -238,11 +288,7 @@ body::before {
   color: var(--blue);
   white-space: nowrap;
 }
-.chapter-line {
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-}
+.chapter-line { flex: 1; height: 1px; background: var(--line); }
 .chapter-title {
   font-size: 1.1rem;
   font-weight: 700;
@@ -250,7 +296,6 @@ body::before {
   white-space: nowrap;
 }
 
-/* ─── PARAGRAPHS ─── */
 .story-wrap p {
   font-size: 1.05rem;
   line-height: 2.1;
@@ -260,12 +305,8 @@ body::before {
   transform: translateY(12px);
   transition: all .6s ease;
 }
-.story-wrap p.visible {
-  opacity: 1;
-  transform: none;
-}
+.story-wrap p.visible { opacity: 1; transform: none; }
 
-/* ─── DIALOGUE ─── */
 .dialogue {
   position: relative;
   margin: 28px 0;
@@ -280,10 +321,7 @@ body::before {
   transform: translateX(16px);
   transition: all .6s ease;
 }
-.dialogue.visible {
-  opacity: 1;
-  transform: none;
-}
+.dialogue.visible { opacity: 1; transform: none; }
 .dialogue .speaker {
   display: block;
   font-size: 0.72rem;
@@ -301,7 +339,6 @@ body::before {
 }
 .dialogue.inner .speaker { color: rgba(155,227,255,0.6); }
 
-/* ─── TIME BREAK ─── */
 .timebreak {
   display: flex;
   align-items: center;
@@ -320,7 +357,6 @@ body::before {
 }
 .timebreak .tl { flex: 1; height: 1px; background: var(--line); }
 
-/* ─── HIGHLIGHT BOX ─── */
 .highlight {
   margin: 36px 0;
   padding: 24px 28px;
@@ -336,7 +372,6 @@ body::before {
 }
 .highlight.visible { opacity: 1; transform: none; }
 
-/* ─── ACTION BEAT ─── */
 .action {
   font-size: 0.88rem;
   font-weight: 600;
@@ -350,7 +385,6 @@ body::before {
 }
 .action.visible { opacity: 1; }
 
-/* ─── END MARKER ─── */
 .story-end {
   margin-top: 80px;
   text-align: center;
@@ -372,7 +406,6 @@ body::before {
   transform: none !important;
 }
 
-/* ─── RESPONSIVE ─── */
 @media (max-width: 640px) {
   .story-wrap { padding: 60px 20px 80px; }
   .story-wrap p { font-size: 0.98rem; line-height: 2; }
@@ -393,11 +426,55 @@ body::before {
   بازگشت
 </a>
 
+<!-- ─── CHAPTER SIDEBAR ─── -->
+<nav class="chapter-nav" id="chapterNav">
+  <a class="chapter-nav-item" href="#ch01">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">نشانه‌ی ارتش</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch02">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">شکاف</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch03">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">تله‌ها</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch04">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">بنز مشکی</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch05">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">ژنرال کیان‌فره</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch06">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">پوشه</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch07">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">حجله</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch08">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">سنگینی یک مراسم</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch-fb">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">فلش‌بک</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch09">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">ردپا</span>
+  </a>
+</nav>
+
 <!-- ─── HERO ─── -->
 <section class="hero">
   <div class="hero-badge">توشان‌ورس — فاز یک</div>
   <h1>
-الکتروپالس
+    الکتروپالس
     <span>ولتاژ ناشناخته</span>
   </h1>
   <div class="hero-meta">
@@ -416,8 +493,9 @@ body::before {
 <!-- ─── STORY ─── -->
 <div class="story-wrap">
 
-<div class="chapter">
-    <span class="chapter-num">فصل ۰۱</span>
+
+<div class="chapter"  id="ch01">
+    <span class="chapter-num">فصل ۰۱</span> 
     <span class="chapter-line"></span>
     <span class="chapter-title">نشانه‌ی ارتش</span>
   </div>
@@ -534,7 +612,7 @@ body::before {
     آره. عجیبه.
   </div>
 
-  <div class="chapter">
+  <div class="chapter"  id="ch02">
     <span class="chapter-num">فصل ۰۲</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">شکاف</span>
@@ -798,7 +876,7 @@ body::before {
     بدوید!
   </div>
 
-  <div class="chapter">
+  <div class="chapter"  id="ch03">
     <span class="chapter-num">فصل ۰۳</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">تله‌ها</span>
@@ -850,7 +928,7 @@ body::before {
 
   <p>از دور، صدای هلیکوپتر می‌اومد. ارتش داشت می‌رسید.</p>
 
-  <div class="chapter">
+  <div class="chapter"  id="ch04">
     <span class="chapter-num">فصل ۰۴</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">بنز مشکی</span>
@@ -959,7 +1037,7 @@ body::before {
 
   <p>شایان پیاده شد. در ماشین رو بست. بنز راه افتاد — نگار هنوز داخل بود.</p>
 
-  <div class="chapter">
+  <div class="chapter"  id="ch05">
     <span class="chapter-num">فصل ۰۵</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">ژنرال کیان‌فره</span>
@@ -1011,7 +1089,7 @@ body::before {
     آقای نظری. اسم من ژنرال کیان‌فره. فکر می‌کنم باید با هم صحبت کنیم.
   </div>
 
-  <div class="chapter">
+  <div class="chapter"  id="ch06">
     <span class="chapter-num">فصل ۰۶</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">پوشه</span>
@@ -1260,7 +1338,7 @@ body::before {
 
   <p>با اینکه نگار از نظر شایان آروم به نظر میومد اما وقتی گوشی قطع شد زد زیر گریه. دوباره و دوباره. باید خودشو قوی نشون میداد که شایان هم آروم باشه و نگران ریحانه نباشه.</p>
 
-  <div class="chapter">
+  <div class="chapter"  id="ch07">
     <span class="chapter-num">فصل ۰۷</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">حجله</span>
@@ -1371,7 +1449,7 @@ body::before {
 
   <p>نگار، بدون یه کلمه، پشت سرش رفت.</p>
 
-<div class="chapter">
+<div class="chapter"  id="ch08">
     <span class="chapter-num">فصل ۰۸</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">سنگینی یک مراسم</span>
@@ -1828,7 +1906,7 @@ body::before {
 
   <p>پشت سرش، دختر جوون تنها ماند، روبه‌روی مانیتورهایی پر از نقشه، اسم، و یه عکس از مردی که حالا می‌دانست باید از همه بیشتر مراقبش باشن.</p>
 
-  <div class="chapter">
+<div class="chapter"  id="ch09">
     <span class="chapter-num">فصل ۰۹</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">ردپا</span>
@@ -1979,11 +2057,27 @@ reveals.forEach((el, i) => {
 
 // ─── AMBIENT FOLLOW ───
 const amb = document.querySelector('.ambient');
-let ty = 0;
 window.addEventListener('scroll', () => {
-  ty = window.scrollY * 0.15;
+  const ty = window.scrollY * 0.15;
   amb.style.transform = `translateX(-50%) translateY(${ty}px)`;
 });
+
+// ─── CHAPTER NAV ACTIVE STATE ───
+const chapters = document.querySelectorAll('.chapter');
+const navItems = document.querySelectorAll('.chapter-nav-item');
+
+const chapterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navItems.forEach(item => {
+        item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-20% 0px -60% 0px' });
+
+chapters.forEach(ch => { if (ch.id) chapterObserver.observe(ch); });
 </script>
 </body>
 </html>
