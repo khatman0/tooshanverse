@@ -599,6 +599,8 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+let knownCommentKeys = new Set();
+
 // ── بارگذاری نظرات قبلی ──
 async function loadComments() {
   try {
@@ -607,14 +609,13 @@ async function loadComments() {
     const json = JSON.parse(text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1));
     const rows = json.table.rows;
 
-    commentsList.innerHTML = '';
-
     if (!rows || rows.length === 0) {
-      commentsList.innerHTML = '<div class="comments-empty">هنوز نظری ثبت نشده. اولین نفر باش!</div>';
+      if (knownCommentKeys.size === 0) {
+        commentsList.innerHTML = '<div class="comments-empty">هنوز نظری ثبت نشده. اولین نفر باش!</div>';
+      }
       return;
     }
 
-    // جدیدترین‌ها بالا
     const items = rows.map(r => ({
       name: r.c[0]?.v || 'ناشناس',
       comment: r.c[1]?.v || '',
@@ -622,29 +623,60 @@ async function loadComments() {
     })).filter(item => item.comment).reverse();
 
     if (items.length === 0) {
-      commentsList.innerHTML = '<div class="comments-empty">هنوز نظری ثبت نشده. اولین نفر باش!</div>';
+      if (knownCommentKeys.size === 0) {
+        commentsList.innerHTML = '<div class="comments-empty">هنوز نظری ثبت نشده. اولین نفر باش!</div>';
+      }
       return;
     }
 
-    items.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'comment-card';
-      card.innerHTML = `
-        <div class="comment-card-header">
-          <span class="comment-name">${escapeHtml(item.name)}</span>
-          <span class="comment-date">${escapeHtml(item.date)}</span>
-        </div>
-        <div class="comment-text">${escapeHtml(item.comment)}</div>
-      `;
-      commentsList.appendChild(card);
+    // اولین بار: کل لیست رو بساز
+    if (knownCommentKeys.size === 0) {
+      commentsList.innerHTML = '';
+      items.forEach(item => {
+        const key = item.name + '|' + item.comment + '|' + item.date;
+        knownCommentKeys.add(key);
+        commentsList.appendChild(buildCommentCard(item));
+      });
+      return;
+    }
+
+    // دفعات بعد: فقط نظرات جدید رو از بالا اضافه کن
+    const newItems = items.filter(item => {
+      const key = item.name + '|' + item.comment + '|' + item.date;
+      return !knownCommentKeys.has(key);
+    });
+
+    newItems.reverse().forEach(item => {
+      const key = item.name + '|' + item.comment + '|' + item.date;
+      knownCommentKeys.add(key);
+      const card = buildCommentCard(item);
+      card.style.opacity = '0';
+      commentsList.prepend(card);
+      requestAnimationFrame(() => { card.style.transition = 'opacity .5s'; card.style.opacity = '1'; });
     });
 
   } catch (err) {
-    commentsList.innerHTML = '<div class="comments-empty">خطا در بارگذاری نظرات</div>';
+    if (knownCommentKeys.size === 0) {
+      commentsList.innerHTML = '<div class="comments-empty">خطا در بارگذاری نظرات</div>';
+    }
   }
 }
 
+function buildCommentCard(item) {
+  const card = document.createElement('div');
+  card.className = 'comment-card';
+  card.innerHTML = `
+    <div class="comment-card-header">
+      <span class="comment-name">${escapeHtml(item.name)}</span>
+      <span class="comment-date">${escapeHtml(item.date)}</span>
+    </div>
+    <div class="comment-text">${escapeHtml(item.comment)}</div>
+  `;
+  return card;
+}
+
 loadComments();
+setInterval(loadComments, 10000);
 </script>
 </body>
 </html>
