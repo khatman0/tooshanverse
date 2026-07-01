@@ -741,6 +741,111 @@ header {
 }
 
 /* ══════════════════════════════
+   RECENT COMMENTS PREVIEW  (بخش جدید)
+══════════════════════════════ */
+.comments-preview-section {
+  position: relative; z-index: 1;
+  padding: 0 40px 80px;
+}
+.comments-preview-box {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 50px 60px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+.comments-preview-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+}
+.comments-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.comments-preview-header h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+.comments-preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.comments-preview-card {
+  background: rgba(25,167,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 20px;
+  transition: all .25s;
+}
+.comments-preview-card:hover {
+  background: rgba(25,167,255,0.06);
+  border-color: rgba(25,167,255,0.2);
+}
+.comments-preview-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.comments-preview-name {
+  font-weight: 700;
+  color: var(--blue2);
+  font-size: 0.9rem;
+}
+.comments-preview-date {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.comments-preview-text {
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: rgba(200,225,255,0.85);
+}
+.comments-preview-empty {
+  text-align: center;
+  padding: 30px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.comments-preview-footer {
+  text-align: center;
+}
+.comments-preview-cta-text {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+.comments-preview-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: none;
+  background: linear-gradient(135deg, var(--blue), #1fb6ff);
+  color: #001828;
+  box-shadow: 0 8px 30px rgba(25,167,255,0.2), 0 0 0 1px rgba(25,167,255,0.25);
+  transition: all .25s ease;
+}
+.comments-preview-btn:hover { transform: translateY(-3px); }
+.comments-preview-btn svg { width: 16px; height: 16px; }
+
+/* ══════════════════════════════
    FOOTER
 ══════════════════════════════ */
 footer {
@@ -798,6 +903,8 @@ footer {
   .timer-wrap { padding: 30px 20px 24px; }
   .board-wrap { padding: 20px 20px 28px; }
   .announce-section { padding: 0 20px 60px; }
+  .comments-preview-box { padding: 36px 28px; }
+  .comments-preview-section { padding: 0 20px 60px; }
 }
 @media (max-width: 640px) {
   .section { padding: 60px 20px; }
@@ -810,6 +917,7 @@ footer {
   #cursor, #cursor-ring { display: none; }
   .timer-num { min-width: 60px; font-size: 1.6rem; padding: 10px 12px; }
   .timer-sep { font-size: 1.4rem; }
+  .comments-preview-header { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
@@ -994,6 +1102,27 @@ footer {
   </div>
 </section>
 
+<!-- RECENT COMMENTS PREVIEW (بخش جدید) -->
+<section class="comments-preview-section reveal">
+  <div class="comments-preview-box">
+    <div class="comments-preview-header">
+      <h2>نظرات خوانندگان</h2>
+    </div>
+
+    <div class="comments-preview-list" id="homeCommentsList">
+      <div class="comments-preview-empty">در حال بارگذاری نظرات...</div>
+    </div>
+
+    <div class="comments-preview-footer">
+      <p class="comments-preview-cta-text">تو هم نظرت رو بگو</p>
+      <a class="comments-preview-btn" href="Comments.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        نظرت رو بگو
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer class="reveal">
   <div class="footer-logo">TOOSHANVERSE</div>
@@ -1097,7 +1226,7 @@ function animateConfetti() {
   requestAnimationFrame(animateConfetti);
 }
 
-/* ── GOOGLE SHEETS DATA ── */
+/* ── GOOGLE SHEETS DATA (تایمر + تابلو اعلانات) ── */
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/1En847pG6Th8Ihu7pAdEBLohzbjkDZepqO1Ur8oKPtKo/gviz/tq?tqx=out:json";
 
 let timerInterval = null;
@@ -1219,6 +1348,65 @@ async function loadSheetData() {
 }
 
 loadSheetData();
+
+/* ══════════════════════════════
+   RECENT COMMENTS PREVIEW  (بخش جدید — منبع: همون گوگل‌شیت نظرات Comments.html)
+══════════════════════════════ */
+const HOME_COMMENTS_SHEET_URL = "https://docs.google.com/spreadsheets/d/1tuMO4XO3i6cUBEPcsEwlcSWU8EKy6BZmsx1APncszPE/gviz/tq?tqx=out:json";
+const HOME_COMMENTS_COUNT = 3; // چند تا نظر روی صفحه‌ی اصلی نشون داده بشه
+
+function escapeHomeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+async function loadHomeComments() {
+  const homeCommentsList = document.getElementById('homeCommentsList');
+  if (!homeCommentsList) return;
+
+  try {
+    const res = await fetch(HOME_COMMENTS_SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1));
+    const rows = json.table.rows;
+
+    if (!rows || rows.length === 0) {
+      homeCommentsList.innerHTML = '<div class="comments-preview-empty">هنوز نظری ثبت نشده. اولین نفر باش!</div>';
+      return;
+    }
+
+    const items = rows
+      .map(r => ({
+        name: r.c[0]?.v || 'ناشناس',
+        comment: r.c[1]?.v || '',
+        date: r.c[2]?.v || ''
+      }))
+      .filter(item => item.comment)
+      .reverse()
+      .slice(0, HOME_COMMENTS_COUNT);
+
+    if (items.length === 0) {
+      homeCommentsList.innerHTML = '<div class="comments-preview-empty">هنوز نظری ثبت نشده. اولین نفر باش!</div>';
+      return;
+    }
+
+    homeCommentsList.innerHTML = items.map(item => `
+      <div class="comments-preview-card">
+        <div class="comments-preview-card-header">
+          <span class="comments-preview-name">${escapeHomeHtml(item.name)}</span>
+          <span class="comments-preview-date">${escapeHomeHtml(item.date)}</span>
+        </div>
+        <div class="comments-preview-text">${escapeHomeHtml(item.comment)}</div>
+      </div>
+    `).join('');
+
+  } catch (err) {
+    homeCommentsList.innerHTML = '<div class="comments-preview-empty">خطا در بارگذاری نظرات</div>';
+  }
+}
+
+loadHomeComments();
 </script>
 </body>
 </html>
