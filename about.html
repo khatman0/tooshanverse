@@ -1,164 +1,549 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>درباره توشان</title>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Vazirmatn', sans-serif;
-      background: linear-gradient(135deg, #2b0a0a, #3e0f0f);
-      color: #f0c040;
-      margin: 0;
-      padding: 0;
-      direction: rtl;
-    }
-    header {
-      background-color: #1a1a1a;
-      text-align: center;
-      padding: 20px;
-      box-shadow: 0 2px 5px #ff990044;
-    }
-    header h1 {
-      color: #ff9900;
-      margin: 0;
-    }
-    main {
-      max-width: 800px;
-      margin: 30px auto;
-      background-color: #1a1a1a;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #ff990055;
-    }
-    h2 {
-      color: #ff9900;
-      border-bottom: 1px solid #ff990033;
-      padding-bottom: 5px;
-    }
-    p {
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-    ul {
-      padding-right: 20px;
-    }
-    li {
-      margin-bottom: 10px;
-    }
-    a {
-      color: #f0c040;
-      text-decoration: none;
-    }
-    a:hover {
-      color: #fff;
-    }
-    footer {
-      text-align: center;
-      font-size: 14px;
-      padding: 15px;
-      background-color: #1a1a1a;
-      color: #f0c040;
-      box-shadow: 0 -2px 5px #ff990044;
-    }
-    .menu-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 30px;
-  height: 25px;
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>درباره | توشان‌ورس</title>
+<link rel="icon" href="/photo/favicon.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #04060e;
+  --bg2:      #070c1a;
+  --blue:     #19a7ff;
+  --blue2:    #9be3ff;
+  --gold:     #f0c060;
+  --red:      #ff4060;
+  --text:     #ddeeff;
+  --muted:    rgba(180,210,255,0.5);
+  --glass:    rgba(255,255,255,0.03);
+  --line:     rgba(25,167,255,0.1);
+  --card:     rgba(8,14,28,0.7);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  z-index: 1000;
 }
-.menu-btn div {
-  height: 4px;
-  background-color: #f0c040;
-  border-radius: 2px;
+
+a { color: inherit; text-decoration: none; }
+
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--blue);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, background .2s;
+  mix-blend-mode: screen;
 }
-.menu {
-  display: none;
-  position: absolute;
-  top: 60px;
-  right: 20px;
-  background: #1a1a1a;
-  padding: 10px 20px;
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(25,167,255,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform .12s ease, width .3s, height .3s, opacity .3s;
+}
+body:has(a:hover) #cursor { width: 20px; height: 20px; background: var(--gold); }
+body:has(a:hover) #cursor-ring { width: 50px; height: 50px; }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(25,167,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25,167,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient {
+  position: fixed;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(25,167,255,0.07), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  top: -250px; left: 50%;
+  transform: translateX(-50%);
+  animation: breathe 9s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%,100% { opacity: 0.55; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1;    transform: translateX(-50%) scale(1.15); }
+}
+
+.hamburger {
+  position: fixed; top: 20px; left: 20px;
+  z-index: 100;
+  width: 40px; height: 40px;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 6px;
+  cursor: none; padding: 6px;
+  background: rgba(4,6,14,0.8);
+  border: 1px solid var(--line);
   border-radius: 10px;
-  box-shadow: 0 0 10px #ff9900;
-  z-index: 999;
-  min-width: 150px;
-  text-align: right;
+  backdrop-filter: blur(12px);
 }
-.menu a {
-  display: block;
-  padding: 8px 0;
-  color: #f0c040;
-  text-decoration: none;
-  cursor: pointer;
+.hamburger span {
+  display: block; height: 2px; width: 100%;
+  background: var(--blue);
+  border-radius: 2px;
+  transition: all .3s ease;
 }
-.menu a:hover {
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  opacity: 0; visibility: hidden;
+  transition: all .35s ease;
+  z-index: 80;
+}
+.overlay.active { opacity: 1; visibility: visible; }
+
+.side-nav {
+  position: fixed; top: 0; left: -300px;
+  width: 280px; height: 100%;
+  background: linear-gradient(180deg, #070c1a, #04060e);
+  border-right: 1px solid var(--line);
+  padding: 80px 24px 40px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: left .35s cubic-bezier(.25,.8,.25,1);
+  z-index: 90;
+}
+.side-nav.active { left: 0; }
+
+.side-nav .nav-label {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+.side-nav a {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all .25s ease;
+  cursor: none;
+}
+.side-nav a::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0.4;
+  transition: opacity .25s, transform .25s;
+}
+.side-nav a:hover {
+  background: rgba(25,167,255,0.08);
+  border-color: var(--line);
+  color: var(--blue2);
+}
+.side-nav a:hover::before { opacity: 1; transform: scale(1.5); }
+.side-nav a.current {
+  background: rgba(25,167,255,0.08);
+  border-color: var(--line);
+  color: var(--blue2);
+}
+.side-nav a.current::before { opacity: 1; transform: scale(1.5); background: var(--gold); }
+
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 16px 24px 16px 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(4,6,14,0.95), transparent);
+  pointer-events: none;
+}
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--blue);
+  pointer-events: all;
+}
+.logo span { color: var(--gold); }
+
+main { flex: 1; position: relative; z-index: 1; }
+
+.hero {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 140px 24px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.orb-1 {
+  width: 600px; height: 600px;
+  top: -250px; right: -150px;
+  background: radial-gradient(circle, rgba(25,167,255,0.08), transparent 65%);
+  animation: orbFloat1 12s ease-in-out infinite;
+}
+.orb-2 {
+  width: 400px; height: 400px;
+  bottom: -150px; left: -80px;
+  background: radial-gradient(circle, rgba(240,192,96,0.06), transparent 65%);
+  animation: orbFloat2 15s ease-in-out infinite;
+}
+@keyframes orbFloat1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%      { transform: translate(-30px, 40px) scale(1.1); }
+}
+@keyframes orbFloat2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%      { transform: translate(20px, -30px) scale(1.08); }
+}
+
+.hero-eyebrow {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp .8s ease forwards;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '';
+  height: 1px;
+  width: 24px;
+  background: var(--gold);
+  opacity: 0.6;
+}
+
+.hero h1 {
+  position: relative; z-index: 1;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -1px;
   color: #fff;
+  opacity: 0;
+  animation: fadeUp .8s .1s ease forwards;
 }
-  </style>
+.hero h1 .accent { color: var(--blue); }
+
+.hero p.tagline {
+  position: relative; z-index: 1;
+  margin-top: 20px;
+  max-width: 560px;
+  color: rgba(200,225,255,0.7);
+  font-size: 1rem;
+  line-height: 1.9;
+  opacity: 0;
+  animation: fadeUp .8s .2s ease forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.about-section {
+  position: relative; z-index: 1;
+  padding: 0 40px 100px;
+}
+.about-box {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+.about-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+}
+.about-box::after {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(25,167,255,0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.about-box p {
+  position: relative; z-index: 1;
+  font-size: 1.02rem;
+  line-height: 2.15;
+  color: rgba(200,225,255,0.85);
+  margin-bottom: 26px;
+}
+.about-box p strong {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.origin-quote {
+  position: relative; z-index: 1;
+  margin: 36px 0;
+  padding: 24px 28px;
+  background: rgba(25,167,255,0.05);
+  border-right: 3px solid var(--blue);
+  border-radius: 0 14px 14px 0;
+  font-size: 1.05rem;
+  line-height: 1.95;
+  color: var(--blue2);
+  font-weight: 500;
+}
+
+.timeline-strip {
+  position: relative; z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 44px 0;
+}
+.timeline-strip .tl { flex: 1; height: 1px; background: var(--line); }
+.timeline-strip span:not(.tl) {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--gold);
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.closing {
+  position: relative; z-index: 1;
+  margin-top: 48px;
+  text-align: center;
+}
+.closing .line-dec {
+  width: 60px; height: 1px;
+  background: var(--blue);
+  margin: 0 auto 20px;
+  opacity: 0.4;
+}
+.closing p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 0;
+}
+
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--line);
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 2px;
+}
+.footer-copy {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.footer-links {
+  display: flex; gap: 20px;
+}
+.footer-links a {
+  font-size: 0.8rem;
+  color: var(--muted);
+  transition: color .2s;
+  cursor: none;
+}
+.footer-links a:hover { color: var(--blue2); }
+
+@media (max-width: 1000px) {
+  .hero { padding: 110px 24px 50px; }
+  .about-box { padding: 40px 30px; }
+  .about-section { padding: 0 20px 80px; }
+  footer { flex-direction: column; gap: 16px; text-align: center; }
+  .footer-links { justify-content: center; }
+}
+@media (max-width: 640px) {
+  .hero h1 { font-size: 1.9rem; }
+  .about-box { padding: 32px 22px; }
+  .about-box p { font-size: 0.96rem; line-height: 2; }
+  .origin-quote { padding: 18px 18px; }
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+}
+</style>
 </head>
 <body>
 
-<header>
-  <h1>درباره توشان</h1>
-  <div class="menu-btn" id="menu-btn">
-  <div></div>
-  <div></div>
-  <div></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div class="ambient"></div>
+
+<div class="hamburger" id="hamburgerBtn">
+  <span></span><span></span><span></span>
 </div>
-<nav class="menu" id="menu">
-  <a href="https://khatman0.github.io/tooshanverse/">خانه</a>
-  <a href="about.html">درباره ما</a>
+
+<div class="overlay" id="overlay"></div>
+
+<nav class="side-nav" id="sideNav">
+  <div class="nav-label">ناوبری</div>
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+    خانه
+  </a>
+  <a href="phase.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    فازها
+  </a>
+  <a href="characters.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    شخصیت‌ها
+  </a>
+  <a href="Comments.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+    نظرها
+  </a>
+  <a href="about.html" class="current">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    درباره
+  </a>
 </nav>
+
+<header>
+  <div class="logo">توشان<span>‌</span>ورس</div>
 </header>
 
 <main>
-  <section>
-    <h2>توشان چیست؟</h2>
-    <p>توشان یک دنیای علمی‌تخیلی و فانتزی است که با هدف خلق یک جهان بزرگ داستانی، به صورت مستقل ساخته شده. این پروژه شامل کمیک‌ها، شخصیت‌ها و داستان‌های جذابی‌ست که در یک جهان خیالی پیچیده روایت می‌شود.</p>
+  <section class="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="hero-eyebrow">درباره‌ی جهان</div>
+    <h1>درباره‌ی <span class="accent">توشان‌ورس</span></h1>
+    <p class="tagline">داستان شکل‌گیری یه جهان علمی‌تخیلی ایرانی</p>
   </section>
 
-  <section>
-    <h2>اهداف ما</h2>
-    <ul>
-      <li>ایجاد یک تجربه‌ی متفاوت و غنی برای علاقه‌مندان به داستان و ماجراجویی</li>
-      <li>توسعه کمیک‌ها و انیمیشن‌های اصیل ایرانی</li>
-      <li>ساخت یک جامعه‌ی هواداری پویا و خلاق</li>
-    </ul>
-  </section>
+  <section class="about-section">
+    <div class="about-box">
 
-  <section>
-    <h2>تیم ما</h2>
-    <p>توشان توسط خود من به صورت تنها اما پرانرژی ساخته می‌شود که با عشق به هنر، داستان‌سرایی و تکنولوژی تلاش می‌کنه تا یک دنیای متفاوت رو خلق کنه.</p>
-  </section>
+      <p>توشان‌ورس از یه سوال ساده شروع شد: چرا آمریکا باید کاپیتان آمریکا داشته باشه، ولی ایران قهرمان‌های علمی‌تخیلی خودشو نداشته باشه؟</p>
 
-  <section>
-    <h2>ارتباط با ما</h2>
-    <p>برای ارسال نظرات، پیشنهادات یا همکاری می‌تونید از طریق ایمیل زیر با ما در ارتباط باشید:</p>
-    <p><a href="mailto:tooshanstudio@gmail.com">tooshanstudio@gmail.com</a></p>
-  </section>
+      <div class="origin-quote">این سوالی بود که به ذهن یه طرفدار دوآتیشه‌ی مارول رسید — نه برای ساختن یه نسخه‌ی ایرانی از اون دنیا، بلکه برای ساختن یه دنیای کاملاً جدید که ریشه‌هاش به تاریخ و فرهنگ خودمون برمی‌گرده.</div>
 
-  <p><a href="index.html">⬅ بازگشت به خانه</a></p>
+      <p>از همون‌جا <strong>لرد فیزیکا</strong> متولد شد — اولین قهرمان این دنیا. کم‌کم شخصیت‌های بیشتری شکل گرفتن، فازبندی داستان مشخص شد، و در نهایت تصمیم گرفته شد یه سایت مستقل ساخته بشه تا این دنیا روش پخش بشه.</p>
+
+      <div class="timeline-strip">
+        <span class="tl"></span>
+        <span>هخامنشیان تا تهران امروز</span>
+        <span class="tl"></span>
+      </div>
+
+      <p>ریشه‌ی توشان‌ورس به دوران <strong>هخامنشیان</strong> برمی‌گرده — اولین امپراتوری جهان — و از اونجا تا تهران امروز کشیده میشه. جهانی که توش قدرت، فقط ابرقدرت نیست؛ انتخابیه که هر شخصیت باهاش دست‌وپنجه نرم می‌کنه.</p>
+
+      <p>توشان‌ورس یه پروژه‌ی تک‌نفره‌ست — از نوشتن داستان‌ها تا طراحی هر صفحه از این سایت. همین باعث میشه هر داستان، با وسواس و دقت، قدم‌به‌قدم ساخته بشه، نه عجله‌ای و انبوه.</p>
+
+      <p>این دنیا هنوز در حال شکل‌گرفتنه. فاز یک تازه شروعشه، و مسیر طولانی‌ای جلوشه — تا لبه‌ی آشوب، و فراتر از اون.</p>
+
+      <div class="closing">
+        <div class="line-dec"></div>
+        <p>اگه اینجایی و داری این متن رو می‌خونی، یعنی بخشی از این مسیری.<br>ممنون که همراه توشان‌ورسی.</p>
+      </div>
+
+    </div>
+  </section>
 </main>
 
 <footer>
-  تمامی حقوق متعلق به توشان استودیو © 2025
+  <div class="footer-logo">TOOSHANVERSE</div>
+  <div class="footer-copy">© ۱۴۰۴ توشان‌ورس — همهٔ حقوق محفوظ است</div>
+  <div class="footer-links">
+    <a href="phase.html">فازها</a>
+    <a href="characters.html">شخصیت‌ها</a>
+  </div>
 </footer>
-<script>
-  const menuBtn = document.getElementById('menu-btn');
-  const menu = document.getElementById('menu');
-  menuBtn.addEventListener('click', () => {
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-  });
-</script>
 
+<script>
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+const hamburger = document.getElementById('hamburgerBtn');
+const sideNav   = document.getElementById('sideNav');
+const overlay   = document.getElementById('overlay');
+const open  = () => { hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active'); };
+const close = () => { hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active'); };
+hamburger.addEventListener('click', () => sideNav.classList.contains('active') ? close() : open());
+overlay.addEventListener('click', close);
+document.querySelectorAll('.side-nav a').forEach(a => a.addEventListener('click', close));
+
+let tx = 0, swiping = false;
+sideNav.addEventListener('touchstart', e => { swiping = true; tx = e.touches[0].clientX; });
+sideNav.addEventListener('touchmove', e => {
+  if (!swiping) return;
+  const dx = e.touches[0].clientX - tx;
+  if (dx < 0) { sideNav.style.left = Math.max(-280, dx) + 'px'; overlay.style.opacity = 1 + dx/280; }
+});
+sideNav.addEventListener('touchend', e => {
+  swiping = false;
+  if (e.changedTouches[0].clientX - tx < -80) close();
+  else sideNav.style.left = '0';
+});
+</script>
 </body>
 </html>
