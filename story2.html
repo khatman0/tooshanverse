@@ -406,6 +406,39 @@ body::before {
   transform: none !important;
 }
 
+  .cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 14px 32px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: var(--blue-glow);
+  color: var(--blue);
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all .3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+.cta-btn.visible {
+  opacity: 1;
+  transform: none;
+}
+.cta-btn:hover {
+  background: var(--blue-dim);
+  border-color: rgba(25,167,255,0.4);
+  box-shadow: 0 0 24px rgba(25,167,255,0.25);
+  transform: translateY(-2px);
+}
+.cta-btn svg {
+  width: 18px;
+  height: 18px;
+}
+  
 @media (max-width: 640px) {
   .story-wrap { padding: 60px 20px 80px; }
   .story-wrap p { font-size: 0.98rem; line-height: 2; }
@@ -2517,6 +2550,14 @@ body::before {
     <p>ادامه دارد...</p>
   </div>
 
+  <a href="Comments.html" class="cta-btn">
+  نظرت رو بگو
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M8 12h8M8 8h8M8 16h4"/>
+    <path d="M21 12c0 4.418-4.03 8-9 8-1.05 0-2.06-.16-3-.46L3 21l1.5-4.5C3.55 15.06 3 13.58 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+  </svg>
+</a>
+
 </div>
 
 <script>
@@ -2529,7 +2570,7 @@ window.addEventListener('scroll', () => {
 });
 
 // ─── REVEAL ON SCROLL ───
-const reveals = document.querySelectorAll('p, .dialogue, .chapter, .timebreak, .highlight, .action, .story-end');
+const reveals = document.querySelectorAll('p, .dialogue, .chapter, .timebreak, .highlight, .action, .story-end, .cta-btn');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
