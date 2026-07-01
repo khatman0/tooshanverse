@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>انفجار آبی — توشان‌ورس</title>
-  <link rel="icon" href="/photo/favicon.png" type="image/png">
+<link rel="icon" href="/photo/favicon.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -19,7 +19,6 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -30,7 +29,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── NOISE OVERLAY ─── */
 body::before {
   content: '';
   position: fixed;
@@ -41,7 +39,6 @@ body::before {
   opacity: 0.6;
 }
 
-/* ─── AMBIENT GLOW ─── */
 .ambient {
   position: fixed;
   width: 600px; height: 600px;
@@ -49,7 +46,6 @@ body::before {
   background: radial-gradient(circle, rgba(25,167,255,0.07), transparent 70%);
   pointer-events: none;
   z-index: 0;
-  transition: transform 1.2s ease;
   top: -200px; left: 50%;
   transform: translateX(-50%);
   animation: breathe 8s ease-in-out infinite;
@@ -59,7 +55,6 @@ body::before {
   50%      { opacity: 1;   transform: translateX(-50%) scale(1.15); }
 }
 
-/* ─── BACK BUTTON ─── */
 .back {
   position: fixed;
   top: 20px; left: 20px;
@@ -82,7 +77,6 @@ body::before {
 }
 .back svg { width: 14px; height: 14px; }
 
-/* ─── PROGRESS BAR ─── */
 #progress {
   position: fixed;
   top: 0; left: 0;
@@ -92,6 +86,159 @@ body::before {
   z-index: 100;
   transition: width .1s linear;
   box-shadow: 0 0 10px rgba(25,167,255,0.6);
+}
+
+/* ─── CHAPTER SIDEBAR (DESKTOP) ─── */
+.chapter-nav {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.chapter-nav::-webkit-scrollbar { display: none; }
+
+.chapter-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all .25s ease;
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid transparent;
+  direction: rtl;
+}
+.chapter-nav-item:hover {
+  background: rgba(25,167,255,0.08);
+  border-color: var(--line);
+}
+.chapter-nav-item.active {
+  background: rgba(25,167,255,0.12);
+  border-color: rgba(25,167,255,0.3);
+}
+.chapter-nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex-shrink: 0;
+  transition: all .25s;
+}
+.chapter-nav-item:hover .chapter-nav-dot,
+.chapter-nav-item.active .chapter-nav-dot {
+  background: var(--blue);
+  box-shadow: 0 0 6px rgba(25,167,255,0.6);
+  transform: scale(1.4);
+}
+.chapter-nav-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color .25s;
+}
+.chapter-nav-item:hover .chapter-nav-label,
+.chapter-nav-item.active .chapter-nav-label {
+  color: var(--blue);
+}
+
+@media (max-width: 900px) {
+  .chapter-nav { display: none; }
+}
+
+/* ─── MOBILE CHAPTER BUTTON + PANEL ─── */
+.chapter-fab {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  left: 20px;
+  z-index: 60;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #001828;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(25,167,255,0.4);
+  border: none;
+  cursor: pointer;
+}
+.chapter-fab svg { width: 22px; height: 22px; }
+
+.chapter-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 70;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.chapter-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+.chapter-panel {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 80;
+  background: linear-gradient(180deg, #0a0e1c, #05070f);
+  border-top: 1px solid var(--line);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 16px 28px;
+  max-height: 70vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform .35s cubic-bezier(.25,.8,.25,1);
+}
+.chapter-panel.open { transform: translateY(0); }
+
+.chapter-panel-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.chapter-panel-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.chapter-panel-item:active {
+  background: rgba(25,167,255,0.1);
+  border-color: var(--line);
+}
+.chapter-panel-item .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .chapter-fab { display: flex; }
 }
 
 /* ─── HERO ─── */
@@ -163,13 +310,8 @@ body::before {
   font-size: 0.88rem;
   animation: fadeUp .8s .2s ease both;
 }
-.hero-meta span {
-  display: flex; align-items: center; gap: 6px;
-}
-.hero-meta span::before {
-  content: '·';
-  opacity: 0.4;
-}
+.hero-meta span { display: flex; align-items: center; gap: 6px; }
+.hero-meta span::before { content: '·'; opacity: 0.4; }
 .hero-meta span:first-child::before { display: none; }
 
 .scroll-hint {
@@ -184,8 +326,7 @@ body::before {
   animation: fadeUp .8s .4s ease both;
 }
 .scroll-hint .line {
-  width: 1px;
-  height: 40px;
+  width: 1px; height: 40px;
   background: linear-gradient(to bottom, var(--blue), transparent);
   animation: scrollLine 2s ease-in-out infinite;
 }
@@ -201,7 +342,6 @@ body::before {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── DIVIDER ─── */
 .divider {
   width: 100%;
   height: 1px;
@@ -210,7 +350,6 @@ body::before {
   margin: 0;
 }
 
-/* ─── STORY WRAPPER ─── */
 .story-wrap {
   position: relative;
   z-index: 1;
@@ -219,7 +358,6 @@ body::before {
   padding: 80px 32px 120px;
 }
 
-/* ─── CHAPTER MARKER ─── */
 .chapter {
   display: flex;
   align-items: center;
@@ -230,7 +368,6 @@ body::before {
   transition: all .7s ease;
 }
 .chapter.visible { opacity: 1; transform: none; }
-
 .chapter-num {
   font-size: 0.7rem;
   font-weight: 700;
@@ -238,11 +375,7 @@ body::before {
   color: var(--blue);
   white-space: nowrap;
 }
-.chapter-line {
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-}
+.chapter-line { flex: 1; height: 1px; background: var(--line); }
 .chapter-title {
   font-size: 1.1rem;
   font-weight: 700;
@@ -250,7 +383,6 @@ body::before {
   white-space: nowrap;
 }
 
-/* ─── PARAGRAPHS ─── */
 .story-wrap p {
   font-size: 1.05rem;
   line-height: 2.1;
@@ -260,12 +392,8 @@ body::before {
   transform: translateY(12px);
   transition: all .6s ease;
 }
-.story-wrap p.visible {
-  opacity: 1;
-  transform: none;
-}
+.story-wrap p.visible { opacity: 1; transform: none; }
 
-/* ─── DIALOGUE ─── */
 .dialogue {
   position: relative;
   margin: 28px 0;
@@ -280,10 +408,7 @@ body::before {
   transform: translateX(16px);
   transition: all .6s ease;
 }
-.dialogue.visible {
-  opacity: 1;
-  transform: none;
-}
+.dialogue.visible { opacity: 1; transform: none; }
 .dialogue .speaker {
   display: block;
   font-size: 0.72rem;
@@ -301,7 +426,6 @@ body::before {
 }
 .dialogue.inner .speaker { color: rgba(155,227,255,0.6); }
 
-/* ─── TIME BREAK ─── */
 .timebreak {
   display: flex;
   align-items: center;
@@ -320,7 +444,6 @@ body::before {
 }
 .timebreak .tl { flex: 1; height: 1px; background: var(--line); }
 
-/* ─── HIGHLIGHT BOX ─── */
 .highlight {
   margin: 36px 0;
   padding: 24px 28px;
@@ -336,7 +459,6 @@ body::before {
 }
 .highlight.visible { opacity: 1; transform: none; }
 
-/* ─── ACTION BEAT ─── */
 .action {
   font-size: 0.88rem;
   font-weight: 600;
@@ -350,7 +472,6 @@ body::before {
 }
 .action.visible { opacity: 1; }
 
-/* ─── END MARKER ─── */
 .story-end {
   margin-top: 80px;
   text-align: center;
@@ -372,7 +493,39 @@ body::before {
   transform: none !important;
 }
 
-/* ─── RESPONSIVE ─── */
+  .cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 14px 32px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: var(--blue-glow);
+  color: var(--blue);
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all .3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+.cta-btn.visible {
+  opacity: 1;
+  transform: none;
+}
+.cta-btn:hover {
+  background: var(--blue-dim);
+  border-color: rgba(25,167,255,0.4);
+  box-shadow: 0 0 24px rgba(25,167,255,0.25);
+  transform: translateY(-2px);
+}
+.cta-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
 @media (max-width: 640px) {
   .story-wrap { padding: 60px 20px 80px; }
   .story-wrap p { font-size: 0.98rem; line-height: 2; }
@@ -386,12 +539,119 @@ body::before {
 <div id="progress"></div>
 <div class="ambient"></div>
 
+<!-- ─── MOBILE CHAPTER BUTTON ─── -->
+<button class="chapter-fab" id="chapterFab" aria-label="فهرست فصل‌ها">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <line x1="4" y1="12" x2="20" y2="12"/>
+    <line x1="4" y1="18" x2="14" y2="18"/>
+  </svg>
+</button>
+
+<div class="chapter-overlay" id="chapterOverlay"></div>
+
+<div class="chapter-panel" id="chapterPanel">
+  <div class="chapter-panel-title">فهرست فصل‌ها</div>
+  <a class="chapter-panel-item" href="#ch01">
+    <span class="dot"></span>
+    یک روز معمولی
+  </a>
+  <a class="chapter-panel-item" href="#ch02">
+    <span class="dot"></span>
+    انفجار آبی
+  </a>
+  <a class="chapter-panel-item" href="#ch03">
+    <span class="dot"></span>
+    بیمارستان
+  </a>
+  <a class="chapter-panel-item" href="#ch04">
+    <span class="dot"></span>
+    دکتر مهرگان
+  </a>
+  <a class="chapter-panel-item" href="#ch05">
+    <span class="dot"></span>
+    شکاف
+  </a>
+  <a class="chapter-panel-item" href="#ch06">
+    <span class="dot"></span>
+    آگناتوس
+  </a>
+  <a class="chapter-panel-item" href="#ch07">
+    <span class="dot"></span>
+    دو ماه
+  </a>
+  <a class="chapter-panel-item" href="#ch08">
+    <span class="dot"></span>
+    لرد فیزیکا
+  </a>
+  <a class="chapter-panel-item" href="#ch09">
+    <span class="dot"></span>
+    آزادی
+  </a>
+  <a class="chapter-panel-item" href="#ch10">
+    <span class="dot"></span>
+    بالای برج
+  </a>
+  <a class="chapter-panel-item" href="#ch11">
+    <span class="dot"></span>
+    سقوط
+  </a>
+</div>
+
 <a href="phase.html" class="back">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <path d="M5 12h14M12 5l7 7-7 7"/>
   </svg>
   بازگشت
 </a>
+
+<!-- ─── CHAPTER SIDEBAR (DESKTOP) ─── -->
+<nav class="chapter-nav" id="chapterNav">
+  <a class="chapter-nav-item" href="#ch01">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">یک روز معمولی</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch02">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">انفجار آبی</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch03">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">بیمارستان</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch04">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">دکتر مهرگان</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch05">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">شکاف</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch06">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">آگناتوس</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch07">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">دو ماه</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch08">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">لرد فیزیکا</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch09">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">آزادی</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch10">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">بالای برج</span>
+  </a>
+  <a class="chapter-nav-item" href="#ch11">
+    <span class="chapter-nav-dot"></span>
+    <span class="chapter-nav-label">سقوط</span>
+  </a>
+</nav>
 
 <!-- ─── HERO ─── -->
 <section class="hero">
@@ -416,7 +676,8 @@ body::before {
 <!-- ─── STORY ─── -->
 <div class="story-wrap">
 
-  <div class="chapter">
+
+ <div class="chapter" id="ch01"> 
     <span class="chapter-num">فصل ۰۱</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">یک روز معمولی</span>
@@ -454,7 +715,7 @@ body::before {
 
   <p>ماشین شروع به حرکت کرد و تسا — هوش مصنوعی تعاملی ساخته‌شده توسط شرکت خودش، نوآوران نیرو — وارد حالت سکوت شد. نوید داشت می‌رفت به سمت یک روز کاری دیگر. فقط این بار... خبری از «مثل همیشه» نبود.</p>
 
-  <div class="chapter">
+  <div class="chapter" id="ch02"> 
     <span class="chapter-num">فصل ۰۲</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">انفجار آبی</span>
@@ -503,7 +764,7 @@ body::before {
     کمک... آیلین...!
   </div>
 
-  <div class="chapter">
+  <div class="chapter" id="ch03"> 
     <span class="chapter-num">فصل ۰۳</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">بیمارستان</span>
@@ -601,7 +862,7 @@ body::before {
  چه عجب! بالاخره آقا تصمیم گرفتن بیدار شن. منو باش، فکر می‌کردم از دستت راحت شدم، دیگه قرار نیست ببینمت!
   </div>
   
-  <div class="chapter">
+ <div class="chapter" id="ch04"> 
     <span class="chapter-num">فصل ۰۴</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">دکتر مهرگان</span>
@@ -675,7 +936,7 @@ body::before {
     چشم‌های فرهاد لحظه‌ای به رنگ آبی درخشید. انگار از درونشان نوری بیرون زد. سامیار ناخواسته قدمی به عقب برداشت. خودش هم نفهمید چرا.
   </div>
 
-  <div class="chapter">
+  <div class="chapter" id="ch05"> 
     <span class="chapter-num">فصل ۰۵</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">شکاف</span>
@@ -787,7 +1048,7 @@ body::before {
 
  <p>با شنیدن صدای آیلین مادر نوید به هوش اومد و وضعیت پدر نوید و دید و باز شروع کرد به جیغ زدن. آیلین که صدای جیغ رو شنید و سریع از پله ها بالا رفت و با استرس به اطراف نگاه کرد تا وقتی که به خانم و آقای سهیلی رسید و نشست کنار پدر نوید و شروع کرد سوال پرسیدن و گریه کردن که چی شده و چه اتفاقی افتاده. پدر نوید هم در حالی که درد میکشید با عصبانیت فریاد زد که آیلین زنگ بزنه به آمبولانس و آیلین هم همین کار رو کرد.</p>
   
-  <div class="chapter">
+  <div class="chapter" id="ch06"> 
     <span class="chapter-num">فصل ۰۶</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">آگناتوس</span>
@@ -817,7 +1078,7 @@ body::before {
     قبلا بود الان دیگه نیست. اون دستگاه کوچولو که توی گوشت گذاشتم... خوب جواب داد اون رو از تو دور نگه داشت فکر نکنم از اون یکی خبر داشته باشی. فرهاد مهرگان. آگناتوس. از اون انفجار آبی چیزایی نصیبم شد. و تو... به درد من می‌خوری.
   </div>
 
-  <div class="chapter">
+  <div class="chapter" id="ch07"> 
     <span class="chapter-num">فصل ۰۷</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">دو ماه</span>
@@ -829,7 +1090,7 @@ body::before {
     آگناتوس همیشه دنبال تحسین بود. دنبال آن نگاهی که بگوید «تو خاصی». شکست توی انتخابات مثل زخم باز توی ذهنش بود. حالا فکر می‌کرد بهترین راه قهرمان شدن اینه که یه هیولای جدید بسازی و خودت جلویش بایستی. هیولایی به اسم نوید.
   </div>
 
-  <div class="chapter">
+  <div class="chapter" id="ch08"> 
     <span class="chapter-num">فصل ۰۸</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">لرد فیزیکا</span>
@@ -875,7 +1136,7 @@ body::before {
 
   <p>سوار ماشینش شد. بدون استراحت. بدون توقف. فقط می‌خواست نوید را پیدا کند.</p>
 
-  <div class="chapter">
+  <div class="chapter" id="ch09"> 
     <span class="chapter-num">فصل ۰۹</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">آزادی</span>
@@ -919,7 +1180,7 @@ body::before {
 
   <p>آگناتوس داشت نزدیک می‌شد و نوید اونو حس میکرد. بی‌معطلی آیلین را بغل کرد و به سمت برج آزادی پرواز کرد.</p>
 
-  <div class="chapter">
+  <div class="chapter" id="ch10"> 
     <span class="chapter-num">فصل ۱۰</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">بالای برج</span>
@@ -965,7 +1226,7 @@ body::before {
 
   <p>نوید، بالای ابرها، خشک شد. از پشت پنجره‌ی ذهنش کسی فریاد می‌زد. فریادی که صدا نداشت.</p>
 
-  <div class="chapter">
+  <div class="chapter" id="ch11"> 
     <span class="chapter-num">فصل ۱۱</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">سقوط</span>
@@ -1473,6 +1734,14 @@ body::before {
     <p>پایان</p>
   </div>
 
+  <a href="comments.html" class="cta-btn">
+  نظرت رو بگو
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M8 12h8M8 8h8M8 16h4"/>
+    <path d="M21 12c0 4.418-4.03 8-9 8-1.05 0-2.06-.16-3-.46L3 21l1.5-4.5C3.55 15.06 3 13.58 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+  </svg>
+</a>
+  
 </div>
 
 <script>
@@ -1485,7 +1754,7 @@ window.addEventListener('scroll', () => {
 });
 
 // ─── REVEAL ON SCROLL ───
-const reveals = document.querySelectorAll('p, .dialogue, .chapter, .timebreak, .highlight, .action, .story-end');
+const reveals = document.querySelectorAll('p, .dialogue, .chapter, .timebreak, .highlight, .action, .story-end, .cta-btn');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -1502,10 +1771,48 @@ reveals.forEach((el, i) => {
 
 // ─── AMBIENT FOLLOW ───
 const amb = document.querySelector('.ambient');
-let ty = 0;
 window.addEventListener('scroll', () => {
-  ty = window.scrollY * 0.15;
+  const ty = window.scrollY * 0.15;
   amb.style.transform = `translateX(-50%) translateY(${ty}px)`;
+});
+
+// ─── CHAPTER NAV ACTIVE STATE (DESKTOP) ───
+const chapters = document.querySelectorAll('.chapter');
+const navItems = document.querySelectorAll('.chapter-nav-item');
+
+const chapterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navItems.forEach(item => {
+        item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-20% 0px -60% 0px' });
+
+chapters.forEach(ch => { if (ch.id) chapterObserver.observe(ch); });
+
+// ─── MOBILE CHAPTER PANEL ───
+const fab = document.getElementById('chapterFab');
+const panel = document.getElementById('chapterPanel');
+const chOverlay = document.getElementById('chapterOverlay');
+
+function openPanel() {
+  panel.classList.add('open');
+  chOverlay.classList.add('open');
+}
+function closePanel() {
+  panel.classList.remove('open');
+  chOverlay.classList.remove('open');
+}
+
+fab.addEventListener('click', () => {
+  panel.classList.contains('open') ? closePanel() : openPanel();
+});
+chOverlay.addEventListener('click', closePanel);
+document.querySelectorAll('.chapter-panel-item').forEach(item => {
+  item.addEventListener('click', closePanel);
 });
 </script>
 </body>
