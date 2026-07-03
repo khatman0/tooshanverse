@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>خوانش کامیک | توشان‌ورس</title>
+<link rel="icon" href="/photo/favicon.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════
+   TOKENS  (دقیقاً هماهنگ با index.html)
+══════════════════════════════ */
+:root {
+  --bg:       #04060e;
+  --bg2:      #070c1a;
+  --blue:     #19a7ff;
+  --blue2:    #9be3ff;
+  --gold:     #f0c060;
+  --red:      #ff4060;
+  --text:     #ddeeff;
+  --muted:    rgba(180,210,255,0.5);
+  --glass:    rgba(255,255,255,0.03);
+  --line:     rgba(25,167,255,0.1);
+  --card:     rgba(8,14,28,0.7);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; border: none; background: none; color: inherit; }
+
+/* ══════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════ */
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--blue);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, background .2s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(25,167,255,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform .12s ease, width .3s, height .3s, opacity .3s;
+}
+body:has(a:hover, button:hover, .cover:hover) #cursor { width: 20px; height: 20px; background: var(--gold); }
+body:has(a:hover, button:hover, .cover:hover) #cursor-ring { width: 50px; height: 50px; }
+
+/* ══════════════════════════════
+   NOISE / GRID BG
+══════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(25,167,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25,167,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════
+   HAMBURGER
+══════════════════════════════ */
+.hamburger {
+  position: fixed; top: 20px; left: 20px;
+  z-index: 100;
+  width: 40px; height: 40px;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 6px;
+  cursor: none; padding: 6px;
+  background: rgba(4,6,14,0.8);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
+}
+.hamburger span {
+  display: block; height: 2px; width: 100%;
+  background: var(--blue);
+  border-radius: 2px;
+  transition: all .3s ease;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+/* ══════════════════════════════
+   OVERLAY + SIDE NAV
+══════════════════════════════ */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  opacity: 0; visibility: hidden;
+  transition: all .35s ease;
+  z-index: 80;
+}
+.overlay.active { opacity: 1; visibility: visible; }
+
+.side-nav {
+  position: fixed; top: 0; left: -300px;
+  width: 280px; height: 100%;
+  background: linear-gradient(180deg, #070c1a, #04060e);
+  border-right: 1px solid var(--line);
+  padding: 80px 24px 40px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: left .35s cubic-bezier(.25,.8,.25,1);
+  z-index: 90;
+}
+.side-nav.active { left: 0; }
+
+.side-nav .nav-label {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+.side-nav a {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all .25s ease;
+  cursor: none;
+}
+.side-nav a::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0.4;
+  transition: opacity .25s, transform .25s;
+}
+.side-nav a:hover {
+  background: rgba(25,167,255,0.08);
+  border-color: var(--line);
+  color: var(--blue2);
+}
+.side-nav a:hover::before { opacity: 1; transform: scale(1.5); }
+
+/* ══════════════════════════════
+   HEADER / LOGO
+══════════════════════════════ */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 16px 24px 16px 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(4,6,14,0.95), transparent);
+  pointer-events: none;
+}
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--blue);
+  pointer-events: all;
+}
+.logo span { color: var(--gold); }
+
+/* ══════════════════════════════
+   READER STAGE
+══════════════════════════════ */
+.stage {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 24px 40px;
+  perspective: 2400px;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.orb-1 {
+  width: 600px; height: 600px;
+  top: -200px; right: -150px;
+  background: radial-gradient(circle, rgba(25,167,255,0.08), transparent 65%);
+}
+.orb-2 {
+  width: 400px; height: 400px;
+  bottom: -150px; left: -100px;
+  background: radial-gradient(circle, rgba(240,192,96,0.06), transparent 65%);
+}
+
+/* ══════════════════════════════
+   BOOK WRAPPER  (نگه‌دارنده‌ی جلد + صفحات)
+══════════════════════════════ */
+.book {
+  position: relative;
+  width: min(92vw, 640px);
+  height: min(78vh, 880px);
+  transform-style: preserve-3d;
+}
+
+/* ── جلد کتاب ── */
+.cover {
+  position: absolute; inset: 0;
+  z-index: 20;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(25,167,255,0.2);
+  box-shadow:
+    0 0 0 1px rgba(25,167,255,0.05),
+    0 50px 120px rgba(0,0,0,0.85),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  cursor: none;
+  transform-origin: right center; /* لولا سمت راست، مثل باز شدن جلد کتاب */
+  transition: transform 1s cubic-bezier(.6,0,.2,1), opacity .9s ease .1s;
+  display: flex; align-items: flex-end; justify-content: center;
+  background: #060a16;
+}
+.cover.opening {
+  transform: rotateY(-108deg) translateX(-6%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cover-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9) brightness(0.75);
+}
+.cover.no-cover-img .cover-img { display: none; }
+.cover.no-cover-img::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(135deg, rgba(25,167,255,0.06) 0 2px, transparent 2px 22px),
+    linear-gradient(160deg, #0b1730, #04060e 70%);
+}
+
+.cover::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(4,6,14,0.95) 10%, rgba(4,6,14,0.2) 55%, rgba(4,6,14,0.55) 100%);
+  z-index: 1;
+}
+
+.cover .corner { position: absolute; width: 18px; height: 18px; z-index: 3; }
+.cover .corner-tl { top: 14px; right: 14px; border-top: 2px solid var(--blue); border-right: 2px solid var(--blue); }
+.cover .corner-tr { top: 14px; left: 14px; border-top: 2px solid var(--blue); border-left: 2px solid var(--blue); }
+.cover .corner-bl { bottom: 14px; right: 14px; border-bottom: 2px solid var(--blue); border-right: 2px solid var(--blue); }
+.cover .corner-br { bottom: 14px; left: 14px; border-bottom: 2px solid var(--blue); border-left: 2px solid var(--blue); }
+
+.cover-content {
+  position: relative; z-index: 5;
+  width: 100%;
+  padding: 32px 32px 40px;
+  text-align: center;
+}
+.cover-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 14px;
+}
+.cover-eyebrow::before, .cover-eyebrow::after { content: ''; height: 1px; width: 20px; background: var(--gold); opacity: .6; }
+.cover-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.15;
+}
+.cover-title .accent { color: var(--blue); }
+.cover-sub {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: var(--blue2);
+  letter-spacing: 1px;
+  opacity: .85;
+}
+.cover-start {
+  margin-top: 26px;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: 700; font-size: 0.9rem;
+  background: linear-gradient(135deg, var(--blue), #1fb6ff);
+  color: #001828;
+  box-shadow: 0 8px 30px rgba(25,167,255,0.3), 0 0 0 1px rgba(25,167,255,0.35);
+  cursor: none;
+  transition: transform .25s ease;
+  animation: pulseGlow 2.4s ease-in-out infinite;
+}
+.cover-start:hover { transform: translateY(-3px); }
+.cover-start svg { width: 16px; height: 16px; }
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 8px 30px rgba(25,167,255,0.3), 0 0 0 1px rgba(25,167,255,0.35); }
+  50%     { box-shadow: 0 8px 40px rgba(25,167,255,0.55), 0 0 0 1px rgba(25,167,255,0.55); }
+}
+
+/* ══════════════════════════════
+   PAGES  (بدنه‌ی کتاب)
+══════════════════════════════ */
+.pages {
+  position: absolute; inset: 0;
+  z-index: 10;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #0b1224, #05070f);
+  border: 1px solid var(--line);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.04);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s ease;
+  display: flex;
+  flex-direction: column;
+}
+.pages.visible { opacity: 1; visibility: visible; }
+
+/* نوار بالای کتاب */
+.pages-topbar {
+  flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.back-to-cover {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.78rem; color: var(--muted);
+  cursor: none;
+  transition: color .2s;
+}
+.back-to-cover:hover { color: var(--blue2); }
+.back-to-cover svg { width: 14px; height: 14px; }
+.page-counter {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem; letter-spacing: 2px;
+  color: var(--blue);
+}
+
+/* بوم صفحه (جایی که پنل‌ها میان) */
+.page-viewport {
+  position: relative;
+  flex: 1 1 auto;
+  overflow: hidden;
+  padding: 18px;
+}
+.comic-page {
+  position: absolute;
+  inset: 18px;
+  display: grid;
+  gap: 10px;
+  transition: transform .55s cubic-bezier(.6,0,.2,1), opacity .5s ease;
+}
+.comic-page.enter-next   { transform: translateX(-60px); opacity: 0; }
+.comic-page.enter-prev   { transform: translateX(60px);  opacity: 0; }
+.comic-page.leave-next   { transform: translateX(60px);  opacity: 0; }
+.comic-page.leave-prev   { transform: translateX(-60px); opacity: 0; }
+.comic-page.active       { transform: translateX(0);     opacity: 1; }
+
+/* ── چیدمان‌های نامنظم سینمایی برای ۲ تا ۶ پنل ── */
+.layout-2 { grid-template-columns: 1fr; grid-template-rows: 3fr 2fr; grid-template-areas: "a" "b"; }
+.layout-3 { grid-template-columns: 1fr 1fr; grid-template-rows: 3fr 2fr; grid-template-areas: "a a" "b c"; }
+.layout-4 {
+  grid-template-columns: 1.2fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "a b b" "a c d";
+}
+.layout-5 {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: "a a b" "c d b" "c e e";
+}
+.layout-6 {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: "a a b" "c d b" "c e f";
+}
+
+/* ── پنل‌ها ── */
+.panel {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid rgba(25,167,255,0.35);
+  background: #070c1a;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.5);
+  transition: border-color .25s ease, transform .25s ease;
+}
+.panel:hover { border-color: var(--gold); }
+.panel[style*="grid-area: a"] { border-color: rgba(240,192,96,0.4); } /* پنل اول هر صفحه کمی متمایز */
+
+.panel-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.panel.no-img .panel-img { display: none; }
+.panel.no-img::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(135deg, rgba(25,167,255,0.07) 0 2px, transparent 2px 20px),
+    linear-gradient(160deg, #101c38, #05070f 75%);
+}
+.panel-badge {
+  position: absolute; top: 8px; right: 8px; z-index: 3;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 1px;
+  color: var(--blue2);
+  background: rgba(4,6,14,0.75);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+.panel-placeholder-icon {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0.35;
+  pointer-events: none;
+}
+.panel-placeholder-icon svg { width: 34px; height: 34px; color: var(--blue2); }
+.panel.no-img .panel-placeholder-icon { display: flex; }
+.panel:not(.no-img) .panel-placeholder-icon { display: none; }
+
+/* حباب گفتگوی نمونه */
+.bubble {
+  position: absolute; z-index: 4;
+  max-width: 78%;
+  background: #f4f1ea;
+  color: #10131c;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  padding: 10px 14px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+.bubble::after {
+  content: '';
+  position: absolute; bottom: -8px; right: 22px;
+  width: 16px; height: 16px;
+  background: #f4f1ea;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* ══════════════════════════════
+   دکمه‌های ناوبری قبلی/بعدی (کنار کتاب)
+══════════════════════════════ */
+.nav-btn {
+  position: absolute; top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: rgba(7,12,26,0.85);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: none;
+  transition: all .25s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+.nav-btn.show { opacity: 1; visibility: visible; }
+.nav-btn:hover:not(:disabled) { background: rgba(25,167,255,0.15); border-color: var(--blue); transform: translateY(-50%) scale(1.08); }
+.nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+.nav-btn svg { width: 20px; height: 20px; color: var(--blue2); }
+.nav-prev { right: -66px; }
+.nav-next { left: -66px; }
+
+@media (max-width: 760px) {
+  .nav-prev { right: 4px; }
+  .nav-next { left: 4px; }
+  .nav-btn { width: 42px; height: 42px; background: rgba(4,6,14,0.85); }
+}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 640px) {
+  .stage { padding: 90px 12px 24px; }
+  .book { height: 82vh; }
+  .layout-4, .layout-5, .layout-6 { gap: 7px; }
+  .comic-page { inset: 12px; gap: 7px; }
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+  .bubble { font-size: 0.68rem; padding: 8px 11px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- hamburger -->
+<div class="hamburger" id="hamburgerBtn">
+  <span></span><span></span><span></span>
+</div>
+
+<!-- overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- side nav -->
+<nav class="side-nav" id="sideNav">
+  <div class="nav-label">ناوبری</div>
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+    خانه
+  </a>
+  <a href="phase.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    فازها
+  </a>
+  <a href="characters.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    شخصیت‌ها
+  </a>
+  <a href="Comments.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    نظرها
+  </a>
+</nav>
+
+<!-- header -->
+<header>
+  <div class="logo">توشان<span>‌</span>ورس</div>
+</header>
+
+<!-- STAGE -->
+<section class="stage">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="book" id="book">
+
+    <!-- ── جلد ── -->
+    <div class="cover" id="cover">
+      <img class="cover-img" id="coverImg" src="cover.jpg" alt="جلد کامیک"
+           onerror="this.style.display='none'; this.parentElement.classList.add('no-cover-img')">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="cover-content">
+        <div class="cover-eyebrow">توشان‌ورس</div>
+        <div class="cover-title" id="coverTitle">عنوان <span class="accent">داستان</span></div>
+        <div class="cover-sub" id="coverSub">قسمت اول</div>
+        <button class="cover-start" id="startBtn">
+          شروع مطالعه
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── بدنه کتاب / صفحات ── -->
+    <div class="pages" id="pages">
+      <div class="pages-topbar">
+        <button class="back-to-cover" id="backBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          بازگشت به جلد
+        </button>
+        <div class="page-counter" id="pageCounter">صفحه ۱ از ۱</div>
+      </div>
+      <div class="page-viewport" id="pageViewport"></div>
+    </div>
+
+    <!-- دکمه‌های قبلی/بعدی -->
+    <button class="nav-btn nav-prev" id="prevBtn" aria-label="صفحه قبل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <button class="nav-btn nav-next" id="nextBtn" aria-label="صفحه بعد">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+
+  </div>
+</section>
+
+<script>
+/* ══════════════════════════════
+   تنظیمات کتاب — اینجا رو برای هر داستان عوض کن
+══════════════════════════════ */
+const BOOK = {
+  title: "الکتروپالس",     // عنوان روی جلد
+  subtitle: "فصل اول — قسمت اول",
+  coverImage: "cover.jpg"   // مسیر عکس جلد؛ اگه پیدا نشه خودکار جای‌گزین میشه
+};
+
+/* هر صفحه یعنی یه آرایه از پنل‌ها (۲ تا ۶ تا).
+   هر پنل: { img: "مسیر عکس", bubble: "متن حباب گفتگو (اختیاری)" }
+   مسیر عکس‌ها رو با فایل‌های واقعی خودت جایگزین کن — تا وقتی جایگزین نکردی
+   یه جای‌گزین خط‌خطی نمایش داده میشه. */
+const PAGES = [
+  [
+    { img: "p1-panel1.jpg" },
+    { img: "p1-panel2.jpg", bubble: "باید همین الان بریم!" },
+    { img: "p1-panel3.jpg" },
+  ],
+  [
+    { img: "p2-panel1.jpg" },
+    { img: "p2-panel2.jpg" },
+  ],
+  [
+    { img: "p3-panel1.jpg" },
+    { img: "p3-panel2.jpg" },
+    { img: "p3-panel3.jpg" },
+    { img: "p3-panel4.jpg" },
+  ],
+  [
+    { img: "p4-panel1.jpg" },
+    { img: "p4-panel2.jpg" },
+    { img: "p4-panel3.jpg" },
+    { img: "p4-panel4.jpg" },
+    { img: "p4-panel5.jpg" },
+    { img: "p4-panel6.jpg" },
+  ],
+  [
+    { img: "p5-panel1.jpg" },
+    { img: "p5-panel2.jpg" },
+    { img: "p5-panel3.jpg" },
+    { img: "p5-panel4.jpg" },
+    { img: "p5-panel5.jpg" },
+  ],
+];
+
+const AREA_LETTERS = ['a','b','c','d','e','f'];
+
+/* ── مقداردهی اولیه جلد ── */
+document.getElementById('coverImg').src = BOOK.coverImage;
+document.getElementById('coverTitle').innerHTML = BOOK.title;
+document.getElementById('coverSub').textContent = BOOK.subtitle;
+
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+/* ── HAMBURGER / SIDE NAV ── */
+const hamburger = document.getElementById('hamburgerBtn');
+const sideNav   = document.getElementById('sideNav');
+const overlay   = document.getElementById('overlay');
+const openNav  = () => { hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active'); };
+const closeNav = () => { hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active'); };
+hamburger.addEventListener('click', () => sideNav.classList.contains('active') ? closeNav() : openNav());
+overlay.addEventListener('click', closeNav);
+document.querySelectorAll('.side-nav a').forEach(a => a.addEventListener('click', closeNav));
+
+let tx = 0, swiping = false;
+sideNav.addEventListener('touchstart', e => { swiping = true; tx = e.touches[0].clientX; });
+sideNav.addEventListener('touchmove', e => {
+  if (!swiping) return;
+  const dx = e.touches[0].clientX - tx;
+  if (dx < 0) { sideNav.style.left = Math.max(-280, dx) + 'px'; overlay.style.opacity = 1 + dx/280; }
+});
+sideNav.addEventListener('touchend', e => {
+  swiping = false;
+  if (e.changedTouches[0].clientX - tx < -80) closeNav();
+  else sideNav.style.left = '0';
+});
+
+/* ══════════════════════════════
+   منطق خوانشگر کامیک
+══════════════════════════════ */
+const cover        = document.getElementById('cover');
+const pagesEl       = document.getElementById('pages');
+const pageViewport  = document.getElementById('pageViewport');
+const pageCounter   = document.getElementById('pageCounter');
+const prevBtn       = document.getElementById('prevBtn');
+const nextBtn       = document.getElementById('nextBtn');
+const startBtn      = document.getElementById('startBtn');
+const backBtn       = document.getElementById('backBtn');
+
+let currentPage = 0;
+let bookOpened  = false;
+
+function buildPanel(panelData, letter) {
+  const panel = document.createElement('div');
+  panel.className = 'panel';
+  panel.style.gridArea = letter;
+
+  const img = document.createElement('img');
+  img.className = 'panel-img';
+  img.alt = 'پنل کامیک';
+  img.src = panelData.img || '';
+  img.onerror = () => { panel.classList.add('no-img'); img.style.display = 'none'; };
+  if (!panelData.img) panel.classList.add('no-img');
+  panel.appendChild(img);
+
+  const icon = document.createElement('div');
+  icon.className = 'panel-placeholder-icon';
+  icon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="15" height="14" rx="2"/><path d="M21 8.5v7l-3-2v-3l3-2z"/></svg>`;
+  panel.appendChild(icon);
+
+  const badge = document.createElement('div');
+  badge.className = 'panel-badge';
+  badge.textContent = letter.toUpperCase();
+  panel.appendChild(badge);
+
+  if (panelData.bubble) {
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.style.top = '10px';
+    bubble.style.left = '10px';
+    bubble.textContent = panelData.bubble;
+    panel.appendChild(bubble);
+  }
+
+  return panel;
+}
+
+function renderPage(index, direction) {
+  const panels = PAGES[index];
+  const pageEl = document.createElement('div');
+  pageEl.className = `comic-page layout-${panels.length} ${direction ? 'enter-' + direction : ''}`;
+
+  panels.forEach((p, i) => pageEl.appendChild(buildPanel(p, AREA_LETTERS[i])));
+  pageViewport.appendChild(pageEl);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      pageEl.classList.remove('enter-next', 'enter-prev');
+      pageEl.classList.add('active');
+    });
+  });
+
+  return pageEl;
+}
+
+function goToPage(newIndex, dir) {
+  if (newIndex < 0 || newIndex >= PAGES.length) return;
+
+  const oldPage = pageViewport.querySelector('.comic-page.active');
+  if (oldPage) {
+    oldPage.classList.remove('active');
+    oldPage.classList.add(dir === 'next' ? 'leave-next' : 'leave-prev');
+    setTimeout(() => oldPage.remove(), 550);
+  }
+
+  currentPage = newIndex;
+  renderPage(currentPage, dir === 'next' ? 'next' : 'prev');
+  updateControls();
+}
+
+function updateControls() {
+  pageCounter.textContent = `صفحه ${toPersianDigits(currentPage + 1)} از ${toPersianDigits(PAGES.length)}`;
+  prevBtn.disabled = currentPage === 0;
+  nextBtn.disabled = currentPage === PAGES.length - 1;
+}
+
+function toPersianDigits(n) {
+  const map = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  return String(n).replace(/[0-9]/g, d => map[d]);
+}
+
+function openBook() {
+  if (bookOpened) return;
+  bookOpened = true;
+  cover.classList.add('opening');
+  setTimeout(() => {
+    pagesEl.classList.add('visible');
+    prevBtn.classList.add('show');
+    nextBtn.classList.add('show');
+    renderPage(0, null);
+    updateControls();
+  }, 550);
+}
+
+function closeBook() {
+  bookOpened = false;
+  pagesEl.classList.remove('visible');
+  prevBtn.classList.remove('show');
+  nextBtn.classList.remove('show');
+  pageViewport.innerHTML = '';
+  currentPage = 0;
+  cover.classList.remove('opening');
+}
+
+startBtn.addEventListener('click', openBook);
+cover.addEventListener('click', (e) => { if (e.target === cover || e.target.closest('.cover-content') === null) openBook(); });
+backBtn.addEventListener('click', closeBook);
+
+nextBtn.addEventListener('click', () => goToPage(currentPage + 1, 'next'));
+prevBtn.addEventListener('click', () => goToPage(currentPage - 1, 'prev'));
+
+document.addEventListener('keydown', (e) => {
+  if (!bookOpened) return;
+  if (e.key === 'ArrowLeft')  goToPage(currentPage + 1, 'next'); /* راست‌چین: چپ = بعدی */
+  if (e.key === 'ArrowRight') goToPage(currentPage - 1, 'prev');
+  if (e.key === 'Escape')     closeBook();
+});
+</script>
+</body>
+</html>
