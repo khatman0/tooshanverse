@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>پروفایل | توشان‌ورس</title>
+<link rel="icon" href="/photo/favicon.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #04060e;
+  --blue:     #19a7ff;
+  --blue2:    #9be3ff;
+  --gold:     #f0c060;
+  --red:      #ff4060;
+  --text:     #ddeeff;
+  --muted:    rgba(180,210,255,0.5);
+  --line:     rgba(25,167,255,0.1);
+  --card:     rgba(8,14,28,0.7);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 100px 24px 60px;
+  position: relative;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(25,167,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25,167,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+.orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
+.orb-1 { width: 500px; height: 500px; top: -180px; right: -120px;
+  background: radial-gradient(circle, rgba(25,167,255,0.1), transparent 65%); }
+.orb-2 { width: 400px; height: 400px; bottom: -140px; left: -80px;
+  background: radial-gradient(circle, rgba(240,192,96,0.07), transparent 65%); }
+
+a { color: inherit; text-decoration: none; }
+
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(4,6,14,0.95), transparent);
+}
+.logo { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; color: var(--blue); }
+.logo span { color: var(--gold); }
+.header-links { display: flex; gap: 20px; align-items: center; }
+.header-links a { font-size: 0.85rem; color: var(--muted); transition: color .2s; }
+.header-links a:hover { color: var(--blue2); }
+.logout-btn {
+  background: rgba(255,64,96,0.08);
+  border: 1px solid rgba(255,64,96,0.25);
+  color: #ff8fa3;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Vazirmatn', sans-serif;
+  transition: all .2s;
+}
+.logout-btn:hover { background: rgba(255,64,96,0.15); }
+
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* حالت لودینگ / نیاز به لاگین */
+.state-box {
+  text-align: center;
+  padding: 80px 20px;
+}
+.state-box p { color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; }
+
+.profile-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  padding: 44px 40px;
+  position: relative;
+  overflow: hidden;
+  display: none;
+  animation: fadeUp .6s ease both;
+}
+.profile-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+.profile-head {
+  display: flex; align-items: center; gap: 20px;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+.avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.6rem; font-weight: 900;
+  color: #001828;
+  flex-shrink: 0;
+}
+.profile-head-text .name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem; font-weight: 700; color: #fff;
+  margin-bottom: 6px;
+}
+.profile-head-text .email { font-size: 0.85rem; color: var(--muted); }
+
+.field { margin-bottom: 20px; }
+.field label {
+  display: block; font-size: 0.82rem; color: var(--blue2);
+  margin-bottom: 8px; font-weight: 600;
+}
+.field input, .field textarea {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(25,167,255,0.04);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.92rem;
+  outline: none;
+  transition: all .2s ease;
+  resize: vertical;
+}
+.field textarea { min-height: 90px; line-height: 1.8; }
+.field input:focus, .field textarea:focus {
+  border-color: rgba(25,167,255,0.5);
+  background: rgba(25,167,255,0.07);
+  box-shadow: 0 0 0 3px rgba(25,167,255,0.08);
+}
+.field-hint { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
+
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border: none;
+  cursor: pointer;
+  transition: all .25s ease;
+  font-family: 'Vazirmatn', sans-serif;
+}
+.btn.primary {
+  background: linear-gradient(135deg, var(--blue), #1fb6ff);
+  color: #001828;
+  box-shadow: 0 8px 30px rgba(25,167,255,0.25), 0 0 0 1px rgba(25,167,255,0.3);
+  width: 100%;
+  margin-top: 8px;
+}
+.btn.primary:hover { transform: translateY(-2px); }
+.btn.primary:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+.msg {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  display: none;
+}
+.msg.error { background: rgba(255,64,96,0.08); border: 1px solid rgba(255,64,96,0.25); color: #ff8fa3; }
+.msg.success { background: rgba(25,167,255,0.08); border: 1px solid rgba(25,167,255,0.25); color: var(--blue2); }
+
+.meta-row {
+  display: flex; justify-content: space-between;
+  margin-top: 28px; padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem; color: var(--muted);
+}
+
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(0,24,40,0.3);
+  border-top-color: #001828;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<header>
+  <div class="logo">توشان<span>‌</span>ورس</div>
+  <div class="header-links">
+    <a href="index.html">خانه</a>
+    <button class="logout-btn" id="logoutBtn" style="display:none;">خروج</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- حالت لودینگ -->
+  <div class="state-box" id="loadingState">
+    <p>در حال بارگذاری...</p>
+  </div>
+
+  <!-- حالت نیاز به لاگین -->
+  <div class="state-box" id="guestState" style="display:none;">
+    <p>برای دیدن پروفایل باید وارد بشی</p>
+    <a class="btn primary" style="display:inline-flex; padding: 12px 28px;" href="login.html">ورود به حساب</a>
+  </div>
+
+  <!-- کارت پروفایل -->
+  <div class="profile-card" id="profileCard">
+    <div class="profile-head">
+      <div class="avatar" id="avatarInitial">؟</div>
+      <div class="profile-head-text">
+        <div class="name" id="displayNameLabel">—</div>
+        <div class="email" id="emailLabel">—</div>
+      </div>
+    </div>
+
+    <form id="profileForm">
+      <div class="field">
+        <label for="displayName">نام نمایشی</label>
+        <input type="text" id="displayName" placeholder="نام نمایشی‌ات">
+      </div>
+      <div class="field">
+        <label for="bio">بیوگرافی</label>
+        <textarea id="bio" placeholder="چند جمله درباره‌ی خودت..."></textarea>
+        <div class="field-hint">این متن کنار کامنت‌ها و در پروفایل عمومی‌ات نشون داده می‌شه</div>
+      </div>
+
+      <button type="submit" class="btn primary" id="saveBtn">
+        <span class="spinner" id="saveSpinner"></span>
+        <span id="saveBtnText">ذخیره‌ی تغییرات</span>
+      </button>
+    </form>
+
+    <div class="msg error" id="errorMsg"></div>
+    <div class="msg success" id="successMsg"></div>
+
+    <div class="meta-row">
+      <span id="joinedDate"></span>
+      <span id="authMethod"></span>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { SUPABASE_URL, SUPABASE_KEY } from './supabase-config.js';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const loadingState = document.getElementById('loadingState');
+const guestState = document.getElementById('guestState');
+const profileCard = document.getElementById('profileCard');
+const logoutBtn = document.getElementById('logoutBtn');
+const profileForm = document.getElementById('profileForm');
+const errorMsg = document.getElementById('errorMsg');
+const successMsg = document.getElementById('successMsg');
+const saveBtn = document.getElementById('saveBtn');
+const saveBtnText = document.getElementById('saveBtnText');
+const saveSpinner = document.getElementById('saveSpinner');
+
+function showError(text) {
+  errorMsg.textContent = text;
+  errorMsg.style.display = 'block';
+  successMsg.style.display = 'none';
+}
+function showSuccess(text) {
+  successMsg.textContent = text;
+  successMsg.style.display = 'block';
+  errorMsg.style.display = 'none';
+}
+function setSaving(loading) {
+  saveBtn.disabled = loading;
+  saveSpinner.style.display = loading ? 'inline-block' : 'none';
+  saveBtnText.textContent = loading ? 'در حال ذخیره...' : 'ذخیره‌ی تغییرات';
+}
+
+let currentUser = null;
+
+async function init() {
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session) {
+    loadingState.style.display = 'none';
+    guestState.style.display = 'block';
+    return;
+  }
+
+  currentUser = session.user;
+
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', currentUser.id)
+    .single();
+
+  loadingState.style.display = 'none';
+  profileCard.style.display = 'block';
+  logoutBtn.style.display = 'inline-flex';
+
+  const name = profile?.display_name || currentUser.email.split('@')[0];
+  document.getElementById('displayNameLabel').textContent = name;
+  document.getElementById('emailLabel').textContent = currentUser.email;
+  document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('displayName').value = profile?.display_name || '';
+  document.getElementById('bio').value = profile?.bio || '';
+
+  const joined = new Date(currentUser.created_at);
+  document.getElementById('joinedDate').textContent = 'عضویت: ' + joined.toLocaleDateString('fa-IR');
+
+  const provider = currentUser.app_metadata?.provider === 'google' ? 'ورود با گوگل' : 'ورود با ایمیل';
+  document.getElementById('authMethod').textContent = provider;
+}
+
+init();
+
+profileForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!currentUser) return;
+  setSaving(true);
+  errorMsg.style.display = 'none';
+  successMsg.style.display = 'none';
+
+  const displayName = document.getElementById('displayName').value.trim();
+  const bio = document.getElementById('bio').value.trim();
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ display_name: displayName, bio: bio })
+    .eq('id', currentUser.id);
+
+  setSaving(false);
+
+  if (error) {
+    showError('خطا در ذخیره: ' + error.message);
+    return;
+  }
+
+  document.getElementById('displayNameLabel').textContent = displayName || currentUser.email.split('@')[0];
+  document.getElementById('avatarInitial').textContent = (displayName || currentUser.email).charAt(0).toUpperCase();
+  showSuccess('تغییرات ذخیره شد ✅');
+});
+
+logoutBtn.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.href = 'login.html';
+});
+</script>
+</body>
+</html>
