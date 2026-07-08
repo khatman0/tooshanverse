@@ -417,6 +417,77 @@ header {
   body { cursor: auto; }
   #cursor, #cursor-ring { display: none; }
 }
+  /* ══════════════════════════════
+   SIDE NAV — FOOTER (پروفایل + تنظیمات)
+══════════════════════════════ */
+.side-nav-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.side-nav-profile-btn {
+  display: flex; align-items: center; gap: 10px;
+  cursor: none;
+  padding: 4px;
+  border-radius: 100px;
+  transition: background .2s ease;
+}
+.side-nav-profile-btn:hover { background: rgba(25,167,255,0.08); }
+.side-nav-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  background: rgba(120,140,170,0.18);
+  border: 1px solid var(--line);
+  color: rgba(180,210,255,0.55);
+}
+.side-nav-avatar svg { width: 22px; height: 22px; }
+.side-nav-avatar.has-user {
+  background: linear-gradient(135deg, var(--blue), var(--gold));
+  border-color: transparent;
+}
+.side-nav-avatar img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.side-nav-avatar-initial {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  color: #001828;
+}
+.side-nav-profile-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.side-nav-profile-btn:hover .side-nav-profile-name { color: var(--blue2); }
+
+.side-nav-settings-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(25,167,255,0.05);
+  border: 1px solid var(--line);
+  color: var(--blue);
+  cursor: none;
+  transition: all .2s ease;
+  flex-shrink: 0;
+}
+.side-nav-settings-btn:hover {
+  background: rgba(25,167,255,0.12);
+  border-color: rgba(25,167,255,0.3);
+  transform: rotate(45deg);
+}
+.side-nav-settings-btn svg { width: 18px; height: 18px; }
 </style>
 </head>
 <body>
@@ -456,6 +527,17 @@ header {
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
     درباره ما
   </a>
+  <div class="side-nav-footer">
+    <a class="side-nav-settings-btn" href="profile.html" title="تنظیمات حساب">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    </a>
+    <a class="side-nav-profile-btn" href="profile.html" id="sideNavProfileBtn">
+      <div class="side-nav-avatar" id="sideNavAvatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <span class="side-nav-profile-name" id="sideNavProfileName">ورود / ثبت‌نام</span>
+    </a>
+  </div>
 </nav>
 
 <header>
@@ -685,6 +767,44 @@ function buildCommentCard(item) {
 
 loadComments();
 setInterval(loadComments, 10000);
+  /* ── SIDE NAV PROFILE STATE (ورود/عدم ورود) ── */
+(async () => {
+  try {
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+    const { SUPABASE_URL, SUPABASE_KEY } = await import('./supabase-config.js');
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const { data: { session } } = await supabase.auth.getSession();
+    const avatarBox = document.getElementById('sideNavAvatar');
+    const nameLabel = document.getElementById('sideNavProfileName');
+
+    if (session) {
+      const user = session.user;
+      let displayName = user.email ? user.email.split('@')[0] : 'کاربر';
+      let avatarUrl = user.user_metadata?.avatar_url || null;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name, avatar_url')
+        .eq('id', user.id)
+        .single();
+
+      if (profile?.display_name) displayName = profile.display_name;
+      if (profile?.avatar_url) avatarUrl = profile.avatar_url;
+
+      nameLabel.textContent = displayName;
+      avatarBox.classList.add('has-user');
+
+      if (avatarUrl) {
+        avatarBox.innerHTML = `<img src="${avatarUrl}" alt="${displayName}">`;
+      } else {
+        avatarBox.innerHTML = `<span class="side-nav-avatar-initial">${displayName.charAt(0).toUpperCase()}</span>`;
+      }
+    }
+  } catch (err) {
+    console.warn('وضعیت ورود کاربر بارگذاری نشد:', err);
+  }
+})();
 </script>
 </body>
 </html>
