@@ -1741,6 +1741,12 @@ body::before {
     <path d="M21 12c0 4.418-4.03 8-9 8-1.05 0-2.06-.16-3-.46L3 21l1.5-4.5C3.55 15.06 3 13.58 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
   </svg>
 </a>
+
+  <div id="reading-widget" data-slug="electropulse"></div>
+<script type="module">
+  import { mountReadingWidget } from './reading-widget.js';
+  mountReadingWidget('reading-widget');
+</script>
   
 </div>
 
@@ -1814,6 +1820,8 @@ chOverlay.addEventListener('click', closePanel);
 document.querySelectorAll('.chapter-panel-item').forEach(item => {
   item.addEventListener('click', closePanel);
 });
+
+  });
 </script>
 </body>
 </html>
