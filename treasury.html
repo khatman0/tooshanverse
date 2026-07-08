@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>توشان‌ورس | Tooshan Verse</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>خزانه | توشان‌ورس</title>
+
 <link rel="icon" href="/photo/favicon.png" type="image/png">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+
 <style>
         /*══════════════════════════════════════
         TOOSHAN TREASURY
@@ -2312,6 +2321,1074 @@ padding:28px;
 }
 
 }
+        </style>
+</head>
+        <body>
+                <div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="ambient"></div>
+
+<div class="hamburger" id="hamburgerBtn">
+
+<span></span>
+<span></span>
+<span></span>
+
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<nav class="side-nav" id="sideNav">
+
+<div class="nav-label">
+
+ناوبری
+
+</div>
+
+<a href="index.html">
+
+خانه
+
+</a>
+
+<a href="phase.html">
+
+فازها
+
+</a>
+
+<a href="comic-reader.html">
+
+کمیک‌ها
+
+</a>
+
+<a href="characters.html">
+
+شخصیت‌ها
+
+</a>
+
+<a href="comments.html">
+
+نظرها
+
+</a>
+
+<a href="about.html">
+
+درباره ما
+
+</a>
+
+<a href="treasury.html" class="current">
+
+خزانه
+
+</a>
+
+<div class="side-nav-footer">
+
+<a class="side-nav-settings-btn" href="profile.html">
+
+⚙
+
+</a>
+
+<a class="side-nav-profile-btn" href="profile.html">
+
+<span class="side-nav-profile-name">
+
+ورود / ثبت نام
+
+</span>
+
+<div class="side-nav-avatar">
+
+👤
+
+</div>
+
+</a>
+
+</div>
+
+</nav>
+
+<header>
+
+<div class="logo">
+
+توشان<span>‌</span>ورس
+
+</div>
+
+</header>
+
+<main>
+
+<section class="treasury-hero">
+
+<div class="hero-orb hero-orb-1"></div>
+
+<div class="hero-orb hero-orb-2"></div>
+
+<div class="treasury-symbol">
+
+<img src="coin.svg" alt="Tooshan Coin">
+
+</div>
+
+<div class="hero-eyebrow">
+
+DIGITAL CURRENCY
+
+</div>
+
+<h1>
+
+توشان <span>کوین</span>
+
+</h1>
+
+<p>
+
+ارز اختصاصی دنیای توشان‌ورس. با خواندن داستان‌ها، انجام مأموریت‌ها و مشارکت در سایت، سکه به دست بیاور و آیتم‌های انحصاری را آزاد کن.
+
+</p>
+
+</section>
+
+<section class="wallet-section">
+
+<div class="wallet-card">
+
+<div class="wallet-header">
+
+<div>
+
+<span>
+
+YOUR WALLET
+
+</span>
+
+<h2>
+
+خزانه شخصی
+
+</h2>
+
+</div>
+
+<div class="wallet-icon">
+
+<img src="coin.svg">
+
+</div>
+
+</div>
+
+<div class="wallet-stats">
+
+<div class="wallet-item">
+
+<span class="wallet-label">
+
+TOOSHAN COINS
+
+</span>
+
+<h3 id="coinBalance">
+
+0
+
+</h3>
+
+</div>
+
+<div class="wallet-divider"></div>
+
+<div class="wallet-item">
+
+<span class="wallet-label">
+
+XP
+
+</span>
+
+<h3 id="xpBalance">
+
+0
+
+</h3>
+
+</div>
+
+</div>
+
+<div class="wallet-convert">
+
+<div class="convert-box">
+
+<strong>
+
+50 XP
+
+</strong>
+
+<span>
+
+→
+
+</span>
+
+<strong>
+
+10 COINS
+
+</strong>
+
+<button id="convertCoins">
+
+تبدیل امتیاز
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+        <section class="mission-section">
+
+<div class="section-title">
+
+<div>
+
+<span>
+
+DAILY MISSIONS
+
+</span>
+
+<h2>
+
+ماموریت‌های روزانه
+
+</h2>
+
+</div>
+
+</div>
+
+<div class="mission-card">
+
+<div class="mission-progress">
+
+<div class="mission completed">
+
+<div class="mission-check"></div>
+
+<div>
+
+<h4>
+
+مطالعه یک فصل داستان
+
+</h4>
+
+<small>
+
++20 XP
+
+</small>
+
+</div>
+
+</div>
+
+<div class="mission">
+
+<div class="mission-check"></div>
+
+<div>
+
+<h4>
+
+ثبت یک نظر مفید
+
+</h4>
+
+<small>
+
++10 XP
+
+</small>
+
+</div>
+
+</div>
+
+<div class="mission">
+
+<div class="mission-check"></div>
+
+<div>
+
+<h4>
+
+ورود روزانه
+
+</h4>
+
+<small>
+
++5 XP
+
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="featured-section">
+
+<div class="section-title">
+
+<div>
+
+<span>
+
+FEATURED
+
+</span>
+
+<h2>
+
+پیشنهاد ویژه امروز
+
+</h2>
+
+</div>
+
+</div>
+
+<div class="featured-card">
+
+<div class="featured-image">
+
+<img src="photo/lordphysica-cover.png" alt="Lord Physica">
+
+</div>
+
+<div class="featured-content">
+
+<div class="featured-type">
+
+EXCLUSIVE STORY
+
+</div>
+
+<h2>
+
+لرد فیزیکا
+
+<br>
+
+انفجار آبی
+
+</h2>
+
+<p>
+
+اولین داستان رسمی توشان‌ورس که تنها از طریق توشان‌کوین قابل دریافت است.
+
+</p>
+
+<div class="featured-footer">
+
+<div class="price">
+
+🪙
+
+150
+
+</div>
+
+<button id="featuredBuy">
+
+خرید داستان
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="category-section">
+
+<button class="category active"
+
+data-filter="all">
+
+همه
+
+</button>
+
+<button class="category"
+
+data-filter="story">
+
+داستان
+
+</button>
+
+<button class="category"
+
+data-filter="comic">
+
+کمیک
+
+</button>
+
+<button class="category"
+
+data-filter="profile">
+
+شخصی‌سازی
+
+</button>
+
+<button class="category"
+
+data-filter="special">
+
+ویژه
+
+</button>
+
+</section>
+
+
+
+<section class="shop-grid">
+
+
+
+<div class="shop-card"
+
+data-category="story"
+
+data-price="150"
+
+data-name="انفجار آبی">
+
+<div class="shop-image">
+
+<img src="photo/lordphysica-cover.png" alt="">
+
+</div>
+
+<div class="rarity legendary">
+
+LEGENDARY
+
+</div>
+
+<h3>
+
+لرد فیزیکا
+
+</h3>
+
+<p>
+
+نسخه کامل اولین داستان توشان‌ورس.
+
+</p>
+
+<div class="shop-footer">
+
+<span>
+
+🪙 150
+
+</span>
+
+<button class="buy-item">
+
+خرید
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<div class="shop-card"
+
+data-category="comic"
+
+data-price="90"
+
+data-name="کمیک آزمایشی">
+
+<div class="shop-image">
+
+<img src="photo/comic-cover.png" alt="">
+
+</div>
+
+<div class="rarity epic">
+
+EPIC
+
+</div>
+
+<h3>
+
+کمیک شماره ۱
+
+</h3>
+
+<p>
+
+نسخه دیجیتال اولین کمیک اختصاصی.
+
+</p>
+
+<div class="shop-footer">
+
+<span>
+
+🪙 90
+
+</span>
+
+<button class="buy-item">
+
+خرید
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<div class="shop-card"
+
+data-category="profile"
+
+data-price="60"
+
+data-name="قاب پروفایل">
+
+<div class="shop-image">
+
+<img src="photo/frame.png" alt="">
+
+</div>
+
+<div class="rarity rare">
+
+RARE
+
+</div>
+
+<h3>
+
+قاب پروفایل
+
+</h3>
+
+<p>
+
+قاب اختصاصی آبی توشان برای حساب کاربری.
+
+</p>
+
+<div class="shop-footer">
+
+<span>
+
+🪙 60
+
+</span>
+
+<button class="buy-item">
+
+خرید
+
+</button>
+
+</div>
+
+</div>
+        <div class="shop-card"
+data-category="special"
+data-price="250"
+data-name="نشان بنیان‌گذار">
+
+<div class="shop-image">
+
+<img src="photo/founder-badge.png" alt="">
+
+</div>
+
+<div class="rarity legendary">
+
+FOUNDER
+
+</div>
+
+<h3>
+
+نشان بنیان‌گذار
+
+</h3>
+
+<p>
+
+نشان انحصاری مخصوص اولین اعضای توشان‌ورس.
+
+</p>
+
+<div class="shop-footer">
+
+<span>
+
+🪙 250
+
+</span>
+
+<button class="buy-item">
+
+خرید
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<div class="shop-card"
+data-category="special"
+data-price="500"
+data-name="بلیت فاز بعد">
+
+<div class="shop-image">
+
+<img src="photo/phase-ticket.png" alt="">
+
+</div>
+
+<div class="rarity legendary">
+
+LIMITED
+
+</div>
+
+<h3>
+
+دسترسی زودهنگام
+
+</h3>
+
+<p>
+
+مشاهده فصل‌های آینده قبل از انتشار عمومی.
+
+</p>
+
+<div class="shop-footer">
+
+<span>
+
+🪙 500
+
+</span>
+
+<button class="buy-item">
+
+خرید
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<div class="shop-card"
+data-category="profile"
+data-price="120"
+data-name="تم آبی توشان">
+
+<div class="shop-image">
+
+<img src="photo/theme-blue.png" alt="">
+
+</div>
+
+<div class="rarity rare">
+
+RARE
+
+</div>
+
+<h3>
+
+تم اختصاصی
+
+</h3>
+
+<p>
+
+ظاهر ویژه برای پروفایل و صفحه مطالعه.
+
+</p>
+
+<div class="shop-footer">
+
+<span>
+
+🪙 120
+
+</span>
+
+<button class="buy-item">
+
+خرید
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="history-section">
+
+<div class="section-title">
+
+<div>
+
+<span>
+
+TRANSACTIONS
+
+</span>
+
+<h2>
+
+تاریخچه تراکنش‌ها
+
+</h2>
+
+</div>
+
+</div>
+
+<div class="history-list" id="historyList">
+
+<div class="history-item">
+
+<div>
+
+<h4>
+
+پاداش مطالعه داستان
+
+</h4>
+
+<small>
+
+امروز - 14:25
+
+</small>
+
+</div>
+
+<strong class="plus">
+
++20 XP
+
+</strong>
+
+</div>
+
+
+
+<div class="history-item">
+
+<div>
+
+<h4>
+
+تبدیل امتیاز به توشان‌کوین
+
+</h4>
+
+<small>
+
+امروز - 14:12
+
+</small>
+
+</div>
+
+<strong class="plus">
+
++10 🪙
+
+</strong>
+
+</div>
+
+
+
+<div class="history-item">
+
+<div>
+
+<h4>
+
+خرید قاب پروفایل
+
+</h4>
+
+<small>
+
+دیروز
+
+</small>
+
+</div>
+
+<strong class="minus">
+
+-60 🪙
+
+</strong>
+
+</div>
+
+</div>
+
+</section>
+        <footer>
+
+<div class="footer-logo">
+
+TOOSHANVERSE
+
+</div>
+
+<div class="footer-copy">
+
+© ۱۴۰۵ توشان‌ورس — تمامی حقوق محفوظ است
+
+</div>
+
+<div class="footer-links">
+
+<a href="phase.html">
+
+فازها
+
+</a>
+
+<a href="characters.html">
+
+شخصیت‌ها
+
+</a>
+
+<a href="about.html">
+
+درباره ما
+
+</a>
+
+</div>
+
+</footer>
+
+
+
+<!-- Purchase Modal -->
+
+<div class="purchase-modal" id="purchaseModal">
+
+<div class="purchase-box">
+
+<button class="close-modal" id="closeModal">
+
+✕
+
+</button>
+
+<div class="purchase-icon">
+
+<img src="coin.svg" alt="Coin">
+
+</div>
+
+<h2 id="modalTitle">
+
+تأیید خرید
+
+</h2>
+
+<p id="modalText">
+
+آیا از خرید این آیتم مطمئن هستید؟
+
+</p>
+
+<div class="purchase-price">
+
+<span>
+
+هزینه
+
+</span>
+
+<strong id="modalPrice">
+
+0
+
+</strong>
+
+<img src="coin.svg" alt="">
+
+</div>
+
+<div class="purchase-actions">
+
+<button class="cancel-btn" id="cancelPurchase">
+
+انصراف
+
+</button>
+
+<button class="confirm-btn" id="confirmPurchase">
+
+تأیید خرید
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- Toast -->
+
+<div class="toast-container" id="toastContainer"></div>
+
+
+
+<!-- Coin Animation Layer -->
+
+<div id="coinAnimationLayer"></div>
+
+
+
+<!-- Floating Coins -->
+
+<div class="floating-coins">
+
+<div class="floating-coin">
+
+<img src="coin.svg" alt="">
+
+</div>
+
+<div class="floating-coin delay1">
+
+<img src="coin.svg" alt="">
+
+</div>
+
+<div class="floating-coin delay2">
+
+<img src="coin.svg" alt="">
+
+</div>
+
+<div class="floating-coin delay3">
+
+<img src="coin.svg" alt="">
+
+</div>
+
+</div>
+
+
+
+<!-- Background Glow -->
+
+<div class="background-glow glow-left"></div>
+
+<div class="background-glow glow-right"></div>
+
+
+
+<!-- Audio -->
+
+<audio id="coinSound" preload="auto">
+
+<source src="audio/coin.mp3" type="audio/mpeg">
+
+</audio>
+
+
+
+<audio id="purchaseSound" preload="auto">
+
+<source src="audio/purchase.mp3" type="audio/mpeg">
+
+</audio>
+
+
+
+<script src="treasury.js"></script>
+
+</main>
+
 <script>
 /*══════════════════════════════════════
         TOOSHAN TREASURY
