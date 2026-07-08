@@ -1,0 +1,64 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="goldBody" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#ffe9b0"/>
+      <stop offset="45%" stop-color="#ffd777"/>
+      <stop offset="80%" stop-color="#f0c060"/>
+      <stop offset="100%" stop-color="#c98f2e"/>
+    </radialGradient>
+
+    <linearGradient id="ringGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#84dfff"/>
+      <stop offset="50%" stop-color="#19a7ff"/>
+      <stop offset="100%" stop-color="#1177dd"/>
+    </linearGradient>
+
+    <radialGradient id="innerShade" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#f0c060" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#8a5e18" stop-opacity=".55"/>
+    </radialGradient>
+
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="bigGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+  </defs>
+
+  <!-- outer ambient glow -->
+  <circle cx="100" cy="100" r="86" fill="#19a7ff" opacity=".28" filter="url(#bigGlow)"/>
+
+  <!-- energy ring -->
+  <circle cx="100" cy="100" r="92" fill="none" stroke="url(#ringGlow)" stroke-width="3" opacity=".85" filter="url(#softGlow)"/>
+  <circle cx="100" cy="100" r="92" fill="none" stroke="#84dfff" stroke-width="1" opacity=".5"/>
+
+  <!-- coin body -->
+  <circle cx="100" cy="100" r="80" fill="url(#goldBody)"/>
+  <circle cx="100" cy="100" r="80" fill="url(#innerShade)"/>
+  <circle cx="100" cy="100" r="80" fill="none" stroke="#7a521a" stroke-width="1.5" opacity=".4"/>
+
+  <!-- inner rim -->
+  <circle cx="100" cy="100" r="68" fill="none" stroke="#fff3d6" stroke-width="1.5" opacity=".55"/>
+  <circle cx="100" cy="100" r="64" fill="none" stroke="#19a7ff" stroke-width="1.2" opacity=".35"/>
+
+  <!-- hex energy pattern -->
+  <g opacity=".25" stroke="#19a7ff" stroke-width="1" fill="none">
+    <polygon points="100,56 137,78 137,122 100,144 63,122 63,78"/>
+    <polygon points="100,70 125,84 125,116 100,130 75,116 75,84"/>
+  </g>
+
+  <!-- center emblem: stylised "T" -->
+  <g filter="url(#softGlow)">
+    <path d="M68 76 L132 76 L132 92 L108 92 L108 136 L92 136 L92 92 L68 92 Z"
+          fill="#0b1220" opacity=".88"/>
+  </g>
+
+  <!-- top highlight sheen -->
+  <ellipse cx="80" cy="55" rx="46" ry="18" fill="#ffffff" opacity=".18"/>
+</svg>
