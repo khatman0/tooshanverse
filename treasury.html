@@ -1,0 +1,989 @@
+/*══════════════════════════════════════
+        TOOSHAN TREASURY
+              PART 1
+══════════════════════════════════════*/
+
+
+/*══════════════════════════════════════
+            CURSOR
+══════════════════════════════════════*/
+
+const cursor = document.getElementById("cursor");
+const ring = document.getElementById("cursor-ring");
+
+let mouseX = 0;
+let mouseY = 0;
+
+let ringX = 0;
+let ringY = 0;
+
+document.addEventListener("mousemove",(e)=>{
+
+mouseX = e.clientX;
+mouseY = e.clientY;
+
+});
+
+function animateCursor(){
+
+if(cursor){
+
+cursor.style.left = mouseX + "px";
+cursor.style.top = mouseY + "px";
+
+}
+
+ringX += (mouseX-ringX)*0.15;
+ringY += (mouseY-ringY)*0.15;
+
+if(ring){
+
+ring.style.left = ringX + "px";
+ring.style.top = ringY + "px";
+
+}
+
+requestAnimationFrame(animateCursor);
+
+}
+
+animateCursor();
+
+
+
+/*══════════════════════════════════════
+            HAMBURGER
+══════════════════════════════════════*/
+
+const hamburger = document.getElementById("hamburgerBtn");
+const sideNav = document.getElementById("sideNav");
+const overlay = document.getElementById("overlay");
+
+function openMenu(){
+
+hamburger.classList.add("active");
+sideNav.classList.add("active");
+overlay.classList.add("active");
+
+}
+
+function closeMenu(){
+
+hamburger.classList.remove("active");
+sideNav.classList.remove("active");
+overlay.classList.remove("active");
+
+}
+
+if(hamburger){
+
+hamburger.addEventListener("click",()=>{
+
+if(sideNav.classList.contains("active")){
+
+closeMenu();
+
+}else{
+
+openMenu();
+
+}
+
+});
+
+}
+
+if(overlay){
+
+overlay.addEventListener("click",closeMenu);
+
+}
+
+
+
+/*══════════════════════════════════════
+         TOUCH CLOSE MENU
+══════════════════════════════════════*/
+
+let touchStart = 0;
+
+if(sideNav){
+
+sideNav.addEventListener("touchstart",(e)=>{
+
+touchStart = e.touches[0].clientX;
+
+});
+
+sideNav.addEventListener("touchend",(e)=>{
+
+const end = e.changedTouches[0].clientX;
+
+if(end-touchStart < -80){
+
+closeMenu();
+
+}
+
+});
+
+}
+
+
+
+/*══════════════════════════════════════
+        SCROLL ANIMATION
+══════════════════════════════════════*/
+
+const observer = new IntersectionObserver((entries)=>{
+
+entries.forEach((entry)=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("show");
+
+}
+
+});
+
+},{
+threshold:.15
+});
+
+document.querySelectorAll(
+
+".wallet-card,.mission-card,.featured-card,.shop-card,.history-item"
+
+).forEach((el)=>{
+
+observer.observe(el);
+
+});
+
+
+
+/*══════════════════════════════════════
+         NUMBER COUNTER
+══════════════════════════════════════*/
+
+function animateNumber(element,target){
+
+let value = 0;
+
+const speed = Math.ceil(target/70);
+
+const timer = setInterval(()=>{
+
+value += speed;
+
+if(value>=target){
+
+value = target;
+
+clearInterval(timer);
+
+}
+
+element.textContent = value.toLocaleString();
+
+},20);
+
+}
+
+
+
+/*══════════════════════════════════════
+      INITIAL BALANCE
+══════════════════════════════════════*/
+
+const coinBalance = document.getElementById("coinBalance");
+const xpBalance = document.getElementById("xpBalance");
+
+let coins = 180;
+let xp = 945;
+
+window.addEventListener("load",()=>{
+
+if(coinBalance){
+
+animateNumber(coinBalance,coins);
+
+}
+
+if(xpBalance){
+
+animateNumber(xpBalance,xp);
+
+}
+
+});
+
+
+
+/*══════════════════════════════════════
+       CATEGORY ACTIVE
+══════════════════════════════════════*/
+
+document.querySelectorAll(".category").forEach((btn)=>{
+
+btn.addEventListener("click",()=>{
+
+document.querySelectorAll(".category").forEach((b)=>{
+
+b.classList.remove("active");
+
+});
+
+btn.classList.add("active");
+
+});
+
+});
+
+
+
+/*══════════════════════════════════════
+        HOVER EFFECT
+══════════════════════════════════════*/
+
+document.querySelectorAll(".shop-card").forEach((card)=>{
+
+card.addEventListener("mousemove",(e)=>{
+
+const rect = card.getBoundingClientRect();
+
+const x = e.clientX - rect.left;
+const y = e.clientY - rect.top;
+
+card.style.background =
+
+`radial-gradient(circle at ${x}px ${y}px,
+rgba(25,167,255,.12),
+rgba(8,14,28,.78) 65%)`;
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.background="";
+
+});
+
+});
+
+
+
+/*══════════════════════════════════════
+        FEATURE BUTTON
+══════════════════════════════════════*/
+
+const featureBtn = document.getElementById("featuredBuy");
+
+if(featureBtn){
+
+featureBtn.addEventListener("click",()=>{
+
+featureBtn.textContent="در حال آماده سازی...";
+
+setTimeout(()=>{
+
+featureBtn.textContent="خرید";
+
+},1800);
+
+});
+
+}
+/*══════════════════════════════════════
+        TOOSHAN TREASURY
+              PART 2
+══════════════════════════════════════*/
+
+
+/*══════════════════════════════════════
+            FILTER SHOP
+══════════════════════════════════════*/
+
+const categoryButtons =
+document.querySelectorAll(".category");
+
+const shopCards =
+document.querySelectorAll(".shop-card");
+
+categoryButtons.forEach(button=>{
+
+button.addEventListener("click",()=>{
+
+const filter =
+button.dataset.filter;
+
+shopCards.forEach(card=>{
+
+if(
+filter==="all" ||
+card.dataset.category===filter
+){
+
+card.style.display="block";
+
+setTimeout(()=>{
+
+card.style.opacity="1";
+card.style.transform="translateY(0px)";
+
+},100);
+
+}else{
+
+card.style.opacity="0";
+card.style.transform="translateY(40px)";
+
+setTimeout(()=>{
+
+card.style.display="none";
+
+},250);
+
+}
+
+});
+
+});
+
+});
+
+
+
+/*══════════════════════════════════════
+             BUY SYSTEM
+══════════════════════════════════════*/
+
+const buyButtons =
+document.querySelectorAll(".buy-item");
+
+buyButtons.forEach(button=>{
+
+button.addEventListener("click",()=>{
+
+const card =
+button.closest(".shop-card");
+
+const price =
+Number(card.dataset.price);
+
+if(coins<price){
+
+showToast("سکه کافی نداری!");
+
+return;
+
+}
+
+coins-=price;
+
+animateNumber(
+coinBalance,
+coins
+);
+
+button.textContent="خرید شد";
+
+button.classList.add("owned");
+
+button.disabled=true;
+
+createCoinBurst(
+button
+);
+
+addTransaction(
+
+"-"+price,
+card.dataset.name
+
+);
+
+});
+
+});
+
+
+
+/*══════════════════════════════════════
+         COIN EXPLOSION
+══════════════════════════════════════*/
+
+function createCoinBurst(element){
+
+const rect =
+element.getBoundingClientRect();
+
+for(let i=0;i<12;i++){
+
+const coin =
+document.createElement("div");
+
+coin.className="coin-spark";
+
+coin.innerHTML="🪙";
+
+coin.style.left=
+rect.left+
+rect.width/2+"px";
+
+coin.style.top=
+rect.top+
+rect.height/2+"px";
+
+coin.style.transform=
+
+`translate(
+${(Math.random()-.5)*160}px,
+${(Math.random()-.5)*160}px
+)`;
+
+document.body.appendChild(coin);
+
+setTimeout(()=>{
+
+coin.remove();
+
+},900);
+
+}
+
+}
+
+
+
+/*══════════════════════════════════════
+         XP TO COIN
+══════════════════════════════════════*/
+
+const convertButton =
+document.getElementById("convertCoins");
+
+if(convertButton){
+
+convertButton.addEventListener("click",()=>{
+
+if(xp<50){
+
+showToast(
+"حداقل 50 امتیاز نیاز داری."
+);
+
+return;
+
+}
+
+xp-=50;
+
+coins+=10;
+
+animateNumber(
+coinBalance,
+coins
+);
+
+animateNumber(
+xpBalance,
+xp
+);
+
+createCoinBurst(convertButton);
+
+addTransaction(
+"+10",
+"تبدیل امتیاز"
+);
+
+});
+
+}
+
+
+
+/*══════════════════════════════════════
+          TRANSACTION
+══════════════════════════════════════*/
+
+const historyContainer =
+document.getElementById("historyList");
+
+function addTransaction(value,title){
+
+if(!historyContainer) return;
+
+const item=
+document.createElement("div");
+
+item.className="history-item";
+
+item.innerHTML=
+
+`
+
+<div>
+
+<h4>${title}</h4>
+
+<small>
+چند لحظه پیش
+</small>
+
+</div>
+
+<strong class="${
+value.includes("+")
+?
+"plus"
+:
+"minus"
+}">
+${value}
+</strong>
+
+`;
+
+historyContainer.prepend(item);
+
+observer.observe(item);
+
+}
+
+
+
+/*══════════════════════════════════════
+             TOAST
+══════════════════════════════════════*/
+
+function showToast(text){
+
+const toast=
+document.createElement("div");
+
+toast.className="toast";
+
+toast.innerText=text;
+
+document.body.appendChild(toast);
+
+setTimeout(()=>{
+
+toast.classList.add("show");
+
+},50);
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+setTimeout(()=>{
+
+toast.remove();
+
+},300);
+
+},2300);
+
+}
+
+
+
+/*══════════════════════════════════════
+       SAVE LOCAL STORAGE
+══════════════════════════════════════*/
+
+function saveWallet(){
+
+localStorage.setItem(
+"tooshanCoins",
+coins
+);
+
+localStorage.setItem(
+"tooshanXP",
+xp
+);
+
+}
+
+function loadWallet(){
+
+const c=
+localStorage.getItem(
+"tooshanCoins"
+);
+
+const x=
+localStorage.getItem(
+"tooshanXP"
+);
+
+if(c!==null){
+
+coins=Number(c);
+
+}
+
+if(x!==null){
+
+xp=Number(x);
+
+}
+
+}
+
+loadWallet();
+
+window.addEventListener(
+
+"beforeunload",
+
+saveWallet
+
+);
+/*══════════════════════════════════════
+        TOOSHAN TREASURY
+              PART 3
+══════════════════════════════════════*/
+
+
+/*══════════════════════════════════════
+          SUPABASE READY
+══════════════════════════════════════*/
+
+let supabase = null;
+
+async function initializeSupabase(){
+
+try{
+
+const {createClient} =
+await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+
+const {
+SUPABASE_URL,
+SUPABASE_KEY
+}
+=
+await import("./supabase-config.js");
+
+supabase =
+createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+}
+catch(err){
+
+console.warn(
+"Supabase Offline",
+err
+);
+
+}
+
+}
+
+initializeSupabase();
+
+
+
+/*══════════════════════════════════════
+        SAVE WALLET ONLINE
+══════════════════════════════════════*/
+
+async function saveWalletCloud(){
+
+if(!supabase) return;
+
+const {
+
+data:{
+session
+
+}
+
+}
+=
+await supabase.auth.getSession();
+
+if(!session) return;
+
+await supabase
+
+.from("wallet")
+
+.upsert({
+
+id:session.user.id,
+
+coins:coins,
+
+xp:xp,
+
+updated_at:new Date()
+
+});
+
+}
+
+
+
+/*══════════════════════════════════════
+        LOAD WALLET ONLINE
+══════════════════════════════════════*/
+
+async function loadWalletCloud(){
+
+if(!supabase) return;
+
+const {
+
+data:{
+session
+
+}
+
+}
+=
+await supabase.auth.getSession();
+
+if(!session) return;
+
+const {
+
+data
+
+}
+=
+await supabase
+
+.from("wallet")
+
+.select("*")
+
+.eq(
+
+"id",
+session.user.id
+
+)
+
+.single();
+
+if(!data) return;
+
+coins=data.coins;
+xp=data.xp;
+
+animateNumber(
+coinBalance,
+coins
+);
+
+animateNumber(
+xpBalance,
+xp
+);
+
+}
+
+setTimeout(
+
+loadWalletCloud,
+
+1500
+
+);
+
+
+
+/*══════════════════════════════════════
+       SAVE AFTER CHANGES
+══════════════════════════════════════*/
+
+setInterval(()=>{
+
+saveWallet();
+saveWalletCloud();
+
+},5000);
+
+
+
+/*══════════════════════════════════════
+         COIN ROTATION
+══════════════════════════════════════*/
+
+const coin =
+document.querySelector(".treasury-symbol");
+
+let rotate=0;
+
+function animateCoin(){
+
+if(coin){
+
+rotate+=0.3;
+
+coin.style.transform=
+
+`rotateY(${rotate}deg)`;
+
+}
+
+requestAnimationFrame(
+
+animateCoin
+
+);
+
+}
+
+animateCoin();
+
+
+
+/*══════════════════════════════════════
+      WALLET SHINE EFFECT
+══════════════════════════════════════*/
+
+document
+
+.querySelectorAll(
+
+".wallet-card,.featured-card"
+
+)
+
+.forEach(card=>{
+
+card.addEventListener(
+
+"mousemove",
+
+e=>{
+
+const rect=
+card.getBoundingClientRect();
+
+const x=e.clientX-rect.left;
+const y=e.clientY-rect.top;
+
+card.style.background=
+
+`radial-gradient(circle at ${x}px ${y}px,
+rgba(25,167,255,.12),
+rgba(8,14,28,.85) 70%)`;
+
+}
+
+);
+
+card.addEventListener(
+
+"mouseleave",
+
+()=>{
+
+card.style.background="";
+
+}
+
+);
+
+});
+
+
+
+/*══════════════════════════════════════
+         HISTORY EXPAND
+══════════════════════════════════════*/
+
+document
+
+.addEventListener(
+
+"click",
+
+e=>{
+
+const row=
+e.target.closest(
+
+".history-item"
+
+);
+
+if(!row) return;
+
+row.classList.toggle(
+
+"expanded"
+
+);
+
+}
+
+);
+
+
+
+/*══════════════════════════════════════
+          RANDOM GLOW
+══════════════════════════════════════*/
+
+setInterval(()=>{
+
+document
+
+.querySelectorAll(
+
+".shop-card"
+
+)
+
+.forEach(card=>{
+
+card.style.boxShadow=
+
+`0 0 ${
+Math.random()*30+10
+}px rgba(25,167,255,.18)`;
+
+});
+
+},2500);
+
+
+
+/*══════════════════════════════════════
+         PAGE READY
+══════════════════════════════════════*/
+
+window.addEventListener(
+
+"load",
+
+()=>{
+
+document.body.classList.add(
+
+"loaded"
+
+);
+
+console.log(
+
+"%cTOOSHAN TREASURY READY",
+
+"color:#19a7ff;font-size:18px;font-weight:bold;"
+
+);
+
+});
