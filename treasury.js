@@ -1177,6 +1177,77 @@ buyButtons.forEach(button=>{
     });
 });
 /*══════════════════════════════════════
+        LOAD TRANSACTION HISTORY
+══════════════════════════════════════*/
+
+export async function loadTransactions(){
+
+    if(!user) return;
+
+    const {
+
+        data,
+
+        error
+
+    } = await supabase
+
+    .from("transactions")
+
+    .select("*")
+
+    .eq("user_id", user.id)
+
+    .order("created_at", { ascending: false })
+
+    .limit(5);
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+    if(!historyList) return;
+
+    historyList.innerHTML = "";
+
+    if(data.length === 0){
+
+        historyList.innerHTML = `<p style="color:var(--muted); text-align:center; padding:20px;">هنوز تراکنشی ثبت نشده است.</p>`;
+
+        return;
+
+    }
+
+    data.forEach(tx => {
+
+        const row = document.createElement("div");
+
+        row.className = "history-item";
+
+        const timeLabel = new Date(tx.created_at).toLocaleString("fa-IR");
+
+        row.innerHTML = `
+        <div>
+            <h4>${tx.title}</h4>
+            <small>${timeLabel}</small>
+        </div>
+        <strong class="${tx.amount >= 0 ? "plus" : "minus"}">
+            ${tx.amount >= 0 ? "+" : ""}${tx.amount}
+        </strong>
+        `;
+
+        historyList.appendChild(row);
+
+        observer.observe(row);
+
+    });
+
+}
+/*══════════════════════════════════════
         TOOSHAN TREASURY V3
           PART 4 - SECTION 1
      INVENTORY LOAD + EQUIP SYSTEM
