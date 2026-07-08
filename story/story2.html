@@ -608,7 +608,7 @@ body::before {
 </a>
 </div>
 
-<a href="phase.html" class="back">
+<a href="/phase.html" class="back">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <path d="M5 12h14M12 5l7 7-7 7"/>
   </svg>
@@ -2943,6 +2943,12 @@ body::before {
   </svg>
 </a>
 
+    <div id="reading-widget" data-slug="electropulse"></div>
+<script type="module">
+  import { mountReadingWidget } from '/reading-widget.js';
+  mountReadingWidget('reading-widget');
+</script>
+  
 </div>
 
 <script>
