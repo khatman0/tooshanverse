@@ -1246,8 +1246,8 @@ animateCursor();
 const hamburger = document.getElementById('hamburgerBtn');
 const sideNav   = document.getElementById('sideNav');
 const overlay   = document.getElementById('overlay');
-const open  = () => { hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active'); };
-const close = () => { hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active'); };
+const open  = () => { hamburger.classList.add('active'); sideNav.classList.add('active'); overlay.classList.add('active'); sideNav.style.left = ''; };
+const close = () => { hamburger.classList.remove('active'); sideNav.classList.remove('active'); overlay.classList.remove('active'); sideNav.style.left = ''; };
 hamburger.addEventListener('click', () => sideNav.classList.contains('active') ? close() : open());
 overlay.addEventListener('click', close);
 document.querySelectorAll('.side-nav a').forEach(a => a.addEventListener('click', close));
@@ -1262,7 +1262,7 @@ sideNav.addEventListener('touchmove', e => {
 sideNav.addEventListener('touchend', e => {
   swiping = false;
   if (e.changedTouches[0].clientX - tx < -80) close();
-  else sideNav.style.left = '0';
+  else sideNav.style.left = '';
 });
 
 /* ── REVEAL ── */
@@ -1445,7 +1445,7 @@ loadSheetData();
    RECENT COMMENTS PREVIEW  (بخش جدید — منبع: همون گوگل‌شیت نظرات Comments.html)
 ══════════════════════════════ */
 const HOME_COMMENTS_SHEET_URL = "https://docs.google.com/spreadsheets/d/1tuMO4XO3i6cUBEPcsEwlcSWU8EKy6BZmsx1APncszPE/gviz/tq?tqx=out:json";
-const HOME_COMMENTS_COUNT = 4; // چند تا نظر روی صفحه‌ی اصلی نشون داده بشه
+const HOME_COMMENTS_COUNT = 3; // چند تا نظر روی صفحه‌ی اصلی نشون داده بشه
 
 function escapeHomeHtml(str) {
   const div = document.createElement('div');
