@@ -1126,163 +1126,65 @@ console.log(
 /*══════════════════════════════════════
           BUY ITEM SYSTEM
 ══════════════════════════════════════*/
-
 buyButtons.forEach(button=>{
 
     button.addEventListener(
-
     "click",
-
     async()=>{
 
-        const card=
-
-        button.closest(
-
-        ".shop-card"
-
-        );
+        const card = button.closest(".shop-card");
 
         if(!card) return;
 
-        const itemId=
+        const itemId = card.dataset.id;
+        const itemName = card.dataset.name;
+        const category = card.dataset.category;
+        const price = Number(card.dataset.price);
 
-        card.dataset.id;
-
-        const itemName=
-
-        card.dataset.name;
-
-        const category=
-
-        card.dataset.category;
-
-        const price=
-
-        Number(
-
-        card.dataset.price
-
-        );
-
-        if(
-
-            inventory.some(
-
-            item=>
-
-            item.item_id===itemId
-
-            )
-
-        ){
-
-            showToast(
-
-            "این آیتم قبلاً خریداری شده است."
-
-            );
-
+        if(!itemId){
+            showToast("خطای داخلی: شناسه آیتم یافت نشد.");
             return;
-
         }
 
-        const paid=
+        if(inventory.some(item => item.item_id === itemId)){
+            showToast("این آیتم قبلاً خریداری شده است.");
+            return;
+        }
 
-        await removeCoins(
+        button.disabled = true; // جلوگیری از دابل‌کلیک حین درخواست
 
-        price
-
-        );
-
-        if(!paid) return;
-
-        const {error}=
-
-        await supabase
-
-        .from(
-
-        "inventory"
-
-        )
-
-        .insert({
-
-            user_id:user.id,
-
-            item_id:itemId,
-
-            item_name:itemName,
-
-            category:category
-
+        const { data, error } = await supabase.rpc("purchase_item", {
+            p_item_id: itemId,
+            p_item_name: itemName,
+            p_category: category,
+            p_price: price
         });
 
         if(error){
-
             console.error(error);
-
-            showToast(
-
-            "خطا در خرید."
-
-            );
-
-            await addCoins(price);
-
+            showToast(error.message || "خطا در خرید.");
+            button.disabled = false;
             return;
-
         }
 
+        // موفقیت: state محلی رو sync کن
+        coins = data.remaining_coins;
+        updateUI();
+
         inventory.push({
-
-            item_id:itemId,
-
-            item_name:itemName,
-
-            category:category,
-
-            equipped:false
-
+            item_id: itemId,
+            item_name: itemName,
+            category: category,
+            equipped: false
         });
 
-        button.disabled=true;
+        button.classList.add("owned");
+        button.innerText = "خرید شده";
 
-        button.classList.add(
-
-        "owned"
-
-        );
-
-        button.innerText=
-
-        "خرید شده";
-
-        createCoinBurst(
-
-        button
-
-        );
-
-        addTransaction(
-
-            "-"+price,
-
-            itemName
-
-        );
-
-        showToast(
-
-            itemName+
-
-            " خریداری شد."
-
-        );
-
+        createCoinBurst(button);
+        addTransaction("-"+price, itemName);
+        showToast(itemName+" خریداری شد.");
     });
-
 });
 
 
