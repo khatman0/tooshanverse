@@ -191,6 +191,84 @@ header {
   font-size: 0.78rem; color: var(--muted);
 }
 
+/* ══════════════════════════════
+   امتیاز + تاریخچه مطالعه + جدول امتیازات
+══════════════════════════════ */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 32px 0;
+}
+.stat-card {
+  background: rgba(25,167,255,0.04);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-card .num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-card .label {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.section-block {
+  margin-top: 40px;
+}
+.section-block h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.05rem;
+  color: #fff;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.history-list {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.history-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(25,167,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+.history-item .h-title { color: var(--blue2); font-weight: 600; }
+.history-item .h-points { color: var(--gold); font-weight: 700; font-family: 'Orbitron', sans-serif; }
+.history-empty, .leaderboard-empty {
+  text-align: center; color: var(--muted); font-size: 0.85rem; padding: 20px 0;
+}
+
+.leaderboard-list { display: flex; flex-direction: column; gap: 8px; }
+.leaderboard-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  background: rgba(25,167,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+.leaderboard-row.me { border-color: rgba(240,192,96,0.4); background: rgba(240,192,96,0.06); }
+.lb-rank {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  color: var(--blue);
+  width: 24px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.lb-name { flex: 1; color: var(--text); font-weight: 600; }
+.lb-points { color: var(--gold); font-weight: 700; font-family: 'Orbitron', sans-serif; }
+
 .spinner {
   width: 16px; height: 16px;
   border: 2px solid rgba(0,24,40,0.3);
@@ -261,6 +339,34 @@ header {
     <div class="meta-row">
       <span id="joinedDate"></span>
       <span id="authMethod"></span>
+    </div>
+
+    <!-- امتیاز کلی -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num" id="totalPointsNum">۰</div>
+        <div class="label">امتیاز کل</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="chaptersCountNum">۰</div>
+        <div class="label">فصل خونده‌شده</div>
+      </div>
+    </div>
+
+    <!-- تاریخچه مطالعه -->
+    <div class="section-block">
+      <h3>📖 چیزایی که خوندی</h3>
+      <div class="history-list" id="historyList">
+        <div class="history-empty">در حال بارگذاری...</div>
+      </div>
+    </div>
+
+    <!-- جدول امتیازات -->
+    <div class="section-block">
+      <h3>🏆 جدول امتیازات</h3>
+      <div class="leaderboard-list" id="leaderboardList">
+        <div class="leaderboard-empty">در حال بارگذاری...</div>
+      </div>
     </div>
   </div>
 
@@ -334,6 +440,63 @@ async function init() {
 
   const provider = currentUser.app_metadata?.provider === 'google' ? 'ورود با گوگل' : 'ورود با ایمیل';
   document.getElementById('authMethod').textContent = provider;
+
+  loadHistoryAndPoints();
+  loadLeaderboard();
+}
+
+async function loadHistoryAndPoints() {
+  const { data: rows, error } = await supabase
+    .from('reading_progress')
+    .select('points_earned, completed_at, content_items(title, group_name)')
+    .eq('user_id', currentUser.id)
+    .order('completed_at', { ascending: false });
+
+  const historyList = document.getElementById('historyList');
+
+  if (error || !rows) {
+    historyList.innerHTML = '<div class="history-empty">خطا در بارگذاری تاریخچه</div>';
+    return;
+  }
+
+  const totalPoints = rows.reduce((sum, r) => sum + (r.points_earned || 0), 0);
+  document.getElementById('totalPointsNum').textContent = totalPoints;
+  document.getElementById('chaptersCountNum').textContent = rows.length;
+
+  if (rows.length === 0) {
+    historyList.innerHTML = '<div class="history-empty">هنوز چیزی نخوندی. برو یه فصل بخون و امتیاز بگیر!</div>';
+    return;
+  }
+
+  historyList.innerHTML = rows.map(r => `
+    <div class="history-item">
+      <span class="h-title">${r.content_items?.title || 'بدون عنوان'}</span>
+      <span class="h-points">${r.points_earned >= 0 ? '+' : ''}${r.points_earned}</span>
+    </div>
+  `).join('');
+}
+
+async function loadLeaderboard() {
+  const { data: rows, error } = await supabase
+    .from('leaderboard')
+    .select('*')
+    .order('total_points', { ascending: false })
+    .limit(10);
+
+  const lbList = document.getElementById('leaderboardList');
+
+  if (error || !rows || rows.length === 0) {
+    lbList.innerHTML = '<div class="leaderboard-empty">هنوز کسی امتیازی نگرفته</div>';
+    return;
+  }
+
+  lbList.innerHTML = rows.map((r, idx) => `
+    <div class="leaderboard-row ${r.user_id === currentUser.id ? 'me' : ''}">
+      <span class="lb-rank">${idx + 1}</span>
+      <span class="lb-name">${r.display_name || 'ناشناس'}</span>
+      <span class="lb-points">${r.total_points}</span>
+    </div>
+  `).join('');
 }
 
 init();
