@@ -1122,10 +1122,6 @@ console.log(
      SHOP PURCHASE + TRANSACTIONS
 ══════════════════════════════════════*/
 
-
-/*══════════════════════════════════════
-          BUY ITEM SYSTEM
-══════════════════════════════════════*/
 buyButtons.forEach(button=>{
 
     button.addEventListener(
@@ -1138,8 +1134,6 @@ buyButtons.forEach(button=>{
 
         const itemId = card.dataset.id;
         const itemName = card.dataset.name;
-        const category = card.dataset.category;
-        const price = Number(card.dataset.price);
 
         if(!itemId){
             showToast("خطای داخلی: شناسه آیتم یافت نشد.");
@@ -1151,13 +1145,10 @@ buyButtons.forEach(button=>{
             return;
         }
 
-        button.disabled = true; // جلوگیری از دابل‌کلیک حین درخواست
+        button.disabled = true;
 
         const { data, error } = await supabase.rpc("purchase_item", {
-            p_item_id: itemId,
-            p_item_name: itemName,
-            p_category: category,
-            p_price: price
+            p_item_id: itemId
         });
 
         if(error){
@@ -1167,14 +1158,13 @@ buyButtons.forEach(button=>{
             return;
         }
 
-        // موفقیت: state محلی رو sync کن
         coins = data.remaining_coins;
         updateUI();
 
         inventory.push({
             item_id: itemId,
             item_name: itemName,
-            category: category,
+            category: card.dataset.category,
             equipped: false
         });
 
@@ -1182,182 +1172,10 @@ buyButtons.forEach(button=>{
         button.innerText = "خرید شده";
 
         createCoinBurst(button);
-        addTransaction("-"+price, itemName);
+        addTransaction("-"+card.dataset.price, itemName);
         showToast(itemName+" خریداری شد.");
     });
 });
-
-
-/*══════════════════════════════════════
-        TRANSACTION HISTORY
-══════════════════════════════════════*/
-
-export function addTransaction(
-
-value,
-
-title
-
-){
-
-    if(!historyList) return;
-
-    const row=
-
-    document.createElement(
-
-    "div"
-
-    );
-
-    row.className=
-
-    "history-item";
-
-    row.innerHTML=`
-
-    <div>
-
-        <h4>${title}</h4>
-
-        <small>
-
-        چند لحظه پیش
-
-        </small>
-
-    </div>
-
-    <strong class="${
-        value.includes("+")
-        ?"plus"
-        :"minus"
-    }">
-
-    ${value}
-
-    </strong>
-
-    `;
-
-    historyList.prepend(
-
-    row
-
-    );
-
-    observer.observe(
-
-    row
-
-    );
-
-}
-
-
-/*══════════════════════════════════════
-        HISTORY EXPAND
-══════════════════════════════════════*/
-
-document.addEventListener(
-
-"click",
-
-e=>{
-
-    const row=
-
-    e.target.closest(
-
-    ".history-item"
-
-    );
-
-    if(!row) return;
-
-    row.classList.toggle(
-
-    "expanded"
-
-    );
-
-});
-
-
-/*══════════════════════════════════════
-      LOAD OWNED ITEMS
-══════════════════════════════════════*/
-
-export function refreshOwnedItems(){
-
-    buyButtons.forEach(button=>{
-
-        const card=
-
-        button.closest(
-
-        ".shop-card"
-
-        );
-
-        if(!card) return;
-
-        const itemId=
-
-        card.dataset.id;
-
-        const owned=
-
-        inventory.some(
-
-        item=>
-
-        item.item_id===itemId
-
-        );
-
-        if(owned){
-
-            button.disabled=true;
-
-            button.classList.add(
-
-            "owned"
-
-            );
-
-            button.innerText=
-
-            "خرید شده";
-
-        }
-
-    });
-
-}
-
-
-/*══════════════════════════════════════
-          SHOP LOADED
-══════════════════════════════════════*/
-
-window.addEventListener(
-
-"load",
-
-()=>{
-
-    refreshOwnedItems();
-
-});
-
-console.log(
-
-"%cShop Purchase Loaded",
-
-"color:#00d4ff;font-weight:bold;"
-
-);
 /*══════════════════════════════════════
         TOOSHAN TREASURY V3
           PART 4 - SECTION 1
