@@ -202,7 +202,7 @@ export async function mountReadingWidget(containerId) {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
       setStatus('اول باید وارد حسابت بشی.', 'err');
-      setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+      setTimeout(() => { window.location.href = '/login.html'; }, 1200);
       return;
     }
     openQuestionModal(contentItemId, btn, setStatus);
