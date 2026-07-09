@@ -175,15 +175,21 @@ export async function renderTimeline(containerId) {
 
   const isAdmin = await checkAdmin();
 
-  const { data: phases } = await supabase
-    .from('phases')
-    .select('*')
-    .order('order_index', { ascending: true });
+ const { data: phases, error: phaseError } = await supabase
+  .from('phases')
+  .select('*')
+  .order('order_index', { ascending: true });
 
-  const { data: stories } = await supabase
-    .from('phase_stories')
-    .select('*')
-    .order('order_index', { ascending: true });
+console.log("phases", phases);
+console.log("phaseError", phaseError);
+
+const { data: stories, error: storyError } = await supabase
+  .from('phase_stories')
+  .select('*')
+  .order('order_index', { ascending: true });
+
+console.log("stories", stories);
+console.log("storyError", storyError);
 
   container.innerHTML = '';
 
