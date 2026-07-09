@@ -650,66 +650,7 @@ footer {
 </div>
 
 <!-- TIMELINE -->
-<div class="timeline-wrap">
-
-  <!-- فاز یک -->
-  <div class="phase-block reveal" id="phase-1">
-    <div class="phase-card">
-      <div class="phase-header" onclick="togglePhase(this)">
-        <div>
-          <div class="phase-num">PHASE 01</div>
-          <div class="phase-title">آغاز بیداری</div>
-        </div>
-        <div class="phase-arrow">▶</div>
-      </div>
-      <div class="phase-content">
-        <div class="phase-inner">
-          <a href="/story/story1.html" class="story-card">
-            <span class="story-index">01</span>
-            <div class="story-info">
-              <h4>انفجار آبی</h4>
-              <p>شروع دنیایی پر رمز و راز </p>
-            </div>
-            <span class="story-arrow">◀</span>
-          </a>
-        </div>
-      </div>
-       <div class="phase-content">
-        <div class="phase-inner">
-          <a href="/story/story2.html" class="story-card">
-            <span class="story-index">02</span>
-            <div class="story-info">
-              <h4>الکتروپالس</h4>
-              <p>ارتباط الکتریکی</p>
-            </div>
-            <span class="story-arrow">◀</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- فاز دو (Coming Soon) -->
-  <div class="phase-block reveal" id="phase-2">
-    <div class="phase-card">
-      <div class="phase-header" onclick="togglePhase(this)">
-        <div>
-          <div class="phase-num">PHASE 02</div>
-          <div class="phase-title">سایه‌های پنهان</div>
-        </div>
-        <div class="phase-arrow">▶</div>
-      </div>
-      <div class="phase-content">
-        <div class="phase-inner">
-          <div class="coming-soon">
-            ⏳ &nbsp; به زودی معرفی می‌شود
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
+<div class="timeline-wrap" id="timelineWrap"></div>
 
 <!-- FOOTER -->
 <footer class="reveal">
@@ -820,6 +761,12 @@ window.addEventListener('DOMContentLoaded', () => {
     console.warn('وضعیت ورود کاربر بارگذاری نشد:', err);
   }
 })();
+   
+   <script type="module">
+  import { renderTimeline } from '/phase-admin.js';
+  renderTimeline('timelineWrap');
+</script>
+   
 </script>
 </body>
 </html>
