@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیریت بازار | توشان‌ورس</title>
+<link rel="icon" href="/photo/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#04060e;
+    --blue:#19a7ff;
+    --blue2:#84dfff;
+    --gold:#f0c060;
+    --gold2:#ffd777;
+    --red:#ff4767;
+    --text:#ddeeff;
+    --muted:rgba(210,230,255,.55);
+    --line:rgba(25,167,255,.12);
+    --card:rgba(8,14,28,.72);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Vazirmatn',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+a{text-decoration:none;color:inherit;}
+button,input,select{font-family:inherit;}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(rgba(25,167,255,.015) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(25,167,255,.015) 1px,transparent 1px);
+    background-size:60px 60px;
+    pointer-events:none;
+    z-index:-1;
+}
+
+header{
+    padding:24px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--line);
+}
+
+.logo{
+    font-family:'Orbitron',sans-serif;
+    font-size:1rem;
+    letter-spacing:2px;
+    font-weight:800;
+    color:var(--blue);
+}
+
+.logo span{color:var(--gold);}
+
+.admin-tag{
+    font-size:.68rem;
+    letter-spacing:2px;
+    padding:5px 12px;
+    border-radius:999px;
+    background:rgba(255,71,103,.15);
+    color:#ff8fa3;
+    border:1px solid rgba(255,71,103,.3);
+    margin-right:12px;
+}
+
+.back-link{
+    font-size:.85rem;
+    color:var(--muted);
+    padding:10px 18px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    transition:.25s;
+}
+
+.back-link:hover{
+    color:var(--blue2);
+    border-color:rgba(25,167,255,.35);
+}
+
+main{
+    max-width:1000px;
+    margin:0 auto;
+    padding:40px 24px 100px;
+}
+
+#accessDenied{
+    text-align:center;
+    padding:100px 20px;
+    display:none;
+}
+
+#accessDenied h2{
+    font-size:1.6rem;
+    color:var(--red);
+    margin-bottom:14px;
+}
+
+#accessDenied p{
+    color:var(--muted);
+}
+
+#adminContent{display:none;}
+
+.panel{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:32px;
+    backdrop-filter:blur(18px);
+    margin-bottom:36px;
+    position:relative;
+    overflow:hidden;
+}
+
+.panel::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:1px;
+    background:linear-gradient(90deg,transparent,var(--blue),transparent);
+}
+
+.panel h2{
+    font-size:1.3rem;
+    margin-bottom:24px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:16px;
+    margin-bottom:20px;
+}
+
+.field label{
+    display:block;
+    font-size:.75rem;
+    color:var(--muted);
+    margin-bottom:8px;
+}
+
+.field input,
+.field select{
+    width:100%;
+    padding:12px 14px;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    border-radius:12px;
+    color:var(--text);
+    font-size:.9rem;
+}
+
+.field input:focus,
+.field select:focus{
+    outline:none;
+    border-color:rgba(25,167,255,.5);
+}
+
+.submit-btn{
+    padding:13px 30px;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--blue),#1177dd);
+    color:#fff;
+    font-weight:700;
+    transition:.25s;
+}
+
+.submit-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 14px 30px rgba(25,167,255,.3);
+}
+
+.submit-btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+    transform:none;
+}
+
+/*═════════ LISTINGS TABLE ═════════*/
+
+.listing-row{
+    display:grid;
+    grid-template-columns:2fr 1.4fr 1fr .8fr .8fr 1fr auto;
+    gap:14px;
+    align-items:center;
+    padding:16px 18px;
+    border-radius:14px;
+    background:rgba(255,255,255,.02);
+    border:1px solid transparent;
+    transition:.2s;
+    margin-bottom:10px;
+    font-size:.85rem;
+}
+
+.listing-row:hover{
+    border-color:var(--line);
+    background:rgba(25,167,255,.04);
+}
+
+.listing-row.header-row{
+    font-size:.72rem;
+    letter-spacing:1px;
+    color:var(--muted);
+    background:transparent;
+}
+
+.listing-row .item-name{font-weight:700;}
+
+.seller-tag{
+    font-size:.72rem;
+    padding:4px 10px;
+    border-radius:999px;
+    display:inline-block;
+    width:fit-content;
+}
+
+.seller-tag.official{
+    background:rgba(240,192,96,.15);
+    color:var(--gold2);
+    border:1px solid rgba(240,192,96,.3);
+}
+
+.seller-tag.peer{
+    background:rgba(25,167,255,.12);
+    color:var(--blue2);
+    border:1px solid rgba(25,167,255,.25);
+}
+
+.price-cell{
+    color:var(--gold);
+    font-family:'Orbitron',sans-serif;
+    font-weight:700;
+}
+
+.status-badge{
+    font-size:.7rem;
+    padding:4px 10px;
+    border-radius:999px;
+    width:fit-content;
+}
+
+.status-badge.active{
+    background:rgba(67,209,124,.15);
+    color:#7be8a6;
+}
+
+.status-badge.sold{
+    background:rgba(210,230,255,.1);
+    color:var(--muted);
+}
+
+.status-badge.cancelled{
+    background:rgba(255,71,103,.12);
+    color:#ff8fa3;
+}
+
+.cancel-btn{
+    padding:8px 16px;
+    border-radius:10px;
+    background:rgba(255,71,103,.12);
+    color:#ff8fa3;
+    border:1px solid rgba(255,71,103,.3);
+    font-size:.78rem;
+    font-weight:600;
+    transition:.2s;
+}
+
+.cancel-btn:hover{
+    background:rgba(255,71,103,.2);
+}
+
+.empty-state{
+    text-align:center;
+    padding:40px;
+    color:var(--muted);
+}
+
+/*═════════ TOAST ═════════*/
+
+.toast{
+    position:fixed;
+    bottom:35px;
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    padding:15px 28px;
+    border-radius:14px;
+    background:#08111d;
+    border:1px solid var(--line);
+    color:#fff;
+    opacity:0;
+    transition:.35s;
+    z-index:9999;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:800px){
+    .listing-row{
+        grid-template-columns:1fr 1fr;
+        font-size:.8rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div style="display:flex;align-items:center;">
+        <div class="logo">توشان<span>‌</span>ورس</div>
+        <span class="admin-tag">ADMIN PANEL</span>
+    </div>
+    <a class="back-link" href="treasury.html">بازگشت به خزانه</a>
+</header>
+
+<main>
+
+    <div id="accessDenied">
+        <h2>دسترسی غیرمجاز</h2>
+        <p>این صفحه فقط برای مدیران قابل دسترسی است.</p>
+    </div>
+
+    <div id="adminContent">
+
+        <section class="panel">
+            <h2>افزودن آیتم رسمی به بازار</h2>
+
+            <form id="createListingForm">
+                <div class="form-grid">
+                    <div class="field">
+                        <label>شناسه آیتم (item_id)</label>
+                        <input type="text" id="newItemId" placeholder="مثلاً badge-anniversary" required>
+                    </div>
+                    <div class="field">
+                        <label>نام آیتم</label>
+                        <input type="text" id="newItemName" placeholder="مثلاً نشان سالگرد" required>
+                    </div>
+                    <div class="field">
+                        <label>دسته‌بندی</label>
+                        <select id="newItemCategory" required>
+                            <option value="story">داستان</option>
+                            <option value="comic">کمیک</option>
+                            <option value="profile">شخصی‌سازی</option>
+                            <option value="special">ویژه</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>قیمت (سکه)</label>
+                        <input type="number" id="newItemPrice" min="1" required>
+                    </div>
+                    <div class="field">
+                        <label>تعداد محدود</label>
+                        <input type="number" id="newItemQuantity" min="1" value="1" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">افزودن به بازار</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>همه آگهی‌های بازار</h2>
+
+            <div class="listing-row header-row">
+                <span>نام آیتم</span>
+                <span>فروشنده</span>
+                <span>دسته</span>
+                <span>قیمت</span>
+                <span>تعداد</span>
+                <span>وضعیت</span>
+                <span></span>
+            </div>
+
+            <div id="listingsContainer">
+                <div class="empty-state">در حال بارگذاری...</div>
+            </div>
+        </section>
+
+    </div>
+
+</main>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const accessDenied = document.getElementById("accessDenied");
+const adminContent = document.getElementById("adminContent");
+const listingsContainer = document.getElementById("listingsContainer");
+const createListingForm = document.getElementById("createListingForm");
+const submitBtn = document.getElementById("submitBtn");
+
+const toFa = n => Number(n).toLocaleString("fa-IR");
+
+function showToast(text){
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = text;
+    document.body.appendChild(toast);
+    setTimeout(()=> toast.classList.add("show"), 50);
+    setTimeout(()=>{
+        toast.classList.remove("show");
+        setTimeout(()=> toast.remove(), 300);
+    }, 2500);
+}
+
+const statusLabel = {
+    active: "فعال",
+    sold: "فروخته شده",
+    cancelled: "لغو شده"
+};
+
+async function checkAdminAccess(){
+    const { data:{ user } } = await supabase.auth.getUser();
+
+    if(!user){
+        location.href = "login.html";
+        return false;
+    }
+
+    const { data, error } = await supabase
+        .from("profiles")
+        .select("is_admin")
+        .eq("id", user.id)
+        .single();
+
+    if(error || !data?.is_admin){
+        accessDenied.style.display = "block";
+        return false;
+    }
+
+    adminContent.style.display = "block";
+    return true;
+}
+
+async function loadListings(){
+    const { data, error } = await supabase.rpc("admin_get_all_market_listings");
+
+    if(error){
+        console.error(error);
+        listingsContainer.innerHTML = `<div class="empty-state">خطا در بارگذاری آگهی‌ها</div>`;
+        return;
+    }
+
+    if(!data || data.length === 0){
+        listingsContainer.innerHTML = `<div class="empty-state">هنوز آگهی‌ای ثبت نشده است.</div>`;
+        return;
+    }
+
+    listingsContainer.innerHTML = "";
+
+    data.forEach(listing => {
+        const row = document.createElement("div");
+        row.className = "listing-row";
+
+        const isOfficial = !listing.seller_id;
+        const dateLabel = new Date(listing.created_at).toLocaleDateString("fa-IR");
+
+        row.innerHTML = `
+            <span class="item-name">${listing.item_name}</span>
+            <span class="seller-tag ${isOfficial ? "official" : "peer"}">
+                ${isOfficial ? "رسمی" : (listing.seller_username || "کاربر")}
+            </span>
+            <span>${listing.category}</span>
+            <span class="price-cell">${toFa(listing.price)} 🪙</span>
+            <span>${toFa(listing.quantity)}</span>
+            <span class="status-badge ${listing.status}">${statusLabel[listing.status] || listing.status}</span>
+            <span>
+                ${listing.status === "active"
+                    ? `<button class="cancel-btn" data-id="${listing.id}">حذف</button>`
+                    : ""}
+            </span>
+        `;
+
+        listingsContainer.appendChild(row);
+    });
+}
+
+createListingForm.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = "در حال ثبت...";
+
+    const itemId = document.getElementById("newItemId").value.trim();
+    const itemName = document.getElementById("newItemName").value.trim();
+    const category = document.getElementById("newItemCategory").value;
+    const price = Number(document.getElementById("newItemPrice").value);
+    const quantity = Number(document.getElementById("newItemQuantity").value);
+
+    const { error } = await supabase.rpc("admin_create_listing", {
+        p_item_id: itemId,
+        p_item_name: itemName,
+        p_category: category,
+        p_price: price,
+        p_quantity: quantity
+    });
+
+    submitBtn.disabled = false;
+    submitBtn.innerText = "افزودن به بازار";
+
+    if(error){
+        console.error(error);
+        showToast(error.message || "خطا در افزودن آیتم");
+        return;
+    }
+
+    showToast("آیتم با موفقیت به بازار اضافه شد");
+    createListingForm.reset();
+    await loadListings();
+});
+
+listingsContainer.addEventListener("click", async e => {
+    const btn = e.target.closest(".cancel-btn");
+    if(!btn) return;
+
+    if(!confirm("آیا از حذف این آگهی مطمئن هستید؟")) return;
+
+    btn.disabled = true;
+
+    const { error } = await supabase.rpc("admin_force_cancel_listing", {
+        p_listing_id: btn.dataset.id
+    });
+
+    if(error){
+        console.error(error);
+        showToast(error.message || "خطا در حذف آگهی");
+        btn.disabled = false;
+        return;
+    }
+
+    showToast("آگهی حذف شد");
+    await loadListings();
+});
+
+window.addEventListener("load", async () => {
+    const hasAccess = await checkAdminAccess();
+    if(hasAccess){
+        await loadListings();
+    }
+});
+</script>
+
+</body>
+</html>
