@@ -1,3338 +1,518 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>خزانه | توشان‌ورس</title>
-
 <link rel="icon" href="/photo/favicon.png" type="image/png">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-
 <style>
-        /*══════════════════════════════════════
-        TOOSHAN TREASURY
-            CSS PART 1
-══════════════════════════════════════*/
-
-
 :root{
-
---bg:#04060e;
---bg2:#070c1a;
-
---blue:#19a7ff;
---blue2:#84dfff;
-
---gold:#f0c060;
---gold2:#ffd777;
-
---red:#ff4767;
-
---text:#ddeeff;
---muted:rgba(210,230,255,.55);
-
---line:rgba(25,167,255,.12);
-
---card:rgba(8,14,28,.72);
-
---glass:rgba(255,255,255,.03);
-
+    --bg:#04060e;
+    --bg2:#070c1a;
+    --blue:#19a7ff;
+    --blue2:#84dfff;
+    --gold:#f0c060;
+    --gold2:#ffd777;
+    --text:#ddeeff;
+    --muted:rgba(210,230,255,.55);
+    --line:rgba(25,167,255,.12);
+    --card:rgba(8,14,28,.72);
 }
 
-
-
-*{
-
-margin:0;
-padding:0;
-box-sizing:border-box;
-
-}
-
-
-
-html{
-
-scroll-behavior:smooth;
-
-}
-
-
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-
-font-family:'Vazirmatn',sans-serif;
-
-background:var(--bg);
-
-color:var(--text);
-
-overflow-x:hidden;
-
-min-height:100vh;
-
-cursor:none;
-
-display:flex;
-
-flex-direction:column;
-
+    font-family:'Vazirmatn',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
 }
 
-
-
-a{
-
-text-decoration:none;
-
-color:inherit;
-
-}
-
-
-
-img{
-
-display:block;
-
-max-width:100%;
-
-}
-
-
-
-button{
-
-font-family:inherit;
-
-cursor:none;
-
-border:none;
-
-outline:none;
-
-}
-
-
-
-/*══════════════════════════════════════
-            CURSOR
-══════════════════════════════════════*/
-
-
-#cursor{
-
-position:fixed;
-
-width:12px;
-height:12px;
-
-background:var(--blue);
-
-border-radius:50%;
-
-pointer-events:none;
-
-z-index:99999;
-
-transform:translate(-50%,-50%);
-
-mix-blend-mode:screen;
-
-transition:.2s;
-
-}
-
-
-
-#cursor-ring{
-
-position:fixed;
-
-width:38px;
-height:38px;
-
-border-radius:50%;
-
-border:1px solid rgba(25,167,255,.4);
-
-pointer-events:none;
-
-z-index:99998;
-
-transform:translate(-50%,-50%);
-
-transition:.12s;
-
-}
-
-
-
-body:has(a:hover) #cursor,
-body:has(button:hover) #cursor{
-
-width:20px;
-height:20px;
-
-background:var(--gold);
-
-}
-
-
-
-body:has(a:hover) #cursor-ring,
-body:has(button:hover) #cursor-ring{
-
-width:52px;
-height:52px;
-
-}
-
-
-
-/*══════════════════════════════════════
-            BACKGROUND
-══════════════════════════════════════*/
-
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;border:none;outline:none;cursor:pointer;}
 
 body::before{
-
-content:"";
-
-position:fixed;
-
-inset:0;
-
-background-image:
-
-linear-gradient(rgba(25,167,255,.015) 1px,transparent 1px),
-
-linear-gradient(90deg,rgba(25,167,255,.015) 1px,transparent 1px);
-
-background-size:60px 60px;
-
-pointer-events:none;
-
-z-index:-2;
-
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(rgba(25,167,255,.015) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(25,167,255,.015) 1px,transparent 1px);
+    background-size:60px 60px;
+    pointer-events:none;
+    z-index:-2;
 }
-
-
 
 .ambient{
-
-position:fixed;
-
-top:-220px;
-left:50%;
-
-transform:translateX(-50%);
-
-width:700px;
-height:700px;
-
-border-radius:50%;
-
-background:
-
-radial-gradient(circle,
-
-rgba(25,167,255,.08),
-
-transparent 70%);
-
-animation:breathe 10s infinite ease-in-out;
-
-pointer-events:none;
-
-z-index:-1;
-
+    position:fixed;
+    top:-220px;
+    left:50%;
+    transform:translateX(-50%);
+    width:700px;
+    height:700px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(25,167,255,.08), transparent 70%);
+    animation:breathe 10s infinite ease-in-out;
+    pointer-events:none;
+    z-index:-1;
 }
-
-
 
 @keyframes breathe{
-
-0%,100%{
-
-opacity:.5;
-
-transform:translateX(-50%) scale(1);
-
+    0%,100%{opacity:.5;transform:translateX(-50%) scale(1);}
+    50%{opacity:1;transform:translateX(-50%) scale(1.12);}
 }
-
-50%{
-
-opacity:1;
-
-transform:translateX(-50%) scale(1.12);
-
-}
-
-}
-
-
-
-/*══════════════════════════════════════
-          HAMBURGER
-══════════════════════════════════════*/
-
-
-.hamburger{
-
-position:fixed;
-
-top:20px;
-left:20px;
-
-width:42px;
-height:42px;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-gap:6px;
-
-padding:7px;
-
-background:rgba(4,6,14,.85);
-
-border:1px solid var(--line);
-
-border-radius:12px;
-
-backdrop-filter:blur(15px);
-
-z-index:1000;
-
-}
-
-
-
-.hamburger span{
-
-height:2px;
-
-background:var(--blue);
-
-border-radius:2px;
-
-transition:.35s;
-
-}
-
-
-
-.hamburger.active span:nth-child(1){
-
-transform:
-
-rotate(45deg)
-
-translate(5px,5px);
-
-}
-
-
-
-.hamburger.active span:nth-child(2){
-
-opacity:0;
-
-}
-
-
-
-.hamburger.active span:nth-child(3){
-
-transform:
-
-rotate(-45deg)
-
-translate(6px,-6px);
-
-}
-
-
-
-/*══════════════════════════════════════
-              MENU
-══════════════════════════════════════*/
-
-
-.overlay{
-
-position:fixed;
-
-inset:0;
-
-background:rgba(0,0,0,.55);
-
-backdrop-filter:blur(5px);
-
-opacity:0;
-
-visibility:hidden;
-
-transition:.3s;
-
-z-index:500;
-
-}
-
-
-
-.overlay.active{
-
-opacity:1;
-
-visibility:visible;
-
-}
-
-
-
-.side-nav{
-
-position:fixed;
-
-top:0;
-left:-290px;
-
-width:280px;
-height:100%;
-
-padding:80px 24px;
-
-background:
-
-linear-gradient(
-
-180deg,
-
-#07101d,
-
-#04060e
-
-);
-
-border-right:1px solid var(--line);
-
-display:flex;
-
-flex-direction:column;
-
-gap:10px;
-
-transition:.35s;
-
-z-index:900;
-
-}
-
-
-
-.side-nav.active{
-
-left:0;
-
-}
-
-
-
-.nav-label{
-
-font-size:.72rem;
-
-letter-spacing:3px;
-
-color:var(--muted);
-
-margin-bottom:15px;
-
-}
-
-
-
-.side-nav a{
-
-padding:13px 15px;
-
-border-radius:12px;
-
-font-weight:600;
-
-transition:.25s;
-
-}
-
-
-
-.side-nav a:hover{
-
-background:rgba(25,167,255,.08);
-
-color:var(--blue2);
-
-}
-
-
-
-.side-nav .current{
-
-background:rgba(25,167,255,.1);
-
-border:1px solid var(--line);
-
-color:var(--gold);
-
-}
-
-
-
-/*══════════════════════════════════════
-            HEADER
-══════════════════════════════════════*/
-
 
 header{
-
-position:fixed;
-
-top:0;
-left:0;
-right:0;
-
-padding:18px 24px 18px 80px;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-background:
-
-linear-gradient(
-
-to bottom,
-
-rgba(4,6,14,.96),
-
-transparent
-
-);
-
-z-index:300;
-
+    padding:24px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
-
-
 
 .logo{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:.95rem;
-
-letter-spacing:2px;
-
-font-weight:800;
-
-color:var(--blue);
-
+    font-family:'Orbitron',sans-serif;
+    font-size:1rem;
+    letter-spacing:2px;
+    font-weight:800;
+    color:var(--blue);
 }
 
+.logo span{color:var(--gold);}
 
-
-.logo span{
-
-color:var(--gold);
-
+.back-link{
+    font-size:.85rem;
+    color:var(--muted);
+    padding:10px 18px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    transition:.25s;
 }
 
-
-
-/*══════════════════════════════════════
-             HERO
-══════════════════════════════════════*/
-
-
-.treasury-hero{
-
-position:relative;
-
-min-height:75vh;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-text-align:center;
-
-padding:140px 30px 80px;
-
-overflow:hidden;
-
+.back-link:hover{
+    color:var(--blue2);
+    border-color:rgba(25,167,255,.35);
 }
 
-
-
-.hero-orb{
-
-position:absolute;
-
-border-radius:50%;
-
-pointer-events:none;
-
+main{
+    max-width:900px;
+    margin:0 auto;
+    padding:20px 24px 100px;
 }
 
-
-
-.hero-orb-1{
-
-top:-220px;
-right:-180px;
-
-width:600px;
-height:600px;
-
-background:
-
-radial-gradient(circle,
-
-rgba(25,167,255,.09),
-
-transparent 70%);
-
+.hero{
+    text-align:center;
+    padding:40px 20px 50px;
 }
-
-
-
-.hero-orb-2{
-
-bottom:-180px;
-left:-120px;
-
-width:420px;
-height:420px;
-
-background:
-
-radial-gradient(circle,
-
-rgba(240,192,96,.08),
-
-transparent 70%);
-
-}
-
-
-
-.treasury-symbol{
-
-width:180px;
-height:180px;
-
-margin-bottom:30px;
-
-animation:
-
-floatCoin 5s ease-in-out infinite;
-
-filter:
-
-drop-shadow(0 0 35px rgba(25,167,255,.35));
-
-}
-
-
-
-@keyframes floatCoin{
-
-0%,100%{
-
-transform:
-
-translateY(0px);
-
-}
-
-50%{
-
-transform:
-
-translateY(-18px);
-
-}
-
-}
-
-
 
 .hero-eyebrow{
-
-font-size:.72rem;
-
-letter-spacing:4px;
-
-color:var(--gold);
-
-margin-bottom:18px;
-
+    font-size:.72rem;
+    letter-spacing:4px;
+    color:var(--gold);
+    margin-bottom:14px;
 }
 
-
-
-.treasury-hero h1{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:clamp(2.5rem,6vw,4rem);
-
-font-weight:900;
-
-margin-bottom:18px;
-
+.hero h1{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(2rem,5vw,2.8rem);
+    font-weight:900;
 }
 
+.hero h1 span{color:var(--blue);}
 
-
-.treasury-hero h1 span{
-
-color:var(--blue);
-
-}
-
-
-
-.treasury-hero p{
-
-max-width:720px;
-
-line-height:2.1;
-
-color:rgba(210,230,255,.75);
-
-font-size:1.02rem;
-
-}
-        /*══════════════════════════════════════
-        TOOSHAN TREASURY
-            CSS PART 2
-══════════════════════════════════════*/
-
-
-/*══════════════════════════════════════
-            WALLET
-══════════════════════════════════════*/
-
-.wallet-section{
-
-padding:20px 35px 90px;
-
-}
+/*═════════ WALLET ═════════*/
 
 .wallet-card{
-
-max-width:1200px;
-
-margin:auto;
-
-padding:40px;
-
-background:var(--card);
-
-border:1px solid var(--line);
-
-border-radius:28px;
-
-backdrop-filter:blur(18px);
-
-position:relative;
-
-overflow:hidden;
-
-opacity:0;
-
-transform:translateY(60px);
-
-transition:.7s;
-
-}
-
-.wallet-card.show{
-
-opacity:1;
-
-transform:none;
-
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:26px;
+    padding:36px;
+    backdrop-filter:blur(18px);
+    position:relative;
+    overflow:hidden;
+    margin-bottom:50px;
 }
 
 .wallet-card::before{
-
-content:"";
-
-position:absolute;
-
-top:0;
-left:0;
-
-width:100%;
-height:1px;
-
-background:linear-gradient(
-
-90deg,
-
-transparent,
-
-var(--blue),
-
-transparent
-
-);
-
-}
-
-.wallet-header{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:35px;
-
-}
-
-.wallet-header span{
-
-font-size:.72rem;
-
-letter-spacing:3px;
-
-color:var(--gold);
-
-}
-
-.wallet-header h2{
-
-margin-top:8px;
-
-font-size:2rem;
-
-}
-
-.wallet-icon{
-
-width:90px;
-
-height:90px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-border-radius:50%;
-
-background:rgba(25,167,255,.08);
-
-border:1px solid var(--line);
-
-}
-
-.wallet-icon img{
-
-width:60px;
-
+    content:"";
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:1px;
+    background:linear-gradient(90deg,transparent,var(--blue),transparent);
 }
 
 .wallet-stats{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin:40px 0;
-
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
 }
 
-.wallet-item{
-
-flex:1;
-
-text-align:center;
-
-}
+.wallet-item{text-align:center;}
 
 .wallet-label{
-
-display:block;
-
-font-size:.78rem;
-
-letter-spacing:2px;
-
-color:var(--muted);
-
-margin-bottom:12px;
-
+    display:block;
+    font-size:.75rem;
+    letter-spacing:2px;
+    color:var(--muted);
+    margin-bottom:10px;
 }
 
 .wallet-item h3{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:3rem;
-
-color:var(--gold);
-
+    font-family:'Orbitron',sans-serif;
+    font-size:2.6rem;
+    color:var(--gold);
 }
 
 .wallet-divider{
-
-width:1px;
-
-height:90px;
-
-background:var(--line);
-
+    width:1px;
+    height:70px;
+    background:var(--line);
 }
 
-.wallet-convert{
-
-margin-top:35px;
-
-}
-
-.convert-box{
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-gap:20px;
-
-padding:20px;
-
-background:rgba(255,255,255,.02);
-
-border:1px solid var(--line);
-
-border-radius:18px;
-
-flex-wrap:wrap;
-
-}
-
-.convert-box strong{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:1.2rem;
-
-color:var(--gold);
-
-}
-
-.convert-box button{
-
-padding:13px 28px;
-
-background:linear-gradient(
-
-135deg,
-
-var(--blue),
-
-#1177dd
-
-);
-
-color:white;
-
-border-radius:12px;
-
-font-weight:700;
-
-transition:.25s;
-
-}
-
-.convert-box button:hover{
-
-transform:translateY(-3px);
-
-box-shadow:0 15px 30px rgba(25,167,255,.3);
-
-}
-
-
-
-/*══════════════════════════════════════
-        DAILY MISSIONS
-══════════════════════════════════════*/
-
-.mission-section{
-
-padding:0 35px 90px;
-
-}
+/*═════════ EXCHANGE GRID ═════════*/
 
 .section-title{
-
-max-width:1200px;
-
-margin:0 auto 35px;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
+    text-align:center;
+    margin-bottom:30px;
 }
 
 .section-title span{
-
-font-size:.72rem;
-
-letter-spacing:3px;
-
-color:var(--gold);
-
+    font-size:.72rem;
+    letter-spacing:3px;
+    color:var(--gold);
 }
 
 .section-title h2{
-
-margin-top:8px;
-
-font-size:2rem;
-
-}
-
-.mission-card{
-
-max-width:1200px;
-
-margin:auto;
-
-padding:35px;
-
-background:var(--card);
-
-border-radius:25px;
-
-border:1px solid var(--line);
-
-opacity:0;
-
-transform:translateY(60px);
-
-transition:.7s;
-
-}
-
-.mission-card.show{
-
-opacity:1;
-
-transform:none;
-
-}
-
-.mission-progress{
-
-display:flex;
-
-flex-direction:column;
-
-gap:18px;
-
-}
-
-.mission{
-
-display:flex;
-
-align-items:center;
-
-gap:18px;
-
-padding:20px;
-
-border-radius:16px;
-
-background:rgba(255,255,255,.02);
-
-border:1px solid transparent;
-
-transition:.25s;
-
-}
-
-.mission:hover{
-
-border-color:var(--line);
-
-background:rgba(25,167,255,.05);
-
-}
-
-.mission-check{
-
-width:22px;
-
-height:22px;
-
-border-radius:50%;
-
-border:2px solid var(--blue);
-
-}
-
-.mission.completed .mission-check{
-
-background:var(--gold);
-
-border-color:var(--gold);
-
-box-shadow:0 0 15px rgba(240,192,96,.4);
-
-}
-
-.mission h4{
-
-margin-bottom:6px;
-
-font-size:1rem;
-
-}
-
-.mission small{
-
-color:var(--muted);
-
-}
-
-
-
-/*══════════════════════════════════════
-        FEATURED CARD
-══════════════════════════════════════*/
-
-.featured-section{
-
-padding:0 35px 90px;
-
-}
-
-.featured-card{
-
-max-width:1200px;
-
-margin:auto;
-
-display:grid;
-
-grid-template-columns:340px 1fr;
-
-overflow:hidden;
-
-background:var(--card);
-
-border-radius:28px;
-
-border:1px solid var(--line);
-
-opacity:0;
-
-transform:translateY(60px);
-
-transition:.7s;
-
-}
-
-.featured-card.show{
-
-opacity:1;
-
-transform:none;
-
-}
-
-.featured-image{
-
-height:100%;
-
-overflow:hidden;
-
-}
-
-.featured-image img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-transition:.5s;
-
-}
-
-.featured-card:hover img{
-
-transform:scale(1.08);
-
-}
-
-.featured-content{
-
-padding:45px;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-}
-
-.featured-type{
-
-font-size:.75rem;
-
-letter-spacing:3px;
-
-color:var(--gold);
-
-margin-bottom:15px;
-
-}
-
-.featured-content h2{
-
-font-size:2.2rem;
-
-margin-bottom:20px;
-
-}
-
-.featured-content p{
-
-line-height:2;
-
-color:rgba(220,235,255,.75);
-
-margin-bottom:35px;
-
-}
-
-.featured-footer{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-}
-
-.price{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:2rem;
-
-color:var(--gold);
-
-}
-
-#featuredBuy{
-
-padding:14px 30px;
-
-border-radius:14px;
-
-background:linear-gradient(
-
-135deg,
-
-var(--gold),
-
-#d99d2e
-
-);
-
-color:#111;
-
-font-weight:800;
-
-transition:.25s;
-
-}
-
-#featuredBuy:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 15px 35px rgba(240,192,96,.3);
-
-}
-        /*══════════════════════════════════════
-        TOOSHAN TREASURY
-            CSS PART 3
-══════════════════════════════════════*/
-
-
-/*══════════════════════════════════════
-          CATEGORY BAR
-══════════════════════════════════════*/
-
-.category-section{
-
-max-width:1200px;
-
-margin:0 auto 60px;
-
-padding:0 35px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-gap:14px;
-
-flex-wrap:wrap;
-
-}
-
-.category{
-
-padding:12px 26px;
-
-background:rgba(255,255,255,.03);
-
-border:1px solid var(--line);
-
-border-radius:999px;
-
-color:var(--muted);
-
-font-weight:700;
-
-transition:.3s;
-
-}
-
-.category:hover{
-
-background:rgba(25,167,255,.08);
-
-color:var(--blue2);
-
-transform:translateY(-3px);
-
-}
-
-.category.active{
-
-background:linear-gradient(
-
-135deg,
-
-var(--blue),
-
-#1177dd
-
-);
-
-color:#fff;
-
-box-shadow:0 12px 30px rgba(25,167,255,.28);
-
-}
-
-
-
-/*══════════════════════════════════════
-             SHOP GRID
-══════════════════════════════════════*/
-
-.shop-grid{
-
-max-width:1200px;
-
-margin:auto;
-
-padding:0 35px 100px;
-
-display:grid;
-
-grid-template-columns:
-
-repeat(auto-fit,minmax(280px,1fr));
-
-gap:28px;
-
-}
-
-.shop-card{
-
-position:relative;
-
-background:var(--card);
-
-border:1px solid var(--line);
-
-border-radius:24px;
-
-overflow:hidden;
-
-transition:.35s;
-
-opacity:0;
-
-transform:translateY(60px);
-
-}
-
-.shop-card.show{
-
-opacity:1;
-
-transform:none;
-
-}
-
-.shop-card:hover{
-
-transform:translateY(-10px);
-
-border-color:rgba(25,167,255,.35);
-
-box-shadow:
-
-0 25px 60px rgba(0,0,0,.45);
-
-}
-
-.shop-card::before{
-
-content:"";
-
-position:absolute;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-height:1px;
-
-background:linear-gradient(
-
-90deg,
-
-transparent,
-
-var(--blue),
-
-transparent
-
-);
-
-}
-
-.shop-image{
-
-height:220px;
-
-overflow:hidden;
-
-background:#08111f;
-
-}
-
-.shop-image img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-transition:.45s;
-
-}
-
-.shop-card:hover .shop-image img{
-
-transform:scale(1.08);
-
-}
-
-.shop-card h3{
-
-padding:24px 24px 10px;
-
-font-size:1.35rem;
-
-}
-
-.shop-card p{
-
-padding:0 24px;
-
-line-height:1.9;
-
-color:rgba(220,235,255,.72);
-
-min-height:70px;
-
-}
-
-.shop-footer{
-
-padding:22px 24px 24px;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-}
-
-.shop-footer span{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:1.15rem;
-
-color:var(--gold);
-
-}
-
-.buy-item{
-
-padding:12px 24px;
-
-background:linear-gradient(
-
-135deg,
-
-var(--blue),
-
-#1678df
-
-);
-
-color:#fff;
-
-font-weight:700;
-
-border-radius:12px;
-
-transition:.3s;
-
-}
-
-.buy-item:hover{
-
-transform:translateY(-3px);
-
-box-shadow:
-
-0 14px 30px rgba(25,167,255,.3);
-
-}
-
-.buy-item.owned{
-
-background:#1e8d58;
-
-cursor:default;
-
-box-shadow:none;
-
-}
-
-
-
-/*══════════════════════════════════════
-            RARITY TAG
-══════════════════════════════════════*/
-
-.rarity{
-
-position:absolute;
-
-top:18px;
-
-left:18px;
-
-padding:7px 14px;
-
-border-radius:999px;
-
-font-family:'Orbitron',sans-serif;
-
-font-size:.65rem;
-
-font-weight:800;
-
-letter-spacing:2px;
-
-backdrop-filter:blur(10px);
-
-}
-
-.legendary{
-
-background:rgba(255,180,60,.18);
-
-color:#ffd46b;
-
-border:1px solid rgba(255,200,90,.35);
-
-}
-
-.epic{
-
-background:rgba(181,93,255,.18);
-
-color:#cb9dff;
-
-border:1px solid rgba(203,157,255,.35);
-
-}
-
-.rare{
-
-background:rgba(25,167,255,.18);
-
-color:#8bdcff;
-
-border:1px solid rgba(25,167,255,.35);
-
-}
-
-
-
-/*══════════════════════════════════════
-          HISTORY SECTION
-══════════════════════════════════════*/
-
-.history-section{
-
-padding:0 35px 120px;
-
-}
-
-.history-list{
-
-max-width:1200px;
-
-margin:auto;
-
-display:flex;
-
-flex-direction:column;
-
-gap:18px;
-
-}
-
-.history-item{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:22px 26px;
-
-background:var(--card);
-
-border:1px solid var(--line);
-
-border-radius:18px;
-
-transition:.3s;
-
-opacity:0;
-
-transform:translateY(40px);
-
-}
-
-.history-item.show{
-
-opacity:1;
-
-transform:none;
-
-}
-
-.history-item:hover{
-
-background:rgba(25,167,255,.05);
-
-border-color:rgba(25,167,255,.3);
-
-}
-
-.history-item h4{
-
-margin-bottom:6px;
-
-font-size:1rem;
-
-}
-
-.history-item small{
-
-color:var(--muted);
-
-}
-
-.plus{
-
-color:#43d17c;
-
-font-family:'Orbitron',sans-serif;
-
-font-size:1rem;
-
-}
-
-.minus{
-
-color:#ff7070;
-
-font-family:'Orbitron',sans-serif;
-
-font-size:1rem;
-
-}
-        /*══════════════════════════════════════
-        TOOSHAN TREASURY
-            CSS PART 4
-══════════════════════════════════════*/
-
-
-/*══════════════════════════════════════
-            FOOTER
-══════════════════════════════════════*/
-
-footer{
-
-margin-top:auto;
-
-padding:45px 35px;
-
-border-top:1px solid var(--line);
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-flex-wrap:wrap;
-
-gap:20px;
-
-background:rgba(4,6,14,.65);
-
-backdrop-filter:blur(15px);
-
-}
-
-.footer-logo{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:1rem;
-
-font-weight:800;
-
-letter-spacing:2px;
-
-color:var(--blue);
-
-}
-
-.footer-copy{
-
-font-size:.9rem;
-
-color:var(--muted);
-
-}
-
-.footer-links{
-
-display:flex;
-
-gap:22px;
-
-}
-
-.footer-links a{
-
-color:var(--muted);
-
-transition:.25s;
-
-}
-
-.footer-links a:hover{
-
-color:var(--blue2);
-
-}
-
-
-
-/*══════════════════════════════════════
-         PURCHASE MODAL
-══════════════════════════════════════*/
-
-.purchase-modal{
-
-position:fixed;
-
-inset:0;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-background:rgba(0,0,0,.72);
-
-backdrop-filter:blur(10px);
-
-opacity:0;
-
-visibility:hidden;
-
-transition:.35s;
-
-z-index:9999;
-
-}
-
-.purchase-modal.active{
-
-opacity:1;
-
-visibility:visible;
-
-}
-
-.purchase-box{
-
-position:relative;
-
-width:min(480px,92vw);
-
-padding:40px;
-
-border-radius:28px;
-
-background:linear-gradient(
-
-180deg,
-
-#0a1223,
-
-#05080f
-
-);
-
-border:1px solid var(--line);
-
-box-shadow:
-
-0 30px 80px rgba(0,0,0,.55);
-
-text-align:center;
-
-}
-
-.purchase-icon{
-
-width:110px;
-
-height:110px;
-
-margin:auto auto 25px;
-
-animation:floatCoin 4s ease-in-out infinite;
-
+    margin-top:8px;
+    font-size:1.7rem;
 }
-
-.purchase-icon img{
 
-width:100%;
-
+.exchange-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:22px;
 }
-
-.purchase-box h2{
 
-font-size:2rem;
-
-margin-bottom:14px;
-
+.exchange-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:30px 24px;
+    text-align:center;
+    transition:.3s;
+    position:relative;
+    overflow:hidden;
 }
-
-.purchase-box p{
-
-line-height:2;
 
-color:rgba(220,235,255,.75);
-
-margin-bottom:30px;
-
+.exchange-card::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:1px;
+    background:linear-gradient(90deg,transparent,var(--blue),transparent);
 }
-
-.purchase-price{
-
-display:flex;
 
-justify-content:center;
-
-align-items:center;
-
-gap:12px;
-
-margin-bottom:35px;
-
-font-size:1.4rem;
-
-font-family:'Orbitron',sans-serif;
-
-color:var(--gold);
-
+.exchange-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(25,167,255,.35);
+    box-shadow:0 20px 45px rgba(0,0,0,.4);
 }
-
-.purchase-price img{
 
-width:34px;
-
+.exchange-rate{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin-bottom:22px;
 }
-
-.purchase-actions{
-
-display:flex;
-
-gap:15px;
 
+.rate-side{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
 }
-
-.purchase-actions button{
-
-flex:1;
-
-padding:15px;
-
-border-radius:14px;
 
-font-weight:700;
-
-transition:.3s;
-
+.rate-num{
+    font-family:'Orbitron',sans-serif;
+    font-size:1.6rem;
+    font-weight:800;
 }
-
-.confirm-btn{
-
-background:linear-gradient(
-
-135deg,
-
-var(--gold),
-
-#d89c29
-
-);
 
-color:#111;
+.rate-num.xp{color:var(--blue2);}
+.rate-num.coin{color:var(--gold);}
 
+.rate-label{
+    font-size:.68rem;
+    letter-spacing:1px;
+    color:var(--muted);
 }
 
-.confirm-btn:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 15px 30px rgba(240,192,96,.3);
-
+.rate-arrow{
+    color:var(--muted);
+    font-size:1.2rem;
 }
-
-.cancel-btn{
 
-background:rgba(255,255,255,.05);
-
-border:1px solid var(--line);
-
-color:var(--text);
-
+.exchange-btn{
+    width:100%;
+    padding:13px;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--blue),#1177dd);
+    color:#fff;
+    font-weight:700;
+    transition:.25s;
 }
-
-.cancel-btn:hover{
 
-background:rgba(255,255,255,.08);
-
+.exchange-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 14px 30px rgba(25,167,255,.3);
 }
-
-.close-modal{
-
-position:absolute;
-
-top:18px;
-
-left:18px;
-
-width:38px;
-
-height:38px;
-
-border-radius:50%;
 
-background:rgba(255,255,255,.05);
-
-color:var(--muted);
-
-font-size:1.2rem;
-
-transition:.25s;
-
+.exchange-btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none;
+    box-shadow:none;
 }
 
-.close-modal:hover{
-
-transform:rotate(90deg);
-
-color:#fff;
-
+.best-value{
+    position:absolute;
+    top:14px;
+    left:14px;
+    padding:5px 12px;
+    border-radius:999px;
+    font-size:.62rem;
+    font-weight:800;
+    letter-spacing:1px;
+    background:rgba(240,192,96,.18);
+    color:var(--gold2);
+    border:1px solid rgba(255,200,90,.35);
 }
-
-
 
-/*══════════════════════════════════════
-               TOAST
-══════════════════════════════════════*/
+/*═════════ TOAST ═════════*/
 
 .toast{
-
-position:fixed;
-
-bottom:35px;
-
-left:50%;
-
-transform:translateX(-50%) translateY(100px);
-
-padding:15px 28px;
-
-border-radius:14px;
-
-background:#08111d;
-
-border:1px solid var(--line);
-
-color:#fff;
-
-opacity:0;
-
-transition:.35s;
-
-z-index:99999;
-
+    position:fixed;
+    bottom:35px;
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    padding:15px 28px;
+    border-radius:14px;
+    background:#08111d;
+    border:1px solid var(--line);
+    color:#fff;
+    opacity:0;
+    transition:.35s;
+    z-index:9999;
 }
 
 .toast.show{
-
-opacity:1;
-
-transform:translateX(-50%) translateY(0);
-
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
 }
 
+/*═════════ RESPONSIVE ═════════*/
 
-
-/*══════════════════════════════════════
-          COIN PARTICLE
-══════════════════════════════════════*/
-
-.coin-spark{
-
-position:fixed;
-
-font-size:22px;
-
-pointer-events:none;
-
-animation:coinFly .9s ease-out forwards;
-
-z-index:99999;
-
+@media(max-width:600px){
+    .wallet-stats{flex-direction:column;}
+    .wallet-divider{display:none;}
+    .wallet-item h3{font-size:2.1rem;}
 }
-
-@keyframes coinFly{
-
-0%{
-
-opacity:1;
-
-transform:translate(0,0) scale(.4);
-
-}
-
-100%{
-
-opacity:0;
-
-transform:translate(var(--x,0),var(--y,-120px)) scale(1.4);
-
-}
-
-}
-
-
-
-/*══════════════════════════════════════
-         FLOATING COINS
-══════════════════════════════════════*/
-
-.floating-coins{
-
-position:fixed;
-
-inset:0;
-
-pointer-events:none;
-
-overflow:hidden;
-
-z-index:-1;
-
-}
-
-.floating-coin{
-
-position:absolute;
-
-width:42px;
-
-opacity:.08;
-
-animation:coinFloat 18s linear infinite;
-
-}
-
-.floating-coin img{
-
-width:100%;
-
-}
-
-.floating-coin:nth-child(1){
-
-left:8%;
-
-bottom:-80px;
-
-}
-
-.delay1{
-
-left:30%;
-
-animation-delay:5s;
-
-}
-
-.delay2{
-
-left:60%;
-
-animation-delay:9s;
-
-}
-
-.delay3{
-
-left:84%;
-
-animation-delay:13s;
-
-}
-
-@keyframes coinFloat{
-
-0%{
-
-transform:translateY(0) rotate(0deg);
-
-}
-
-100%{
-
-transform:translateY(-120vh) rotate(360deg);
-
-}
-
-}
-
-
-
-/*══════════════════════════════════════
-            RESPONSIVE
-══════════════════════════════════════*/
-
-@media(max-width:900px){
-
-.featured-card{
-
-grid-template-columns:1fr;
-
-}
-
-.wallet-stats{
-
-flex-direction:column;
-
-gap:25px;
-
-}
-
-.wallet-divider{
-
-display:none;
-
-}
-
-.purchase-actions{
-
-flex-direction:column;
-
-}
-
-footer{
-
-flex-direction:column;
-
-text-align:center;
-
-}
-
-}
-
-
-
-@media(max-width:640px){
-
-body{
-
-cursor:auto;
-
-}
-
-#cursor,
-
-#cursor-ring{
-
-display:none;
-
-}
-
-.shop-grid,
-
-.wallet-section,
-
-.featured-section,
-
-.mission-section,
-
-.history-section{
-
-padding-left:18px;
-
-padding-right:18px;
-
-}
-
-.treasury-symbol{
-
-width:130px;
-
-height:130px;
-
-}
-
-.treasury-hero h1{
-
-font-size:2.2rem;
-
-}
-
-.wallet-item h3{
-
-font-size:2.2rem;
-
-}
-
-.featured-content{
-
-padding:28px;
-
-}
-
-}
-        </style>
+</style>
 </head>
-        <body>
-                <div id="cursor"></div>
-<div id="cursor-ring"></div>
+<body>
 
 <div class="ambient"></div>
 
-<div class="hamburger" id="hamburgerBtn">
-
-<span></span>
-<span></span>
-<span></span>
-
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<nav class="side-nav" id="sideNav">
-
-<div class="nav-label">
-
-ناوبری
-
-</div>
-
-<a href="index.html">
-
-خانه
-
-</a>
-
-<a href="phase.html">
-
-فازها
-
-</a>
-
-<a href="comic-reader.html">
-
-کمیک‌ها
-
-</a>
-
-<a href="characters.html">
-
-شخصیت‌ها
-
-</a>
-
-<a href="comments.html">
-
-نظرها
-
-</a>
-
-<a href="about.html">
-
-درباره ما
-
-</a>
-
-<a href="treasury.html" class="current">
-
-خزانه
-
-</a>
-
-<div class="side-nav-footer">
-
-<a class="side-nav-settings-btn" href="profile.html">
-
-⚙
-
-</a>
-
-<a class="side-nav-profile-btn" href="profile.html">
-
-<span class="side-nav-profile-name">
-
-ورود / ثبت نام
-
-</span>
-
-<div class="side-nav-avatar">
-
-👤
-
-</div>
-
-</a>
-
-</div>
-
-</nav>
-
 <header>
-
-<div class="logo">
-
-توشان<span>‌</span>ورس
-
-</div>
-
+    <div class="logo">توشان<span>‌</span>ورس</div>
+    <a class="back-link" href="index.html">بازگشت به خانه</a>
 </header>
 
 <main>
 
-<section class="treasury-hero">
-
-<div class="hero-orb hero-orb-1"></div>
-
-<div class="hero-orb hero-orb-2"></div>
-
-<div class="treasury-symbol">
-
-<img src="coin.svg" alt="Tooshan Coin">
-
-</div>
-
-<div class="hero-eyebrow">
-
-DIGITAL CURRENCY
-
-</div>
-
-<h1>
-
-توشان <span>کوین</span>
-
-</h1>
-
-<p>
-
-ارز اختصاصی دنیای توشان‌ورس. با خواندن داستان‌ها، انجام مأموریت‌ها و مشارکت در سایت، سکه به دست بیاور و آیتم‌های انحصاری را آزاد کن.
-
-</p>
-
-</section>
-
-<section class="wallet-section">
-
-<div class="wallet-card">
-
-<div class="wallet-header">
-
-<div>
-
-<span>
-
-YOUR WALLET
-
-</span>
-
-<h2>
-
-خزانه شخصی
-
-</h2>
-
-</div>
-
-<div class="wallet-icon">
-
-<img src="coin.svg">
-
-</div>
-
-</div>
-
-<div class="wallet-stats">
-
-<div class="wallet-item">
-
-<span class="wallet-label">
-
-TOOSHAN COINS
-
-</span>
-
-<h3 id="coinBalance">
-
-0
-
-</h3>
-
-</div>
-
-<div class="wallet-divider"></div>
-
-<div class="wallet-item">
-
-<span class="wallet-label">
-
-XP
-
-</span>
-
-<h3 id="xpBalance">
-
-0
-
-</h3>
-
-</div>
-
-</div>
-
-<div class="wallet-convert">
-
-<div class="convert-box">
-
-<strong>
-
-50 XP
-
-</strong>
-
-<span>
-
-→
-
-</span>
-
-<strong>
-
-10 COINS
-
-</strong>
-
-<button id="convertCoins">
-
-تبدیل امتیاز
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-        <section class="mission-section">
-
-<div class="section-title">
-
-<div>
-
-<span>
-
-DAILY MISSIONS
-
-</span>
-
-<h2>
-
-ماموریت‌های روزانه
-
-</h2>
-
-</div>
-
-</div>
-
-<div class="mission-card">
-
-<div class="mission-progress">
-
-<div class="mission completed">
-
-<div class="mission-check"></div>
-
-<div>
-
-<h4>
-
-مطالعه یک فصل داستان
-
-</h4>
-
-<small>
-
-+20 XP
-
-</small>
-
-</div>
-
-</div>
-
-<div class="mission">
-
-<div class="mission-check"></div>
-
-<div>
-
-<h4>
-
-ثبت یک نظر مفید
-
-</h4>
-
-<small>
-
-+10 XP
-
-</small>
-
-</div>
-
-</div>
-
-<div class="mission">
-
-<div class="mission-check"></div>
-
-<div>
-
-<h4>
-
-ورود روزانه
-
-</h4>
-
-<small>
-
-+5 XP
-
-</small>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<section class="featured-section">
-
-<div class="section-title">
-
-<div>
-
-<span>
-
-FEATURED
-
-</span>
-
-<h2>
-
-پیشنهاد ویژه امروز
-
-</h2>
-
-</div>
-
-</div>
-
-<div class="featured-card">
-
-<div class="featured-image">
-
-<img src="photo/lordphysica-cover.png" alt="Lord Physica">
-
-</div>
-
-<div class="featured-content">
-
-<div class="featured-type">
-
-EXCLUSIVE STORY
-
-</div>
-
-<h2>
-
-لرد فیزیکا
-
-<br>
-
-انفجار آبی
-
-</h2>
-
-<p>
-
-اولین داستان رسمی توشان‌ورس که تنها از طریق توشان‌کوین قابل دریافت است.
-
-</p>
-
-<div class="featured-footer">
-
-<div class="price">
-
-🪙
-
-150
-
-</div>
-
-<button id="featuredBuy">
-
-خرید داستان
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<section class="category-section">
-
-<button class="category active"
-
-data-filter="all">
-
-همه
-
-</button>
-
-<button class="category"
-
-data-filter="story">
-
-داستان
-
-</button>
-
-<button class="category"
-
-data-filter="comic">
-
-کمیک
-
-</button>
-
-<button class="category"
-
-data-filter="profile">
-
-شخصی‌سازی
-
-</button>
-
-<button class="category"
-
-data-filter="special">
-
-ویژه
-
-</button>
-
-</section>
-
-
-
-<section class="shop-grid">
-
-
-
-<div class="shop-card"
-data-id="story-lordphysica"
-data-category="story"
-
-data-price="150"
-
-data-name="انفجار آبی">
-
-<div class="shop-image">
-
-<img src="photo/lordphysica-cover.png" alt="">
-
-</div>
-
-<div class="rarity legendary">
-
-LEGENDARY
-
-</div>
-
-<h3>
-
-لرد فیزیکا
-
-</h3>
-
-<p>
-
-نسخه کامل اولین داستان توشان‌ورس.
-
-</p>
-
-<div class="shop-footer">
-
-<span>
-
-🪙 150
-
-</span>
-
-<button class="buy-item">
-
-خرید
-
-</button>
-
-</div>
-
-</div>
-
-
-
-<div class="shop-card"
-data-id="comic-001"
-data-category="comic"
-
-data-price="90"
-
-data-name="کمیک آزمایشی">
-
-<div class="shop-image">
-
-<img src="photo/comic-cover.png" alt="">
-
-</div>
-
-<div class="rarity epic">
-
-EPIC
-
-</div>
-
-<h3>
-
-کمیک شماره ۱
-
-</h3>
-
-<p>
-
-نسخه دیجیتال اولین کمیک اختصاصی.
-
-</p>
-
-<div class="shop-footer">
-
-<span>
-
-🪙 90
-
-</span>
-
-<button class="buy-item">
-
-خرید
-
-</button>
-
-</div>
-
-</div>
-
-
-
-<div class="shop-card"
-data-id="frame-blue"
-data-category="profile"
-
-data-price="60"
-
-data-name="قاب پروفایل">
-
-<div class="shop-image">
-
-<img src="photo/frame.png" alt="">
-
-</div>
-
-<div class="rarity rare">
-
-RARE
-
-</div>
-
-<h3>
-
-قاب پروفایل
-
-</h3>
-
-<p>
-
-قاب اختصاصی آبی توشان برای حساب کاربری.
-
-</p>
-
-<div class="shop-footer">
-
-<span>
-
-🪙 60
-
-</span>
-
-<button class="buy-item">
-
-خرید
-
-</button>
-
-</div>
-
-</div>
-        <div class="shop-card"
-                data-id="badge-founder"
-data-category="special"
-data-price="250"
-data-name="نشان بنیان‌گذار">
-
-<div class="shop-image">
-
-<img src="photo/founder-badge.png" alt="">
-
-</div>
-
-<div class="rarity legendary">
-
-FOUNDER
-
-</div>
-
-<h3>
-
-نشان بنیان‌گذار
-
-</h3>
-
-<p>
-
-نشان انحصاری مخصوص اولین اعضای توشان‌ورس.
-
-</p>
-
-<div class="shop-footer">
-
-<span>
-
-🪙 250
-
-</span>
-
-<button class="buy-item">
-
-خرید
-
-</button>
-
-</div>
-
-</div>
-
-
-
-<div class="shop-card"
-        data-id="ticket-phase-early"
-data-category="special"
-data-price="500"
-data-name="بلیت فاز بعد">
-
-<div class="shop-image">
-
-<img src="photo/phase-ticket.png" alt="">
-
-</div>
-
-<div class="rarity legendary">
-
-LIMITED
-
-</div>
-
-<h3>
-
-دسترسی زودهنگام
-
-</h3>
-
-<p>
-
-مشاهده فصل‌های آینده قبل از انتشار عمومی.
-
-</p>
-
-<div class="shop-footer">
-
-<span>
-
-🪙 500
-
-</span>
-
-<button class="buy-item">
-
-خرید
-
-</button>
-
-</div>
-
-</div>
-
-
-
-<div class="shop-card"
-        data-id="theme-blue"
-data-category="profile"
-data-price="120"
-data-name="تم آبی توشان">
-
-<div class="shop-image">
-
-<img src="photo/theme-blue.png" alt="">
-
-</div>
-
-<div class="rarity rare">
-
-RARE
-
-</div>
-
-<h3>
-
-تم اختصاصی
-
-</h3>
-
-<p>
-
-ظاهر ویژه برای پروفایل و صفحه مطالعه.
-
-</p>
-
-<div class="shop-footer">
-
-<span>
-
-🪙 120
-
-</span>
-
-<button class="buy-item">
-
-خرید
-
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<section class="history-section">
-
-<div class="section-title">
-
-<div>
-
-<span>
-
-TRANSACTIONS
-
-</span>
-
-<h2>
-
-تاریخچه تراکنش‌ها
-
-</h2>
-
-</div>
-
-</div>
-
-<div class="history-list" id="historyList">
-
-<div class="history-item">
-
-<div>
-
-<h4>
-
-پاداش مطالعه داستان
-
-</h4>
-
-<small>
-
-امروز - 14:25
-
-</small>
-
-</div>
-
-<strong class="plus">
-
-+20 XP
-
-</strong>
-
-</div>
-
-
-
-<div class="history-list" id="historyList"></div>
-        
-</section>
-        <footer>
-
-<div class="footer-logo">
-
-TOOSHANVERSE
-
-</div>
-
-<div class="footer-copy">
-
-© ۱۴۰۵ توشان‌ورس — تمامی حقوق محفوظ است
-
-</div>
-
-<div class="footer-links">
-
-<a href="phase.html">
-
-فازها
-
-</a>
-
-<a href="characters.html">
-
-شخصیت‌ها
-
-</a>
-
-<a href="about.html">
-
-درباره ما
-
-</a>
-
-</div>
-
-</footer>
-
-
-
-<!-- Purchase Modal -->
-
-<div class="purchase-modal" id="purchaseModal">
-
-<div class="purchase-box">
-
-<button class="close-modal" id="closeModal">
-
-✕
-
-</button>
-
-<div class="purchase-icon">
-
-<img src="coin.svg" alt="Coin">
-
-</div>
-
-<h2 id="modalTitle">
-
-تأیید خرید
-
-</h2>
-
-<p id="modalText">
-
-آیا از خرید این آیتم مطمئن هستید؟
-
-</p>
-
-<div class="purchase-price">
-
-<span>
-
-هزینه
-
-</span>
-
-<strong id="modalPrice">
-
-0
-
-</strong>
-
-<img src="coin.svg" alt="">
-
-</div>
-
-<div class="purchase-actions">
-
-<button class="cancel-btn" id="cancelPurchase">
-
-انصراف
-
-</button>
-
-<button class="confirm-btn" id="confirmPurchase">
-
-تأیید خرید
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<!-- Toast -->
+    <section class="hero">
+        <div class="hero-eyebrow">YOUR TREASURY</div>
+        <h1>خزانه <span>شخصی</span></h1>
+    </section>
+
+    <section class="wallet-card">
+        <div class="wallet-stats">
+            <div class="wallet-item">
+                <span class="wallet-label">TOOSHAN COINS</span>
+                <h3 id="coinBalance">۰</h3>
+            </div>
+            <div class="wallet-divider"></div>
+            <div class="wallet-item">
+                <span class="wallet-label">XP</span>
+                <h3 id="xpBalance">۰</h3>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-title">
+        <span>EXCHANGE</span>
+        <h2>تبدیل امتیاز به سکه</h2>
+    </div>
+
+    <div class="exchange-grid" id="exchangeGrid">
+        <!-- کارت‌ها با جاوااسکریپت از دیتابیس پر می‌شوند -->
+    </div>
+
+</main>
 
 <div class="toast-container" id="toastContainer"></div>
 
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
 
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-<!-- Coin Animation Layer -->
+let user = null;
+let coins = 0;
+let xp = 0;
 
-<div id="coinAnimationLayer"></div>
+const coinBalance = document.getElementById("coinBalance");
+const xpBalance = document.getElementById("xpBalance");
+const exchangeGrid = document.getElementById("exchangeGrid");
 
+const toFa = n => Number(n).toLocaleString("fa-IR");
 
+function showToast(text){
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = text;
+    document.body.appendChild(toast);
+    setTimeout(()=> toast.classList.add("show"), 50);
+    setTimeout(()=>{
+        toast.classList.remove("show");
+        setTimeout(()=> toast.remove(), 300);
+    }, 2500);
+}
 
-<!-- Floating Coins -->
+function updateUI(){
+    coinBalance.textContent = toFa(coins);
+    xpBalance.textContent = toFa(xp);
+}
 
-<div class="floating-coins">
+async function loadProfile(){
+    const { data:{ user: currentUser } } = await supabase.auth.getUser();
 
-<div class="floating-coin">
+    if(!currentUser){
+        location.href = "login.html";
+        return;
+    }
 
-<img src="coin.svg" alt="">
+    user = currentUser;
 
-</div>
+    const { data, error } = await supabase
+        .from("profiles")
+        .select("coins,xp")
+        .eq("id", user.id)
+        .single();
 
-<div class="floating-coin delay1">
+    if(error){
+        console.error(error);
+        showToast("خطا در بارگذاری اطلاعات");
+        return;
+    }
 
-<img src="coin.svg" alt="">
+    coins = Number(data.coins) || 0;
+    xp = Number(data.xp) || 0;
+    updateUI();
+}
 
-</div>
+/*═════════ EXCHANGE RATES ═════════
+   نرخ‌های تبدیل از جدول exchange_rates خوانده می‌شود
+   تا کاربر نتواند نرخ را دستکاری کند.
+════════════════════════════════════*/
 
-<div class="floating-coin delay2">
+async function loadExchangeRates(){
+    const { data, error } = await supabase
+        .from("exchange_rates")
+        .select("*")
+        .order("xp_cost", { ascending: true });
 
-<img src="coin.svg" alt="">
+    if(error){
+        console.error(error);
+        showToast("خطا در بارگذاری نرخ‌های تبدیل");
+        return;
+    }
 
-</div>
+    exchangeGrid.innerHTML = "";
 
-<div class="floating-coin delay3">
+    data.forEach(rate => {
+        const card = document.createElement("div");
+        card.className = "exchange-card";
 
-<img src="coin.svg" alt="">
+        card.innerHTML = `
+            ${rate.is_best_value ? '<div class="best-value">بهترین ارزش</div>' : ""}
+            <div class="exchange-rate">
+                <div class="rate-side">
+                    <span class="rate-num xp">${toFa(rate.xp_cost)}</span>
+                    <span class="rate-label">XP</span>
+                </div>
+                <span class="rate-arrow">→</span>
+                <div class="rate-side">
+                    <span class="rate-num coin">${toFa(rate.coin_reward)}</span>
+                    <span class="rate-label">COIN</span>
+                </div>
+            </div>
+            <button class="exchange-btn" data-rate-id="${rate.id}" data-cost="${rate.xp_cost}">
+                تبدیل
+            </button>
+        `;
 
-</div>
+        exchangeGrid.appendChild(card);
+    });
 
-</div>
+    refreshButtonStates();
+}
 
+function refreshButtonStates(){
+    document.querySelectorAll(".exchange-btn").forEach(btn => {
+        const cost = Number(btn.dataset.cost);
+        btn.disabled = xp < cost;
+    });
+}
 
+exchangeGrid.addEventListener("click", async e => {
+    const btn = e.target.closest(".exchange-btn");
+    if(!btn || btn.disabled) return;
 
-<!-- Background Glow -->
+    btn.disabled = true;
 
-<div class="background-glow glow-left"></div>
+    const { data, error } = await supabase.rpc("convert_xp", {
+        p_rate_id: btn.dataset.rateId
+    });
 
-<div class="background-glow glow-right"></div>
+    if(error){
+        console.error(error);
+        showToast(error.message || "خطا در تبدیل");
+        refreshButtonStates();
+        return;
+    }
 
+    coins = data.coins;
+    xp = data.xp;
+    updateUI();
+    refreshButtonStates();
 
+    showToast(`+${toFa(data.coins_gained)} سکه دریافت شد`);
+});
 
-<!-- Audio -->
+window.addEventListener("load", async () => {
+    await loadProfile();
+    await loadExchangeRates();
+});
+</script>
 
-<audio id="coinSound" preload="auto">
-
-<source src="audio/coin.mp3" type="audio/mpeg">
-
-</audio>
-
-
-
-<audio id="purchaseSound" preload="auto">
-
-<source src="audio/purchase.mp3" type="audio/mpeg">
-
-</audio>
-
-</main>
-<script type="module" src="treasury.js"></script>
 </body>
 </html>
