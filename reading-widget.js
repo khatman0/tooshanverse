@@ -149,17 +149,21 @@ export async function mountReadingWidget(containerId) {
     return;
   }
 
+  // نکته: از کلاس استفاده می‌کنیم و عناصر رو با querySelector *داخل همین container*
+  // پیدا می‌کنیم، نه با document.getElementById — چون اگه چند تا ویجت تو یه صفحه
+  // باشن (مثل پارت ۱ و پارت ۲)، آی‌دی‌های تکراری باعث میشه document.getElementById
+  // همیشه اولین موردی که تو صفحه هست رو برگردونه، نه اونی که همین الان ساختیم.
   container.innerHTML = `
     <div class="trw-box">
       <div class="trw-title">این فصل رو خوندی؟</div>
       <div class="trw-sub">با جواب دادن به یه سؤال کوتاه، امتیازتو ثبت کن</div>
-      <button class="trw-btn" id="trwMainBtn">✅ خوندمش</button>
-      <div class="trw-status" id="trwStatus"></div>
+      <button class="trw-btn" type="button">✅ خوندمش</button>
+      <div class="trw-status"></div>
     </div>
   `;
 
-  const btn = document.getElementById('trwMainBtn');
-  const status = document.getElementById('trwStatus');
+  const btn = container.querySelector('.trw-btn');
+  const status = container.querySelector('.trw-status');
 
   function setStatus(text, type) {
     status.textContent = text;
@@ -227,15 +231,15 @@ async function openQuestionModal(contentItemId, btn, setStatus) {
     <div class="trw-modal">
       <div class="trw-modal-eyebrow">سؤال تأیید مطالعه</div>
       <div class="trw-modal-q">${question.question_text}</div>
-      <div id="trwChoices"></div>
-      <div class="trw-modal-result" id="trwResult"></div>
-      <button class="trw-modal-close" id="trwCloseModal">بستن</button>
+      <div class="trw-choices"></div>
+      <div class="trw-modal-result"></div>
+      <button class="trw-modal-close" type="button">بستن</button>
     </div>
   `;
   document.body.appendChild(overlay);
 
-  const choicesBox = overlay.querySelector('#trwChoices');
-  const resultBox = overlay.querySelector('#trwResult');
+  const choicesBox = overlay.querySelector('.trw-choices');
+  const resultBox = overlay.querySelector('.trw-modal-result');
   question.choices.forEach((choiceText, idx) => {
     const b = document.createElement('button');
     b.className = 'trw-choice';
@@ -273,6 +277,6 @@ async function openQuestionModal(contentItemId, btn, setStatus) {
     choicesBox.appendChild(b);
   });
 
-  overlay.querySelector('#trwCloseModal').addEventListener('click', () => overlay.remove());
+  overlay.querySelector('.trw-modal-close').addEventListener('click', () => overlay.remove());
   overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
 }
