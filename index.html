@@ -105,6 +105,48 @@ body::before {
 .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
 
 /* ══════════════════════════════
+   COIN BADGE (کنار همبرگری)
+══════════════════════════════ */
+.coin-badge {
+  position: fixed; top: 20px; left: 70px;
+  z-index: 100;
+  height: 40px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 14px 0 10px;
+  background: rgba(4,6,14,0.8);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  cursor: none;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.coin-badge:hover {
+  border-color: rgba(240,192,96,0.4);
+  background: rgba(4,6,14,0.92);
+  transform: translateY(-1px);
+}
+.coin-badge-icon {
+  width: 24px; height: 24px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(255,215,120,0.5));
+}
+.coin-badge-icon svg { width: 100%; height: 100%; display: block; }
+.coin-badge-amount {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+@media (max-width: 380px) {
+  .coin-badge { left: 66px; padding: 0 10px 0 8px; gap: 6px; }
+  .coin-badge-icon { width: 20px; height: 20px; }
+  .coin-badge-amount { font-size: 0.75rem; }
+}
+
+/* ══════════════════════════════
    OVERLAY + SIDE NAV
 ══════════════════════════════ */
 .overlay {
@@ -1004,6 +1046,39 @@ footer {
   <span></span><span></span><span></span>
 </div>
 
+<!-- کادر کوچک موجودی توشان کوین، کنار همبرگری -->
+<a class="coin-badge" id="coinBadge" href="treasury.html" style="display:none;">
+  <div class="coin-badge-icon">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="goldBodyBadge" cx="35%" cy="30%" r="75%">
+          <stop offset="0%" stop-color="#ffe9b0"/>
+          <stop offset="45%" stop-color="#ffd777"/>
+          <stop offset="80%" stop-color="#f0c060"/>
+          <stop offset="100%" stop-color="#c98f2e"/>
+        </radialGradient>
+        <linearGradient id="ringGlowBadge" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#84dfff"/>
+          <stop offset="50%" stop-color="#19a7ff"/>
+          <stop offset="100%" stop-color="#1177dd"/>
+        </linearGradient>
+        <radialGradient id="innerShadeBadge" cx="50%" cy="50%" r="50%">
+          <stop offset="60%" stop-color="#f0c060" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#8a5e18" stop-opacity=".55"/>
+        </radialGradient>
+      </defs>
+      <circle cx="100" cy="100" r="92" fill="none" stroke="url(#ringGlowBadge)" stroke-width="4" opacity=".85"/>
+      <circle cx="100" cy="100" r="80" fill="url(#goldBodyBadge)"/>
+      <circle cx="100" cy="100" r="80" fill="url(#innerShadeBadge)"/>
+      <circle cx="100" cy="100" r="80" fill="none" stroke="#7a521a" stroke-width="1.5" opacity=".4"/>
+      <circle cx="100" cy="100" r="68" fill="none" stroke="#fff3d6" stroke-width="1.5" opacity=".55"/>
+      <path d="M68 76 L132 76 L132 92 L108 92 L108 136 L92 136 L92 92 L68 92 Z" fill="#0b1220" opacity=".88"/>
+      <ellipse cx="80" cy="55" rx="46" ry="18" fill="#ffffff" opacity=".18"/>
+    </svg>
+  </div>
+  <span class="coin-badge-amount" id="coinBadgeAmount">۰</span>
+</a>
+
 <!-- overlay -->
 <div class="overlay" id="overlay"></div>
 
@@ -1507,7 +1582,7 @@ async function loadHomeComments() {
 
 loadHomeComments();
 
-/* ── SIDE NAV PROFILE STATE (ورود/عدم ورود) ── */
+/* ── SIDE NAV PROFILE STATE (ورود/عدم ورود) + کادر موجودی سکه ── */
 (async () => {
   try {
     const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
@@ -1519,6 +1594,8 @@ loadHomeComments();
     const { data: { session } } = await supabase.auth.getSession();
     const avatarBox = document.getElementById('sideNavAvatar');
     const nameLabel = document.getElementById('sideNavProfileName');
+    const coinBadge = document.getElementById('coinBadge');
+    const coinBadgeAmount = document.getElementById('coinBadgeAmount');
 
     if (session) {
       const user = session.user;
@@ -1527,7 +1604,7 @@ loadHomeComments();
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('display_name, avatar_url')
+        .select('display_name, avatar_url, coins')
         .eq('id', user.id)
         .single();
 
@@ -1542,8 +1619,15 @@ loadHomeComments();
       } else {
         avatarBox.innerHTML = `<span class="side-nav-avatar-initial">${displayName.charAt(0).toUpperCase()}</span>`;
       }
+
+      /* کادر موجودی توشان کوین کنار همبرگری */
+      if (coinBadge && coinBadgeAmount) {
+        const coinsVal = Number(profile?.coins) || 0;
+        coinBadgeAmount.textContent = coinsVal.toLocaleString('fa-IR');
+        coinBadge.style.display = 'flex';
+      }
     }
-    /* اگه لاگین نبود، همون آیکون آدمک پیش‌فرض (که تو HTML هست) می‌مونه */
+    /* اگه لاگین نبود، همون آیکون آدمک پیش‌فرض (که تو HTML هست) می‌مونه و کادر سکه مخفی می‌مونه */
   } catch (err) {
     /* اگه Supabase در دسترس نبود، آیکون پیش‌فرض همونطور می‌مونه، خطایی به کاربر نشون داده نمی‌شه */
     console.warn('وضعیت ورود کاربر بارگذاری نشد:', err);
