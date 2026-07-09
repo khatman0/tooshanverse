@@ -3872,6 +3872,9 @@ body::before {
 </script>
 
   <!-- «ادامه دارد» و دکمه‌ی نظرات، حالا آخرِ صفحه، بعد از پارت دو -->
+  <div id="story-dynamic-content"></div>
+<div id="admin-composer"></div>
+
   <div class="story-end">
     <div class="line-dec"></div>
     <p>ادامه دارد...</p>
@@ -3958,6 +3961,13 @@ chOverlay.addEventListener('click', closePanel);
 document.querySelectorAll('.chapter-panel-item').forEach(item => {
   item.addEventListener('click', closePanel);
 });
+
+
+  <script type="module">
+  import { loadStoryContinuation, mountAdminComposer } from '/admin-composer.js';
+  loadStoryContinuation('story-dynamic-content', 'electropulse');
+  mountAdminComposer('admin-composer', 'electropulse');
+</script>
   
 </script>
 </body>
