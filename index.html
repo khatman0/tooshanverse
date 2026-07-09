@@ -1036,6 +1036,11 @@ footer {
   </a>
 
   <div class="side-nav-footer">
+     <a id="adminPanelLink" href="admin-market.html" style="display:none;">
+
+🛠 پنل مدیریت
+
+</a>
     <a class="side-nav-settings-btn" href="profile.html" title="تنظیمات حساب">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
     </a>
@@ -1507,6 +1512,8 @@ loadHomeComments();
     const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
     const { SUPABASE_URL, SUPABASE_KEY } = await import('./supabase-config.js');
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+     const { checkAdminLink } = await import('./admin-check.js');
+    checkAdminLink(supabase);
 
     const { data: { session } } = await supabase.auth.getSession();
     const avatarBox = document.getElementById('sideNavAvatar');
