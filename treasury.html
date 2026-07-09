@@ -116,6 +116,45 @@ main{
     margin-bottom:14px;
 }
 
+/*═════════ HERO COIN ═════════*/
+
+.hero-coin-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.hero-coin{
+    width:108px;
+    height:108px;
+    filter:drop-shadow(0 0 14px rgba(255,215,120,.45)) drop-shadow(0 0 26px rgba(25,167,255,.25));
+    animation:coinFloat 3.2s ease-in-out infinite;
+}
+
+.hero-coin svg{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+@keyframes coinFloat{
+    0%,100%{transform:translateY(0) rotate(-1.5deg);}
+    50%{transform:translateY(-12px) rotate(1.5deg);}
+}
+
+.hero-coin-name{
+    margin-top:14px;
+    font-family:'Orbitron',sans-serif;
+    font-size:.8rem;
+    letter-spacing:2px;
+    color:var(--gold2);
+}
+
+@media (prefers-reduced-motion: reduce){
+    .hero-coin{animation:none;}
+}
+
 .hero h1{
     font-family:'Orbitron',sans-serif;
     font-size:clamp(2rem,5vw,2.8rem);
@@ -167,6 +206,37 @@ main{
     font-family:'Orbitron',sans-serif;
     font-size:2.6rem;
     color:var(--gold);
+    display:inline-block;
+    transform-origin:center;
+}
+
+/* پالس ورودی سکه‌ها روی عدد */
+.wallet-item h3.bump{
+    animation:coinBump .6s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes coinBump{
+    0%{transform:scale(1);text-shadow:none;}
+    35%{transform:scale(1.32);text-shadow:0 0 18px rgba(255,215,120,.85);}
+    65%{transform:scale(.94);}
+    100%{transform:scale(1);text-shadow:none;}
+}
+
+/* درخشش حلقه‌ی خزانه هنگام فرود سکه‌ها */
+.wallet-card.receiving::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:26px;
+    box-shadow:0 0 0 1px rgba(255,215,120,.5) inset, 0 0 40px rgba(240,192,96,.35);
+    animation:receiveFlash .6s ease-out;
+    pointer-events:none;
+}
+
+@keyframes receiveFlash{
+    0%{opacity:0;}
+    30%{opacity:1;}
+    100%{opacity:0;}
 }
 
 .wallet-divider{
@@ -267,6 +337,7 @@ main{
     color:#fff;
     font-weight:700;
     transition:.25s;
+    position:relative;
 }
 
 .exchange-btn:hover{
@@ -293,6 +364,32 @@ main{
     background:rgba(240,192,96,.18);
     color:var(--gold2);
     border:1px solid rgba(255,200,90,.35);
+}
+
+/*═════════ COIN FLIGHT ═════════*/
+
+#coinFlightLayer{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:9998;
+    overflow:visible;
+}
+
+.flying-coin{
+    position:absolute;
+    top:0;
+    left:0;
+    width:30px;
+    height:30px;
+    will-change:transform,opacity;
+    filter:drop-shadow(0 0 6px rgba(255,215,120,.65)) drop-shadow(0 0 14px rgba(25,167,255,.25));
+}
+
+.flying-coin svg{
+    width:100%;
+    height:100%;
+    display:block;
 }
 
 /*═════════ TOAST ═════════*/
@@ -324,6 +421,11 @@ main{
     .wallet-divider{display:none;}
     .wallet-item h3{font-size:2.1rem;}
 }
+
+@media (prefers-reduced-motion: reduce){
+    .flying-coin{display:none;}
+    .wallet-item h3.bump{animation:none;}
+}
 </style>
 </head>
 <body>
@@ -339,10 +441,63 @@ main{
 
     <section class="hero">
         <div class="hero-eyebrow">YOUR TREASURY</div>
+
+        <div class="hero-coin-wrap">
+            <div class="hero-coin">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <radialGradient id="goldBodyHero" cx="35%" cy="30%" r="75%">
+                      <stop offset="0%" stop-color="#ffe9b0"/>
+                      <stop offset="45%" stop-color="#ffd777"/>
+                      <stop offset="80%" stop-color="#f0c060"/>
+                      <stop offset="100%" stop-color="#c98f2e"/>
+                    </radialGradient>
+                    <linearGradient id="ringGlowHero" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#84dfff"/>
+                      <stop offset="50%" stop-color="#19a7ff"/>
+                      <stop offset="100%" stop-color="#1177dd"/>
+                    </linearGradient>
+                    <radialGradient id="innerShadeHero" cx="50%" cy="50%" r="50%">
+                      <stop offset="60%" stop-color="#f0c060" stop-opacity="0"/>
+                      <stop offset="100%" stop-color="#8a5e18" stop-opacity=".55"/>
+                    </radialGradient>
+                    <filter id="softGlowHero" x="-60%" y="-60%" width="220%" height="220%">
+                      <feGaussianBlur stdDeviation="4" result="blur"/>
+                      <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                      </feMerge>
+                    </filter>
+                    <filter id="bigGlowHero" x="-80%" y="-80%" width="260%" height="260%">
+                      <feGaussianBlur stdDeviation="7"/>
+                    </filter>
+                  </defs>
+                  <circle cx="100" cy="100" r="86" fill="#19a7ff" opacity=".28" filter="url(#bigGlowHero)"/>
+                  <circle cx="100" cy="100" r="92" fill="none" stroke="url(#ringGlowHero)" stroke-width="3" opacity=".85" filter="url(#softGlowHero)"/>
+                  <circle cx="100" cy="100" r="92" fill="none" stroke="#84dfff" stroke-width="1" opacity=".5"/>
+                  <circle cx="100" cy="100" r="80" fill="url(#goldBodyHero)"/>
+                  <circle cx="100" cy="100" r="80" fill="url(#innerShadeHero)"/>
+                  <circle cx="100" cy="100" r="80" fill="none" stroke="#7a521a" stroke-width="1.5" opacity=".4"/>
+                  <circle cx="100" cy="100" r="68" fill="none" stroke="#fff3d6" stroke-width="1.5" opacity=".55"/>
+                  <circle cx="100" cy="100" r="64" fill="none" stroke="#19a7ff" stroke-width="1.2" opacity=".35"/>
+                  <g opacity=".25" stroke="#19a7ff" stroke-width="1" fill="none">
+                    <polygon points="100,56 137,78 137,122 100,144 63,122 63,78"/>
+                    <polygon points="100,70 125,84 125,116 100,130 75,116 75,84"/>
+                  </g>
+                  <g filter="url(#softGlowHero)">
+                    <path d="M68 76 L132 76 L132 92 L108 92 L108 136 L92 136 L92 92 L68 92 Z"
+                          fill="#0b1220" opacity=".88"/>
+                  </g>
+                  <ellipse cx="80" cy="55" rx="46" ry="18" fill="#ffffff" opacity=".18"/>
+                </svg>
+            </div>
+            <span class="hero-coin-name">توشان کوین</span>
+        </div>
+
         <h1>خزانه <span>شخصی</span></h1>
     </section>
 
-    <section class="wallet-card">
+    <section class="wallet-card" id="walletCard">
         <div class="wallet-stats">
             <div class="wallet-item">
                 <span class="wallet-label">TOOSHAN COINS</span>
@@ -367,7 +522,60 @@ main{
 
 </main>
 
+<!-- لایه‌ی پرواز سکه‌ها؛ روی کل صفحه قرار می‌گیرد و هیچ کلیکی را نمی‌گیرد -->
+<div id="coinFlightLayer"></div>
+
 <div class="toast-container" id="toastContainer"></div>
+
+<!-- تمپلیت SVG سکه‌ی توشان (فقط برای کلون شدن در پرواز استفاده می‌شود) -->
+<template id="coinTemplate">
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="goldBody" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#ffe9b0"/>
+      <stop offset="45%" stop-color="#ffd777"/>
+      <stop offset="80%" stop-color="#f0c060"/>
+      <stop offset="100%" stop-color="#c98f2e"/>
+    </radialGradient>
+    <linearGradient id="ringGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#84dfff"/>
+      <stop offset="50%" stop-color="#19a7ff"/>
+      <stop offset="100%" stop-color="#1177dd"/>
+    </linearGradient>
+    <radialGradient id="innerShade" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#f0c060" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#8a5e18" stop-opacity=".55"/>
+    </radialGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="bigGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+  </defs>
+  <circle cx="100" cy="100" r="86" fill="#19a7ff" opacity=".28" filter="url(#bigGlow)"/>
+  <circle cx="100" cy="100" r="92" fill="none" stroke="url(#ringGlow)" stroke-width="3" opacity=".85" filter="url(#softGlow)"/>
+  <circle cx="100" cy="100" r="92" fill="none" stroke="#84dfff" stroke-width="1" opacity=".5"/>
+  <circle cx="100" cy="100" r="80" fill="url(#goldBody)"/>
+  <circle cx="100" cy="100" r="80" fill="url(#innerShade)"/>
+  <circle cx="100" cy="100" r="80" fill="none" stroke="#7a521a" stroke-width="1.5" opacity=".4"/>
+  <circle cx="100" cy="100" r="68" fill="none" stroke="#fff3d6" stroke-width="1.5" opacity=".55"/>
+  <circle cx="100" cy="100" r="64" fill="none" stroke="#19a7ff" stroke-width="1.2" opacity=".35"/>
+  <g opacity=".25" stroke="#19a7ff" stroke-width="1" fill="none">
+    <polygon points="100,56 137,78 137,122 100,144 63,122 63,78"/>
+    <polygon points="100,70 125,84 125,116 100,130 75,116 75,84"/>
+  </g>
+  <g filter="url(#softGlow)">
+    <path d="M68 76 L132 76 L132 92 L108 92 L108 136 L92 136 L92 92 L68 92 Z"
+          fill="#0b1220" opacity=".88"/>
+  </g>
+  <ellipse cx="80" cy="55" rx="46" ry="18" fill="#ffffff" opacity=".18"/>
+</svg>
+</template>
 
 <script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
@@ -382,6 +590,9 @@ let xp = 0;
 const coinBalance = document.getElementById("coinBalance");
 const xpBalance = document.getElementById("xpBalance");
 const exchangeGrid = document.getElementById("exchangeGrid");
+const walletCard = document.getElementById("walletCard");
+const coinFlightLayer = document.getElementById("coinFlightLayer");
+const coinTemplate = document.getElementById("coinTemplate");
 
 const toFa = n => Number(n).toLocaleString("fa-IR");
 
@@ -400,6 +611,99 @@ function showToast(text){
 function updateUI(){
     coinBalance.textContent = toFa(coins);
     xpBalance.textContent = toFa(xp);
+}
+
+/*═════════ COIN FLIGHT ANIMATION ═════════
+   وقتی تبدیل موفق انجام شد، چند سکه از روی دکمه‌ی
+   «تبدیل» به سمت عدد Tooshan Coins پرواز می‌کنند،
+   حین پرواز می‌چرخند (افکت فلیپ سکه) و روی یک مسیر
+   کمانی/پرتابی حرکت می‌کنند. با فرود آخرین سکه،
+   عدد خزانه با یک ضربان (bump) و درخشش آپدیت می‌شود.
+════════════════════════════════════════════*/
+
+function launchCoinFlight(fromEl, toEl, amountGained, onLanded){
+    const fromRect = fromEl.getBoundingClientRect();
+    const toRect = toEl.getBoundingClientRect();
+
+    // تعداد سکه‌های پرنده بر اساس مقدار دریافتی، بین ۴ تا ۹ عدد
+    const count = Math.min(9, Math.max(4, Math.round(amountGained / 15)));
+
+    const startX = fromRect.left + fromRect.width / 2;
+    const startY = fromRect.top + fromRect.height / 2;
+    const endX = toRect.left + toRect.width / 2;
+    const endY = toRect.top + toRect.height / 2;
+
+    let remaining = count;
+
+    for(let i = 0; i < count; i++){
+        const coin = document.createElement("div");
+        coin.className = "flying-coin";
+        coin.appendChild(coinTemplate.content.cloneNode(true));
+        coinFlightLayer.appendChild(coin);
+
+        // پراکندگی کوچک در نقطه‌ی شروع و پایان تا سکه‌ها روی هم نیفتند
+        const sx = startX + (Math.random() * 24 - 12);
+        const sy = startY + (Math.random() * 14 - 7);
+        const ex = endX + (Math.random() * 26 - 13);
+        const ey = endY + (Math.random() * 10 - 5);
+
+        // نقطه‌ی میانی مسیر، بالاتر از هر دو سر، برای حس «پریدن» سکه
+        const arcHeight = 90 + Math.random() * 70;
+        const midX = (sx + ex) / 2 + (Math.random() * 70 - 35);
+        const midY = Math.min(sy, ey) - arcHeight;
+
+        const spins = 2 + Math.floor(Math.random() * 2); // ۲ تا ۳ دور چرخش
+        const delay = i * 65 + Math.random() * 40;
+        const duration = 780 + Math.random() * 260;
+
+        const anim = coin.animate([
+            {
+                transform: `translate(${sx}px, ${sy}px) scale(.4) rotateY(0deg)`,
+                opacity: 0,
+                offset: 0
+            },
+            {
+                transform: `translate(${sx}px, ${sy}px) scale(.75) rotateY(${spins * 60}deg)`,
+                opacity: 1,
+                offset: 0.1
+            },
+            {
+                transform: `translate(${midX}px, ${midY}px) scale(1.05) rotateY(${spins * 220}deg)`,
+                opacity: 1,
+                offset: 0.55
+            },
+            {
+                transform: `translate(${ex}px, ${ey}px) scale(.3) rotateY(${spins * 360}deg)`,
+                opacity: 0,
+                offset: 1
+            }
+        ], {
+            duration,
+            delay,
+            easing: "cubic-bezier(.25,.65,.3,1)",
+            fill: "forwards"
+        });
+
+        anim.onfinish = () => {
+            coin.remove();
+            remaining -= 1;
+            if(remaining === 0 && onLanded) onLanded();
+        };
+    }
+}
+
+function bumpWalletCoin(){
+    coinBalance.classList.remove("bump");
+    walletCard.classList.remove("receiving");
+    // ری‌فلو اجباری تا انیمیشن از اول اجرا شود، حتی اگر پشت سر هم فعال شود
+    void coinBalance.offsetWidth;
+    coinBalance.classList.add("bump");
+    walletCard.classList.add("receiving");
+
+    setTimeout(() => {
+        coinBalance.classList.remove("bump");
+        walletCard.classList.remove("receiving");
+    }, 650);
 }
 
 async function loadProfile(){
@@ -500,10 +804,18 @@ exchangeGrid.addEventListener("click", async e => {
         return;
     }
 
-    coins = data.coins;
     xp = data.xp;
-    updateUI();
+    coins = data.coins;
+
+    // XP بلافاصله آپدیت می‌شود (چون همان لحظه کم می‌شود)
+    xpBalance.textContent = toFa(xp);
     refreshButtonStates();
+
+    // سکه‌ها از روی همین دکمه به سمت عدد Tooshan Coins پرواز می‌کنند
+    launchCoinFlight(btn, coinBalance, data.coins_gained, () => {
+        coinBalance.textContent = toFa(coins);
+        bumpWalletCoin();
+    });
 
     showToast(`+${toFa(data.coins_gained)} سکه دریافت شد`);
 });
