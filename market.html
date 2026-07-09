@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بازار | توشان‌ورس</title>
+<link rel="icon" href="/photo/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#04060e;
+    --blue:#19a7ff;
+    --blue2:#84dfff;
+    --gold:#f0c060;
+    --gold2:#ffd777;
+    --red:#ff4767;
+    --text:#ddeeff;
+    --muted:rgba(210,230,255,.55);
+    --line:rgba(25,167,255,.12);
+    --card:rgba(8,14,28,.72);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{scroll-behavior:smooth;}
+
+body{
+    font-family:'Vazirmatn',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+    cursor:none;
+}
+
+a{text-decoration:none;color:inherit;}
+button,input,select{font-family:inherit;cursor:none;border:none;outline:none;}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(rgba(25,167,255,.015) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(25,167,255,.015) 1px,transparent 1px);
+    background-size:60px 60px;
+    pointer-events:none;
+    z-index:-2;
+}
+
+.ambient{
+    position:fixed;
+    top:-220px;
+    left:50%;
+    transform:translateX(-50%);
+    width:700px;
+    height:700px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(25,167,255,.08), transparent 70%);
+    animation:breathe 10s infinite ease-in-out;
+    pointer-events:none;
+    z-index:-1;
+}
+
+@keyframes breathe{
+    0%,100%{opacity:.5;transform:translateX(-50%) scale(1);}
+    50%{opacity:1;transform:translateX(-50%) scale(1.12);}
+}
+
+/*═════════ CURSOR ═════════*/
+
+#cursor{
+    position:fixed;
+    width:12px;height:12px;
+    background:var(--blue);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:99999;
+    transform:translate(-50%,-50%);
+    mix-blend-mode:screen;
+    transition:.2s;
+}
+
+#cursor-ring{
+    position:fixed;
+    width:38px;height:38px;
+    border-radius:50%;
+    border:1px solid rgba(25,167,255,.4);
+    pointer-events:none;
+    z-index:99998;
+    transform:translate(-50%,-50%);
+    transition:.12s;
+}
+
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor{
+    width:20px;height:20px;
+    background:var(--gold);
+}
+
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring{
+    width:52px;height:52px;
+}
+
+/*═════════ HAMBURGER + NAV ═════════*/
+
+.hamburger{
+    position:fixed;
+    top:20px;left:20px;
+    width:42px;height:42px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:6px;
+    padding:7px;
+    background:rgba(4,6,14,.85);
+    border:1px solid var(--line);
+    border-radius:12px;
+    backdrop-filter:blur(15px);
+    z-index:1000;
+}
+
+.hamburger span{
+    height:2px;
+    background:var(--blue);
+    border-radius:2px;
+    transition:.35s;
+}
+
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hamburger.active span:nth-child(2){opacity:0;}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(5px);
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+    z-index:500;
+}
+
+.overlay.active{opacity:1;visibility:visible;}
+
+.side-nav{
+    position:fixed;
+    top:0;left:-290px;
+    width:280px;height:100%;
+    padding:80px 24px;
+    background:linear-gradient(180deg,#07101d,#04060e);
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    transition:.35s;
+    z-index:900;
+}
+
+.side-nav.active{left:0;}
+
+.nav-label{
+    font-size:.72rem;
+    letter-spacing:3px;
+    color:var(--muted);
+    margin-bottom:15px;
+}
+
+.side-nav a{
+    padding:13px 15px;
+    border-radius:12px;
+    font-weight:600;
+    transition:.25s;
+}
+
+.side-nav a:hover{
+    background:rgba(25,167,255,.08);
+    color:var(--blue2);
+}
+
+.side-nav .current{
+    background:rgba(25,167,255,.1);
+    border:1px solid var(--line);
+    color:var(--gold);
+}
+
+.side-nav-footer{
+    margin-top:auto;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+#adminPanelLink{
+    color:#ff8fa3;
+}
+
+.side-nav-profile-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px;
+    border-radius:100px;
+}
+
+.side-nav-avatar{
+    width:36px;height:36px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(120,140,170,.18);
+    border:1px solid var(--line);
+    flex-shrink:0;
+}
+
+/*═════════ HEADER ═════════*/
+
+header{
+    position:fixed;
+    top:0;left:0;right:0;
+    padding:18px 24px 18px 80px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(to bottom, rgba(4,6,14,.96), transparent);
+    z-index:300;
+}
+
+.logo{
+    font-family:'Orbitron',sans-serif;
+    font-size:.95rem;
+    letter-spacing:2px;
+    font-weight:800;
+    color:var(--blue);
+}
+
+.logo span{color:var(--gold);}
+
+.coin-pill{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 16px;
+    background:rgba(8,14,28,.85);
+    border:1px solid var(--line);
+    border-radius:999px;
+    backdrop-filter:blur(15px);
+    font-family:'Orbitron',sans-serif;
+    font-size:.9rem;
+    color:var(--gold);
+}
+
+/*═════════ HERO ═════════*/
+
+.market-hero{
+    padding:150px 30px 50px;
+    text-align:center;
+}
+
+.hero-eyebrow{
+    font-size:.72rem;
+    letter-spacing:4px;
+    color:var(--gold);
+    margin-bottom:16px;
+}
+
+.market-hero h1{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(2.2rem,5vw,3.2rem);
+    font-weight:900;
+    margin-bottom:16px;
+}
+
+.market-hero h1 span{color:var(--blue);}
+
+.market-hero p{
+    max-width:600px;
+    margin:0 auto;
+    line-height:2;
+    color:rgba(210,230,255,.72);
+}
+
+/*═════════ TABS ═════════*/
+
+.tab-bar{
+    max-width:1100px;
+    margin:0 auto 40px;
+    padding:0 24px;
+    display:flex;
+    justify-content:center;
+    gap:14px;
+}
+
+.tab-btn{
+    padding:12px 28px;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    font-weight:700;
+    transition:.3s;
+}
+
+.tab-btn:hover{
+    background:rgba(25,167,255,.08);
+    color:var(--blue2);
+}
+
+.tab-btn.active{
+    background:linear-gradient(135deg,var(--blue),#1177dd);
+    color:#fff;
+    box-shadow:0 12px 30px rgba(25,167,255,.28);
+}
+
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/*═════════ MARKET GRID ═════════*/
+
+main{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 24px 100px;
+}
+
+.market-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:24px;
+}
+
+.listing-card{
+    position:relative;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:26px 24px;
+    transition:.3s;
+    overflow:hidden;
+}
+
+.listing-card::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:1px;
+    background:linear-gradient(90deg,transparent,var(--blue),transparent);
+}
+
+.listing-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(25,167,255,.35);
+    box-shadow:0 20px 45px rgba(0,0,0,.4);
+}
+
+.listing-tag{
+    display:inline-block;
+    font-size:.65rem;
+    font-weight:800;
+    letter-spacing:1px;
+    padding:5px 12px;
+    border-radius:999px;
+    margin-bottom:16px;
+}
+
+.listing-tag.official{
+    background:rgba(240,192,96,.15);
+    color:var(--gold2);
+    border:1px solid rgba(240,192,96,.3);
+}
+
+.listing-tag.peer{
+    background:rgba(25,167,255,.12);
+    color:var(--blue2);
+    border:1px solid rgba(25,167,255,.25);
+}
+
+.listing-card h3{
+    font-size:1.15rem;
+    margin-bottom:8px;
+}
+
+.listing-seller{
+    font-size:.8rem;
+    color:var(--muted);
+    margin-bottom:18px;
+}
+
+.listing-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+}
+
+.listing-price{
+    font-family:'Orbitron',sans-serif;
+    font-size:1.2rem;
+    color:var(--gold);
+}
+
+.buy-btn{
+    padding:11px 22px;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--blue),#1177dd);
+    color:#fff;
+    font-weight:700;
+    transition:.25s;
+    font-size:.85rem;
+}
+
+.buy-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 14px 30px rgba(25,167,255,.3);
+}
+
+.buy-btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none;
+    box-shadow:none;
+}
+
+.empty-state{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--muted);
+    grid-column:1/-1;
+}
+
+/*═════════ MY ITEMS (SELL PANEL) ═════════*/
+
+.sell-section{
+    margin-bottom:50px;
+}
+
+.sell-section h2{
+    font-size:1.2rem;
+    margin-bottom:20px;
+}
+
+.inventory-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:18px;
+}
+
+.inventory-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px;
+}
+
+.inventory-card h4{
+    font-size:1rem;
+    margin-bottom:6px;
+}
+
+.inventory-card small{
+    color:var(--muted);
+    display:block;
+    margin-bottom:16px;
+}
+
+.sell-form{
+    display:flex;
+    gap:10px;
+}
+
+.sell-form input{
+    flex:1;
+    padding:10px 14px;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    border-radius:10px;
+    color:var(--text);
+    font-size:.85rem;
+}
+
+.sell-form input:focus{
+    border-color:rgba(25,167,255,.5);
+}
+
+.sell-form button{
+    padding:10px 18px;
+    border-radius:10px;
+    background:linear-gradient(135deg,var(--gold),#d99d2e);
+    color:#111;
+    font-weight:700;
+    font-size:.82rem;
+    white-space:nowrap;
+}
+
+.sell-form button:hover{
+    transform:translateY(-2px);
+}
+
+/*═════════ MY LISTINGS ═════════*/
+
+.my-listing-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    padding:18px 22px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+}
+
+.my-listing-info h4{
+    font-size:.95rem;
+    margin-bottom:4px;
+}
+
+.my-listing-info span{
+    font-size:.8rem;
+    color:var(--gold);
+    font-family:'Orbitron',sans-serif;
+}
+
+.cancel-btn{
+    padding:9px 18px;
+    border-radius:10px;
+    background:rgba(255,71,103,.12);
+    color:#ff8fa3;
+    border:1px solid rgba(255,71,103,.3);
+    font-size:.8rem;
+    font-weight:600;
+    transition:.2s;
+}
+
+.cancel-btn:hover{
+    background:rgba(255,71,103,.2);
+}
+
+/*═════════ TOAST ═════════*/
+
+.toast{
+    position:fixed;
+    bottom:35px;
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    padding:15px 28px;
+    border-radius:14px;
+    background:#08111d;
+    border:1px solid var(--line);
+    color:#fff;
+    opacity:0;
+    transition:.35s;
+    z-index:9999;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/*═════════ RESPONSIVE ═════════*/
+
+@media(max-width:640px){
+    body{cursor:auto;}
+    #cursor,#cursor-ring{display:none;}
+    .market-hero{padding:120px 20px 40px;}
+    .sell-form{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div class="ambient"></div>
+
+<div class="hamburger" id="hamburgerBtn">
+    <span></span><span></span><span></span>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<nav class="side-nav" id="sideNav">
+    <div class="nav-label">ناوبری</div>
+    <a href="index.html">خانه</a>
+    <a href="phase.html">فازها</a>
+    <a href="comic-reader.html">کمیک‌ها</a>
+    <a href="characters.html">شخصیت‌ها</a>
+    <a href="comments.html">نظرها</a>
+    <a href="about.html">درباره ما</a>
+    <a href="treasury.html">خزانه</a>
+    <a href="market.html" class="current">بازار</a>
+
+    <div class="side-nav-footer">
+        <a id="adminPanelLink" href="admin-market.html" style="display:none;">🛠 پنل مدیریت</a>
+        <a class="side-nav-settings-btn" href="profile.html">⚙</a>
+        <a class="side-nav-profile-btn" href="profile.html">
+            <span class="side-nav-profile-name">ورود / ثبت نام</span>
+            <div class="side-nav-avatar">👤</div>
+        </a>
+    </div>
+</nav>
+
+<header>
+    <div class="logo">توشان<span>‌</span>ورس</div>
+    <div class="coin-pill">🪙 <span id="headerCoins">۰</span></div>
+</header>
+
+<main>
+
+    <section class="market-hero">
+        <div class="hero-eyebrow">TOOSHAN MARKETPLACE</div>
+        <h1>بازار <span>توشان‌ورس</span></h1>
+        <p>آیتم‌های کالکشنی و تزئینی رو بخر، بفروش، یا جمع‌شون کن. برخی از داستان‌های محدود هم فقط از همین‌جا در دسترسن.</p>
+    </section>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" data-tab="browse">مرور بازار</button>
+        <button class="tab-btn" data-tab="sell">فروش من</button>
+    </div>
+
+    <!-- ═══════════ BROWSE TAB ═══════════ -->
+    <div class="tab-panel active" id="browseTab">
+        <div class="market-grid" id="marketGrid">
+            <div class="empty-state">در حال بارگذاری بازار...</div>
+        </div>
+    </div>
+
+    <!-- ═══════════ SELL TAB ═══════════ -->
+    <div class="tab-panel" id="sellTab">
+
+        <div class="sell-section">
+            <h2>آیتم‌های قابل فروش من</h2>
+            <div class="inventory-grid" id="myInventoryGrid">
+                <div class="empty-state">در حال بارگذاری...</div>
+            </div>
+        </div>
+
+        <div class="sell-section">
+            <h2>آگهی‌های فعال من</h2>
+            <div id="myListingsList">
+                <div class="empty-state">در حال بارگذاری...</div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
+import { checkAdminLink } from "./admin-check.js";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let user = null;
+let coins = 0;
+
+const marketGrid = document.getElementById("marketGrid");
+const myInventoryGrid = document.getElementById("myInventoryGrid");
+const myListingsList = document.getElementById("myListingsList");
+const headerCoins = document.getElementById("headerCoins");
+
+const toFa = n => Number(n).toLocaleString("fa-IR");
+
+const categoryLabel = {
+    story: "داستان",
+    comic: "کمیک",
+    profile: "شخصی‌سازی",
+    special: "ویژه"
+};
+
+function showToast(text){
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = text;
+    document.body.appendChild(toast);
+    setTimeout(()=> toast.classList.add("show"), 50);
+    setTimeout(()=>{
+        toast.classList.remove("show");
+        setTimeout(()=> toast.remove(), 300);
+    }, 2500);
+}
+
+/*═════════ TABS ═════════*/
+
+document.querySelectorAll(".tab-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+        document.querySelectorAll(".tab-btn").forEach(b=> b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(p=> p.classList.remove("active"));
+
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab + "Tab").classList.add("active");
+    });
+});
+
+/*═════════ AUTH + PROFILE ═════════*/
+
+async function loadUser(){
+    const { data:{ user: currentUser } } = await supabase.auth.getUser();
+
+    if(!currentUser){
+        location.href = "login.html";
+        return;
+    }
+
+    user = currentUser;
+
+    const { data, error } = await supabase
+        .from("profiles")
+        .select("coins")
+        .eq("id", user.id)
+        .single();
+
+    if(error){
+        console.error(error);
+        return;
+    }
+
+    coins = Number(data.coins) || 0;
+    headerCoins.textContent = toFa(coins);
+}
+
+/*═════════ BROWSE MARKET ═════════*/
+
+async function loadMarket(){
+    const { data, error } = await supabase
+        .from("market_listings")
+        .select("*")
+        .eq("status", "active")
+        .order("created_at", { ascending: false });
+
+    if(error){
+        console.error(error);
+        marketGrid.innerHTML = `<div class="empty-state">خطا در بارگذاری بازار</div>`;
+        return;
+    }
+
+    if(!data || data.length === 0){
+        marketGrid.innerHTML = `<div class="empty-state">فعلاً آیتمی برای فروش نیست.</div>`;
+        return;
+    }
+
+    marketGrid.innerHTML = "";
+
+    data.forEach(listing => {
+        const isOfficial = !listing.seller_id;
+        const isMine = listing.seller_id === user.id;
+
+        const card = document.createElement("div");
+        card.className = "listing-card";
+
+        card.innerHTML = `
+            <span class="listing-tag ${isOfficial ? "official" : "peer"}">
+                ${isOfficial ? "رسمی" : "کاربر به کاربر"}
+            </span>
+            <h3>${listing.item_name}</h3>
+            <div class="listing-seller">
+                ${categoryLabel[listing.category] || listing.category}
+                ${!isOfficial ? " · فروشنده‌ی دیگر" : ""}
+                ${listing.quantity > 1 ? ` · ${toFa(listing.quantity)} عدد باقی‌مانده` : ""}
+            </div>
+            <div class="listing-footer">
+                <span class="listing-price">🪙 ${toFa(listing.price)}</span>
+                <button class="buy-btn" data-id="${listing.id}" ${isMine ? "disabled" : ""}>
+                    ${isMine ? "آیتم شماست" : "خرید"}
+                </button>
+            </div>
+        `;
+
+        marketGrid.appendChild(card);
+    });
+}
+
+marketGrid.addEventListener("click", async e => {
+    const btn = e.target.closest(".buy-btn");
+    if(!btn || btn.disabled) return;
+
+    btn.disabled = true;
+    btn.innerText = "در حال خرید...";
+
+    const { error } = await supabase.rpc("buy_listing", {
+        p_listing_id: btn.dataset.id
+    });
+
+    if(error){
+        console.error(error);
+        showToast(error.message || "خطا در خرید");
+        btn.disabled = false;
+        btn.innerText = "خرید";
+        return;
+    }
+
+    showToast("خرید با موفقیت انجام شد");
+    await loadUser();
+    await loadMarket();
+});
+
+/*═════════ MY INVENTORY (FOR SELLING) ═════════*/
+
+async function loadMyInventory(){
+    const { data, error } = await supabase
+        .from("inventory")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("listed", false)
+        .order("purchased_at", { ascending: false });
+
+    if(error){
+        console.error(error);
+        myInventoryGrid.innerHTML = `<div class="empty-state">خطا در بارگذاری آیتم‌ها</div>`;
+        return;
+    }
+
+    if(!data || data.length === 0){
+        myInventoryGrid.innerHTML = `<div class="empty-state">آیتمی برای فروش نداری.</div>`;
+        return;
+    }
+
+    myInventoryGrid.innerHTML = "";
+
+    data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "inventory-card";
+
+        card.innerHTML = `
+            <h4>${item.item_name}</h4>
+            <small>${categoryLabel[item.category] || item.category}</small>
+            <div class="sell-form">
+                <input type="number" min="1" placeholder="قیمت (سکه)" data-inventory-id="${item.id}">
+                <button class="sell-submit-btn" data-inventory-id="${item.id}">فروش</button>
+            </div>
+        `;
+
+        myInventoryGrid.appendChild(card);
+    });
+}
+
+myInventoryGrid.addEventListener("click", async e => {
+    const btn = e.target.closest(".sell-submit-btn");
+    if(!btn) return;
+
+    const input = myInventoryGrid.querySelector(`input[data-inventory-id="${btn.dataset.inventoryId}"]`);
+    const price = Number(input.value);
+
+    if(!price || price <= 0){
+        showToast("لطفاً یک قیمت معتبر وارد کن");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "در حال ثبت...";
+
+    const { error } = await supabase.rpc("list_item_for_sale", {
+        p_inventory_id: btn.dataset.inventoryId,
+        p_price: price
+    });
+
+    if(error){
+        console.error(error);
+        showToast(error.message || "خطا در ثبت آگهی");
+        btn.disabled = false;
+        btn.innerText = "فروش";
+        return;
+    }
+
+    showToast("آیتم برای فروش گذاشته شد");
+    await loadMyInventory();
+    await loadMyListings();
+});
+
+/*═════════ MY ACTIVE LISTINGS ═════════*/
+
+async function loadMyListings(){
+    const { data, error } = await supabase
+        .from("market_listings")
+        .select("*")
+        .eq("seller_id", user.id)
+        .eq("status", "active")
+        .order("created_at", { ascending: false });
+
+    if(error){
+        console.error(error);
+        myListingsList.innerHTML = `<div class="empty-state">خطا در بارگذاری آگهی‌ها</div>`;
+        return;
+    }
+
+    if(!data || data.length === 0){
+        myListingsList.innerHTML = `<div class="empty-state">هنوز آگهی فعالی نداری.</div>`;
+        return;
+    }
+
+    myListingsList.innerHTML = "";
+
+    data.forEach(listing => {
+        const row = document.createElement("div");
+        row.className = "my-listing-row";
+
+        row.innerHTML = `
+            <div class="my-listing-info">
+                <h4>${listing.item_name}</h4>
+                <span>🪙 ${toFa(listing.price)}</span>
+            </div>
+            <button class="cancel-btn" data-id="${listing.id}">لغو فروش</button>
+        `;
+
+        myListingsList.appendChild(row);
+    });
+}
+
+myListingsList.addEventListener("click", async e => {
+    const btn = e.target.closest(".cancel-btn");
+    if(!btn) return;
+
+    btn.disabled = true;
+
+    const { error } = await supabase.rpc("cancel_listing", {
+        p_listing_id: btn.dataset.id
+    });
+
+    if(error){
+        console.error(error);
+        showToast(error.message || "خطا در لغو آگهی");
+        btn.disabled = false;
+        return;
+    }
+
+    showToast("آگهی لغو شد");
+    await loadMyInventory();
+    await loadMyListings();
+});
+
+/*═════════ NAV ═════════*/
+
+const hamburger = document.getElementById("hamburgerBtn");
+const sideNav = document.getElementById("sideNav");
+const overlay = document.getElementById("overlay");
+
+function openMenu(){
+    hamburger?.classList.add("active");
+    sideNav?.classList.add("active");
+    overlay?.classList.add("active");
+}
+
+function closeMenu(){
+    hamburger?.classList.remove("active");
+    sideNav?.classList.remove("active");
+    overlay?.classList.remove("active");
+}
+
+hamburger?.addEventListener("click", ()=>{
+    sideNav.classList.contains("active") ? closeMenu() : openMenu();
+});
+
+overlay?.addEventListener("click", closeMenu);
+
+/*═════════ CURSOR ═════════*/
+
+const cursor = document.getElementById("cursor");
+const ring = document.getElementById("cursor-ring");
+let mouseX=0, mouseY=0, ringX=0, ringY=0;
+
+document.addEventListener("mousemove", e=>{
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateCursor(){
+    if(cursor){
+        cursor.style.left = mouseX + "px";
+        cursor.style.top = mouseY + "px";
+    }
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    if(ring){
+        ring.style.left = ringX + "px";
+        ring.style.top = ringY + "px";
+    }
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+/*═════════ PAGE START ═════════*/
+
+window.addEventListener("load", async () => {
+    await loadUser();
+    checkAdminLink(supabase);
+    await loadMarket();
+    await loadMyInventory();
+    await loadMyListings();
+});
+</script>
+
+</body>
+</html>
