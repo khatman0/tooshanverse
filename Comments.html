@@ -344,6 +344,25 @@ header {
 }
 .form-status.success { color: #6ee7a8; }
 .form-status.error { color: #ff6b6b; }
+  .comment-login-required {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+}
+.comment-login-required p {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin-bottom: 16px;
+  line-height: 1.8;
+}
+.comment-login-required .submit-btn {
+  max-width: 220px;
+  margin: 0 auto;
+  display: block;
+}
 
 /* لیست نظرات */
 .comments-section-title {
@@ -558,19 +577,25 @@ header {
     نظر بده
   </button>
 
-  <div class="comment-form-wrap" id="formWrap">
-  <form class="comment-form" id="commentForm">
-    <div class="form-group">
-      <label for="nameInput">اسم</label>
-      <input type="text" id="nameInput" placeholder="اسمت رو بنویس" required maxlength="40">
+ <div class="comment-form-wrap" id="formWrap">
+
+    <div class="comment-login-required" id="loginRequiredBox" style="display:none;">
+      <p>برای ثبت نظر باید اول وارد حساب کاربریت بشی.</p>
+      <a href="profile.html" class="submit-btn">ورود / ثبت‌نام</a>
     </div>
-    <div class="form-group">
-      <label for="commentInput">نظر</label>
-      <textarea id="commentInput" placeholder="نظرتو بنویس..." required maxlength="500"></textarea>
-    </div>
-    <button type="submit" class="submit-btn" id="submitBtn">ارسال نظر</button>
-    <div class="form-status" id="formStatus"></div>
-  </form>
+
+    <form class="comment-form" id="commentForm" style="display:none;">
+      <div class="form-group">
+        <label>در حال ارسال با نام:</label>
+        <div id="commentingAsName" style="padding:12px 16px; background: rgba(25,167,255,0.04); border:1px solid var(--line); border-radius:12px; color: var(--blue2); font-weight:700;"></div>
+      </div>
+      <div class="form-group">
+        <label for="commentInput">نظر</label>
+        <textarea id="commentInput" placeholder="نظرتو بنویس..." required maxlength="500"></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">ارسال نظر</button>
+      <div class="form-status" id="formStatus"></div>
+    </form>
   </div>
 
   <!-- لیست نظرات -->
@@ -624,19 +649,22 @@ formToggle.addEventListener('click', () => {
 const SHEET_GVIZ_URL = "https://docs.google.com/spreadsheets/d/1tuMO4XO3i6cUBEPcsEwlcSWU8EKy6BZmsx1APncszPE/gviz/tq?tqx=out:json";
 
 const form = document.getElementById('commentForm');
-const nameInput = document.getElementById('nameInput');
 const commentInput = document.getElementById('commentInput');
 const submitBtn = document.getElementById('submitBtn');
 const formStatus = document.getElementById('formStatus');
 const commentsList = document.getElementById('commentsList');
+const loginRequiredBox = document.getElementById('loginRequiredBox');
+const commentingAsName = document.getElementById('commentingAsName');
+
+let currentUserName = null; // فقط وقتی لاگین باشه پر می‌شه
 
 // ── ارسال نظر ──
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
+  if (!currentUserName) return;
 
-  const name = nameInput.value.trim();
   const comment = commentInput.value.trim();
-  if (!name || !comment) return;
+  if (!comment) return;
 
   submitBtn.disabled = true;
   submitBtn.textContent = 'در حال ارسال...';
@@ -648,15 +676,13 @@ form.addEventListener('submit', async (e) => {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ name, comment })
+      body: JSON.stringify({ name: currentUserName, comment })
     });
 
     formStatus.textContent = 'نظرت با موفقیت ثبت شد!';
     formStatus.classList.add('success');
     form.reset();
-
-    // نمایش فوری نظر تازه (چون no-cors جواب رو نمیده، دستی اضافه می‌کنیم)
-    addCommentToTop(name, comment, 'همین الان');
+    addCommentToTop(currentUserName, comment, 'همین الان');
 
   } catch (err) {
     formStatus.textContent = 'مشکلی پیش اومد. دوباره امتحان کن.';
@@ -670,7 +696,6 @@ form.addEventListener('submit', async (e) => {
 function addCommentToTop(name, comment, date) {
   const empty = commentsList.querySelector('.comments-empty');
   if (empty) empty.remove();
-
   const card = document.createElement('div');
   card.className = 'comment-card';
   card.innerHTML = `
@@ -719,7 +744,6 @@ async function loadComments() {
       return;
     }
 
-    // اولین بار: کل لیست رو بساز
     if (knownCommentKeys.size === 0) {
       commentsList.innerHTML = '';
       items.forEach(item => {
@@ -730,7 +754,6 @@ async function loadComments() {
       return;
     }
 
-    // دفعات بعد: فقط نظرات جدید رو از بالا اضافه کن
     const newItems = items.filter(item => {
       const key = item.name + '|' + item.comment + '|' + item.date;
       return !knownCommentKeys.has(key);
@@ -767,7 +790,8 @@ function buildCommentCard(item) {
 
 loadComments();
 setInterval(loadComments, 10000);
-  /* ── SIDE NAV PROFILE STATE (ورود/عدم ورود) ── */
+
+// ── وضعیت لاگین: هم برای ساید‌نو، هم برای فرم نظر ──
 (async () => {
   try {
     const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
@@ -800,9 +824,20 @@ setInterval(loadComments, 10000);
       } else {
         avatarBox.innerHTML = `<span class="side-nav-avatar-initial">${displayName.charAt(0).toUpperCase()}</span>`;
       }
+
+      currentUserName = displayName;
+      loginRequiredBox.style.display = 'none';
+      form.style.display = '';
+      commentingAsName.textContent = displayName;
+
+    } else {
+      loginRequiredBox.style.display = '';
+      form.style.display = 'none';
     }
   } catch (err) {
     console.warn('وضعیت ورود کاربر بارگذاری نشد:', err);
+    loginRequiredBox.style.display = '';
+    form.style.display = 'none';
   }
 })();
 </script>
