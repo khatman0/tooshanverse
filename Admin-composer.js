@@ -130,19 +130,21 @@ function injectStyles() {
     .ac-tool-btn:hover { background: rgba(25,167,255,0.1); border-color: rgba(25,167,255,0.3); }
     .ac-tool-btn.active { background: rgba(25,167,255,0.15); border-color: #19a7ff; color: #9be3ff; }
 
-    .ac-dropdown {
-      position: absolute;
-      top: calc(100% + 6px); right: 0;
-      background: #0a1020;
-      border: 1px solid rgba(25,167,255,0.25);
-      border-radius: 14px;
-      padding: 16px;
-      width: 300px;
-      max-width: 90vw;
-      z-index: 20;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-      display: none;
-    }
+   .ac-dropdown {
+  position: absolute;
+  top: calc(100% + 6px); right: 0;
+  background: #0a1020;
+  border: 1px solid rgba(25,167,255,0.25);
+  border-radius: 14px;
+  padding: 16px;
+  width: 300px;
+  max-width: 90vw;
+  max-height: 60vh;
+  overflow-y: auto;
+  z-index: 20;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  display: none;
+}
     .ac-dropdown.open { display: block; }
     .ac-dropdown label {
       display: block; font-size: 0.75rem; color: rgba(180,210,255,0.55);
