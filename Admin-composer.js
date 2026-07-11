@@ -350,6 +350,7 @@ export async function mountAdminComposer(containerId, storySlug) {
             <label>عنوان / زیرعنوان</label>
             <input type="text" id="acChapterTitle" placeholder="مثلاً: بازگشت به خانه" />
           </div>
+          <button class="ac-send-btn" id="acChapterSendBtn" style="flex-basis:100%; margin-top:6px;">افزودن فصل</button>
         </div>
 
         <div class="ac-input-row" id="acMainInputRow">
@@ -473,6 +474,7 @@ export async function mountAdminComposer(containerId, storySlug) {
   }
 
   sendBtn.addEventListener('click', submitCurrentMode);
+  container.querySelector('#acChapterSendBtn').addEventListener('click', submitCurrentMode);
 
   // Enter می‌فرسته، Shift+Enter خط جدید (برای حالت‌های تک‌خطی مثل اکشن/تایم‌برک، خود Enter هم کافیه)
   mainInput.addEventListener('keydown', (e) => {
