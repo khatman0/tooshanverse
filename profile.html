@@ -95,6 +95,7 @@ header {
   overflow: hidden;
   display: none;
   animation: fadeUp .6s ease both;
+  transition: background .4s ease, border-color .4s ease;
 }
 .profile-card::before {
   content: '';
@@ -107,6 +108,11 @@ header {
   display: flex; align-items: center; gap: 20px;
   margin-bottom: 20px;
 }
+.avatar-wrap {
+  position: relative;
+  width: 72px; height: 72px;
+  flex-shrink: 0;
+}
 .avatar {
   width: 72px; height: 72px;
   border-radius: 50%;
@@ -115,7 +121,13 @@ header {
   font-family: 'Orbitron', sans-serif;
   font-size: 1.6rem; font-weight: 900;
   color: #001828;
-  flex-shrink: 0;
+  box-sizing: border-box;
+  transition: box-shadow .3s ease, border .3s ease;
+}
+/* حلقه‌ی فریم دور آواتار - وقتی فریمی equip بشه این کلاس رو استایل می‌ده */
+.avatar.has-frame {
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 0 4px rgba(240,192,96,0.15), 0 0 18px rgba(240,192,96,0.35);
 }
 .profile-head-text { flex: 1; min-width: 0; }
 .name-row {
@@ -132,6 +144,20 @@ header {
   color: #001828;
   background: linear-gradient(135deg, var(--gold), #ffd88a);
   padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+/* بج تزئینی کنار اسم */
+.profile-badge-tag {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--blue2);
+  background: rgba(25,167,255,0.1);
+  border: 1px solid rgba(25,167,255,0.3);
+  padding: 3px 10px;
   border-radius: 20px;
   white-space: nowrap;
 }
@@ -356,6 +382,104 @@ header {
   display: none;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══════════════════════════════
+   تزئینات (فروشگاه دکوریشن پروفایل)
+══════════════════════════════ */
+.deco-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.deco-tab-btn {
+  padding: 8px 18px;
+  border-radius: 10px;
+  background: rgba(25,167,255,0.04);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.deco-tab-btn:hover { color: var(--text); }
+.deco-tab-btn.active {
+  background: linear-gradient(135deg, var(--blue), #1fb6ff);
+  color: #001828;
+  border-color: transparent;
+}
+.deco-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+.deco-item {
+  background: rgba(25,167,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s ease;
+  position: relative;
+}
+.deco-item:hover { border-color: rgba(25,167,255,0.4); transform: translateY(-2px); }
+.deco-item.equipped {
+  border-color: var(--gold);
+  background: rgba(240,192,96,0.06);
+}
+.deco-item.pending { opacity: .55; pointer-events: none; }
+.deco-swatch {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  background: linear-gradient(135deg, var(--blue), var(--gold));
+}
+.deco-item-name {
+  font-size: 0.78rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.deco-equipped-tag {
+  position: absolute; top: 8px; left: 8px;
+  font-size: 0.62rem;
+  font-weight: 900;
+  color: #001828;
+  background: var(--gold);
+  padding: 2px 8px;
+  border-radius: 20px;
+  display: none;
+}
+.deco-item.equipped .deco-equipped-tag { display: inline-block; }
+.deco-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 24px 0;
+}
+.deco-toast {
+  position: fixed;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(8,14,28,0.95);
+  border: 1px solid rgba(240,192,96,0.4);
+  color: var(--text);
+  padding: 12px 22px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: all .3s ease;
+  z-index: 100;
+}
+.deco-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* پیش‌فرض‌های ظاهری تم (theme) - هر آیتم theme یه کلاس اینجا داره */
+.theme-gold .profile-card { border-color: rgba(240,192,96,0.35); background: rgba(20,16,6,0.65); }
+.theme-red .profile-card  { border-color: rgba(255,64,96,0.35); background: rgba(22,6,10,0.65); }
 </style>
 </head>
 <body>
@@ -387,11 +511,14 @@ header {
   <!-- کارت پروفایل -->
   <div class="profile-card" id="profileCard">
     <div class="profile-head">
-      <div class="avatar" id="avatarInitial">؟</div>
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarInitial">؟</div>
+      </div>
       <div class="profile-head-text">
         <div class="name-row">
           <span class="name" id="displayNameLabel">—</span>
           <span class="points-badge" id="headerPointsBadge">۰ امتیاز</span>
+          <span class="profile-badge-tag" id="profileBadgeTag"></span>
         </div>
         <div class="email" id="emailLabel">—</div>
       </div>
@@ -469,6 +596,19 @@ header {
       </div>
     </div>
 
+    <!-- تزئینات -->
+    <div class="section-block">
+      <h3>🎨 تزئینات</h3>
+      <div class="deco-tabs" id="decoTabs">
+        <button class="deco-tab-btn active" data-category="frame">فریم</button>
+        <button class="deco-tab-btn" data-category="theme">تم</button>
+        <button class="deco-tab-btn" data-category="badge">بج</button>
+      </div>
+      <div class="deco-items-grid" id="decoItemsGrid">
+        <div class="deco-empty">در حال بارگذاری...</div>
+      </div>
+    </div>
+
     <!-- تاریخچه مطالعه -->
     <div class="section-block">
       <h3>📖 چیزایی که خوندی</h3>
@@ -487,6 +627,8 @@ header {
   </div>
 
 </div>
+
+<div class="deco-toast" id="decoToast"></div>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
@@ -627,6 +769,7 @@ async function init() {
 
   loadReadingStats();
   loadLeaderboard();
+  initDecorations();
 }
 
 async function loadReadingStats() {
@@ -733,6 +876,137 @@ async function loadLeaderboard() {
       <span class="lb-points">${r.total_points}</span>
     </div>
   `).join('');
+}
+
+/* ══════════════════════════════
+   بخش تزئینات
+   نکته: چون shop_items/inventory فعلاً ستون تصویر/رنگ ندارن،
+   ظاهر هر آیتم از روی item_id تعیین می‌شه:
+   - frame  → کلاس CSS به شکل .avatar.has-frame (فعلاً یک استایل ثابت طلایی)
+   - theme  → کلاس CSS به شکل theme-{item_id} روی <body> (باید توی CSS تعریفش کنی، نمونه‌هاش بالای فایله: theme-gold, theme-red)
+   - badge  → متن item_name به‌عنوان برچسب کنار اسم نمایش داده می‌شه
+   اگه بعداً بخوای هر آیتم عکس اختصاصی خودشو داشته باشه، بهتره یه
+   ستون image_url به shop_items/inventory اضافه کنی.
+══════════════════════════════ */
+let decoCache = { frame: [], theme: [], badge: [] };
+let currentDecoCategory = 'frame';
+
+async function initDecorations() {
+  const { data: items, error } = await supabase
+    .from('inventory')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .in('category', ['frame', 'theme', 'badge']);
+
+  if (error) {
+    document.getElementById('decoItemsGrid').innerHTML = '<div class="deco-empty">خطا در بارگذاری تزئینات</div>';
+    return;
+  }
+
+  decoCache = { frame: [], theme: [], badge: [] };
+  (items || []).forEach(it => {
+    if (decoCache[it.category]) decoCache[it.category].push(it);
+  });
+
+  // اعمال فوری آیتم‌های از قبل equip شده روی کارت پروفایل
+  Object.values(decoCache).flat().forEach(it => {
+    if (it.equipped) applyDecorationToProfile(it.category, it, false);
+  });
+
+  renderDecoItems('frame');
+
+  document.querySelectorAll('.deco-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelector('.deco-tab-btn.active')?.classList.remove('active');
+      btn.classList.add('active');
+      currentDecoCategory = btn.dataset.category;
+      renderDecoItems(currentDecoCategory);
+    });
+  });
+}
+
+function renderDecoItems(category) {
+  const grid = document.getElementById('decoItemsGrid');
+  const items = decoCache[category] || [];
+
+  if (items.length === 0) {
+    grid.innerHTML = '<div class="deco-empty">هنوز آیتمی از این دسته نخریدی. سری به بازار بزن 🛍️</div>';
+    return;
+  }
+
+  grid.innerHTML = items.map(it => `
+    <div class="deco-item ${it.equipped ? 'equipped' : ''}" data-id="${it.id}">
+      <span class="deco-equipped-tag">فعال</span>
+      <div class="deco-swatch"></div>
+      <div class="deco-item-name">${it.item_name}</div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.deco-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const invId = el.dataset.id;
+      const item = items.find(i => i.id === invId);
+      if (item && !item.equipped) equipItem(item);
+    });
+  });
+}
+
+async function equipItem(item) {
+  const grid = document.getElementById('decoItemsGrid');
+  grid.classList.add('pending');
+
+  // مرحله ۱: خاموش کردن equipped قبلی توی همون دسته
+  const { error: unequipError } = await supabase
+    .from('inventory')
+    .update({ equipped: false })
+    .eq('user_id', currentUser.id)
+    .eq('category', item.category);
+
+  // مرحله ۲: روشن کردن آیتم انتخاب‌شده
+  const { error: equipError } = await supabase
+    .from('inventory')
+    .update({ equipped: true })
+    .eq('id', item.id);
+
+  grid.classList.remove('pending');
+
+  if (unequipError || equipError) {
+    showDecoToast('خطا در اعمال تزئین ❌');
+    return;
+  }
+
+  // آپدیت کش محلی
+  decoCache[item.category].forEach(it => it.equipped = (it.id === item.id));
+
+  applyDecorationToProfile(item.category, item, true);
+  renderDecoItems(item.category);
+}
+
+function applyDecorationToProfile(category, item, showFeedback) {
+  if (category === 'frame') {
+    document.getElementById('avatarInitial').classList.add('has-frame');
+  }
+  if (category === 'theme') {
+    // پاک کردن تم‌های قبلی از body
+    document.body.className.split(' ').filter(c => c.startsWith('theme-')).forEach(c => document.body.classList.remove(c));
+    document.body.classList.add('theme-' + item.item_id);
+  }
+  if (category === 'badge') {
+    const tag = document.getElementById('profileBadgeTag');
+    tag.textContent = '🏷️ ' + item.item_name;
+    tag.style.display = 'inline-flex';
+  }
+
+  if (showFeedback) showDecoToast('«' + item.item_name + '» فعال شد ✅');
+}
+
+let decoToastTimer = null;
+function showDecoToast(text) {
+  const toast = document.getElementById('decoToast');
+  toast.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(decoToastTimer);
+  decoToastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
 init();
