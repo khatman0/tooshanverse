@@ -284,7 +284,7 @@ header {
 ══════════════════════════════ */
 .stats-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 16px;
   margin-bottom: 32px;
 }
@@ -307,6 +307,7 @@ header {
   font-size: 0.78rem;
   color: var(--muted);
 }
+.stat-card.xp-current .num { color: var(--blue2); }
 
 .section-block {
   margin-top: 40px;
@@ -594,6 +595,10 @@ header {
         <div class="num" id="storiesRemainingNum">۰</div>
         <div class="label">داستان نخونده</div>
       </div>
+      <div class="stat-card xp-current">
+        <div class="num" id="currentXpNum">۰</div>
+        <div class="label">XP قابل خرج (خزانه)</div>
+      </div>
     </div>
 
     <!-- تزئینات -->
@@ -756,6 +761,10 @@ async function init() {
   document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
   renderViewBio(profile?.bio);
 
+  // XP فعلیِ قابل خرج توی خزانه - مستقیم از profiles.xp
+  // (همون ستونی که تابع convert_xp موقع تبدیل کم می‌کنه)
+  document.getElementById('currentXpNum').textContent = (Number(profile?.xp) || 0).toLocaleString('fa-IR');
+
   const joined = new Date(currentUser.created_at);
   document.getElementById('joinedDate').textContent = 'عضویت: ' + joined.toLocaleDateString('fa-IR');
 
@@ -789,6 +798,8 @@ async function loadReadingStats() {
     return;
   }
 
+  // مجموع کل XP که تا حالا کسب کرده (تاریخی - این عدد هیچ‌وقت با خرج کردن XP
+  // توی خزانه کم نمی‌شه، چون این «امتیاز پیشرفت» کلیه، نه موجودی قابل‌خرج)
   const totalPoints = rows.reduce((sum, r) => sum + (r.points_earned || 0), 0);
   document.getElementById('headerPointsBadge').textContent = totalPoints.toLocaleString('fa-IR') + ' امتیاز';
 
