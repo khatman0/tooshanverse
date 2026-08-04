@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════
    admin-composer.js — نوشتن فصل جدید مستقیم از تو سایت
-   (نسخه‌ی دوم: بدون dropdown، بر پایه‌ی «حالت» — رفع مشکل قطع‌شدن تکست‌باکس)
+   (نسخه‌ی سوم: دکمه‌ی ارسال یکپارچه + انتخاب عنصر برای فصل‌ها)
 
    نحوه‌ی استفاده (تو صفحه‌ی هر داستان، جایی که "ادامه دارد" هست):
 
@@ -24,6 +24,16 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const ADMIN_COLUMN = 'is_admin'; // ← اگه اسم ستونت فرق داره، همینو عوض کن
 
 const STYLE_ID = 'ac-styles';
+
+/* ══════════════════════════════
+   عناصر — فقط مال فصل‌ها
+══════════════════════════════ */
+const ELEMENTS = {
+  fire:  { label: 'آتش', color: '#ff5040' },
+  wind:  { label: 'باد',  color: '#eaf6ff' },
+  earth: { label: 'خاک',  color: '#c98a4b' },
+  water: { label: 'آب',   color: '#19a7ff' },
+};
 
 /* ══════════════════════════════
    ۱) لود کردن ادامه‌ی داستان — برای همه
@@ -117,23 +127,23 @@ function injectStyles() {
 
     .ac-composer { padding: 16px 20px 20px; }
 
-    /* ── ردیف دکمه‌های حالت (mode chips) ── */
-    .ac-mode-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+    /* ── ردیف دکمه‌های حالت (mode chips) — ساده‌شده ── */
+    .ac-mode-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
     .ac-mode-btn {
-      padding: 8px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(25,167,255,0.15);
-      background: rgba(25,167,255,0.04);
-      color: #ddeeff;
-      font-size: 0.82rem; font-weight: 600;
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(25,167,255,0.12);
+      background: transparent;
+      color: rgba(221,238,255,0.7);
+      font-size: 0.8rem; font-weight: 600;
       cursor: pointer;
       font-family: 'Vazirmatn', sans-serif;
-      transition: background .15s, border-color .15s;
+      transition: background .15s, border-color .15s, color .15s;
     }
-    .ac-mode-btn:hover { background: rgba(25,167,255,0.1); border-color: rgba(25,167,255,0.3); }
-    .ac-mode-btn.active { background: rgba(25,167,255,0.18); border-color: #19a7ff; color: #9be3ff; }
+    .ac-mode-btn:hover { border-color: rgba(25,167,255,0.3); color: #ddeeff; }
+    .ac-mode-btn.active { background: rgba(25,167,255,0.16); border-color: #19a7ff; color: #9be3ff; }
 
-    /* ── فیلدهای کمکی مخصوص هر حالت (نه absolute — همیشه در جریان عادی صفحه) ── */
+    /* ── فیلدهای کمکی مخصوص هر حالت ── */
     .ac-extra-fields {
       display: none;
       gap: 10px;
@@ -171,9 +181,56 @@ function injectStyles() {
       color: #9be3ff;
     }
 
-    .ac-input-row { display: flex; gap: 10px; align-items: flex-end; }
+    /* ── دکمه‌ی «عنصر» و لیست انتخاب ── */
+    .ac-element-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(25,167,255,0.15);
+      background: rgba(255,255,255,0.04);
+      color: rgba(180,210,255,0.65);
+      font-family: 'Vazirmatn', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      width: 100%;
+    }
+    .ac-element-btn::before {
+      content: '';
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--el-color, rgba(180,210,255,0.3));
+      flex-shrink: 0;
+    }
+    .ac-element-btn.selected {
+      border-color: var(--el-color);
+      color: #fff;
+      background: color-mix(in srgb, var(--el-color) 18%, transparent);
+    }
+    .ac-element-options {
+      display: none;
+      gap: 6px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .ac-element-options.open { display: flex; }
+    .ac-element-opt {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      color: #ddeeff;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+    }
+    .ac-element-opt::before {
+      content: '';
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--el-color);
+    }
+    .ac-element-opt:hover { border-color: var(--el-color); }
+
     .ac-main-input {
-      flex: 1;
+      width: 100%;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(25,167,255,0.15);
       border-radius: 12px;
@@ -184,15 +241,18 @@ function injectStyles() {
       min-height: 46px;
       max-height: 200px;
       resize: vertical;
+      margin-bottom: 10px;
     }
+
     .ac-send-btn {
-      flex-shrink: 0;
+      width: 100%;
       padding: 12px 22px;
       border-radius: 12px; border: none;
       background: linear-gradient(135deg, #19a7ff, #1fb6ff);
       color: #001828; font-weight: 700;
       cursor: pointer;
       font-family: 'Vazirmatn', sans-serif;
+      font-size: 0.88rem;
     }
     .ac-send-btn:disabled { opacity: .5; cursor: not-allowed; }
 
@@ -237,10 +297,11 @@ function buildDialogue(speaker, text, isInner) {
   </div>`;
 }
 
-function buildChapter(number, title, isFlashback) {
+function buildChapter(number, title, isFlashback, element) {
   const id = 'ch-' + Date.now();
   const chapterNum = isFlashback ? 'فلش‌بک' : `فصل ${String(number).padStart(2, '0')}`;
-  return `<div class="chapter visible" id="${id}">
+  const elAttr = element ? ` data-element="${element}"` : '';
+  return `<div class="chapter visible" id="${id}"${elAttr}>
     <span class="chapter-num">${chapterNum}</span>
     <span class="chapter-line"></span>
     <span class="chapter-title">${escapeHtml(title)}</span>
@@ -266,18 +327,14 @@ function buildAction(text) {
 
 /* ══════════════════════════════
    ۴) تعریف حالت‌ها (modes)
-   هر حالت مشخص می‌کنه:
-   - چه فیلد کمکی‌ای نشون بده (extraFields)
-   - آیا از تکست‌باکس اصلی استفاده می‌کنه یا نه (useMain)
-   - placeholder تکست‌باکس اصلی
 ══════════════════════════════ */
 const MODES = {
-  paragraph: { label: '✏️ پاراگراف', extraFields: [], useMain: true, placeholder: 'یه پاراگراف معمولی بنویس...' },
-  dialogue:  { label: '💬 دیالوگ',   extraFields: ['speaker'], useMain: true, placeholder: 'متن دیالوگ رو بنویس...' },
-  chapter:   { label: '📖 فصل',      extraFields: ['chapter'], useMain: false, placeholder: '' },
-  timebreak: { label: '⏳ تایم‌برک',  extraFields: [], useMain: true, placeholder: 'مثلاً: سه ماه بعد' },
-  highlight: { label: '⭐ هایلایت',   extraFields: [], useMain: true, placeholder: 'متن برجسته...' },
-  action:    { label: '⚡ اکشن',      extraFields: [], useMain: true, placeholder: 'مثلاً: آژیر به صدا دراومد' },
+  paragraph: { label: 'پاراگراف', extraFields: [], useMain: true, placeholder: 'یه پاراگراف معمولی بنویس...' },
+  dialogue:  { label: 'دیالوگ',   extraFields: ['speaker'], useMain: true, placeholder: 'متن دیالوگ رو بنویس...' },
+  chapter:   { label: 'فصل',      extraFields: ['chapter'], useMain: false, placeholder: '' },
+  timebreak: { label: 'تایم‌برک',  extraFields: [], useMain: true, placeholder: 'مثلاً: سه ماه بعد' },
+  highlight: { label: 'هایلایت',   extraFields: [], useMain: true, placeholder: 'متن برجسته...' },
+  action:    { label: 'اکشن',      extraFields: [], useMain: true, placeholder: 'مثلاً: آژیر به صدا دراومد' },
 };
 
 /* ══════════════════════════════
@@ -302,6 +359,10 @@ export async function mountAdminComposer(containerId, storySlug) {
 
   const modeButtonsHtml = Object.entries(MODES)
     .map(([key, m]) => `<button class="ac-mode-btn${key === 'paragraph' ? ' active' : ''}" data-mode="${key}">${m.label}</button>`)
+    .join('');
+
+  const elementOptionsHtml = Object.entries(ELEMENTS)
+    .map(([key, e]) => `<div class="ac-element-opt" data-val="${key}" style="--el-color:${e.color}">${e.label}</div>`)
     .join('');
 
   container.innerHTML = `
@@ -350,13 +411,18 @@ export async function mountAdminComposer(containerId, storySlug) {
             <label>عنوان / زیرعنوان</label>
             <input type="text" id="acChapterTitle" placeholder="مثلاً: بازگشت به خانه" />
           </div>
-          <button class="ac-send-btn" id="acChapterSendBtn" style="flex-basis:100%; margin-top:6px;">افزودن فصل</button>
+          <div class="ac-field">
+            <label>عنصر فصل (اختیاری)</label>
+            <button type="button" class="ac-element-btn" id="acElementBtn">انتخاب نشده</button>
+            <div class="ac-element-options" id="acElementOptions">${elementOptionsHtml}</div>
+          </div>
         </div>
 
-        <div class="ac-input-row" id="acMainInputRow">
+        <div id="acMainInputRow">
           <textarea class="ac-main-input" id="acMainInput" rows="2"></textarea>
-          <button class="ac-send-btn" id="acSendBtn">ارسال</button>
         </div>
+
+        <button class="ac-send-btn" id="acSendBtn">ارسال</button>
 
         <div class="ac-publish-row">
           <span class="ac-draft-count" id="acDraftCount">۰ بلاک آماده‌ی انتشار</span>
@@ -380,9 +446,13 @@ export async function mountAdminComposer(containerId, storySlug) {
   const fieldsChapter = container.querySelector('#fieldsChapter');
   const chapterNumField = container.querySelector('#acChapterNumField');
 
+  const elementBtn = container.querySelector('#acElementBtn');
+  const elementOptions = container.querySelector('#acElementOptions');
+
   let currentMode = 'paragraph';
   let dialogueType = 'normal';
   let chapterType = 'normal';
+  let chapterElement = null;
 
   function addBlock(html) {
     draft.push(html);
@@ -402,7 +472,7 @@ export async function mountAdminComposer(containerId, storySlug) {
     fieldsSpeaker.classList.toggle('visible', cfg.extraFields.includes('speaker'));
     fieldsChapter.classList.toggle('visible', cfg.extraFields.includes('chapter'));
 
-    mainInputRow.style.display = cfg.useMain ? 'flex' : 'none';
+    mainInputRow.style.display = cfg.useMain ? 'block' : 'none';
     mainInput.placeholder = cfg.placeholder;
     mainInput.rows = (mode === 'timebreak' || mode === 'action') ? 1 : 2;
 
@@ -434,6 +504,29 @@ export async function mountAdminComposer(containerId, storySlug) {
     chapterNumField.style.display = chapterType === 'flashback' ? 'none' : 'flex';
   });
 
+  /* ── انتخاب عنصر فصل ── */
+  elementBtn.addEventListener('click', () => {
+    elementOptions.classList.toggle('open');
+  });
+
+  elementOptions.addEventListener('click', (e) => {
+    const opt = e.target.closest('.ac-element-opt');
+    if (!opt) return;
+    chapterElement = opt.dataset.val;
+    const color = ELEMENTS[chapterElement].color;
+    elementBtn.textContent = ELEMENTS[chapterElement].label;
+    elementBtn.style.setProperty('--el-color', color);
+    elementBtn.classList.add('selected');
+    elementOptions.classList.remove('open');
+  });
+
+  function resetElementPicker() {
+    chapterElement = null;
+    elementBtn.textContent = 'انتخاب نشده';
+    elementBtn.classList.remove('selected');
+    elementBtn.style.removeProperty('--el-color');
+  }
+
   /* ── ارسال (دکمه‌ی واحد برای همه‌ی حالت‌ها) ── */
   function submitCurrentMode() {
     if (currentMode === 'chapter') {
@@ -441,9 +534,10 @@ export async function mountAdminComposer(containerId, storySlug) {
       const number = container.querySelector('#acChapterNum').value.trim();
       if (!title) return;
       if (chapterType === 'normal' && !number) return;
-      addBlock(buildChapter(number, title, chapterType === 'flashback'));
+      addBlock(buildChapter(number, title, chapterType === 'flashback', chapterElement));
       container.querySelector('#acChapterTitle').value = '';
       container.querySelector('#acChapterNum').value = '';
+      resetElementPicker();
       return;
     }
 
@@ -474,7 +568,6 @@ export async function mountAdminComposer(containerId, storySlug) {
   }
 
   sendBtn.addEventListener('click', submitCurrentMode);
-  container.querySelector('#acChapterSendBtn').addEventListener('click', submitCurrentMode);
 
   // Enter می‌فرسته، Shift+Enter خط جدید (برای حالت‌های تک‌خطی مثل اکشن/تایم‌برک، خود Enter هم کافیه)
   mainInput.addEventListener('keydown', (e) => {
