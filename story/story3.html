@@ -4,22 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<!-- ⚠️ تغییر بده: عنوان تب مرورگر -->
 <title>عناصر پنهان</title>
 
 <link rel="icon" href="/photo/favicon.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════════════
-   این بخش استایل هست — اگه می‌خوای رنگ‌بندی داستان جدید فرق
-   کنه با آبی همیشگی، فقط همین چهار متغیر رو زیر عوض کن.
-   مثلاً برای یه داستان با حال‌وهوای قرمز/آتشین:
-   --blue: #ff5040;  --blue-dim: rgba(255,80,64,0.15); ...
-══════════════════════════════════════════════════ */
 :root {
   --bg:        #05070f;
   --surface:   #090c18;
-  --blue:      #19a7ff;   /* ⚠️ رنگ اصلی داستان — قابل تغییر */
+  --blue:      #19a7ff;
   --blue-dim:  rgba(25,167,255,0.15);
   --blue-glow: rgba(25,167,255,0.06);
   --text:      #ddeeff;
@@ -94,7 +87,6 @@ body::before {
   box-shadow: 0 0 10px var(--blue-dim);
 }
 
-/* ─── CHAPTER SIDEBAR (دسکتاپ) ─── */
 .chapter-nav {
   position: fixed;
   left: 20px;
@@ -145,7 +137,6 @@ body::before {
 
 @media (max-width: 900px) { .chapter-nav { display: none; } }
 
-/* ─── HERO ─── */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -341,7 +332,6 @@ body::before {
   .back { font-size: 0.8rem; padding: 7px 12px; }
 }
 
-/* ─── MOBILE CHAPTER BUTTON + PANEL ─── */
 .chapter-fab {
   display: none;
   position: fixed; bottom: 24px; left: 20px;
@@ -394,6 +384,24 @@ body::before {
 .chapter-panel-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
 
 @media (max-width: 900px) { .chapter-fab { display: flex; } }
+
+/* ─── نوار وضعیت دیباگ — فقط برای پیدا کردن مشکل، بعداً حذفش کن ─── */
+#debugBar {
+  position: fixed;
+  bottom: 0; right: 0;
+  z-index: 9999;
+  max-width: 340px;
+  background: rgba(0,0,0,0.85);
+  color: #9be3ff;
+  font-family: monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  padding: 10px 12px;
+  border-top-right-radius: 10px;
+  direction: ltr;
+  text-align: left;
+  white-space: pre-wrap;
+}
 </style>
 </head>
 <body>
@@ -401,7 +409,6 @@ body::before {
 <div id="progress"></div>
 <div class="ambient"></div>
 
-<!-- ─── دکمه‌ی فهرست فصل‌ها (موبایل) ─── -->
 <button class="chapter-fab" id="chapterFab" aria-label="فهرست فصل‌ها">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
     <line x1="4" y1="6" x2="20" y2="6"/>
@@ -412,12 +419,10 @@ body::before {
 
 <div class="chapter-overlay" id="chapterOverlay"></div>
 
-<!-- این پنل و سایدبار پایین‌تر رو chapter-nav-auto.js پر می‌کنه، دستی چیزی داخلش ننویس -->
 <div class="chapter-panel" id="chapterPanel">
   <div class="chapter-panel-title">فهرست فصل‌ها</div>
 </div>
 
-<!-- ⚠️ تغییر بده: صفحه‌ای که دکمه‌ی «بازگشت» بهش می‌ره -->
 <a href="/phase.html" class="back">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -425,21 +430,15 @@ body::before {
   بازگشت
 </a>
 
-<!-- ─── سایدبار فصل‌ها (دسکتاپ) — این هم خودکار پر می‌شه ─── -->
 <nav class="chapter-nav" id="chapterNav"></nav>
 
-<!-- ─── HERO ─── -->
 <section class="hero">
-  <!-- ⚠️ تغییر بده: اسم فاز یا شماره‌ش -->
   <div class="hero-badge">توشان‌ورس — فاز یک</div>
   <h1>
-    <!-- ⚠️ تغییر بده: اسم اصلی داستان -->
     المنت ها
-    <!-- ⚠️ تغییر بده: زیرعنوان -->
     <span>عنصر ناشناخته</span>
   </h1>
   <div class="hero-meta">
-    <!-- ⚠️ تغییر بده: اسم قهرمان اصلی، آنتاگونیست، مکان و... (هر تعداد span که خواستی) -->
     <span>آتشکده</span>
     <span>ضحاک</span>
     <span>دوره صفویه</span>
@@ -452,13 +451,10 @@ body::before {
 
 <div class="divider"></div>
 
-<!-- ─── STORY ─── -->
 <div class="story-wrap">
 
-  <!-- ─── محتوای داینامیک از Supabase (composer دقیقاً همینجا اضافه می‌کنه) ─── -->
   <div id="story-dynamic-content"></div>
 
-  <!-- ─── ویجت ادمین برای نوشتن فصل جدید مستقیم از سایت ─── -->
   <div id="admin-composer"></div>
 
   <div class="story-end">
@@ -476,8 +472,10 @@ body::before {
 
 </div>
 
+<!-- نوار دیباگ موقت — بعد از پیدا کردن مشکل این div و اسکریپت پایینش رو پاک کن -->
+<div id="debugBar">در حال بارگذاری...</div>
+
 <script>
-// ─── PROGRESS BAR ───
 const bar = document.getElementById('progress');
 window.addEventListener('scroll', () => {
   const h = document.documentElement;
@@ -485,7 +483,6 @@ window.addEventListener('scroll', () => {
   bar.style.width = pct + '%';
 });
 
-// ─── REVEAL ON SCROLL ───
 const reveals = document.querySelectorAll('p, .dialogue, .chapter, .timebreak, .highlight, .action, .story-end, .cta-btn');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -500,14 +497,12 @@ reveals.forEach((el, i) => {
   observer.observe(el);
 });
 
-// ─── AMBIENT FOLLOW ───
 const amb = document.querySelector('.ambient');
 window.addEventListener('scroll', () => {
   const ty = window.scrollY * 0.15;
   amb.style.transform = `translateX(-50%) translateY(${ty}px)`;
 });
 
-// ─── MOBILE CHAPTER PANEL ───
 const fab = document.getElementById('chapterFab');
 const panel = document.getElementById('chapterPanel');
 const chOverlay = document.getElementById('chapterOverlay');
@@ -517,17 +512,51 @@ fab.addEventListener('click', () => panel.classList.contains('open') ? closePane
 chOverlay.addEventListener('click', closePanel);
 </script>
 
-<!-- ⚠️ تغییر بده: 'story-slug' رو با یه اسلاگ یکتا برای این داستان عوض کن
-     (همون چیزی که تو مدال «افزودن داستان» تو phase.html وارد می‌کنی) -->
 <script type="module">
   import { loadStoryContinuation, mountAdminComposer } from '/admin-composer.js';
   import { buildChapterNav } from '/chapter-nav-auto.js';
 
   const STORY_SLUG = 'story-three'; // ⚠️ تغییر بده
 
-  await loadStoryContinuation('story-dynamic-content', STORY_SLUG);
-  buildChapterNav();
-  mountAdminComposer('admin-composer', STORY_SLUG);
+  const debugEl = document.getElementById('debugBar');
+  const log = (msg) => {
+    console.log('[debug]', msg);
+    debugEl.textContent += '\n' + msg;
+  };
+
+  // ── هر مرحله مستقل از بقیه اجرا می‌شه، اگه یکی خطا بده بقیه متوقف نمی‌شن ──
+
+  try {
+    log('در حال لود محتوای داستان...');
+    await loadStoryContinuation('story-dynamic-content', STORY_SLUG);
+    log('محتوای داستان: OK');
+  } catch (err) {
+    log('خطا در loadStoryContinuation: ' + err.message);
+    console.error(err);
+  }
+
+  try {
+    log('در حال ساخت فهرست فصل‌ها...');
+    buildChapterNav();
+    log('فهرست فصل‌ها: OK');
+  } catch (err) {
+    log('خطا در buildChapterNav: ' + err.message);
+    console.error(err);
+  }
+
+  try {
+    log('در حال بررسی دسترسی ادمین...');
+    await mountAdminComposer('admin-composer', STORY_SLUG);
+    const composerBox = document.getElementById('admin-composer');
+    if (composerBox && composerBox.innerHTML.trim() === '') {
+      log('کامپوزر خالیه — یعنی یا لاگین نیستی، یا is_admin تو جدول profiles روی true نیست.');
+    } else {
+      log('کامپوزر ادمین: OK، رندر شد ✅');
+    }
+  } catch (err) {
+    log('خطا در mountAdminComposer: ' + err.message);
+    console.error(err);
+  }
 </script>
 
 </body>
