@@ -384,24 +384,6 @@ body::before {
 .chapter-panel-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
 
 @media (max-width: 900px) { .chapter-fab { display: flex; } }
-
-/* ─── نوار وضعیت دیباگ — فقط برای پیدا کردن مشکل، بعداً حذفش کن ─── */
-#debugBar {
-  position: fixed;
-  bottom: 0; right: 0;
-  z-index: 9999;
-  max-width: 340px;
-  background: rgba(0,0,0,0.85);
-  color: #9be3ff;
-  font-family: monospace;
-  font-size: 11px;
-  line-height: 1.6;
-  padding: 10px 12px;
-  border-top-right-radius: 10px;
-  direction: ltr;
-  text-align: left;
-  white-space: pre-wrap;
-}
 </style>
 </head>
 <body>
@@ -472,9 +454,6 @@ body::before {
 
 </div>
 
-<!-- نوار دیباگ موقت — بعد از پیدا کردن مشکل این div و اسکریپت پایینش رو پاک کن -->
-<div id="debugBar">در حال بارگذاری...</div>
-
 <script>
 const bar = document.getElementById('progress');
 window.addEventListener('scroll', () => {
@@ -516,47 +495,11 @@ chOverlay.addEventListener('click', closePanel);
   import { loadStoryContinuation, mountAdminComposer } from '/admin-composer.js';
   import { buildChapterNav } from '/chapter-nav-auto.js';
 
-  const STORY_SLUG = 'story-three'; // ⚠️ تغییر بده
+  const STORY_SLUG = 'story-three';
 
-  const debugEl = document.getElementById('debugBar');
-  const log = (msg) => {
-    console.log('[debug]', msg);
-    debugEl.textContent += '\n' + msg;
-  };
-
-  // ── هر مرحله مستقل از بقیه اجرا می‌شه، اگه یکی خطا بده بقیه متوقف نمی‌شن ──
-
-  try {
-    log('در حال لود محتوای داستان...');
-    await loadStoryContinuation('story-dynamic-content', STORY_SLUG);
-    log('محتوای داستان: OK');
-  } catch (err) {
-    log('خطا در loadStoryContinuation: ' + err.message);
-    console.error(err);
-  }
-
-  try {
-    log('در حال ساخت فهرست فصل‌ها...');
-    buildChapterNav();
-    log('فهرست فصل‌ها: OK');
-  } catch (err) {
-    log('خطا در buildChapterNav: ' + err.message);
-    console.error(err);
-  }
-
-  try {
-    log('در حال بررسی دسترسی ادمین...');
-    await mountAdminComposer('admin-composer', STORY_SLUG);
-    const composerBox = document.getElementById('admin-composer');
-    if (composerBox && composerBox.innerHTML.trim() === '') {
-      log('کامپوزر خالیه — یعنی یا لاگین نیستی، یا is_admin تو جدول profiles روی true نیست.');
-    } else {
-      log('کامپوزر ادمین: OK، رندر شد ✅');
-    }
-  } catch (err) {
-    log('خطا در mountAdminComposer: ' + err.message);
-    console.error(err);
-  }
+  await loadStoryContinuation('story-dynamic-content', STORY_SLUG);
+  buildChapterNav();
+  mountAdminComposer('admin-composer', STORY_SLUG);
 </script>
 
 </body>
