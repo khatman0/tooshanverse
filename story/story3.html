@@ -9,6 +9,28 @@
 <link rel="icon" href="/photo/favicon.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════════════
+   چهار پالت عنصری — آتش / باد / خاک / آب
+   وقتی خواننده به فصلی می‌رسه که data-element داره،
+   کل رنگ‌بندی صفحه به‌صورت نرم عوض می‌شه.
+══════════════════════════════════════════════════ */
+
+@property --blue {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #19a7ff;
+}
+@property --blue-dim {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(25,167,255,0.15);
+}
+@property --blue-glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(25,167,255,0.06);
+}
+
 :root {
   --bg:        #05070f;
   --surface:   #090c18;
@@ -18,6 +40,30 @@
   --text:      #ddeeff;
   --muted:     rgba(180,210,255,0.55);
   --line:      rgba(25,167,255,0.12);
+
+  transition: --blue .8s ease, --blue-dim .8s ease, --blue-glow .8s ease;
+}
+
+/* ─── پالت‌های عنصری ─── */
+:root[data-element="fire"] {
+  --blue:      #ff5040;
+  --blue-dim:  rgba(255,80,64,0.15);
+  --blue-glow: rgba(255,80,64,0.07);
+}
+:root[data-element="wind"] {
+  --blue:      #eaf6ff;
+  --blue-dim:  rgba(234,246,255,0.14);
+  --blue-glow: rgba(234,246,255,0.06);
+}
+:root[data-element="earth"] {
+  --blue:      #c98a4b;
+  --blue-dim:  rgba(201,138,75,0.15);
+  --blue-glow: rgba(201,138,75,0.07);
+}
+:root[data-element="water"] {
+  --blue:      #19a7ff;
+  --blue-dim:  rgba(25,167,255,0.15);
+  --blue-glow: rgba(25,167,255,0.06);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -489,17 +535,41 @@ function openPanel() { panel.classList.add('open'); chOverlay.classList.add('ope
 function closePanel() { panel.classList.remove('open'); chOverlay.classList.remove('open'); }
 fab.addEventListener('click', () => panel.classList.contains('open') ? closePanel() : openPanel());
 chOverlay.addEventListener('click', closePanel);
+
+// ─── تعویض خودکار پالت رنگی بر اساس عنصر فصل فعلی ───
+// این باید بعد از این اجرا بشه که فصل‌های داینامیک از Supabase لود شدن،
+// برای همین یه observer عمومی می‌ذاریم که هر وقت فصل جدیدی با data-element
+// به صفحه اضافه بشه (چه از اول تو HTML بوده، چه composer اضافه‌ش کرده)
+// خودش رو به‌روز کنه.
+function initElementColorSwitcher() {
+  const elementChapters = document.querySelectorAll('.chapter[data-element]');
+  if (!elementChapters.length) return;
+
+  const elementObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.documentElement.setAttribute('data-element', e.target.dataset.element);
+      }
+    });
+  }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+
+  elementChapters.forEach(ch => elementObserver.observe(ch));
+}
 </script>
 
+<!-- ⚠️ تغییر بده: 'story-slug' رو با یه اسلاگ یکتا برای این داستان عوض کن -->
 <script type="module">
   import { loadStoryContinuation, mountAdminComposer } from '/Admin-composer.js';
   import { buildChapterNav } from '/chapter-nav-auto.js';
 
-  const STORY_SLUG = 'story-three';
+  const STORY_SLUG = 'story-three'; // ⚠️ تغییر بده
 
   await loadStoryContinuation('story-dynamic-content', STORY_SLUG);
   buildChapterNav();
   mountAdminComposer('admin-composer', STORY_SLUG);
+
+  // محتوای داینامیک الان لود شده، پس می‌تونیم فصل‌ها رو با data-element پیدا کنیم
+  initElementColorSwitcher();
 </script>
 
 </body>
