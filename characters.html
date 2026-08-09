@@ -17,6 +17,7 @@
   --blue2: #9be3ff;
   --gold:  #f0c060;
   --red:   #ff4060;
+  --purple: #b79bff;
   --text:  #ddeeff;
   --muted: rgba(180,210,255,0.5);
   --glass: rgba(255,255,255,0.03);
@@ -286,6 +287,7 @@ header {
   color: var(--muted);
 }
 .stat-pill.locked b { color: var(--locked); }
+.stat-pill.support b { color: var(--purple); }
 
 /* ══════════════════════════════
    TOOLBAR — search + filters
@@ -486,6 +488,11 @@ header {
   border: 1px solid rgba(240,192,96,0.3);
   color: var(--gold);
 }
+.role-badge.support {
+  background: rgba(183,155,255,0.15);
+  border: 1px solid rgba(183,155,255,0.3);
+  color: var(--purple);
+}
 
 .status-tag {
   display: flex; align-items: center; gap: 6px;
@@ -507,6 +514,7 @@ header {
 .status-tag.missing .status-dot { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
 .status-tag.unknown .status-dot { background: var(--red); box-shadow: 0 0 6px var(--red); }
 .status-tag.custody .status-dot { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
+.status-tag.deceased .status-dot { background: var(--muted); box-shadow: 0 0 6px rgba(180,210,255,0.5); }
 
 /* card body */
 .card-body {
@@ -826,13 +834,14 @@ footer {
 <div class="page-hero">
   <div class="page-hero-eyebrow">دایره‌المعارف</div>
   <h1>شخصیت‌های <span class="accent">توشان‌ورس</span></h1>
-  <p>پرونده‌ی کسانی که «انفجار آبی» برای همیشه تغییرشان داد — قهرمانان، ضدقهرمانان، و کسانی که هویتشان هنوز فاش نشده.</p>
+  <p>پرونده‌ی کسانی که «انفجار آبی» برای همیشه تغییرشان داد — قهرمانان، ضدقهرمانان، شخصیت‌های فرعی، و کسانی که هویتشان هنوز فاش نشده.</p>
   <div class="page-hero-divider"></div>
 
   <div class="stat-strip">
     <div class="stat-pill"><b id="statTotal">۰</b><span>پرونده ثبت‌شده</span></div>
     <div class="stat-pill"><b id="statHero">۰</b><span>قهرمان</span></div>
     <div class="stat-pill"><b id="statVillain">۰</b><span>ضدقهرمان</span></div>
+    <div class="stat-pill support"><b id="statSupport">۰</b><span>شخصیت فرعی</span></div>
     <div class="stat-pill locked"><b id="statLocked">۰</b><span>پرونده محرمانه</span></div>
   </div>
 </div>
@@ -844,6 +853,7 @@ footer {
     <button class="filter-chip" data-filter="hero">قهرمانان</button>
     <button class="filter-chip" data-filter="villain">ضدقهرمانان</button>
     <button class="filter-chip" data-filter="neutral">خنثی</button>
+    <button class="filter-chip" data-filter="support">شخصیت فرعی</button>
     <button class="filter-chip" data-filter="locked">محرمانه</button>
   </div>
   <div class="search-box">
@@ -965,6 +975,114 @@ footer {
       </div>
     </a>
 
+    <a href="/characters/Ayleen-Eftekhari.html" class="character-card reveal" data-role="support" data-name="آیلین افتخاری">
+      <div class="card-img-wrap">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <div class="badge-row">
+          <div class="role-badge support">فرعی</div>
+          <div class="status-tag deceased"><span class="status-dot"></span>درگذشته</div>
+        </div>
+        <img src="photo/ayleen.png" alt="آیلین افتخاری" onerror="this.closest('.card-img-wrap').style.background='linear-gradient(160deg,#0a1120,#050810)'">
+      </div>
+      <div class="card-body">
+        <div class="card-first-seen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          اولین ظهور: فاز یک — لرد فیزیکا
+        </div>
+        <h3>آیلین افتخاری</h3>
+        <p>نامزد نوید سهیلی. تنها کسی بود که تا آخرین لحظه تسلیم نشد و حاضر شد جانش را برای بازگرداندن او بدهد. مرگش بالای برج آزادی، شروع واقعی داستان لرد فیزیکا بود.</p>
+        <span class="power-tag">بدون توانایی ماورایی</span>
+        <div class="card-link">
+          مشاهده پرونده
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
+
+    <a href="/characters/Samyar.html" class="character-card reveal" data-role="support" data-name="سامیار">
+      <div class="card-img-wrap">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <div class="badge-row">
+          <div class="role-badge support">فرعی</div>
+          <div class="status-tag deceased"><span class="status-dot"></span>درگذشته</div>
+        </div>
+        <img src="photo/samyar.png" alt="سامیار" onerror="this.closest('.card-img-wrap').style.background='linear-gradient(160deg,#0a1120,#050810)'">
+      </div>
+      <div class="card-body">
+        <div class="card-first-seen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          اولین ظهور: فاز یک — لرد فیزیکا
+        </div>
+        <h3>سامیار</h3>
+        <p>رفیق بچگی نوید سهیلی. بددهن، بی‌پروا، و تا آخرین لحظه کنارش ماند. تحت کنترل ذهنی آگناتوس قرار گرفت و در همان شبِ برج آزادی جان باخت.</p>
+        <span class="power-tag">بدون توانایی ماورایی</span>
+        <div class="card-link">
+          مشاهده پرونده
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
+
+    <a href="/characters/Nima.html" class="character-card reveal" data-role="support" data-name="نیما">
+      <div class="card-img-wrap">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <div class="badge-row">
+          <div class="role-badge support">فرعی</div>
+          <div class="status-tag active"><span class="status-dot"></span>فعال</div>
+        </div>
+        <img src="photo/nima.png" alt="نیما" onerror="this.closest('.card-img-wrap').style.background='linear-gradient(160deg,#0a1120,#050810)'">
+      </div>
+      <div class="card-body">
+        <div class="card-first-seen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          اولین ظهور: فاز یک — الکتروپالس
+        </div>
+        <h3>نیما</h3>
+        <p>یکی از دو خواهر و برادری که بدون هیچ توانایی ماورایی، نقشی حیاتی در سرنوشت الکتروپالس داشتند. هویت واقعی و ارتباطش با شبکه‌ای فراتر از یک ماجرا هنوز کامل روشن نشده.</p>
+        <span class="power-tag">بدون توانایی ماورایی</span>
+        <div class="card-link">
+          مشاهده پرونده
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
+
+    <a href="/characters/Raha.html" class="character-card reveal" data-role="support" data-name="رها">
+      <div class="card-img-wrap">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <div class="badge-row">
+          <div class="role-badge support">فرعی</div>
+          <div class="status-tag active"><span class="status-dot"></span>فعال</div>
+        </div>
+        <img src="photo/raha.png" alt="رها" onerror="this.closest('.card-img-wrap').style.background='linear-gradient(160deg,#0a1120,#050810)'">
+      </div>
+      <div class="card-body">
+        <div class="card-first-seen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          اولین ظهور: فاز یک — الکتروپالس
+        </div>
+        <h3>رها</h3>
+        <p>خواهر نیما، متخصص نفوذ و تحلیل اطلاعات. بدون قدرت ماورایی، ولی با هوش و برنامه‌ریزی‌اش بارها مسیر ماجراهای توشان‌ورس را تغییر داده. رد پایش فراتر از یک داستان دنبال می‌شود.</p>
+        <span class="power-tag">بدون توانایی ماورایی</span>
+        <div class="card-link">
+          مشاهده پرونده
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
+
     <!-- ── CLASSIFIED / LOCKED FILES ── -->
     <div class="locked-card reveal" data-role="locked" data-name="پرونده طبقه‌بندی‌شده ۰۵">
       <div class="locked-visual">
@@ -1076,12 +1194,13 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   const items = Array.from(grid.children);
   const toFa = n => n.toLocaleString('fa-IR');
 
-  const counts = { all: items.length, hero: 0, villain: 0, neutral: 0, locked: 0 };
+  const counts = { all: items.length, hero: 0, villain: 0, neutral: 0, support: 0, locked: 0 };
   items.forEach(el => { const r = el.dataset.role; if (counts[r] !== undefined) counts[r]++; });
 
   document.getElementById('statTotal').textContent   = toFa(counts.all - counts.locked);
   document.getElementById('statHero').textContent    = toFa(counts.hero);
   document.getElementById('statVillain').textContent = toFa(counts.villain);
+  document.getElementById('statSupport').textContent = toFa(counts.support);
   document.getElementById('statLocked').textContent  = toFa(counts.locked);
 
   const chips = document.querySelectorAll('.filter-chip');
