@@ -22,6 +22,8 @@
   --glass: rgba(255,255,255,0.03);
   --line:  rgba(25,167,255,0.1);
   --card:  rgba(8,14,28,0.7);
+  --locked: rgba(140,150,170,0.5);
+  --locked-line: rgba(140,150,170,0.18);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -77,6 +79,12 @@ body:has(.character-card:hover) #cursor-ring {
   width: 50px; 
   height: 50px; 
 }
+
+body:has(.locked-card:hover) #cursor { width: 16px; height: 16px; background: var(--locked); }
+body:has(.locked-card:hover) #cursor-ring { width: 42px; height: 42px; border-color: rgba(140,150,170,0.4); }
+
+body:has(.filter-chip:hover) #cursor,
+body:has(.search-box input:focus) #cursor { width: 16px; height: 16px; }
 
 /* ══════════════════════════════
    GRID OVERLAY
@@ -208,7 +216,7 @@ header {
 ══════════════════════════════ */
 .page-hero {
   position: relative;
-  padding: 140px 40px 80px;
+  padding: 140px 40px 56px;
   text-align: center;
   z-index: 1;
   overflow: hidden;
@@ -242,6 +250,9 @@ header {
   font-size: 1rem; color: var(--muted);
   margin-top: 16px;
   animation: fadeUp .6s .2s ease both;
+  max-width: 560px;
+  margin-left: auto; margin-right: auto;
+  line-height: 1.9;
 }
 .page-hero-divider {
   width: 60px; height: 2px;
@@ -250,6 +261,97 @@ header {
   animation: fadeUp .6s .25s ease both;
 }
 
+/* ── stat strip ── */
+.stat-strip {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 36px;
+  animation: fadeUp .6s .32s ease both;
+}
+.stat-pill {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 10px 20px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  backdrop-filter: blur(10px);
+}
+.stat-pill b {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  color: var(--blue2);
+}
+.stat-pill span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.stat-pill.locked b { color: var(--locked); }
+
+/* ══════════════════════════════
+   TOOLBAR — search + filters
+══════════════════════════════ */
+.toolbar {
+  position: relative; z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.filter-chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.filter-chip {
+  cursor: none;
+  font-size: 0.8rem; font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: var(--muted);
+  transition: all .25s ease;
+  white-space: nowrap;
+}
+.filter-chip:hover { color: var(--blue2); border-color: rgba(25,167,255,0.3); }
+.filter-chip.active {
+  background: rgba(25,167,255,0.12);
+  border-color: rgba(25,167,255,0.4);
+  color: var(--blue2);
+}
+.filter-chip .count {
+  opacity: 0.6; font-size: 0.72rem; margin-right: 4px;
+}
+
+.search-box {
+  position: relative;
+  min-width: 220px;
+  flex: 0 1 260px;
+}
+.search-box svg {
+  position: absolute; top: 50%; right: 14px;
+  transform: translateY(-50%);
+  width: 15px; height: 15px;
+  color: var(--muted);
+  pointer-events: none;
+}
+.search-box input {
+  width: 100%;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 10px 42px 10px 16px;
+  color: var(--text);
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+  cursor: none;
+  transition: border-color .25s;
+}
+.search-box input:focus { border-color: rgba(25,167,255,0.4); }
+.search-box input::placeholder { color: var(--muted); }
+
 /* ══════════════════════════════
    CHARACTERS GRID
 ══════════════════════════════ */
@@ -257,14 +359,14 @@ header {
   position: relative; z-index: 1;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 40px 100px;
+  padding: 0 40px 60px;
 }
 
 .section-label {
   display: inline-flex; align-items: center; gap: 12px;
   font-size: 0.65rem; font-weight: 700;
   letter-spacing: 4px; text-transform: uppercase;
-  color: var(--blue); margin-bottom: 32px;
+  color: var(--blue); margin-bottom: 24px;
 }
 .section-label::before {
   content: ''; width: 20px; height: 1px; background: var(--blue);
@@ -275,6 +377,15 @@ header {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
 }
+
+.empty-state {
+  display: none;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.empty-state.show { display: block; }
 
 /* ══════════════════════════════
    CHARACTER CARD
@@ -307,8 +418,9 @@ header {
 /* image wrapper */
 .card-img-wrap {
   position: relative;
-  height: 300px;
+  height: 280px;
   overflow: hidden;
+  background: linear-gradient(160deg, #0a1120, #050810);
 }
 .card-img-wrap img {
   width: 100%; height: 100%;
@@ -341,10 +453,15 @@ header {
 .corner-br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--blue); border-right: 2px solid var(--blue); }
 
 /* role badge */
-.role-badge {
+.badge-row {
   position: absolute;
-  top: 14px; right: 14px;
+  top: 14px; right: 14px; left: 14px;
   z-index: 3;
+  display: flex; justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+.role-badge {
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 2px;
@@ -352,6 +469,7 @@ header {
   padding: 5px 10px;
   border-radius: 6px;
   backdrop-filter: blur(8px);
+  white-space: nowrap;
 }
 .role-badge.hero {
   background: rgba(25,167,255,0.15);
@@ -369,10 +487,39 @@ header {
   color: var(--gold);
 }
 
+.status-tag {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 1px;
+  padding: 5px 9px 5px 8px;
+  border-radius: 6px;
+  background: rgba(4,6,14,0.55);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  backdrop-filter: blur(8px);
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--muted);
+}
+.status-tag.active .status-dot { background: #3ddc84; box-shadow: 0 0 6px #3ddc84; }
+.status-tag.missing .status-dot { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+.status-tag.unknown .status-dot { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.status-tag.custody .status-dot { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
+
 /* card body */
 .card-body {
-  padding: 20px 22px 24px;
+  padding: 18px 22px 22px;
 }
+.card-first-seen {
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.card-first-seen svg { width: 12px; height: 12px; opacity: 0.7; flex-shrink: 0; }
 .card-body h3 {
   font-family: 'Orbitron', sans-serif;
   font-size: 1.05rem;
@@ -381,13 +528,23 @@ header {
   margin-bottom: 8px;
 }
 .card-body p {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: var(--muted);
-  line-height: 1.8;
+  line-height: 1.85;
+}
+.power-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.72rem;
+  color: var(--blue2);
+  background: rgba(25,167,255,0.07);
+  border: 1px solid rgba(25,167,255,0.15);
+  padding: 4px 10px;
+  border-radius: 100px;
 }
 .card-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 16px;
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 18px;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 1px;
@@ -398,6 +555,93 @@ header {
 }
 .character-card:hover .card-link { opacity: 1; transform: none; }
 .card-link svg { width: 12px; height: 12px; }
+
+/* ══════════════════════════════
+   LOCKED / CLASSIFIED CARD
+══════════════════════════════ */
+.locked-card {
+  position: relative;
+  background: repeating-linear-gradient(135deg, rgba(140,150,170,0.03) 0px, rgba(140,150,170,0.03) 2px, transparent 2px, transparent 14px), var(--card);
+  border: 1px dashed var(--locked-line);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  cursor: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.locked-visual {
+  position: relative;
+  height: 280px;
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px dashed var(--locked-line);
+  overflow: hidden;
+}
+.locked-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(140,150,170,0.08), transparent 70%);
+}
+.locked-visual .q {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3.4rem;
+  font-weight: 900;
+  color: rgba(140,150,170,0.18);
+  letter-spacing: 2px;
+  transition: color .35s;
+}
+.locked-card:hover .locked-visual .q { color: rgba(140,150,170,0.3); }
+.locked-lock {
+  position: absolute; top: 16px; left: 16px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(4,6,14,0.7);
+  border: 1px solid var(--locked-line);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--locked);
+}
+.locked-lock svg { width: 14px; height: 14px; }
+.locked-badge {
+  position: absolute; top: 14px; right: 14px;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 5px 10px; border-radius: 6px;
+  background: rgba(140,150,170,0.1);
+  border: 1px solid var(--locked-line);
+  color: var(--locked);
+}
+.locked-body {
+  padding: 18px 22px 22px;
+  flex: 1;
+  display: flex; flex-direction: column;
+}
+.locked-body h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: rgba(221,238,255,0.7);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+.locked-body p {
+  font-size: 0.84rem;
+  color: var(--locked);
+  line-height: 1.85;
+  flex: 1;
+}
+.locked-progress {
+  margin-top: 16px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(140,150,170,0.12);
+  overflow: hidden;
+}
+.locked-progress span {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, var(--locked), transparent);
+  border-radius: 4px;
+}
 
 /* ══════════════════════════════
    REVEAL + ANIMATIONS
@@ -439,8 +683,9 @@ footer {
    RESPONSIVE
 ══════════════════════════════ */
 @media (max-width: 768px) {
-  .characters-section { padding: 20px 20px 80px; }
-  .page-hero { padding: 120px 20px 60px; }
+  .characters-section { padding: 0 20px 60px; }
+  .toolbar { padding: 0 20px; }
+  .page-hero { padding: 120px 20px 48px; }
   footer { flex-direction: column; gap: 16px; text-align: center; }
   .footer-links { justify-content: center; }
   body { cursor: auto; }
@@ -581,74 +826,194 @@ footer {
 <div class="page-hero">
   <div class="page-hero-eyebrow">دایره‌المعارف</div>
   <h1>شخصیت‌های <span class="accent">توشان‌ورس</span></h1>
-  <p>قهرمانان، ضدقهرمانان و افسانه‌های این جهان</p>
+  <p>پرونده‌ی کسانی که «انفجار آبی» برای همیشه تغییرشان داد — قهرمانان، ضدقهرمانان، و کسانی که هویتشان هنوز فاش نشده.</p>
   <div class="page-hero-divider"></div>
+
+  <div class="stat-strip">
+    <div class="stat-pill"><b id="statTotal">۰</b><span>پرونده ثبت‌شده</span></div>
+    <div class="stat-pill"><b id="statHero">۰</b><span>قهرمان</span></div>
+    <div class="stat-pill"><b id="statVillain">۰</b><span>ضدقهرمان</span></div>
+    <div class="stat-pill locked"><b id="statLocked">۰</b><span>پرونده محرمانه</span></div>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar reveal">
+  <div class="filter-chips" id="filterChips">
+    <button class="filter-chip active" data-filter="all">همه</button>
+    <button class="filter-chip" data-filter="hero">قهرمانان</button>
+    <button class="filter-chip" data-filter="villain">ضدقهرمانان</button>
+    <button class="filter-chip" data-filter="neutral">خنثی</button>
+    <button class="filter-chip" data-filter="locked">محرمانه</button>
+  </div>
+  <div class="search-box">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input type="text" id="searchInput" placeholder="جست‌وجوی نام شخصیت…">
+  </div>
 </div>
 
 <!-- CHARACTERS -->
 <section class="characters-section">
-  <div class="section-label reveal">شخصیت‌ها</div>
-  <div class="characters-grid">
+  <div class="section-label reveal">آرشیو پرونده‌ها</div>
+  <div class="characters-grid" id="charactersGrid">
 
-    <a href="/characters/Lord-physica.html" class="character-card reveal">
+    <a href="/characters/Lord-physica.html" class="character-card reveal" data-role="hero" data-name="لرد فیزیکا نوید سهیلی">
       <div class="card-img-wrap">
         <div class="corner corner-tl"></div>
         <div class="corner corner-tr"></div>
         <div class="corner corner-bl"></div>
         <div class="corner corner-br"></div>
-        <div class="role-badge hero">قهرمان</div>
+        <div class="badge-row">
+          <div class="role-badge hero">قهرمان</div>
+          <div class="status-tag missing"><span class="status-dot"></span>ناپدید</div>
+        </div>
         <img src="photo/lord.png" alt="لرد فیزیکا">
       </div>
       <div class="card-body">
+        <div class="card-first-seen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          اولین ظهور: فاز یک — لرد فیزیکا
+        </div>
         <h3>لرد فیزیکا</h3>
-        <p>توانایی تغییر قوانین فیزیک در یک محدوده مشخص. ذهنی نابغه و قدرتی فراتر از تصور.</p>
+        <p>توانایی دست‌کاری قوانین فیزیک، از جاذبه گرفته تا حرکت. پس از رویدادی که تهران را دگرگون کرد، ناپدید شد و از آن پس هیچ نشانی از او دیده نشده.</p>
+        <span class="power-tag">قدرت: کنترل فیزیک و جاذبه</span>
         <div class="card-link">
-          مشاهده پروفایل
+          مشاهده پرونده
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </div>
     </a>
 
-
-        <a href="/characters/electropulse.html" class="character-card reveal">
+    <a href="/characters/electropulse.html" class="character-card reveal" data-role="hero" data-name="الکتروپالس شایان نظری">
       <div class="card-img-wrap">
         <div class="corner corner-tl"></div>
         <div class="corner corner-tr"></div>
         <div class="corner corner-bl"></div>
         <div class="corner corner-br"></div>
-        <div class="role-badge hero">قهرمان</div>
+        <div class="badge-row">
+          <div class="role-badge hero">قهرمان</div>
+          <div class="status-tag active"><span class="status-dot"></span>فعال</div>
+        </div>
         <img src="photo/electro.png" alt="الکتروپالس">
       </div>
       <div class="card-body">
+        <div class="card-first-seen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          اولین ظهور: فاز یک — الکتروپالس
+        </div>
         <h3>الکتروپالس</h3>
-        <p>دارای قدرتی بر پایه الکتریسیته و قلبی بزرگ و زخم خورده.</p>
+        <p>دانشجویی معمولی که ناخواسته وارث یکی از بازمانده‌های خطرناک «انفجار آبی» شد. قلبی زخم‌خورده دارد و بار سنگینی که هیچ‌وقت نخواسته بود.</p>
+        <span class="power-tag">قدرت: پالس‌های انرژی خام</span>
         <div class="card-link">
-          مشاهده پروفایل
+          مشاهده پرونده
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </div>
     </a>
 
- <a href="/characters/General-Kianfar.html" class="character-card reveal">
+    <a href="/characters/General-Kianfar.html" class="character-card reveal" data-role="villain" data-name="ژنرال کیانفر">
       <div class="card-img-wrap">
         <div class="corner corner-tl"></div>
         <div class="corner corner-tr"></div>
         <div class="corner corner-bl"></div>
         <div class="corner corner-br"></div>
-        <div class="role-badge hero">ضد قهرمان</div>
+        <div class="badge-row">
+          <div class="role-badge villain">ضدقهرمان</div>
+          <div class="status-tag unknown"><span class="status-dot"></span>نامعلوم</div>
+        </div>
         <img src="photo/GeneralKianfar.png" alt="ژنرال کیانفر">
       </div>
       <div class="card-body">
-        <h3>ژنرال کیانفر</h3>
-        <p>ژنرال ارتش که به فساد کشیده شده و دنبال قدرت نامحدود است.</p>
+        <div class="card-first-seen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          اولین ظهور: فاز یک — الکتروپالس
+        </div>
+        <h3>ژنرال کیان‌فر</h3>
+        <p>فرمانده‌ای بلندپایه با نفوذی فراتر از چیزی که نشان می‌دهد. رد پایش در سایه‌ی هر اتفاق مشکوکی در تهران دیده می‌شود. سرنوشت نهایی‌اش هنوز محل بحث است.</p>
+        <span class="power-tag">قدرت: فاقد توانایی ماورایی</span>
         <div class="card-link">
-          مشاهده پروفایل
+          مشاهده پرونده
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </div>
     </a>
-     
+
+    <a href="/characters/Aghnatos.html" class="character-card reveal" data-role="villain" data-name="آگناتوس فرهاد مهرگان">
+      <div class="card-img-wrap">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <div class="badge-row">
+          <div class="role-badge villain">ضدقهرمان</div>
+          <div class="status-tag custody"><span class="status-dot"></span>بازداشت</div>
+        </div>
+        <img src="photo/aghnatos.png" alt="آگناتوس" onerror="this.closest('.card-img-wrap').style.background='linear-gradient(160deg,#1a0a12,#050810)'">
+      </div>
+      <div class="card-body">
+        <div class="card-first-seen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          اولین ظهور: فاز یک — لرد فیزیکا
+        </div>
+        <h3>آگناتوس</h3>
+        <p>پزشکی که هیچ‌وقت واقعاً پزشک نبود. بلندپروازی‌اش او را به یکی از خطرناک‌ترین ذهن‌های توشان‌ورس بدل کرد. اکنون پشت دیوارهایی امن‌تر از هر پایگاه نظامی نگهداری می‌شود — فعلاً.</p>
+        <span class="power-tag">قدرت: کنترل ذهن</span>
+        <div class="card-link">
+          مشاهده پرونده
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- ── CLASSIFIED / LOCKED FILES ── -->
+    <div class="locked-card reveal" data-role="locked" data-name="پرونده طبقه‌بندی‌شده ۰۵">
+      <div class="locked-visual">
+        <div class="locked-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div class="locked-badge">دسترسی محدود</div>
+        <div class="q">؟</div>
+      </div>
+      <div class="locked-body">
+        <h3>پرونده #۰۵</h3>
+        <p>موجودیتی که ردش در دل کوه‌های شمالی گم شده. اطلاعات این پرونده هنوز طبقه‌بندی‌زدایی نشده است.</p>
+        <div class="locked-progress"><span style="width:35%"></span></div>
+      </div>
+    </div>
+
+    <div class="locked-card reveal" data-role="locked" data-name="پرونده طبقه‌بندی‌شده ۰۶">
+      <div class="locked-visual">
+        <div class="locked-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div class="locked-badge">دسترسی محدود</div>
+        <div class="q">؟</div>
+      </div>
+      <div class="locked-body">
+        <h3>پرونده #۰۶</h3>
+        <p>گزارش‌های اولیه از یک محله‌ی جنوبی از «کسی که نمی‌سوزد» حرف می‌زنند. پرونده هنوز در دست بررسی است.</p>
+        <div class="locked-progress"><span style="width:20%"></span></div>
+      </div>
+    </div>
+
+    <div class="locked-card reveal" data-role="locked" data-name="پرونده طبقه‌بندی‌شده ۰۷">
+      <div class="locked-visual">
+        <div class="locked-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div class="locked-badge">دسترسی محدود</div>
+        <div class="q">؟</div>
+      </div>
+      <div class="locked-body">
+        <h3>پرونده #۰۷</h3>
+        <p>یک تماس ناشناس، یک اتاق بازجویی، و اسمی که هیچ‌کجا ثبت نشده. جزئیات به‌زودی منتشر می‌شود.</p>
+        <div class="locked-progress"><span style="width:10%"></span></div>
+      </div>
+    </div>
+
   </div>
+
+  <div class="empty-state" id="emptyState">هیچ پرونده‌ای با این مشخصات پیدا نشد.</div>
 </section>
 
 <!-- FOOTER -->
@@ -704,6 +1069,62 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── STATS + FILTER + SEARCH ── */
+(() => {
+  const grid = document.getElementById('charactersGrid');
+  const items = Array.from(grid.children);
+  const toFa = n => n.toLocaleString('fa-IR');
+
+  const counts = { all: items.length, hero: 0, villain: 0, neutral: 0, locked: 0 };
+  items.forEach(el => { const r = el.dataset.role; if (counts[r] !== undefined) counts[r]++; });
+
+  document.getElementById('statTotal').textContent   = toFa(counts.all - counts.locked);
+  document.getElementById('statHero').textContent    = toFa(counts.hero);
+  document.getElementById('statVillain').textContent = toFa(counts.villain);
+  document.getElementById('statLocked').textContent  = toFa(counts.locked);
+
+  const chips = document.querySelectorAll('.filter-chip');
+  chips.forEach(chip => {
+    const key = chip.dataset.filter;
+    if (key !== 'all') {
+      const span = document.createElement('span');
+      span.className = 'count';
+      span.textContent = `(${toFa(counts[key] || 0)})`;
+      chip.appendChild(span);
+    }
+  });
+
+  let currentFilter = 'all';
+  let currentQuery = '';
+
+  function applyFilters() {
+    let visibleCount = 0;
+    items.forEach(el => {
+      const matchesFilter = currentFilter === 'all' || el.dataset.role === currentFilter;
+      const matchesQuery = !currentQuery || (el.dataset.name || '').includes(currentQuery);
+      const show = matchesFilter && matchesQuery;
+      el.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    });
+    document.getElementById('emptyState').classList.toggle('show', visibleCount === 0);
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  document.getElementById('searchInput').addEventListener('input', e => {
+    currentQuery = e.target.value.trim();
+    applyFilters();
+  });
+})();
+
    /* ── SIDE NAV PROFILE STATE (ورود/عدم ورود) ── */
 (async () => {
   try {
