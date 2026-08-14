@@ -34,7 +34,7 @@ body{
 }
 
 a{text-decoration:none;color:inherit;}
-button,input,select{font-family:inherit;}
+button,input,select,textarea{font-family:inherit;}
 
 body::before{
     content:"";
@@ -111,6 +111,17 @@ main{
 
 #accessDenied p{
     color:var(--muted);
+}
+
+#noPermissionsNote{
+    display:none;
+    text-align:center;
+    padding:30px 20px;
+    color:var(--muted);
+    font-size:.85rem;
+    border:1px dashed var(--line);
+    border-radius:16px;
+    margin-bottom:20px;
 }
 
 #adminContent{display:none;}
@@ -195,7 +206,7 @@ section.group-title:first-of-type{margin-top:0;}
 }
 
 .accordion-body.open{
-    max-height:3000px;
+    max-height:4000px;
 }
 
 .accordion-body-inner{
@@ -219,7 +230,8 @@ section.group-title:first-of-type{margin-top:0;}
 }
 
 .field input,
-.field select{
+.field select,
+.field textarea{
     width:100%;
     padding:12px 14px;
     background:rgba(255,255,255,.03);
@@ -229,11 +241,20 @@ section.group-title:first-of-type{margin-top:0;}
     font-size:.9rem;
 }
 
+.field textarea{
+    resize:vertical;
+    min-height:110px;
+    font-family:inherit;
+}
+
 .field input:focus,
-.field select:focus{
+.field select:focus,
+.field textarea:focus{
     outline:none;
     border-color:rgba(25,167,255,.5);
 }
+
+.field.full{grid-column:1/-1;}
 
 .submit-btn{
     padding:13px 30px;
@@ -253,6 +274,19 @@ section.group-title:first-of-type{margin-top:0;}
     opacity:.5;
     cursor:not-allowed;
     transform:none;
+}
+
+.subsection-title{
+    font-size:.95rem;
+    color:var(--blue2);
+    margin:28px 0 16px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+}
+.subsection-title:first-child{
+    padding-top:0;
+    border-top:none;
+    margin-top:0;
 }
 
 .search-bar{
@@ -343,6 +377,139 @@ section.group-title:first-of-type{margin-top:0;}
     justify-content:flex-end;
 }
 
+/*═════════ ADMINS TABLE ═════════*/
+
+.admin-row{
+    display:grid;
+    grid-template-columns:1.4fr 1.6fr auto;
+    gap:14px;
+    align-items:center;
+    padding:18px;
+    border-radius:14px;
+    background:rgba(255,255,255,.02);
+    border:1px solid var(--line);
+    margin-bottom:10px;
+    font-size:.85rem;
+}
+
+.admin-row .username-cell{font-weight:700;}
+.admin-row .email-cell{color:var(--muted); font-size:.8rem; direction:ltr;}
+
+.perm-toggles{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.perm-chip{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:.72rem;
+    padding:6px 12px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    cursor:pointer;
+    transition:.2s;
+    color:var(--muted);
+}
+
+.perm-chip input{accent-color:var(--blue);cursor:pointer;}
+
+.perm-chip.active{
+    border-color:rgba(25,167,255,.4);
+    color:var(--blue2);
+    background:rgba(25,167,255,.08);
+}
+
+.admin-toggle-btn{
+    padding:8px 16px;
+    border-radius:10px;
+    font-size:.78rem;
+    font-weight:600;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.03);
+    color:var(--text);
+    transition:.2s;
+    white-space:nowrap;
+}
+
+.admin-toggle-btn.make-admin{
+    background:rgba(25,167,255,.12);
+    color:var(--blue2);
+    border-color:rgba(25,167,255,.3);
+}
+.admin-toggle-btn.make-admin:hover{background:rgba(25,167,255,.2);}
+
+.admin-toggle-btn.revoke-admin{
+    background:rgba(255,71,103,.12);
+    color:#ff8fa3;
+    border-color:rgba(255,71,103,.3);
+}
+.admin-toggle-btn.revoke-admin:hover{background:rgba(255,71,103,.2);}
+
+.save-perms-btn{
+    padding:8px 16px;
+    border-radius:10px;
+    font-size:.78rem;
+    font-weight:700;
+    border:1px solid rgba(67,209,124,.3);
+    background:rgba(67,209,124,.12);
+    color:#7be8a6;
+    transition:.2s;
+    white-space:nowrap;
+}
+.save-perms-btn:hover{background:rgba(67,209,124,.2);}
+
+.admin-row-actions{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    align-items:flex-end;
+}
+
+/*═════════ STORIES ═════════*/
+
+.story-row{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr auto;
+    gap:14px;
+    align-items:center;
+    padding:16px 18px;
+    border-radius:14px;
+    background:rgba(255,255,255,.02);
+    border:1px solid transparent;
+    transition:.2s;
+    margin-bottom:10px;
+    font-size:.85rem;
+}
+
+.story-row:hover{
+    border-color:var(--line);
+    background:rgba(25,167,255,.04);
+}
+
+.story-row.header-row{
+    font-size:.72rem;
+    letter-spacing:1px;
+    color:var(--muted);
+    background:transparent;
+}
+
+.story-row .story-title{font-weight:700;}
+
+.phase-pill{
+    font-size:.72rem;
+    padding:4px 10px;
+    border-radius:999px;
+    background:rgba(25,167,255,.12);
+    color:var(--blue2);
+    width:fit-content;
+}
+
+/*═════════ SHARED BADGES ═════════*/
+
 .seller-tag{
     font-size:.72rem;
     padding:4px 10px;
@@ -376,30 +543,13 @@ section.group-title:first-of-type{margin-top:0;}
     width:fit-content;
 }
 
-.status-badge.active{
-    background:rgba(67,209,124,.15);
-    color:#7be8a6;
-}
-
-.status-badge.sold{
-    background:rgba(210,230,255,.1);
-    color:var(--muted);
-}
-
-.status-badge.cancelled{
-    background:rgba(255,71,103,.12);
-    color:#ff8fa3;
-}
-
-.status-badge.banned{
-    background:rgba(255,71,103,.15);
-    color:#ff8fa3;
-}
-
-.status-badge.ok{
-    background:rgba(67,209,124,.15);
-    color:#7be8a6;
-}
+.status-badge.active{background:rgba(67,209,124,.15); color:#7be8a6;}
+.status-badge.sold{background:rgba(210,230,255,.1); color:var(--muted);}
+.status-badge.cancelled{background:rgba(255,71,103,.12); color:#ff8fa3;}
+.status-badge.banned{background:rgba(255,71,103,.15); color:#ff8fa3;}
+.status-badge.ok{background:rgba(67,209,124,.15); color:#7be8a6;}
+.status-badge.draft{background:rgba(210,230,255,.1); color:var(--muted);}
+.status-badge.published{background:rgba(67,209,124,.15); color:#7be8a6;}
 
 .role-badge{
     font-size:.7rem;
@@ -422,10 +572,7 @@ section.group-title:first-of-type{margin-top:0;}
     transition:.2s;
     white-space:nowrap;
 }
-
-.cancel-btn:hover{
-    background:rgba(255,71,103,.2);
-}
+.cancel-btn:hover{background:rgba(255,71,103,.2);}
 
 .ban-btn{
     padding:8px 14px;
@@ -497,14 +644,11 @@ button:disabled{opacity:.5; cursor:not-allowed;}
 }
 
 @media(max-width:800px){
-    .listing-row{
-        grid-template-columns:1fr 1fr;
-        font-size:.8rem;
-    }
-    .user-row{
-        grid-template-columns:1fr 1fr;
-        font-size:.8rem;
-    }
+    .listing-row{grid-template-columns:1fr 1fr; font-size:.8rem;}
+    .user-row{grid-template-columns:1fr 1fr; font-size:.8rem;}
+    .story-row{grid-template-columns:1fr 1fr; font-size:.8rem;}
+    .admin-row{grid-template-columns:1fr;}
+    .admin-row-actions{align-items:flex-start;}
     .user-actions{justify-content:flex-start;}
     .accordion-header{padding:18px 20px;}
     .accordion-body-inner{padding:0 20px 24px;}
@@ -530,15 +674,18 @@ button:disabled{opacity:.5; cursor:not-allowed;}
 
     <div id="adminContent">
 
-        <div class="group-title">بازار</div>
+        <div id="noPermissionsNote">
+            حساب شما مدیر است اما هنوز هیچ مجوز خاصی به آن اختصاص داده نشده.
+            از یک مدیر با دسترسی «مدیریت ادمین‌ها» بخواهید مجوزهای لازم را برایتان فعال کند.
+        </div>
 
-        <!-- ═══ افزودن آیتم رسمی ═══ -->
-        <section class="panel">
+        <!-- ═══════════ گروه بازار ═══════════ -->
+        <div class="group-title perm-group" data-perm="manage_market">بازار</div>
+
+        <section class="panel perm-section" data-perm="manage_market">
             <div class="accordion-header" data-target="createPanelBody">
                 <h2>افزودن آیتم رسمی به بازار</h2>
-                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M6 9l6 6 6-6"/>
-                </svg>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
             </div>
             <div class="accordion-body" id="createPanelBody">
                 <div class="accordion-body-inner">
@@ -570,68 +717,134 @@ button:disabled{opacity:.5; cursor:not-allowed;}
                                 <input type="number" id="newItemQuantity" min="1" value="1" required>
                             </div>
                         </div>
-
                         <button type="submit" class="submit-btn" id="submitBtn">افزودن به بازار</button>
                     </form>
                 </div>
             </div>
         </section>
 
-        <!-- ═══ همه آگهی‌های بازار ═══ -->
-        <section class="panel">
+        <section class="panel perm-section" data-perm="manage_market">
             <div class="accordion-header" data-target="listingsPanelBody">
                 <h2>همه آگهی‌های بازار <span class="count-pill" id="listingsCount">0</span></h2>
-                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M6 9l6 6 6-6"/>
-                </svg>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
             </div>
             <div class="accordion-body" id="listingsPanelBody">
                 <div class="accordion-body-inner">
                     <div class="listing-row header-row">
-                        <span>نام آیتم</span>
-                        <span>فروشنده</span>
-                        <span>دسته</span>
-                        <span>قیمت</span>
-                        <span>تعداد</span>
-                        <span>وضعیت</span>
-                        <span></span>
+                        <span>نام آیتم</span><span>فروشنده</span><span>دسته</span><span>قیمت</span><span>تعداد</span><span>وضعیت</span><span></span>
                     </div>
-
-                    <div id="listingsContainer">
-                        <div class="empty-state">در حال بارگذاری...</div>
-                    </div>
+                    <div id="listingsContainer"><div class="empty-state">در حال بارگذاری...</div></div>
                 </div>
             </div>
         </section>
 
-        <div class="group-title">کاربران سایت</div>
+        <!-- ═══════════ گروه داستان‌ها ═══════════ -->
+        <div class="group-title perm-group" data-perm="manage_stories">داستان‌ها</div>
 
-        <!-- ═══ کاربران سایت ═══ -->
-        <section class="panel">
+        <section class="panel perm-section" data-perm="manage_stories">
+            <div class="accordion-header" data-target="storiesPanelBody">
+                <h2>داستان‌ها و فازها <span class="count-pill" id="storiesCount">0</span></h2>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="accordion-body" id="storiesPanelBody">
+                <div class="accordion-body-inner">
+
+                    <div class="subsection-title">افزودن داستان جدید</div>
+                    <form id="createStoryForm">
+                        <div class="form-grid">
+                            <div class="field">
+                                <label>عنوان داستان</label>
+                                <input type="text" id="newStoryTitle" placeholder="مثلاً افسانه توشان" required>
+                            </div>
+                            <div class="field">
+                                <label>وضعیت انتشار</label>
+                                <select id="newStoryStatus" required>
+                                    <option value="draft">پیش‌نویس</option>
+                                    <option value="published">منتشرشده</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>لینک تصویر کاور (اختیاری)</label>
+                                <input type="text" id="newStoryCover" placeholder="https://...">
+                            </div>
+                            <div class="field full">
+                                <label>توضیحات</label>
+                                <textarea id="newStoryDescription" placeholder="خلاصه‌ای از داستان..."></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn" id="storySubmitBtn">ثبت داستان</button>
+                    </form>
+
+                    <div class="subsection-title">افزودن فاز به یک داستان</div>
+                    <form id="createPhaseForm">
+                        <div class="form-grid">
+                            <div class="field">
+                                <label>داستان</label>
+                                <select id="phaseStorySelect" required>
+                                    <option value="">در حال بارگذاری داستان‌ها...</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>شماره فاز</label>
+                                <input type="number" id="newPhaseNumber" min="1" required>
+                            </div>
+                            <div class="field">
+                                <label>عنوان فاز</label>
+                                <input type="text" id="newPhaseTitle" placeholder="مثلاً فاز اول: آغاز راه" required>
+                            </div>
+                            <div class="field full">
+                                <label>متن فاز</label>
+                                <textarea id="newPhaseContent" placeholder="محتوای این فاز از داستان..." required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn" id="phaseSubmitBtn">افزودن فاز</button>
+                    </form>
+
+                    <div class="subsection-title">لیست داستان‌ها</div>
+                    <div class="story-row header-row">
+                        <span>عنوان</span><span>وضعیت</span><span>تعداد فاز</span><span></span>
+                    </div>
+                    <div id="storiesContainer"><div class="empty-state">در حال بارگذاری...</div></div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ گروه کاربران ═══════════ -->
+        <div class="group-title perm-group" data-perm="ban_users,delete_users">کاربران سایت</div>
+
+        <section class="panel perm-section" data-perm="ban_users,delete_users">
             <div class="accordion-header" data-target="usersPanelBody">
                 <h2>لیست کاربران <span class="count-pill" id="usersCount">0</span></h2>
-                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M6 9l6 6 6-6"/>
-                </svg>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
             </div>
             <div class="accordion-body" id="usersPanelBody">
                 <div class="accordion-body-inner">
                     <div class="search-bar">
                         <input type="text" id="userSearchInput" placeholder="جستجو بر اساس نام کاربری یا ایمیل...">
                     </div>
-
                     <div class="user-row header-row">
-                        <span>نام کاربری</span>
-                        <span>ایمیل</span>
-                        <span>تاریخ عضویت</span>
-                        <span>نقش</span>
-                        <span>وضعیت</span>
-                        <span></span>
+                        <span>نام کاربری</span><span>ایمیل</span><span>تاریخ عضویت</span><span>نقش</span><span>وضعیت</span><span></span>
                     </div>
+                    <div id="usersContainer"><div class="empty-state">در حال بارگذاری...</div></div>
+                </div>
+            </div>
+        </section>
 
-                    <div id="usersContainer">
-                        <div class="empty-state">در حال بارگذاری...</div>
+        <!-- ═══════════ گروه دسترسی‌ها ═══════════ -->
+        <div class="group-title perm-group" data-perm="manage_admins">دسترسی‌ها</div>
+
+        <section class="panel perm-section" data-perm="manage_admins">
+            <div class="accordion-header" data-target="adminsPanelBody">
+                <h2>مدیریت ادمین‌ها <span class="count-pill" id="adminsCount">0</span></h2>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="accordion-body" id="adminsPanelBody">
+                <div class="accordion-body-inner">
+                    <div class="search-bar">
+                        <input type="text" id="adminSearchInput" placeholder="جستجو بر اساس نام کاربری یا ایمیل...">
                     </div>
+                    <div id="adminsContainer"><div class="empty-state">در حال بارگذاری...</div></div>
                 </div>
             </div>
         </section>
@@ -650,6 +863,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const accessDenied = document.getElementById("accessDenied");
 const adminContent = document.getElementById("adminContent");
+const noPermissionsNote = document.getElementById("noPermissionsNote");
 
 const listingsContainer = document.getElementById("listingsContainer");
 const listingsCount = document.getElementById("listingsCount");
@@ -660,9 +874,31 @@ const usersContainer = document.getElementById("usersContainer");
 const usersCount = document.getElementById("usersCount");
 const userSearchInput = document.getElementById("userSearchInput");
 
+const adminsContainer = document.getElementById("adminsContainer");
+const adminsCount = document.getElementById("adminsCount");
+const adminSearchInput = document.getElementById("adminSearchInput");
+
+const storiesContainer = document.getElementById("storiesContainer");
+const storiesCount = document.getElementById("storiesCount");
+const createStoryForm = document.getElementById("createStoryForm");
+const storySubmitBtn = document.getElementById("storySubmitBtn");
+const createPhaseForm = document.getElementById("createPhaseForm");
+const phaseSubmitBtn = document.getElementById("phaseSubmitBtn");
+const phaseStorySelect = document.getElementById("phaseStorySelect");
+
 const toFa = n => Number(n).toLocaleString("fa-IR");
 
+const ALL_PERMISSIONS = [
+    { key: "manage_market",   label: "مدیریت بازار" },
+    { key: "ban_users",       label: "مسدودسازی کاربران" },
+    { key: "delete_users",    label: "حذف کامل کاربر" },
+    { key: "manage_admins",   label: "مدیریت ادمین‌ها" },
+    { key: "manage_stories",  label: "مدیریت داستان‌ها" }
+];
+
+let myPermissions = {};
 let allUsers = [];
+let allAdmins = [];
 
 function showToast(text){
     const toast = document.createElement("div");
@@ -676,14 +912,10 @@ function showToast(text){
     }, 2500);
 }
 
-const statusLabel = {
-    active: "فعال",
-    sold: "فروخته شده",
-    cancelled: "لغو شده"
-};
+const statusLabel = { active: "فعال", sold: "فروخته شده", cancelled: "لغو شده" };
+const storyStatusLabel = { draft: "پیش‌نویس", published: "منتشرشده" };
 
 /*═════════ ACCORDION ═════════*/
-
 document.querySelectorAll(".accordion-header").forEach(header => {
     header.addEventListener("click", () => {
         const body = document.getElementById(header.dataset.target);
@@ -691,6 +923,23 @@ document.querySelectorAll(".accordion-header").forEach(header => {
         body.classList.toggle("open");
     });
 });
+
+function hasAnyPerm(permString){
+    return permString.split(",").some(p => myPermissions[p] === true);
+}
+
+function applyPermissionVisibility(){
+    let anyVisible = false;
+
+    document.querySelectorAll(".perm-section, .perm-group").forEach(el => {
+        const permAttr = el.dataset.perm;
+        const visible = hasAnyPerm(permAttr);
+        el.style.display = visible ? "" : "none";
+        if(visible) anyVisible = true;
+    });
+
+    noPermissionsNote.style.display = anyVisible ? "none" : "block";
+}
 
 /*═════════ ACCESS ═════════*/
 
@@ -702,24 +951,24 @@ async function checkAdminAccess(){
         return false;
     }
 
-    const { data, error } = await supabase
-        .from("profiles")
-        .select("is_admin")
-        .eq("id", user.id)
-        .single();
+    const { data, error } = await supabase.rpc("admin_get_my_permissions");
 
-    if(error || !data?.is_admin){
+    if(error || !data || data.length === 0 || !data[0].is_admin){
         accessDenied.style.display = "block";
         return false;
     }
 
+    myPermissions = data[0].permissions || {};
     adminContent.style.display = "block";
+    applyPermissionVisibility();
     return true;
 }
 
 /*═════════ LISTINGS ═════════*/
 
 async function loadListings(){
+    if(!myPermissions.manage_market) return;
+
     const { data, error } = await supabase.rpc("admin_get_all_market_listings");
 
     if(error){
@@ -740,48 +989,32 @@ async function loadListings(){
     data.forEach(listing => {
         const row = document.createElement("div");
         row.className = "listing-row";
-
         const isOfficial = !listing.seller_id;
-        const dateLabel = new Date(listing.created_at).toLocaleDateString("fa-IR");
 
         row.innerHTML = `
             <span class="item-name">${listing.item_name}</span>
-            <span class="seller-tag ${isOfficial ? "official" : "peer"}">
-                ${isOfficial ? "رسمی" : (listing.seller_username || "کاربر")}
-            </span>
+            <span class="seller-tag ${isOfficial ? "official" : "peer"}">${isOfficial ? "رسمی" : (listing.seller_username || "کاربر")}</span>
             <span>${listing.category}</span>
             <span class="price-cell">${toFa(listing.price)} 🪙</span>
             <span>${toFa(listing.quantity)}</span>
             <span class="status-badge ${listing.status}">${statusLabel[listing.status] || listing.status}</span>
-            <span>
-                ${listing.status === "active"
-                    ? `<button class="cancel-btn" data-id="${listing.id}">حذف</button>`
-                    : ""}
-            </span>
+            <span>${listing.status === "active" ? `<button class="cancel-btn" data-id="${listing.id}">حذف</button>` : ""}</span>
         `;
-
         listingsContainer.appendChild(row);
     });
 }
 
-createListingForm.addEventListener("submit", async e => {
+createListingForm?.addEventListener("submit", async e => {
     e.preventDefault();
-
     submitBtn.disabled = true;
     submitBtn.innerText = "در حال ثبت...";
 
-    const itemId = document.getElementById("newItemId").value.trim();
-    const itemName = document.getElementById("newItemName").value.trim();
-    const category = document.getElementById("newItemCategory").value;
-    const price = Number(document.getElementById("newItemPrice").value);
-    const quantity = Number(document.getElementById("newItemQuantity").value);
-
     const { error } = await supabase.rpc("admin_create_listing", {
-        p_item_id: itemId,
-        p_item_name: itemName,
-        p_category: category,
-        p_price: price,
-        p_quantity: quantity
+        p_item_id: document.getElementById("newItemId").value.trim(),
+        p_item_name: document.getElementById("newItemName").value.trim(),
+        p_category: document.getElementById("newItemCategory").value,
+        p_price: Number(document.getElementById("newItemPrice").value),
+        p_quantity: Number(document.getElementById("newItemQuantity").value)
     });
 
     submitBtn.disabled = false;
@@ -798,17 +1031,13 @@ createListingForm.addEventListener("submit", async e => {
     await loadListings();
 });
 
-listingsContainer.addEventListener("click", async e => {
+listingsContainer?.addEventListener("click", async e => {
     const btn = e.target.closest(".cancel-btn");
     if(!btn) return;
-
     if(!confirm("آیا از حذف این آگهی مطمئن هستید؟")) return;
 
     btn.disabled = true;
-
-    const { error } = await supabase.rpc("admin_force_cancel_listing", {
-        p_listing_id: btn.dataset.id
-    });
+    const { error } = await supabase.rpc("admin_force_cancel_listing", { p_listing_id: btn.dataset.id });
 
     if(error){
         console.error(error);
@@ -819,6 +1048,105 @@ listingsContainer.addEventListener("click", async e => {
 
     showToast("آگهی حذف شد");
     await loadListings();
+});
+
+/*═════════ STORIES ═════════*/
+
+async function loadStories(){
+    if(!myPermissions.manage_stories) return;
+
+    const { data, error } = await supabase.rpc("admin_get_all_stories");
+
+    if(error){
+        console.error(error);
+        storiesContainer.innerHTML = `<div class="empty-state">خطا در بارگذاری داستان‌ها</div>`;
+        phaseStorySelect.innerHTML = `<option value="">خطا در بارگذاری</option>`;
+        return;
+    }
+
+    if(!data || data.length === 0){
+        storiesContainer.innerHTML = `<div class="empty-state">هنوز داستانی ثبت نشده است.</div>`;
+        storiesCount.innerText = "0";
+        phaseStorySelect.innerHTML = `<option value="">ابتدا یک داستان بسازید</option>`;
+        return;
+    }
+
+    storiesCount.innerText = toFa(data.length);
+    storiesContainer.innerHTML = "";
+
+    phaseStorySelect.innerHTML = `<option value="">انتخاب داستان...</option>` +
+        data.map(s => `<option value="${s.id}">${s.title}</option>`).join("");
+
+    data.forEach(story => {
+        const row = document.createElement("div");
+        row.className = "story-row";
+        row.innerHTML = `
+            <span class="story-title">${story.title}</span>
+            <span class="status-badge ${story.status}">${storyStatusLabel[story.status] || story.status}</span>
+            <span class="phase-pill">${toFa(story.phase_count)} فاز</span>
+            <span></span>
+        `;
+        storiesContainer.appendChild(row);
+    });
+}
+
+createStoryForm?.addEventListener("submit", async e => {
+    e.preventDefault();
+    storySubmitBtn.disabled = true;
+    storySubmitBtn.innerText = "در حال ثبت...";
+
+    const { error } = await supabase.rpc("admin_create_story", {
+        p_title: document.getElementById("newStoryTitle").value.trim(),
+        p_description: document.getElementById("newStoryDescription").value.trim(),
+        p_cover_url: document.getElementById("newStoryCover").value.trim() || null,
+        p_status: document.getElementById("newStoryStatus").value
+    });
+
+    storySubmitBtn.disabled = false;
+    storySubmitBtn.innerText = "ثبت داستان";
+
+    if(error){
+        console.error(error);
+        showToast(error.message || "خطا در ثبت داستان");
+        return;
+    }
+
+    showToast("داستان با موفقیت ثبت شد");
+    createStoryForm.reset();
+    await loadStories();
+});
+
+createPhaseForm?.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const storyId = phaseStorySelect.value;
+    if(!storyId){
+        showToast("لطفاً ابتدا یک داستان انتخاب کنید");
+        return;
+    }
+
+    phaseSubmitBtn.disabled = true;
+    phaseSubmitBtn.innerText = "در حال ثبت...";
+
+    const { error } = await supabase.rpc("admin_add_story_phase", {
+        p_story_id: storyId,
+        p_phase_number: Number(document.getElementById("newPhaseNumber").value),
+        p_title: document.getElementById("newPhaseTitle").value.trim(),
+        p_content: document.getElementById("newPhaseContent").value.trim()
+    });
+
+    phaseSubmitBtn.disabled = false;
+    phaseSubmitBtn.innerText = "افزودن فاز";
+
+    if(error){
+        console.error(error);
+        showToast(error.message || "خطا در افزودن فاز");
+        return;
+    }
+
+    showToast("فاز با موفقیت اضافه شد");
+    createPhaseForm.reset();
+    await loadStories();
 });
 
 /*═════════ USERS ═════════*/
@@ -834,22 +1162,21 @@ function renderUsers(list){
     list.forEach(u => {
         const row = document.createElement("div");
         row.className = "user-row";
-
         const dateLabel = new Date(u.created_at).toLocaleDateString("fa-IR");
 
         let actionsHtml = "";
         if(u.is_admin){
             actionsHtml = `<span style="color:var(--muted); font-size:.75rem;">—</span>`;
-        } else if(u.is_banned){
-            actionsHtml = `
-                <button class="unban-btn" data-id="${u.id}" data-action="unban">رفع مسدودیت</button>
-                <button class="delete-btn" data-id="${u.id}" data-action="delete">حذف کامل</button>
-            `;
         } else {
-            actionsHtml = `
-                <button class="ban-btn" data-id="${u.id}" data-action="ban">مسدود کردن</button>
-                <button class="delete-btn" data-id="${u.id}" data-action="delete">حذف کامل</button>
-            `;
+            const banBtn = myPermissions.ban_users
+                ? (u.is_banned
+                    ? `<button class="unban-btn" data-id="${u.id}" data-action="unban">رفع مسدودیت</button>`
+                    : `<button class="ban-btn" data-id="${u.id}" data-action="ban">مسدود کردن</button>`)
+                : "";
+            const deleteBtn = myPermissions.delete_users
+                ? `<button class="delete-btn" data-id="${u.id}" data-action="delete">حذف کامل</button>`
+                : "";
+            actionsHtml = banBtn + deleteBtn;
         }
 
         row.innerHTML = `
@@ -860,12 +1187,13 @@ function renderUsers(list){
             <span class="status-badge ${u.is_banned ? "banned" : "ok"}">${u.is_banned ? "مسدود" : "فعال"}</span>
             <span class="user-actions">${actionsHtml}</span>
         `;
-
         usersContainer.appendChild(row);
     });
 }
 
 async function loadUsers(){
+    if(!myPermissions.ban_users && !myPermissions.delete_users) return;
+
     const { data, error } = await supabase.rpc("admin_get_all_users");
 
     if(error){
@@ -879,20 +1207,16 @@ async function loadUsers(){
     renderUsers(allUsers);
 }
 
-userSearchInput.addEventListener("input", () => {
+userSearchInput?.addEventListener("input", () => {
     const q = userSearchInput.value.trim().toLowerCase();
-    if(!q){
-        renderUsers(allUsers);
-        return;
-    }
-    const filtered = allUsers.filter(u =>
+    if(!q){ renderUsers(allUsers); return; }
+    renderUsers(allUsers.filter(u =>
         (u.username || "").toLowerCase().includes(q) ||
         (u.email || "").toLowerCase().includes(q)
-    );
-    renderUsers(filtered);
+    ));
 });
 
-usersContainer.addEventListener("click", async e => {
+usersContainer?.addEventListener("click", async e => {
     const btn = e.target.closest("button[data-action]");
     if(!btn) return;
 
@@ -904,10 +1228,7 @@ usersContainer.addEventListener("click", async e => {
         if(!confirm("آیا از مسدود کردن این کاربر مطمئن هستید؟")) return;
 
         btn.disabled = true;
-        const { error } = await supabase.rpc("admin_ban_user", {
-            p_user_id: userId,
-            p_reason: reason
-        });
+        const { error } = await supabase.rpc("admin_ban_user", { p_user_id: userId, p_reason: reason });
 
         if(error){
             console.error(error);
@@ -915,7 +1236,6 @@ usersContainer.addEventListener("click", async e => {
             btn.disabled = false;
             return;
         }
-
         showToast("کاربر مسدود شد");
         await loadUsers();
     }
@@ -924,9 +1244,7 @@ usersContainer.addEventListener("click", async e => {
         if(!confirm("آیا از رفع مسدودیت این کاربر مطمئن هستید؟")) return;
 
         btn.disabled = true;
-        const { error } = await supabase.rpc("admin_unban_user", {
-            p_user_id: userId
-        });
+        const { error } = await supabase.rpc("admin_unban_user", { p_user_id: userId });
 
         if(error){
             console.error(error);
@@ -934,7 +1252,6 @@ usersContainer.addEventListener("click", async e => {
             btn.disabled = false;
             return;
         }
-
         showToast("مسدودیت کاربر رفع شد");
         await loadUsers();
     }
@@ -944,9 +1261,7 @@ usersContainer.addEventListener("click", async e => {
         if(!confirm("تأیید نهایی: حساب کاربر برای همیشه حذف خواهد شد. ادامه می‌دهید؟")) return;
 
         btn.disabled = true;
-        const { error } = await supabase.rpc("admin_delete_user", {
-            p_user_id: userId
-        });
+        const { error } = await supabase.rpc("admin_delete_user", { p_user_id: userId });
 
         if(error){
             console.error(error);
@@ -954,9 +1269,158 @@ usersContainer.addEventListener("click", async e => {
             btn.disabled = false;
             return;
         }
-
         showToast("حساب کاربر حذف شد");
         await loadUsers();
+    }
+});
+
+/*═════════ ADMINS MANAGEMENT ═════════*/
+
+function permChipsHtml(rowId, currentPerms){
+    return ALL_PERMISSIONS.map(p => {
+        const checked = currentPerms?.[p.key] === true;
+        return `
+            <label class="perm-chip ${checked ? "active" : ""}" data-row="${rowId}">
+                <input type="checkbox" data-perm-key="${p.key}" ${checked ? "checked" : ""}>
+                ${p.label}
+            </label>
+        `;
+    }).join("");
+}
+
+function renderAdmins(list){
+    if(!list || list.length === 0){
+        adminsContainer.innerHTML = `<div class="empty-state">کاربری یافت نشد.</div>`;
+        return;
+    }
+
+    adminsContainer.innerHTML = "";
+
+    list.forEach(u => {
+        const row = document.createElement("div");
+        row.className = "admin-row";
+        row.dataset.id = u.id;
+
+        row.innerHTML = `
+            <div>
+                <div class="username-cell">${u.username || "بدون نام"}</div>
+                <div class="email-cell">${u.email || "-"}</div>
+            </div>
+            <div class="perm-toggles">
+                ${u.is_admin ? permChipsHtml(u.id, u.admin_permissions) : `<span style="color:var(--muted); font-size:.78rem;">ادمین نیست</span>`}
+            </div>
+            <div class="admin-row-actions">
+                ${u.is_admin
+                    ? `<button class="admin-toggle-btn revoke-admin" data-action="revoke">حذف نقش مدیر</button>
+                       <button class="save-perms-btn" data-action="save">ذخیره مجوزها</button>`
+                    : `<button class="admin-toggle-btn make-admin" data-action="make">تبدیل به مدیر</button>`}
+            </div>
+        `;
+        adminsContainer.appendChild(row);
+    });
+}
+
+async function loadAdmins(){
+    if(!myPermissions.manage_admins) return;
+
+    const { data, error } = await supabase.rpc("admin_get_all_admins");
+
+    if(error){
+        console.error(error);
+        adminsContainer.innerHTML = `<div class="empty-state">خطا در بارگذاری لیست</div>`;
+        return;
+    }
+
+    allAdmins = data || [];
+    adminsCount.innerText = toFa(allAdmins.filter(a => a.is_admin).length);
+    renderAdmins(allAdmins);
+}
+
+adminSearchInput?.addEventListener("input", () => {
+    const q = adminSearchInput.value.trim().toLowerCase();
+    if(!q){ renderAdmins(allAdmins); return; }
+    renderAdmins(allAdmins.filter(u =>
+        (u.username || "").toLowerCase().includes(q) ||
+        (u.email || "").toLowerCase().includes(q)
+    ));
+});
+
+adminsContainer?.addEventListener("change", e => {
+    const chip = e.target.closest(".perm-chip");
+    if(!chip) return;
+    chip.classList.toggle("active", e.target.checked);
+});
+
+adminsContainer?.addEventListener("click", async e => {
+    const btn = e.target.closest("button[data-action]");
+    if(!btn) return;
+
+    const row = btn.closest(".admin-row");
+    const userId = row.dataset.id;
+    const action = btn.dataset.action;
+
+    if(action === "make"){
+        if(!confirm("آیا از تبدیل این کاربر به مدیر مطمئن هستید؟ (بدون هیچ مجوزی اضافه می‌شود، سپس مجوزها را تنظیم کنید)")) return;
+
+        btn.disabled = true;
+        const { error } = await supabase.rpc("admin_set_admin_permissions", {
+            p_user_id: userId,
+            p_is_admin: true,
+            p_permissions: {}
+        });
+
+        if(error){
+            console.error(error);
+            showToast(error.message || "خطا در تغییر نقش");
+            btn.disabled = false;
+            return;
+        }
+        showToast("کاربر به مدیر تبدیل شد");
+        await loadAdmins();
+    }
+
+    if(action === "revoke"){
+        if(!confirm("آیا از حذف نقش مدیریت این کاربر مطمئن هستید؟ همه مجوزهایش هم حذف می‌شود.")) return;
+
+        btn.disabled = true;
+        const { error } = await supabase.rpc("admin_set_admin_permissions", {
+            p_user_id: userId,
+            p_is_admin: false,
+            p_permissions: {}
+        });
+
+        if(error){
+            console.error(error);
+            showToast(error.message || "خطا در حذف نقش مدیریت");
+            btn.disabled = false;
+            return;
+        }
+        showToast("نقش مدیریت حذف شد");
+        await loadAdmins();
+    }
+
+    if(action === "save"){
+        const perms = {};
+        row.querySelectorAll("input[data-perm-key]").forEach(input => {
+            perms[input.dataset.permKey] = input.checked;
+        });
+
+        btn.disabled = true;
+        const { error } = await supabase.rpc("admin_set_admin_permissions", {
+            p_user_id: userId,
+            p_is_admin: true,
+            p_permissions: perms
+        });
+
+        btn.disabled = false;
+
+        if(error){
+            console.error(error);
+            showToast(error.message || "خطا در ذخیره مجوزها");
+            return;
+        }
+        showToast("مجوزها ذخیره شد");
+        await loadAdmins();
     }
 });
 
@@ -965,8 +1429,12 @@ usersContainer.addEventListener("click", async e => {
 window.addEventListener("load", async () => {
     const hasAccess = await checkAdminAccess();
     if(hasAccess){
-        await loadListings();
-        await loadUsers();
+        await Promise.all([
+            loadListings(),
+            loadUsers(),
+            loadAdmins(),
+            loadStories()
+        ]);
     }
 });
 </script>
