@@ -17,6 +17,7 @@
     --gold:#f0c060;
     --gold2:#ffd777;
     --red:#ff4767;
+    --green:#43d17c;
     --text:#ddeeff;
     --muted:rgba(210,230,255,.55);
     --line:rgba(25,167,255,.12);
@@ -91,7 +92,7 @@ header{
 }
 
 main{
-    max-width:1000px;
+    max-width:1100px;
     margin:0 auto;
     padding:40px 24px 100px;
 }
@@ -114,13 +115,22 @@ main{
 
 #adminContent{display:none;}
 
+section.group-title{
+    font-size:.78rem;
+    letter-spacing:2px;
+    color:var(--muted);
+    margin:36px 0 14px;
+    padding-right:4px;
+}
+section.group-title:first-of-type{margin-top:0;}
+
 .panel{
     background:var(--card);
     border:1px solid var(--line);
     border-radius:24px;
-    padding:32px;
+    padding:0;
     backdrop-filter:blur(18px);
-    margin-bottom:36px;
+    margin-bottom:16px;
     position:relative;
     overflow:hidden;
 }
@@ -133,10 +143,66 @@ main{
     background:linear-gradient(90deg,transparent,var(--blue),transparent);
 }
 
-.panel h2{
-    font-size:1.3rem;
-    margin-bottom:24px;
+/*═════════ ACCORDION ═════════*/
+
+.accordion-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:24px 32px;
+    cursor:pointer;
+    user-select:none;
+    transition:.2s;
 }
+
+.accordion-header:hover{
+    background:rgba(25,167,255,.03);
+}
+
+.accordion-header h2{
+    font-size:1.15rem;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.accordion-header .count-pill{
+    font-size:.7rem;
+    padding:3px 10px;
+    border-radius:999px;
+    background:rgba(25,167,255,.12);
+    color:var(--blue2);
+    font-family:'Orbitron',sans-serif;
+}
+
+.chevron{
+    width:20px;
+    height:20px;
+    flex-shrink:0;
+    transition:transform .3s;
+    color:var(--muted);
+}
+
+.accordion-header.open .chevron{
+    transform:rotate(180deg);
+    color:var(--blue2);
+}
+
+.accordion-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .35s ease;
+}
+
+.accordion-body.open{
+    max-height:3000px;
+}
+
+.accordion-body-inner{
+    padding:0 32px 32px;
+}
+
+/*═════════ FORM ═════════*/
 
 .form-grid{
     display:grid;
@@ -189,6 +255,26 @@ main{
     transform:none;
 }
 
+.search-bar{
+    margin-bottom:18px;
+}
+
+.search-bar input{
+    width:100%;
+    max-width:340px;
+    padding:11px 16px;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    border-radius:12px;
+    color:var(--text);
+    font-size:.85rem;
+}
+
+.search-bar input:focus{
+    outline:none;
+    border-color:rgba(25,167,255,.5);
+}
+
 /*═════════ LISTINGS TABLE ═════════*/
 
 .listing-row{
@@ -218,6 +304,44 @@ main{
 }
 
 .listing-row .item-name{font-weight:700;}
+
+/*═════════ USERS TABLE ═════════*/
+
+.user-row{
+    display:grid;
+    grid-template-columns:1.6fr 1.8fr 1fr 1fr 1fr auto;
+    gap:14px;
+    align-items:center;
+    padding:16px 18px;
+    border-radius:14px;
+    background:rgba(255,255,255,.02);
+    border:1px solid transparent;
+    transition:.2s;
+    margin-bottom:10px;
+    font-size:.85rem;
+}
+
+.user-row:hover{
+    border-color:var(--line);
+    background:rgba(25,167,255,.04);
+}
+
+.user-row.header-row{
+    font-size:.72rem;
+    letter-spacing:1px;
+    color:var(--muted);
+    background:transparent;
+}
+
+.user-row .username-cell{font-weight:700;}
+.user-row .email-cell{color:var(--muted); font-size:.8rem; direction:ltr; text-align:right;}
+
+.user-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+}
 
 .seller-tag{
     font-size:.72rem;
@@ -267,6 +391,26 @@ main{
     color:#ff8fa3;
 }
 
+.status-badge.banned{
+    background:rgba(255,71,103,.15);
+    color:#ff8fa3;
+}
+
+.status-badge.ok{
+    background:rgba(67,209,124,.15);
+    color:#7be8a6;
+}
+
+.role-badge{
+    font-size:.7rem;
+    padding:4px 10px;
+    border-radius:999px;
+    width:fit-content;
+    background:rgba(240,192,96,.15);
+    color:var(--gold2);
+    border:1px solid rgba(240,192,96,.3);
+}
+
 .cancel-btn{
     padding:8px 16px;
     border-radius:10px;
@@ -276,11 +420,53 @@ main{
     font-size:.78rem;
     font-weight:600;
     transition:.2s;
+    white-space:nowrap;
 }
 
 .cancel-btn:hover{
     background:rgba(255,71,103,.2);
 }
+
+.ban-btn{
+    padding:8px 14px;
+    border-radius:10px;
+    background:rgba(255,71,103,.12);
+    color:#ff8fa3;
+    border:1px solid rgba(255,71,103,.3);
+    font-size:.76rem;
+    font-weight:600;
+    transition:.2s;
+    white-space:nowrap;
+}
+.ban-btn:hover{background:rgba(255,71,103,.2);}
+
+.unban-btn{
+    padding:8px 14px;
+    border-radius:10px;
+    background:rgba(67,209,124,.12);
+    color:#7be8a6;
+    border:1px solid rgba(67,209,124,.3);
+    font-size:.76rem;
+    font-weight:600;
+    transition:.2s;
+    white-space:nowrap;
+}
+.unban-btn:hover{background:rgba(67,209,124,.2);}
+
+.delete-btn{
+    padding:8px 14px;
+    border-radius:10px;
+    background:rgba(255,71,103,.22);
+    color:#fff;
+    border:1px solid rgba(255,71,103,.5);
+    font-size:.76rem;
+    font-weight:700;
+    transition:.2s;
+    white-space:nowrap;
+}
+.delete-btn:hover{background:rgba(255,71,103,.35);}
+
+button:disabled{opacity:.5; cursor:not-allowed;}
 
 .empty-state{
     text-align:center;
@@ -315,6 +501,13 @@ main{
         grid-template-columns:1fr 1fr;
         font-size:.8rem;
     }
+    .user-row{
+        grid-template-columns:1fr 1fr;
+        font-size:.8rem;
+    }
+    .user-actions{justify-content:flex-start;}
+    .accordion-header{padding:18px 20px;}
+    .accordion-body-inner{padding:0 20px 24px;}
 }
 </style>
 </head>
@@ -337,57 +530,109 @@ main{
 
     <div id="adminContent">
 
+        <div class="group-title">بازار</div>
+
+        <!-- ═══ افزودن آیتم رسمی ═══ -->
         <section class="panel">
-            <h2>افزودن آیتم رسمی به بازار</h2>
+            <div class="accordion-header" data-target="createPanelBody">
+                <h2>افزودن آیتم رسمی به بازار</h2>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </div>
+            <div class="accordion-body" id="createPanelBody">
+                <div class="accordion-body-inner">
+                    <form id="createListingForm">
+                        <div class="form-grid">
+                            <div class="field">
+                                <label>شناسه آیتم (item_id)</label>
+                                <input type="text" id="newItemId" placeholder="مثلاً badge-anniversary" required>
+                            </div>
+                            <div class="field">
+                                <label>نام آیتم</label>
+                                <input type="text" id="newItemName" placeholder="مثلاً نشان سالگرد" required>
+                            </div>
+                            <div class="field">
+                                <label>دسته‌بندی</label>
+                                <select id="newItemCategory" required>
+                                    <option value="story">داستان</option>
+                                    <option value="comic">کمیک</option>
+                                    <option value="profile">شخصی‌سازی</option>
+                                    <option value="special">ویژه</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>قیمت (سکه)</label>
+                                <input type="number" id="newItemPrice" min="1" required>
+                            </div>
+                            <div class="field">
+                                <label>تعداد محدود</label>
+                                <input type="number" id="newItemQuantity" min="1" value="1" required>
+                            </div>
+                        </div>
 
-            <form id="createListingForm">
-                <div class="form-grid">
-                    <div class="field">
-                        <label>شناسه آیتم (item_id)</label>
-                        <input type="text" id="newItemId" placeholder="مثلاً badge-anniversary" required>
-                    </div>
-                    <div class="field">
-                        <label>نام آیتم</label>
-                        <input type="text" id="newItemName" placeholder="مثلاً نشان سالگرد" required>
-                    </div>
-                    <div class="field">
-                        <label>دسته‌بندی</label>
-                        <select id="newItemCategory" required>
-                            <option value="story">داستان</option>
-                            <option value="comic">کمیک</option>
-                            <option value="profile">شخصی‌سازی</option>
-                            <option value="special">ویژه</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>قیمت (سکه)</label>
-                        <input type="number" id="newItemPrice" min="1" required>
-                    </div>
-                    <div class="field">
-                        <label>تعداد محدود</label>
-                        <input type="number" id="newItemQuantity" min="1" value="1" required>
-                    </div>
+                        <button type="submit" class="submit-btn" id="submitBtn">افزودن به بازار</button>
+                    </form>
                 </div>
-
-                <button type="submit" class="submit-btn" id="submitBtn">افزودن به بازار</button>
-            </form>
+            </div>
         </section>
 
+        <!-- ═══ همه آگهی‌های بازار ═══ -->
         <section class="panel">
-            <h2>همه آگهی‌های بازار</h2>
-
-            <div class="listing-row header-row">
-                <span>نام آیتم</span>
-                <span>فروشنده</span>
-                <span>دسته</span>
-                <span>قیمت</span>
-                <span>تعداد</span>
-                <span>وضعیت</span>
-                <span></span>
+            <div class="accordion-header" data-target="listingsPanelBody">
+                <h2>همه آگهی‌های بازار <span class="count-pill" id="listingsCount">0</span></h2>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
             </div>
+            <div class="accordion-body" id="listingsPanelBody">
+                <div class="accordion-body-inner">
+                    <div class="listing-row header-row">
+                        <span>نام آیتم</span>
+                        <span>فروشنده</span>
+                        <span>دسته</span>
+                        <span>قیمت</span>
+                        <span>تعداد</span>
+                        <span>وضعیت</span>
+                        <span></span>
+                    </div>
 
-            <div id="listingsContainer">
-                <div class="empty-state">در حال بارگذاری...</div>
+                    <div id="listingsContainer">
+                        <div class="empty-state">در حال بارگذاری...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="group-title">کاربران سایت</div>
+
+        <!-- ═══ کاربران سایت ═══ -->
+        <section class="panel">
+            <div class="accordion-header" data-target="usersPanelBody">
+                <h2>لیست کاربران <span class="count-pill" id="usersCount">0</span></h2>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </div>
+            <div class="accordion-body" id="usersPanelBody">
+                <div class="accordion-body-inner">
+                    <div class="search-bar">
+                        <input type="text" id="userSearchInput" placeholder="جستجو بر اساس نام کاربری یا ایمیل...">
+                    </div>
+
+                    <div class="user-row header-row">
+                        <span>نام کاربری</span>
+                        <span>ایمیل</span>
+                        <span>تاریخ عضویت</span>
+                        <span>نقش</span>
+                        <span>وضعیت</span>
+                        <span></span>
+                    </div>
+
+                    <div id="usersContainer">
+                        <div class="empty-state">در حال بارگذاری...</div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -405,11 +650,19 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const accessDenied = document.getElementById("accessDenied");
 const adminContent = document.getElementById("adminContent");
+
 const listingsContainer = document.getElementById("listingsContainer");
+const listingsCount = document.getElementById("listingsCount");
 const createListingForm = document.getElementById("createListingForm");
 const submitBtn = document.getElementById("submitBtn");
 
+const usersContainer = document.getElementById("usersContainer");
+const usersCount = document.getElementById("usersCount");
+const userSearchInput = document.getElementById("userSearchInput");
+
 const toFa = n => Number(n).toLocaleString("fa-IR");
+
+let allUsers = [];
 
 function showToast(text){
     const toast = document.createElement("div");
@@ -428,6 +681,18 @@ const statusLabel = {
     sold: "فروخته شده",
     cancelled: "لغو شده"
 };
+
+/*═════════ ACCORDION ═════════*/
+
+document.querySelectorAll(".accordion-header").forEach(header => {
+    header.addEventListener("click", () => {
+        const body = document.getElementById(header.dataset.target);
+        header.classList.toggle("open");
+        body.classList.toggle("open");
+    });
+});
+
+/*═════════ ACCESS ═════════*/
 
 async function checkAdminAccess(){
     const { data:{ user } } = await supabase.auth.getUser();
@@ -452,6 +717,8 @@ async function checkAdminAccess(){
     return true;
 }
 
+/*═════════ LISTINGS ═════════*/
+
 async function loadListings(){
     const { data, error } = await supabase.rpc("admin_get_all_market_listings");
 
@@ -463,9 +730,11 @@ async function loadListings(){
 
     if(!data || data.length === 0){
         listingsContainer.innerHTML = `<div class="empty-state">هنوز آگهی‌ای ثبت نشده است.</div>`;
+        listingsCount.innerText = "0";
         return;
     }
 
+    listingsCount.innerText = toFa(data.length);
     listingsContainer.innerHTML = "";
 
     data.forEach(listing => {
@@ -552,10 +821,152 @@ listingsContainer.addEventListener("click", async e => {
     await loadListings();
 });
 
+/*═════════ USERS ═════════*/
+
+function renderUsers(list){
+    if(!list || list.length === 0){
+        usersContainer.innerHTML = `<div class="empty-state">کاربری یافت نشد.</div>`;
+        return;
+    }
+
+    usersContainer.innerHTML = "";
+
+    list.forEach(u => {
+        const row = document.createElement("div");
+        row.className = "user-row";
+
+        const dateLabel = new Date(u.created_at).toLocaleDateString("fa-IR");
+
+        let actionsHtml = "";
+        if(u.is_admin){
+            actionsHtml = `<span style="color:var(--muted); font-size:.75rem;">—</span>`;
+        } else if(u.is_banned){
+            actionsHtml = `
+                <button class="unban-btn" data-id="${u.id}" data-action="unban">رفع مسدودیت</button>
+                <button class="delete-btn" data-id="${u.id}" data-action="delete">حذف کامل</button>
+            `;
+        } else {
+            actionsHtml = `
+                <button class="ban-btn" data-id="${u.id}" data-action="ban">مسدود کردن</button>
+                <button class="delete-btn" data-id="${u.id}" data-action="delete">حذف کامل</button>
+            `;
+        }
+
+        row.innerHTML = `
+            <span class="username-cell">${u.username || "بدون نام"}</span>
+            <span class="email-cell">${u.email || "-"}</span>
+            <span>${dateLabel}</span>
+            <span>${u.is_admin ? `<span class="role-badge">مدیر</span>` : `<span style="color:var(--muted); font-size:.8rem;">کاربر</span>`}</span>
+            <span class="status-badge ${u.is_banned ? "banned" : "ok"}">${u.is_banned ? "مسدود" : "فعال"}</span>
+            <span class="user-actions">${actionsHtml}</span>
+        `;
+
+        usersContainer.appendChild(row);
+    });
+}
+
+async function loadUsers(){
+    const { data, error } = await supabase.rpc("admin_get_all_users");
+
+    if(error){
+        console.error(error);
+        usersContainer.innerHTML = `<div class="empty-state">خطا در بارگذاری کاربران</div>`;
+        return;
+    }
+
+    allUsers = data || [];
+    usersCount.innerText = toFa(allUsers.length);
+    renderUsers(allUsers);
+}
+
+userSearchInput.addEventListener("input", () => {
+    const q = userSearchInput.value.trim().toLowerCase();
+    if(!q){
+        renderUsers(allUsers);
+        return;
+    }
+    const filtered = allUsers.filter(u =>
+        (u.username || "").toLowerCase().includes(q) ||
+        (u.email || "").toLowerCase().includes(q)
+    );
+    renderUsers(filtered);
+});
+
+usersContainer.addEventListener("click", async e => {
+    const btn = e.target.closest("button[data-action]");
+    if(!btn) return;
+
+    const userId = btn.dataset.id;
+    const action = btn.dataset.action;
+
+    if(action === "ban"){
+        const reason = prompt("دلیل مسدودسازی (اختیاری):", "") || null;
+        if(!confirm("آیا از مسدود کردن این کاربر مطمئن هستید؟")) return;
+
+        btn.disabled = true;
+        const { error } = await supabase.rpc("admin_ban_user", {
+            p_user_id: userId,
+            p_reason: reason
+        });
+
+        if(error){
+            console.error(error);
+            showToast(error.message || "خطا در مسدودسازی کاربر");
+            btn.disabled = false;
+            return;
+        }
+
+        showToast("کاربر مسدود شد");
+        await loadUsers();
+    }
+
+    if(action === "unban"){
+        if(!confirm("آیا از رفع مسدودیت این کاربر مطمئن هستید؟")) return;
+
+        btn.disabled = true;
+        const { error } = await supabase.rpc("admin_unban_user", {
+            p_user_id: userId
+        });
+
+        if(error){
+            console.error(error);
+            showToast(error.message || "خطا در رفع مسدودیت");
+            btn.disabled = false;
+            return;
+        }
+
+        showToast("مسدودیت کاربر رفع شد");
+        await loadUsers();
+    }
+
+    if(action === "delete"){
+        if(!confirm("⚠️ این عمل غیرقابل بازگشت است. آیا از حذف کامل این کاربر مطمئن هستید؟")) return;
+        if(!confirm("تأیید نهایی: حساب کاربر برای همیشه حذف خواهد شد. ادامه می‌دهید؟")) return;
+
+        btn.disabled = true;
+        const { error } = await supabase.rpc("admin_delete_user", {
+            p_user_id: userId
+        });
+
+        if(error){
+            console.error(error);
+            showToast(error.message || "خطا در حذف کاربر");
+            btn.disabled = false;
+            return;
+        }
+
+        showToast("حساب کاربر حذف شد");
+        await loadUsers();
+    }
+});
+
+/*═════════ INIT ═════════*/
+
 window.addEventListener("load", async () => {
     const hasAccess = await checkAdminAccess();
     if(hasAccess){
         await loadListings();
+        await loadUsers();
     }
 });
 </script>
