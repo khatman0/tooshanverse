@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
+Disallow: /admin-market.html
+Disallow: /market.html
+Disallow: /treasury.html
+Disallow: /login.html
+Disallow: /signup.html
+Disallow: /forgot-password.html
+Disallow: /profile.html
 
 Sitemap: https://www.tooshan.ir/sitemap.xml
