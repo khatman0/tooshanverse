@@ -380,6 +380,133 @@ header {
 .corner-bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--blue); border-left: 2px solid var(--blue); }
 .corner-br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--blue); border-right: 2px solid var(--blue); }
 
+/* ══════════════════════════════
+   HERO ANNOUNCEMENT CARD (تابلو اعلانات داخل هیرو، جایگزین عکس)
+══════════════════════════════ */
+.hero-announce-card {
+  flex: 0 0 340px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow:
+    0 0 0 1px rgba(25,167,255,0.05),
+    0 40px 100px rgba(0,0,0,0.8),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  animation: fadeUp .8s ease both;
+}
+.hero-announce-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: #060c1c;
+}
+.hero-announce-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.hero-announce-image-wrap img.active { opacity: 1; }
+.hero-announce-image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(4,6,14,0) 40%, rgba(4,6,14,0.95) 100%);
+  pointer-events: none;
+}
+.hero-announce-page-indicator {
+  position: absolute;
+  top: 14px; left: 14px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(4, 6, 14, 0.65);
+  border: 1px solid rgba(25, 167, 255, 0.4);
+  backdrop-filter: blur(6px);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--blue2);
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+}
+.hero-announce-page-indicator .divider { color: rgba(155, 227, 255, 0.35); }
+.hero-announce-page-indicator .current { color: var(--blue); font-weight: 700; }
+.hero-announce-body {
+  padding: 18px 20px 22px;
+  position: relative;
+}
+.hero-announce-eyebrow {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hero-announce-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 8px 2px rgba(25,167,255,0.8);
+}
+.hero-announce-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #f0f9ff;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  min-height: 54px;
+}
+.hero-announce-desc {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.8;
+  min-height: 44px;
+}
+.hero-announce-progress-track {
+  position: relative;
+  margin-top: 10px;
+  height: 3px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.06);
+}
+.hero-announce-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--blue), var(--blue2));
+}
+.hero-announce-progress-fill.animating { transition: width 5s linear; }
+.hero-announce-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 14px;
+}
+.hero-announce-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(180, 210, 255, 0.3);
+  cursor: none;
+  transition: all 0.3s ease;
+}
+.hero-announce-dot.active {
+  background: var(--blue);
+  width: 18px;
+  border-radius: 3px;
+  box-shadow: 0 0 6px rgba(25,167,255,0.7);
+}
+
 .hero-meta { flex: 1; }
 
 .hero-eyebrow {
@@ -676,8 +803,7 @@ header {
 
 /* تایمر */
 .timer-wrap {
-  padding: 40px 40px 32px;
-  border-bottom: 1px solid var(--line);
+  padding: 40px 40px 40px;
   text-align: center;
 }
 .timer-label {
@@ -749,57 +875,6 @@ header {
   font-weight: 700;
   color: var(--gold);
   display: none;
-}
-
-/* تابلو اعلانات */
-.board-wrap {
-  padding: 28px 40px 36px;
-}
-.board-header {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 20px;
-}
-.board-badge {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--blue);
-  display: flex; align-items: center; gap: 6px;
-}
-.board-badge::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--blue);
-}
-.board-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.board-item {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 14px 18px;
-  background: rgba(25,167,255,0.03);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  font-size: 0.92rem;
-  color: var(--blue2);
-  line-height: 1.7;
-}
-.board-item::before {
-  content: '◆';
-  color: var(--gold);
-  font-size: 0.5rem;
-  margin-top: 6px;
-  flex-shrink: 0;
-}
-.board-empty {
-  font-size: 0.88rem;
-  color: var(--muted);
-  text-align: center;
-  padding: 20px 0;
 }
 
 /* کانفتی */
@@ -964,16 +1039,15 @@ footer {
    RESPONSIVE
 ══════════════════════════════ */
 @media (max-width: 1000px) {
-  .hero-inner { flex-direction: column-reverse; padding: 80px 24px 40px; gap: 40px; }
-  .portrait { width: 260px; height: 340px; }
+  .hero-inner { flex-direction: column; padding: 80px 24px 40px; gap: 40px; }
+  .hero-announce-card { width: 100%; max-width: 340px; margin: 0 auto; }
   .hero-meta h1 { font-size: 2.4rem; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .about-box { padding: 40px 30px; }
   .hero-stats { gap: 20px; }
   footer { flex-direction: column; gap: 16px; text-align: center; }
   .footer-links { justify-content: center; }
-  .timer-wrap { padding: 30px 20px 24px; }
-  .board-wrap { padding: 20px 20px 28px; }
+  .timer-wrap { padding: 30px 20px 30px; }
   .announce-section { padding: 0 20px 60px; }
   .comments-preview-box { padding: 36px 28px; }
   .comments-preview-section { padding: 0 20px 60px; }
@@ -981,7 +1055,7 @@ footer {
 @media (max-width: 640px) {
   .section { padding: 60px 20px; }
   .about-section { padding: 0 20px 60px; }
-  .portrait { width: 200px; height: 280px; }
+  .hero-announce-card { max-width: 300px; }
   .hero-meta h1 { font-size: 1.9rem; }
   .cta-row { flex-direction: column; }
   .btn { justify-content: center; }
@@ -1057,14 +1131,6 @@ footer {
   <div class="orb orb-2"></div>
 
   <div class="hero-inner">
-    <div class="portrait">
-      <div class="corner corner-tl"></div>
-      <div class="corner corner-tr"></div>
-      <div class="corner corner-bl"></div>
-      <div class="corner corner-br"></div>
-      <img src="photo/tooshan.png" alt="توشان‌ورس">
-    </div>
-
     <div class="hero-meta">
       <div class="hero-eyebrow">جهان داستانی ایرانی</div>
       <h1>
@@ -1094,6 +1160,26 @@ footer {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           خط زمانی
         </a>
+      </div>
+    </div>
+
+    <!-- تابلو اعلانات (جایگزین عکس) -->
+    <div class="hero-announce-card" id="heroAnnounceCard">
+      <div class="hero-announce-image-wrap" id="heroImageWrap">
+        <div class="hero-announce-page-indicator">
+          <span class="current" id="heroPageCurrent">1</span>
+          <span class="divider">/</span>
+          <span id="heroPageTotal">3</span>
+        </div>
+      </div>
+      <div class="hero-announce-body">
+        <div class="hero-announce-eyebrow">تابلو اعلانات</div>
+        <div class="hero-announce-title" id="heroNewsTitle"></div>
+        <div class="hero-announce-desc" id="heroNewsDesc"></div>
+        <div class="hero-announce-progress-track">
+          <div class="hero-announce-progress-fill" id="heroProgressFill"></div>
+        </div>
+        <div class="hero-announce-dots" id="heroAnnounceDots"></div>
       </div>
     </div>
   </div>
@@ -1134,16 +1220,6 @@ footer {
         </div>
       </div>
       <div class="timer-done" id="timerDone">🎉 منتشر شد!</div>
-    </div>
-
-    <!-- تابلو اعلانات -->
-    <div class="board-wrap">
-      <div class="board-header">
-        <div class="board-badge">تابلو اعلانات</div>
-      </div>
-      <div class="board-list" id="boardList">
-        <div class="board-empty">در حال بارگذاری...</div>
-      </div>
     </div>
 
   </div>
@@ -1349,6 +1425,107 @@ function startTimer(targetDate) {
   timerInterval = setInterval(tick, 1000);
 }
 
+/* ══════════════════════════════
+   HERO ANNOUNCEMENT CARD (کارت چرخشی — از همون گوگل‌شیت)
+   نگاشت ستون‌ها در شیت:
+     ستون A → تاریخ/ساعت تایمر (فقط آخرین ردیف پر خونده می‌شه)
+     ستون B → عنوان خبر (هر ردیفی که پر باشه = یک اسلاید تازه)
+     ستون C → اسم داستان بعدی (فقط ردیف اول، مخصوص تایمر)
+     ستون D → لینک عکس خبر (اختیاری — اگه خالی باشه عکس پیش‌فرض میاد)
+     ستون E → توضیح کوتاه خبر (اختیاری)
+══════════════════════════════ */
+let heroAnnounceItems = [];
+let heroAnnounceCurrent = 0;
+let heroAnnounceIntervalId = null;
+const HERO_ANNOUNCE_ROTATE_MS = 5000;
+const HERO_ANNOUNCE_DEFAULT_IMG = "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80";
+
+function heroAnnounceRender() {
+  const heroImageWrap    = document.getElementById('heroImageWrap');
+  const heroTitleEl      = document.getElementById('heroNewsTitle');
+  const heroDescEl       = document.getElementById('heroNewsDesc');
+  const heroPageCurrent  = document.getElementById('heroPageCurrent');
+  const heroProgressFill = document.getElementById('heroProgressFill');
+  if (!heroImageWrap || !heroAnnounceItems.length) return;
+
+  const item = heroAnnounceItems[heroAnnounceCurrent];
+  heroTitleEl.textContent = item.title;
+  heroDescEl.textContent  = item.desc || '';
+  heroPageCurrent.textContent = heroAnnounceCurrent + 1;
+
+  heroImageWrap.querySelectorAll('img').forEach((img, i) => img.classList.toggle('active', i === heroAnnounceCurrent));
+  document.querySelectorAll('#heroAnnounceDots .hero-announce-dot').forEach((dot, i) => dot.classList.toggle('active', i === heroAnnounceCurrent));
+
+  heroProgressFill.classList.remove('animating');
+  heroProgressFill.style.width = '0%';
+  void heroProgressFill.offsetWidth;
+  heroProgressFill.classList.add('animating');
+  heroProgressFill.style.width = '100%';
+}
+
+function heroAnnounceGoTo(index) {
+  heroAnnounceCurrent = index;
+  heroAnnounceRender();
+  heroAnnounceResetInterval();
+}
+
+function heroAnnounceNext() {
+  heroAnnounceCurrent = (heroAnnounceCurrent + 1) % heroAnnounceItems.length;
+  heroAnnounceRender();
+}
+
+function heroAnnounceResetInterval() {
+  if (heroAnnounceIntervalId) clearInterval(heroAnnounceIntervalId);
+  if (heroAnnounceItems.length > 1) {
+    heroAnnounceIntervalId = setInterval(heroAnnounceNext, HERO_ANNOUNCE_ROTATE_MS);
+  }
+}
+
+function initHeroAnnounceCarousel(items) {
+  const heroImageWrap    = document.getElementById('heroImageWrap');
+  const heroPageTotal    = document.getElementById('heroPageTotal');
+  const heroDotsWrap     = document.getElementById('heroAnnounceDots');
+  const heroTitleEl      = document.getElementById('heroNewsTitle');
+  const heroDescEl       = document.getElementById('heroNewsDesc');
+  const heroPageCurrent  = document.getElementById('heroPageCurrent');
+  const heroProgressFill = document.getElementById('heroProgressFill');
+  if (!heroImageWrap) return;
+
+  if (heroAnnounceIntervalId) clearInterval(heroAnnounceIntervalId);
+  heroImageWrap.querySelectorAll('img').forEach(el => el.remove());
+  heroDotsWrap.innerHTML = '';
+
+  if (!items.length) {
+    heroAnnounceItems = [];
+    heroPageCurrent.textContent = '0';
+    heroPageTotal.textContent = '0';
+    heroTitleEl.textContent = 'فعلاً خبری ثبت نشده';
+    heroDescEl.textContent  = 'به‌محض ثبت خبر جدید در گوگل‌شیت (ستون B)، اینجا خودکار نمایش داده می‌شود.';
+    heroProgressFill.style.width = '0%';
+    return;
+  }
+
+  heroAnnounceItems   = items;
+  heroAnnounceCurrent = 0;
+  heroPageTotal.textContent = items.length;
+
+  items.forEach((item, i) => {
+    const img = document.createElement('img');
+    img.src = item.img || HERO_ANNOUNCE_DEFAULT_IMG;
+    img.alt = item.title;
+    if (i === 0) img.classList.add('active');
+    heroImageWrap.appendChild(img);
+
+    const dot = document.createElement('div');
+    dot.className = 'hero-announce-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => heroAnnounceGoTo(i));
+    heroDotsWrap.appendChild(dot);
+  });
+
+  heroAnnounceRender();
+  heroAnnounceResetInterval();
+}
+
 async function loadSheetData() {
   try {
     const res  = await fetch(SHEET_URL);
@@ -1358,25 +1535,15 @@ async function loadSheetData() {
 
     /* ── ستون A: تاریخ و ساعت تایمر (آخرین ردیف پر) ── */
     let timerDateStr = null;
-    let storyName    = null;
-    rows.forEach(row => {
-      const a = row.c[0]?.v;
-      const b = row.c[1]?.v;
-      if (a) timerDateStr = a;
-      if (b && row === rows[rows.length - 1 - [...rows].reverse().findIndex(r => r.c[0]?.v)]) {}
-    });
-
-    /* پیدا کردن آخرین مقدار پر در A */
     for (let i = rows.length - 1; i >= 0; i--) {
       if (rows[i].c[0] !== null && rows[i].c[0] !== undefined) {
         timerDateStr = rows[i].c[0].v;
-        console.log('RAW A1 value:', timerDateStr, typeof timerDateStr);
         break;
       }
     }
 
     /* ستون C ردیف اول: اسم داستان بعدی */
-    storyName = rows[0]?.c[2]?.v || '';
+    const storyName = rows[0]?.c[2]?.v || '';
 
     /* پارس تاریخ گوگل شیت — فرمت‌های مختلف */
     function parseSheetDate(v) {
@@ -1415,20 +1582,20 @@ async function loadSheetData() {
       document.getElementById('tSecs').textContent  = '--';
     }
 
-    /* ── ستون B: تابلو اعلانات (همه ردیف‌ها) ── */
-    const boardList = document.getElementById('boardList');
-    const items = rows.map(r => r.c[1]?.v).filter(Boolean);
-    if (items.length) {
-      boardList.innerHTML = items.map(v =>
-        `<div class="board-item">${v}</div>`
-      ).join('');
-    } else {
-      boardList.innerHTML = '<div class="board-empty">اعلانی موجود نیست</div>';
-    }
+    /* ── ستون B/D/E: هر ردیف پر در B = یک اسلاید تازه در تابلو اعلانات هیرو ── */
+    const newsItems = rows
+      .map(r => ({
+        title: r.c[1]?.v,
+        img:   r.c[3]?.v,
+        desc:  r.c[4]?.v || ''
+      }))
+      .filter(item => item.title);
+
+    initHeroAnnounceCarousel(newsItems);
 
   } catch(err) {
     document.getElementById('timerStoryName').textContent = 'خطا در بارگذاری';
-    document.getElementById('boardList').innerHTML = '<div class="board-empty">خطا در بارگذاری اطلاعات</div>';
+    initHeroAnnounceCarousel([]);
   }
 }
 
